@@ -9,20 +9,27 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
+        // 1. Cek apakah user sudah login
         if (!Auth::check()) {
-            return redirect('login');
+            return redirect()->route('login');
         }
 
         $user = Auth::user();
-        
-        // Cek apakah nama role user ada dalam daftar role yang diizinkan di route
-        if (in_array($user->role->nama_role, $roles)) {
+
+        // 2. Cek apakah user memiliki role yang diizinkan
+        // Kita asumsikan relasi 'role' sudah ada di model User
+        if ($user->role && in_array($user->role->nama_role, $roles)) {
             return $next($request);
         }
 
-        // Jika tidak punya akses, lempar ke halaman awal dashboard mereka sendiri
-        return redirect('/dashboard')->with('error', 'Anda tidak memiliki akses ke halaman tersebut.');
+        // 3. Jika tidak punya akses, lempar ke halaman dashboard umum
+        return redirect('/dashboard')->with('error', 'Anda tidak memiliki hak akses ke halaman tersebut.');
     }
 }
