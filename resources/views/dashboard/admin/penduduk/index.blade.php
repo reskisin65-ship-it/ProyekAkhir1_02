@@ -1,65 +1,54 @@
 <x-admin-layout>
-    <div class="flex justify-between items-center mb-10">
+    <div class="flex justify-between items-end mb-12">
         <div>
-            <h1 class="text-3xl font-black text-slate-900 tracking-tight">DATA PENDUDUK</h1>
-            <p class="text-slate-500 font-medium mt-1 uppercase text-xs tracking-widest">Manajemen Identitas Warga Silintong</p>
+            <h2 class="text-4xl font-black text-slate-900 tracking-tight uppercase">Database Warga</h2>
+            <p class="text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em] mt-2">Kependudukan Desa Lumban Silintong</p>
         </div>
-        <a href="{{ route('admin.penduduk.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-sm shadow-lg shadow-emerald-100 transition-all flex items-center gap-2">
+        <a href="{{ route('admin.penduduk.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-xs shadow-lg shadow-emerald-100 transition-all flex items-center gap-3 uppercase tracking-widest">
             <i class="fa-solid fa-user-plus"></i> Tambah Warga
         </a>
     </div>
 
-    @if(session('success'))
-    <div class="bg-emerald-100 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-2xl mb-8 font-bold text-sm">
-        {{ session('success') }}
-    </div>
-    @endif
-
     <div class="bg-white rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
-                <thead class="bg-slate-50 border-b border-slate-100">
-                    <tr class="text-slate-400 text-[10px] uppercase tracking-[0.2em] font-black italic">
-                        <th class="px-10 py-6">Identitas Warga</th>
-                        <th class="px-10 py-6">NIK</th>
-                        <th class="px-10 py-6">Jenis Kelamin</th>
-                        <th class="px-10 py-6 text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-50">
-                    @forelse($penduduks as $p)
-                    <tr class="hover:bg-slate-50/50 transition">
-                        <td class="px-10 py-6">
-                            <p class="font-black text-slate-800 text-lg uppercase tracking-tighter">{{ $p->nama_lengkap }}</p>
-                            <p class="text-xs text-slate-400 font-medium">Lahir: {{ \Carbon\Carbon::parse($p->tgl_lahir)->format('d F Y') }}</p>
-                        </td>
-                        <td class="px-10 py-6">
-                            <span class="font-mono text-emerald-700 font-bold bg-emerald-50 px-3 py-1 rounded-lg">{{ $p->nik }}</span>
-                        </td>
-                        <td class="px-10 py-6 text-sm font-bold text-slate-600">
-                            {{ $p->jenis_kelamin }}
-                        </td>
-                        <td class="px-10 py-6 text-center">
-                            <div class="flex justify-center gap-3">
-                                <a href="{{ route('admin.penduduk.edit', $p->nik) }}" class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center hover:bg-indigo-600 hover:text-white transition">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                                <form action="{{ route('admin.penduduk.destroy', $p->nik) }}" method="POST" onsubmit="return confirm('Hapus data warga ini?')">
-                                    @csrf @method('DELETE')
-                                    <button class="w-10 h-10 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="4" class="py-20 text-center text-slate-400 italic">Belum ada data warga terdaftar.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-50 border-b border-slate-100">
+                <tr class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                    <th class="px-10 py-6">Nama Lengkap</th>
+                    <th class="px-10 py-6">NIK</th>
+                    <th class="px-10 py-6">Jenis Kelamin</th>
+                    <th class="px-10 py-6">Status Akun</th>
+                    <th class="px-10 py-6 text-right">Tindakan</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50 text-sm font-medium text-slate-600">
+                @forelse($penduduks as $p)
+                <tr class="hover:bg-slate-50 transition duration-300 group">
+                    <td class="px-10 py-6">
+                        <p class="font-bold text-slate-900 text-base leading-none">{{ $p->nama_lengkap }}</p>
+                        <p class="text-[10px] text-slate-400 mt-2 uppercase tracking-tighter italic">{{ $p->tgl_lahir }}</p>
+                    </td>
+                    <td class="px-10 py-6 font-black tracking-widest text-emerald-700">{{ $p->nik }}</td>
+                    <td class="px-10 py-6">{{ $p->jenis_kelamin }}</td>
+                    <td class="px-10 py-6">
+                        @if($p->user_id)
+                            <span class="px-4 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[9px] font-black uppercase">Terkoneksi</span>
+                        @else
+                            <span class="px-4 py-1 bg-slate-100 text-slate-400 rounded-full text-[9px] font-black uppercase">Offline</span>
+                        @endif
+                    </td>
+                    <td class="px-10 py-6 text-right">
+                        <div class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <form action="{{ route('admin.penduduk.destroy', $p->nik) }}" method="POST" onsubmit="return confirm('Hapus data warga ini?')">
+                                @csrf @method('DELETE')
+                                <button class="w-10 h-10 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition"><i class="fa-solid fa-trash-can"></i></button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr><td colspan="5" class="py-20 text-center text-slate-300 italic font-bold">Belum ada data warga.</td></tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 </x-admin-layout>

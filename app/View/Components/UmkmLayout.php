@@ -5,10 +5,10 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class AdminLayout extends Component
+class UmkmLayout extends Component
 {
     public function render(): View
     {
-        return view('layouts.admin');
+        return view('layouts.umkm');
     }
 }

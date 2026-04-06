@@ -1,57 +1,53 @@
 <x-admin-layout>
-    <div class="flex justify-between items-center mb-10">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900">Kelola Berita</h1>
-            <p class="text-slate-500 text-sm mt-1">Daftar berita dan pengumuman yang tampil di website publik.</p>
+            <h2 class="text-5xl font-serif italic text-emerald-950 leading-tight">Kelola Berita.</h2>
+            <p class="text-slate-400 font-bold text-xs mt-4 uppercase tracking-[0.3em]">Manajemen Informasi Publik Desa</p>
         </div>
-        <a href="{{ route('admin.berita.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-emerald-200 transition">
-            <i class="fa-solid fa-plus mr-2"></i> Tambah Berita
+        <a href="{{ route('admin.berita.create') }}" class="px-10 py-5 bg-emerald-900 text-white font-black rounded-[2rem] shadow-giant hover:bg-emerald-700 transition-all uppercase tracking-widest text-xs flex items-center gap-3">
+            <i class="fa-solid fa-plus text-lg"></i> Tambah Berita
         </a>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="bg-white rounded-[4rem] shadow-sm border border-slate-100 overflow-hidden">
         <table class="w-full text-left border-collapse">
-            <thead class="bg-slate-50 border-b border-slate-100">
-                <tr class="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                    <th class="px-8 py-4">Thumbnail</th>
-                    <th class="px-8 py-4">Judul & Kategori</th>
-                    <th class="px-8 py-4">Status</th>
-                    <th class="px-8 py-4">Tanggal Post</th>
-                    <th class="px-8 py-4 text-center">Aksi</th>
+            <thead class="bg-slate-50/50 border-b border-slate-100 font-black text-[10px] uppercase tracking-[0.2em] text-slate-400">
+                <tr>
+                    <th class="px-10 py-6">Thumbnail</th>
+                    <th class="px-10 py-6">Informasi Berita</th>
+                    <th class="px-10 py-6 text-center">Status</th>
+                    <th class="px-10 py-6">Tanggal</th>
+                    <th class="px-10 py-6 text-right">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-50">
                 @forelse($beritas as $b)
-                <tr class="hover:bg-slate-50/80 transition">
-                    <td class="px-8 py-5">
-                        <img src="{{ asset('storage/' . $b->foto) }}" class="w-20 h-14 rounded-lg object-cover shadow-sm">
+                <tr class="group hover:bg-slate-50/50 transition-all duration-300">
+                    <td class="px-10 py-8">
+                        <img src="{{ asset('storage/' . $b->foto) }}" class="w-32 h-20 rounded-[2rem] object-cover shadow-xl group-hover:scale-110 transition duration-500">
                     </td>
-                    <td class="px-8 py-5">
-                        <p class="text-sm font-bold text-slate-800">{{ $b->judul }}</p>
-                        <span class="text-[10px] font-bold text-emerald-600 uppercase">{{ $b->kategori }}</span>
+                    <td class="px-10 py-8">
+                        <h4 class="text-lg font-bold text-slate-800 leading-tight group-hover:text-emerald-700 transition">{{ $b->judul }}</h4>
+                        <span class="inline-block mt-2 px-4 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[9px] font-black uppercase tracking-widest">{{ $b->kategori }}</span>
                     </td>
-                    <td class="px-8 py-5">
-                        <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase {{ $b->status == 'publik' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400' }}">
-                            {{ $b->status }}
-                        </span>
+                    <td class="px-10 py-8 text-center">
+                        <span class="px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-black text-[9px] uppercase tracking-[0.3em]">{{ $b->status }}</span>
                     </td>
-                    <td class="px-8 py-5 text-sm font-medium text-slate-500">
-                        {{ $b->created_at->format('d/m/Y') }}
+                    <td class="px-10 py-8 text-sm font-bold text-slate-400 italic uppercase tracking-tighter">
+                        {{ $b->created_at->format('d M Y') }}
                     </td>
-                    <td class="px-8 py-5 text-center">
-                        <div class="flex justify-center gap-2">
-                            <button class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white transition"><i class="fa-solid fa-pen-to-square text-xs"></i></button>
-                            <form action="{{ route('admin.berita.destroy', $b->id) }}" method="POST">
+                    <td class="px-10 py-8 text-right">
+                        <div class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl hover:bg-emerald-600 hover:text-white transition shadow-sm"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <form action="{{ route('admin.berita.destroy', $b->id) }}" method="POST" onsubmit="return confirm('Hapus berita ini?')">
                                 @csrf @method('DELETE')
-                                <button class="w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition"><i class="fa-solid fa-trash text-xs"></i></button>
+                                <button type="submit" class="w-12 h-12 bg-red-50 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition shadow-sm"><i class="fa-solid fa-trash-can"></i></button>
                             </form>
                         </div>
                     </td>
                 </tr>
                 @empty
-                <tr>
-                    <td colspan="5" class="py-20 text-center text-slate-400 italic font-medium">Belum ada berita yang diupload.</td>
-                </tr>
+                <tr><td colspan="5" class="py-20 text-center text-slate-300 italic font-medium">Belum ada berita yang tersedia.</td></tr>
                 @endforelse
             </tbody>
         </table>
