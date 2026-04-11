@@ -1,45 +1,34 @@
 <?php
+// database/migrations/2014_10_12_000000_create_users_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
-    public function up(): void {
+return new class extends Migration
+{
+    public function up(): void
+    {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            // Menghubungkan ke tabel roles
-            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
+            $table->id('user_id');
+            $table->unsignedBigInteger('id_role');
             $table->string('name', 100);
             $table->string('email', 100)->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 255);
-            $table->string('nomor_telepon', 20);
-            $table->string('foto_profil', 255)->nullable();
+            $table->string('nomor_telepon', 225)->nullable();
+            $table->string('foto_profil', 100)->nullable();
             $table->rememberToken();
             $table->timestamps();
-        });
-
-        // Bagian bawah (password_reset & sessions) biarkan standar Laravel 11
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
+            
+            $table->foreign('id_role')
+                  ->references('id_role')
+                  ->on('roles')
+                  ->onDelete('restrict');
         });
     }
 
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
     }
 };

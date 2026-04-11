@@ -1,23 +1,25 @@
 <?php
+// app/Models/Berita.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Berita extends Model
 {
+    protected $table = 'berita';
+    protected $primaryKey = 'id_berita';
+    
     protected $fillable = [
-        'user_id', 
-        'judul', 
-        'isi_berita', 
-        'foto', 
-        'kategori', 
-        'status'
+        'user_id', 'judul', 'isi_berita', 'kategori', 'foto', 'status'
     ];
-
-    // Penulis berita (Admin)
-    public function admin(): BelongsTo {
-        return $this->belongsTo(User::class, 'user_id');
+    
+    protected $casts = [
+        'tanggal_publikasi' => 'date'
+    ];
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

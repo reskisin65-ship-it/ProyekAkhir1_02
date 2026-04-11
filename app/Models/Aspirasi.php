@@ -1,21 +1,21 @@
 <?php
+// app/Models/Aspirasi.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Aspirasi extends Model
 {
+    protected $table = 'aspirasi';
+    protected $primaryKey = 'id_aspirasi';
+    
     protected $fillable = [
-        'user_id', 
-        'kategori', 
-        'isi_aspirasi', 
-        'status', 
-        'lampiran'
+        'user_id', 'kategori', 'isi_aspirasi', 'status', 'lampiran'
     ];
-
-    public function user(): BelongsTo {
-        return $this->belongsTo(User::class);
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

@@ -1,27 +1,28 @@
 <?php
+// app/Models/DataPenduduk.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class DataPenduduk extends Model {
-    // Karena Primary Key bukan 'id' dan bukan auto-increment (tapi NIK string)
-    protected $primaryKey = 'nik';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
+class DataPenduduk extends Model
+{
+    protected $table = 'data_penduduk';
+    protected $primaryKey = 'id_penduduk';
+    
     protected $fillable = [
-        'nik',
-        'user_id',
-        'nama_lengkap',
-        'jenis_kelamin',
-        'tgl_lahir',
-        'alamat',
+        'user_id', 'nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir',
+        'tanggal_lahir', 'agama', 'pendidikan', 'pekerjaan', 'status_perkawinan',
+        'alamat', 'rt_rw', 'kelurahan_desa', 'kecamatan', 'kabupaten_kota',
+        'provinsi', 'status_keluarga', 'no_kk', 'foto_ktp'
     ];
-
-    // Relasi balik ke User
-    public function user(): BelongsTo {
-        return $this->belongsTo(User::class);
+    
+    protected $casts = [
+        'tanggal_lahir' => 'date'
+    ];
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

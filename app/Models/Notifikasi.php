@@ -1,21 +1,21 @@
 <?php
+// app/Models/Notifikasi.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Notifikasi extends Model
 {
+    protected $table = 'notifikasi';
+    protected $primaryKey = 'id_notifikasi';
+    
     protected $fillable = [
-        'user_id', 
-        'judul', 
-        'pesan', 
-        'is_read'
+        'user_id', 'judul', 'pesan'
     ];
-
-    // Relasi balik ke User (siapa yang menerima notif)
-    public function user(): BelongsTo {
-        return $this->belongsTo(User::class);
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }
