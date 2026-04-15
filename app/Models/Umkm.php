@@ -11,7 +11,8 @@ class Umkm extends Model
     protected $primaryKey = 'id_umkm';
     
     protected $fillable = [
-        'user_id', 'nama_usaha', 'kategori', 'no_telepon', 'alamat_usaha', 'bukti_usaha'
+        'user_id', 'nama_usaha', 'kategori', 'pemilik', 'no_telepon',
+        'alamat_usaha', 'deskripsi', 'logo', 'bukti_usaha', 'status'
     ];
     
     public function user()

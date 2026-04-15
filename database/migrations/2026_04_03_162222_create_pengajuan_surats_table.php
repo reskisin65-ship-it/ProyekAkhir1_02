@@ -13,10 +13,17 @@ return new class extends Migration
             $table->id('id_surat');
             $table->unsignedBigInteger('user_id');
             $table->string('jenis_surat', 50);
+            $table->string('nama_lengkap', 100);        // ← TAMBAHKAN
             $table->string('nik', 16);
-            $table->string('status', 20)->default('menunggu');
-            $table->string('berkas', 191)->nullable();
-            $table->date('tgl_pengajuan');
+            $table->string('tempat_lahir', 50);         // ← TAMBAHKAN
+            $table->date('tanggal_lahir');               // ← TAMBAHKAN
+            $table->string('nomor_telepon', 15);         // ← TAMBAHKAN
+            $table->text('keperluan');                   // ← TAMBAHKAN
+            $table->string('berkas_pendukung', 191)->nullable(); // ← ganti dari 'berkas'
+            $table->enum('status', ['menunggu', 'diproses', 'selesai', 'ditolak'])->default('menunggu');
+            $table->text('catatan_penolakan')->nullable();
+            $table->string('file_surat', 191)->nullable();
+            $table->date('tgl_pengajuan')->nullable();
             $table->timestamps();
             
             $table->foreign('user_id')

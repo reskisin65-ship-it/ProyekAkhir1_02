@@ -1,12 +1,11 @@
 {{-- resources/views/pages/berita.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Berita & Pengumuman - Lumban Silintong')
+@section('title', 'Berita & Pengumuman')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     
-    {{-- Header --}}
     <div class="text-center mb-12">
         <h1 class="text-4xl md:text-5xl font-serif italic text-emerald-900 mb-4">📰 Berita & Pengumuman</h1>
         <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto rounded-full"></div>
@@ -15,33 +14,25 @@
 
     {{-- Filter Kategori --}}
     <div class="flex flex-wrap justify-center gap-3 mb-12">
-        <button data-filter="all" class="filter-btn active px-5 py-2 rounded-full text-sm font-semibold transition-all bg-emerald-600 text-white shadow-md">
-            <i class="fa-regular fa-layer-group mr-1"></i> Semua
-        </button>
-        <button data-filter="berita" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">
-            <i class="fa-regular fa-newspaper mr-1"></i> Berita
-        </button>
-        <button data-filter="pengumuman" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">
-            <i class="fa-solid fa-bullhorn mr-1"></i> Pengumuman
-        </button>
-        <button data-filter="kegiatan" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">
-            <i class="fa-regular fa-calendar-check mr-1"></i> Kegiatan
-        </button>
+        <button data-filter="all" class="filter-btn active px-5 py-2 rounded-full text-sm font-semibold transition-all bg-emerald-600 text-white shadow-md">Semua</button>
+        <button data-filter="berita" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">Berita</button>
+        <button data-filter="pengumuman" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">Pengumuman</button>
+        <button data-filter="kegiatan" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">Kegiatan</button>
     </div>
 
     {{-- Featured Berita --}}
-    @if($beritaUtama)
+    @if(isset($beritaUtama) && $beritaUtama)
     <div class="mb-16">
         <div class="relative rounded-2xl overflow-hidden h-[450px] group shadow-xl">
-            <img src="{{ $beritaUtama->foto ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200' }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+            <img src="{{ $beritaUtama->gambar ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200' }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end">
                 <div class="p-8 text-white">
                     <span class="inline-block px-3 py-1 bg-emerald-500 rounded-full text-[10px] font-bold mb-3">
                         {{ ucfirst($beritaUtama->kategori) }}
                     </span>
                     <h2 class="text-3xl md:text-4xl font-serif italic mb-2">{{ $beritaUtama->judul }}</h2>
-                    <p class="text-gray-200 mb-4 max-w-2xl line-clamp-2">{{ $beritaUtama->isi_berita ?? $beritaUtama->ringkasan ?? '' }}</p>
-                    <a href="{{ route('berita.show', $beritaUtama->id_berita) }}" class="inline-flex items-center gap-2 px-5 py-2 bg-white/20 backdrop-blur rounded-full text-sm font-semibold hover:bg-white/30 transition">
+                    <p class="text-gray-200 mb-4 max-w-2xl line-clamp-2">{{ $beritaUtama->ringkasan }}</p>
+                    <a href="{{ route('berita.show', $beritaUtama->slug) }}" class="inline-flex items-center gap-2 px-5 py-2 bg-white/20 backdrop-blur rounded-full text-sm font-semibold hover:bg-white/30 transition">
                         Baca Selengkapnya <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
                 </div>
@@ -55,7 +46,7 @@
         @forelse($beritas as $berita)
         <div class="berita-card bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-gray-100" data-kategori="{{ $berita->kategori }}">
             <div class="relative h-52 overflow-hidden">
-                <img src="{{ $berita->foto ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500' }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <img src="{{ $berita->gambar ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500' }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                 <div class="absolute top-3 left-3">
                     <span class="inline-block px-3 py-1 rounded-full text-[9px] font-bold 
                         @if($berita->kategori == 'berita') bg-blue-500 text-white
@@ -69,15 +60,14 @@
             </div>
             <div class="p-5">
                 <div class="flex items-center gap-3 text-xs text-gray-400 mb-2">
-                    <span><i class="fa-regular fa-calendar mr-1"></i> {{ $berita->created_at->format('d M Y') }}</span>
+                    <span><i class="fa-regular fa-calendar mr-1"></i> {{ $berita->tanggal_publikasi->format('d M Y') }}</span>
+                    <span><i class="fa-regular fa-eye mr-1"></i> {{ number_format($berita->dibaca) }} dibaca</span>
                 </div>
                 <h3 class="text-xl font-serif italic text-emerald-800 mb-2 line-clamp-2 hover:text-emerald-600 transition">
-                    <a href="{{ route('berita.show', $berita->id_berita) }}">{{ $berita->judul }}</a>
+                    <a href="{{ route('berita.show', $berita->slug) }}">{{ $berita->judul }}</a>
                 </h3>
-                <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">
-                    {{ Str::limit($berita->isi_berita ?? $berita->ringkasan ?? '', 100) }}
-                </p>
-                <a href="{{ route('berita.show', $berita->id_berita) }}" class="inline-flex items-center gap-1 text-emerald-600 text-sm font-semibold hover:gap-2 transition-all">
+                <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{{ $berita->ringkasan }}</p>
+                <a href="{{ route('berita.show', $berita->slug) }}" class="inline-flex items-center gap-1 text-emerald-600 text-sm font-semibold hover:gap-2 transition-all">
                     Baca Selengkapnya <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
             </div>
@@ -98,27 +88,12 @@
 </div>
 
 <style>
-    .filter-btn.active {
-        background-color: #10b981;
-        color: white;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+    .filter-btn.active { background-color: #10b981; color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 </style>
 
 <script>
-    // Filter Berita
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.filter-btn').forEach(b => {

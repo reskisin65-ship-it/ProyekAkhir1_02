@@ -6,31 +6,29 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     
-    {{-- Header --}}
     <div class="text-center mb-12">
         <h1 class="text-4xl md:text-5xl font-serif italic text-emerald-900 mb-4">🛍️ UMKM Desa Lumban Silintong</h1>
         <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto rounded-full"></div>
         <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Dukung produk lokal! Temukan berbagai produk unggulan dari UMKM Desa Lumban Silintong</p>
     </div>
 
+    {{-- TOMBOL KELOLA UMKM ANDA --}}
+    @auth
+    <div class="mb-8 flex justify-center">
+        <a href="{{ route('masyarakat.umkm.create') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition shadow-md hover:shadow-lg">
+            <i class="fa-solid fa-store"></i> Kelola UMKM Anda
+        </a>
+    </div>
+    @endauth
+
     {{-- Search & Filter --}}
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-10">
         <div class="flex flex-wrap gap-3">
-            <button data-filter="all" class="filter-btn active px-5 py-2 rounded-full text-sm font-semibold transition-all bg-emerald-600 text-white shadow-md">
-                <i class="fa-regular fa-layer-group mr-1"></i> Semua
-            </button>
-            <button data-filter="makanan" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">
-                <i class="fa-solid fa-utensils mr-1"></i> Makanan
-            </button>
-            <button data-filter="kerajinan" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">
-                <i class="fa-solid fa-hand-sparkles mr-1"></i> Kerajinan
-            </button>
-            <button data-filter="fashion" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">
-                <i class="fa-solid fa-shirt mr-1"></i> Fashion
-            </button>
-            <button data-filter="pertanian" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">
-                <i class="fa-solid fa-seedling mr-1"></i> Pertanian
-            </button>
+            <button data-filter="all" class="filter-btn active px-5 py-2 rounded-full text-sm font-semibold transition-all bg-emerald-600 text-white shadow-md">Semua</button>
+            <button data-filter="makanan" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">🍔 Makanan</button>
+            <button data-filter="kerajinan" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">🎨 Kerajinan</button>
+            <button data-filter="fashion" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">👕 Fashion</button>
+            <button data-filter="pertanian" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">🌾 Pertanian</button>
         </div>
         <div class="relative w-full md:w-64">
             <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
@@ -44,17 +42,12 @@
         <div class="umkm-card bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100" 
              data-kategori="{{ $umkm->kategori ?? 'umum' }}" 
              data-nama="{{ strtolower($umkm->nama_usaha) }}">
-            
             <div class="relative h-56 overflow-hidden">
-                <img src="{{ $umkm->logo ?? 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500' }}" 
-                     class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <img src="{{ $umkm->logo ?? 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500' }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                 <div class="absolute top-4 right-4">
-                    <span class="inline-block px-3 py-1 rounded-full text-[10px] font-bold bg-white/90 text-emerald-700 shadow-sm">
-                        {{ ucfirst($umkm->kategori ?? 'Umum') }}
-                    </span>
+                    <span class="inline-block px-3 py-1 rounded-full text-[10px] font-bold bg-white/90 text-emerald-700 shadow-sm">{{ ucfirst($umkm->kategori ?? 'Umum') }}</span>
                 </div>
             </div>
-            
             <div class="p-5">
                 <h3 class="text-xl font-serif italic text-emerald-800 mb-2 line-clamp-1">{{ $umkm->nama_usaha }}</h3>
                 <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
@@ -69,9 +62,7 @@
                     <i class="fa-solid fa-phone text-emerald-500 text-xs"></i>
                     <span>{{ $umkm->no_telepon ?? $umkm->nomor_telepon ?? '-' }}</span>
                 </div>
-                <p class="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4">
-                    {{ Str::limit($umkm->deskripsi ?? 'Deskripsi belum tersedia', 80) }}
-                </p>
+                <p class="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4">{{ Str::limit($umkm->deskripsi ?? 'Deskripsi belum tersedia', 80) }}</p>
                 <a href="{{ route('umkm.show', $umkm->id_umkm) }}" class="inline-flex items-center gap-2 text-emerald-600 text-sm font-semibold hover:gap-3 transition-all">
                     Lihat Detail <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
@@ -93,27 +84,12 @@
 </div>
 
 <style>
-    .filter-btn.active {
-        background-color: #10b981;
-        color: white;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-    .line-clamp-1 {
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+    .filter-btn.active { background-color: #10b981; color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+    .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 </style>
 
 <script>
-    // Filter UMKM
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.filter-btn').forEach(b => {
@@ -136,7 +112,6 @@
         });
     });
     
-    // Search UMKM
     document.getElementById('search-umkm')?.addEventListener('keyup', function() {
         const search = this.value.toLowerCase();
         document.querySelectorAll('.umkm-card').forEach(card => {

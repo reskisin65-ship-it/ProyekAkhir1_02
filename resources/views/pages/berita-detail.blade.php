@@ -26,19 +26,20 @@
                 @elseif($berita->kategori == 'pengumuman') 📢 Pengumuman
                 @else 🎉 Kegiatan @endif
             </span>
-            <span class="text-sm text-gray-500"><i class="fa-regular fa-calendar mr-1"></i> {{ $berita->created_at->format('d F Y') }}</span>
+            <span class="text-sm text-gray-500"><i class="fa-regular fa-calendar mr-1"></i> {{ $berita->tanggal_publikasi->translatedFormat('d F Y') }}</span>
+            <span class="text-sm text-gray-500"><i class="fa-regular fa-eye mr-1"></i> {{ number_format($berita->dibaca) }} kali dibaca</span>
         </div>
         <h1 class="text-3xl md:text-5xl font-serif italic text-emerald-900 mb-5">{{ $berita->judul }}</h1>
-        @if($berita->foto)
+        @if($berita->gambar)
         <div class="rounded-2xl overflow-hidden shadow-xl max-h-[500px]">
-            <img src="{{ $berita->foto }}" class="w-full h-full object-cover">
+            <img src="{{ $berita->gambar }}" class="w-full h-full object-cover">
         </div>
         @endif
     </div>
 
     {{-- Content --}}
     <div class="prose prose-lg max-w-none text-gray-600 leading-loose">
-        {!! nl2br(e($berita->isi_berita ?? $berita->ringkasan ?? '')) !!}
+        {!! nl2br(e($berita->isi_berita)) !!}
     </div>
 
     {{-- Share Section --}}
@@ -65,12 +66,12 @@
             @foreach($rekomendasi as $item)
             <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
                 <div class="h-40 overflow-hidden">
-                    <img src="{{ $item->foto ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500' }}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                    <img src="{{ $item->gambar ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500' }}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
                 </div>
                 <div class="p-4">
                     <h4 class="font-bold text-emerald-800 line-clamp-2">{{ $item->judul }}</h4>
-                    <p class="text-xs text-gray-400 mt-2">{{ $item->created_at->format('d M Y') }}</p>
-                    <a href="{{ route('berita.show', $item->id_berita) }}" class="inline-block mt-3 text-emerald-600 text-sm font-semibold">Baca →</a>
+                    <p class="text-xs text-gray-400 mt-2">{{ $item->tanggal_publikasi->format('d M Y') }}</p>
+                    <a href="{{ route('berita.show', $item->slug) }}" class="inline-block mt-3 text-emerald-600 text-sm font-semibold">Baca →</a>
                 </div>
             </div>
             @endforeach
