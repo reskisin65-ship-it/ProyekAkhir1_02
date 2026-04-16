@@ -1,4 +1,3 @@
-{{-- resources/views/layouts/navigation_desa.blade.php --}}
 <nav class="nav-top" :class="{ 'nav-scrolled': scrolled }" x-data="{ mobileMenuOpen: false }">
     <div class="w-full flex justify-between items-center">
         {{-- Logo --}}
@@ -19,7 +18,7 @@
                     @if(Auth::user()->role && Auth::user()->role->nama_role == 'admin')
                         <a href="{{ route('admin.dashboard') }}" class="text-emerald-950/70 hover:text-emerald-600 transition">Beranda</a>
                     @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
-                        <a href="{{ route('umkm.dashboard') }}" class="text-emerald-950/70 hover:text-emerald-600 transition">Beranda</a>
+                        <a href="{{ route('home') }}" class="text-emerald-950/70 hover:text-emerald-600 transition">Beranda</a>
                     @else
                         <a href="{{ route('masyarakat.dashboard') }}" class="text-emerald-950/70 hover:text-emerald-600 transition">Beranda</a>
                     @endif
@@ -45,7 +44,7 @@
                                 <i class="fa-regular fa-user mr-1"></i> {{ Auth::user()->name }}
                             </a>
                         @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
-                            <a href="{{ route('umkm.dashboard') }}" class="text-sm text-emerald-700 hover:text-emerald-800">
+                            <a href="{{ route('home') }}" class="text-sm text-emerald-700 hover:text-emerald-800">
                                 <i class="fa-regular fa-user mr-1"></i> {{ Auth::user()->name }}
                             </a>
                         @else
@@ -87,7 +86,7 @@
                 @if(Auth::user()->role && Auth::user()->role->nama_role == 'admin')
                     <a href="{{ route('admin.dashboard') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Beranda</a>
                 @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
-                    <a href="{{ route('umkm.dashboard') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Beranda</a>
+                    <a href="{{ route('home') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Beranda</a>
                 @else
                     <a href="{{ route('masyarakat.dashboard') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Beranda</a>
                 @endif

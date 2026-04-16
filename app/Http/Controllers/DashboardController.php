@@ -12,30 +12,34 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    // HAPUS METHOD index() ATAU JADIKAN SEPERTI INI
     public function index()
     {
+        // Redirect langsung ke halaman sesuai role
         $user = Auth::user();
         
         if ($user->role && $user->role->nama_role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->role && $user->role->nama_role === 'umkm') {
-            return redirect()->route('umkm.dashboard');
-        } else {
-            return redirect()->route('masyarakat.dashboard');
+            return redirect('/admin/dashboard');
         }
+        
+        // Masyarakat dan UMKM sama-sama ke dashboard masyarakat
+        return redirect('/masyarakat/dashboard');
     }
 
     public function masyarakat()
     {
+        // Cegah redirect loop - pastikan user login
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        
         $userId = Auth::id();
         
-        // Statistik
         $totalSurat = PengajuanSurat::where('user_id', $userId)->count();
         $totalAspirasi = Aspirasi::where('user_id', $userId)->count();
         $suratSelesai = PengajuanSurat::where('user_id', $userId)->where('status', 'selesai')->count();
         $suratMenunggu = PengajuanSurat::where('user_id', $userId)->whereIn('status', ['menunggu', 'diproses'])->count();
         
-        // Data terbaru
         $pengajuanTerbaru = PengajuanSurat::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->limit(5)
@@ -60,5 +64,31 @@ class DashboardController extends Controller
         ));
     }
 
-    // Method lainnya...
+    public function profil()
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        return view('masyarakat.profil');
+    }
+
+    public function updateProfil(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        
+        $request->validate([
+            'name' => 'required|min:3',
+            'nomor_telepon' => 'nullable|max:15',
+        ]);
+
+        $user = Auth::user();
+        $user->update([
+            'name' => $request->name,
+            'nomor_telepon' => $request->nomor_telepon,
+        ]);
+
+        return back()->with('success', 'Profil berhasil diperbarui!');
+    }
 }

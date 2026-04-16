@@ -94,23 +94,55 @@ class PageController extends Controller
      */
     public function berita()
     {
-        $beritas = Berita::orderBy('created_at', 'desc')->paginate(9);
-        $beritaUtama = Berita::orderBy('created_at', 'desc')->first();
+        $beritas = Berita::where('status', 'publish')
+            ->orderBy('tanggal_publikasi', 'desc')
+            ->paginate(9);
+            
+        $beritaUtama = Berita::where('status', 'publish')
+            ->orderBy('tanggal_publikasi', 'desc')
+            ->first();
         
         return view('pages.berita', compact('beritas', 'beritaUtama'));
     }
 
     /**
-     * Halaman Detail Berita
+     * Halaman Pencarian Berita
      */
-    public function beritaShow($id)
+    public function beritaSearch(Request $request)
     {
-        $berita = Berita::findOrFail($id);
+        $keyword = $request->get('q');
         
-        // Rekomendasi berita terkait
-        $rekomendasi = Berita::where('id', '!=', $berita->id)
+        $beritas = Berita::where('status', 'publish')
+            ->where(function($query) use ($keyword) {
+                $query->where('judul', 'like', '%' . $keyword . '%')
+                      ->orWhere('ringkasan', 'like', '%' . $keyword . '%')
+                      ->orWhere('isi_berita', 'like', '%' . $keyword . '%');
+            })
+            ->orderBy('tanggal_publikasi', 'desc')
+            ->paginate(9);
+            
+        $beritaUtama = null;
+        
+        return view('pages.berita', compact('beritas', 'beritaUtama', 'keyword'));
+    }
+
+    /**
+     * Halaman Detail Berita (menggunakan slug)
+     */
+    public function beritaShow($slug)
+    {
+        $berita = Berita::where('slug', $slug)
+            ->where('status', 'publish')
+            ->firstOrFail();
+        
+        // Increment counter pembaca
+        $berita->increment('dibaca');
+        
+        // Rekomendasi berita terkait (gunakan id_berita, bukan id)
+        $rekomendasi = Berita::where('status', 'publish')
+            ->where('id_berita', '!=', $berita->id_berita)
             ->where('kategori', $berita->kategori)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('tanggal_publikasi', 'desc')
             ->limit(3)
             ->get();
         

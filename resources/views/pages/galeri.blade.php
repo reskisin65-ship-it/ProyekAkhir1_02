@@ -30,6 +30,9 @@
         <button data-filter="wisata" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">
             <i class="fa-solid fa-tree mr-1"></i> Wisata
         </button>
+        <button data-filter="umkm" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all bg-gray-100 text-gray-600 hover:bg-emerald-100">
+            <i class="fa-solid fa-store mr-1"></i> UMKM
+        </button>
     </div>
 
     {{-- Galeri Grid --}}
@@ -37,23 +40,19 @@
         @forelse($galeris as $galeri)
         <div class="galeri-item group relative rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer" data-kategori="{{ $galeri->kategori }}">
             <div class="aspect-square overflow-hidden">
-                <img src="{{ $galeri->foto ?? 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500' }}" 
-                     class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <img src="{{ asset('storage/' . $galeri->gambar_galeri) }}" 
+                     class="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                     alt="{{ $galeri->judul_galeri }}">
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-4">
                 <div class="text-white">
                     <span class="inline-block px-2 py-1 bg-emerald-500 rounded-full text-[10px] font-bold mb-2">
                         {{ ucfirst($galeri->kategori) }}
                     </span>
-                    <h4 class="font-bold text-sm line-clamp-2">{{ $galeri->judul_galeri ?? $galeri->judul ?? 'Dokumentasi' }}</h4>
+                    <h4 class="font-bold text-sm line-clamp-2">{{ $galeri->judul_galeri }}</h4>
                     <p class="text-xs text-gray-200 mt-1">{{ $galeri->created_at->format('d M Y') }}</p>
                 </div>
             </div>
-            @if($galeri->deskripsi)
-            <div class="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur p-2 text-center text-xs text-gray-600 translate-y-full group-hover:translate-y-0 transition duration-300">
-                {{ Str::limit($galeri->deskripsi, 60) }}
-            </div>
-            @endif
         </div>
         @empty
         <div class="col-span-full text-center py-20">
@@ -86,6 +85,12 @@
         background-color: #10b981;
         color: white;
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    .filter-btn.active i {
+        color: white;
+    }
+    .filter-btn:hover {
+        transform: translateY(-2px);
     }
     .aspect-square {
         aspect-ratio: 1 / 1;

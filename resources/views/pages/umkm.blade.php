@@ -12,15 +12,6 @@
         <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Dukung produk lokal! Temukan berbagai produk unggulan dari UMKM Desa Lumban Silintong</p>
     </div>
 
-    {{-- TOMBOL KELOLA UMKM ANDA --}}
-    @auth
-    <div class="mb-8 flex justify-center">
-        <a href="{{ route('masyarakat.umkm.create') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition shadow-md hover:shadow-lg">
-            <i class="fa-solid fa-store"></i> Kelola UMKM Anda
-        </a>
-    </div>
-    @endauth
-
     {{-- Search & Filter --}}
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-10">
         <div class="flex flex-wrap gap-3">
@@ -43,7 +34,7 @@
              data-kategori="{{ $umkm->kategori ?? 'umum' }}" 
              data-nama="{{ strtolower($umkm->nama_usaha) }}">
             <div class="relative h-56 overflow-hidden">
-                <img src="{{ $umkm->logo ?? 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500' }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <img src="{{ $umkm->logo ? asset('storage/' . $umkm->logo) : 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500' }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="{{ $umkm->nama_usaha }}">
                 <div class="absolute top-4 right-4">
                     <span class="inline-block px-3 py-1 rounded-full text-[10px] font-bold bg-white/90 text-emerald-700 shadow-sm">{{ ucfirst($umkm->kategori ?? 'Umum') }}</span>
                 </div>

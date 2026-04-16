@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/UmkmController.php
 
 namespace App\Http\Controllers;
 
@@ -95,7 +94,7 @@ class UmkmController extends Controller
     // METHOD UNTUK PEMILIK UMKM (SETELAH APPROVED)
     // ==============================================
 
-    public function dashboard()
+    public function produkIndex()
     {
         $umkm = Umkm::where('user_id', Auth::id())->first();
         
@@ -104,63 +103,30 @@ class UmkmController extends Controller
                 ->with('error', 'Akun UMKM Anda belum aktif.');
         }
         
-        return view('umkm.dashboard', compact('umkm'));
-    }
-
-    public function editProfil()
-    {
-        $umkm = Umkm::where('user_id', Auth::id())->first();
-        return view('umkm.profil', compact('umkm'));
-    }
-
-    public function updateProfil(Request $request)
-    {
-        $umkm = Umkm::where('user_id', Auth::id())->first();
-        
-        $request->validate([
-            'nama_usaha' => 'required|min:3',
-            'kategori' => 'required',
-            'no_telepon' => 'required',
-            'alamat_usaha' => 'required',
-            'deskripsi' => 'required',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
-        $logoPath = $umkm->logo;
-        if ($request->hasFile('logo')) {
-            if ($logoPath && Storage::disk('public')->exists($logoPath)) {
-                Storage::disk('public')->delete($logoPath);
-            }
-            $logoPath = $request->file('logo')->store('umkm_logo', 'public');
-        }
-
-        $umkm->update([
-            'nama_usaha' => $request->nama_usaha,
-            'kategori' => $request->kategori,
-            'no_telepon' => $request->no_telepon,
-            'alamat_usaha' => $request->alamat_usaha,
-            'deskripsi' => $request->deskripsi,
-            'logo' => $logoPath,
-        ]);
-
-        return back()->with('success', 'Profil UMKM berhasil diperbarui!');
-    }
-
-    public function produkIndex()
-    {
-        $umkm = Umkm::where('user_id', Auth::id())->first();
         $produk = $umkm->produk;
         return view('umkm.produk.index', compact('umkm', 'produk'));
     }
 
     public function produkCreate()
     {
+        $umkm = Umkm::where('user_id', Auth::id())->first();
+        
+        if (!$umkm || $umkm->status !== 'approved') {
+            return redirect()->route('masyarakat.umkm.status')
+                ->with('error', 'Akun UMKM Anda belum aktif.');
+        }
+        
         return view('umkm.produk.create');
     }
 
     public function produkStore(Request $request)
     {
         $umkm = Umkm::where('user_id', Auth::id())->first();
+        
+        if (!$umkm || $umkm->status !== 'approved') {
+            return redirect()->route('masyarakat.umkm.status')
+                ->with('error', 'Akun UMKM Anda belum aktif.');
+        }
         
         $request->validate([
             'nama_produk' => 'required|min:3',
@@ -190,6 +156,12 @@ class UmkmController extends Controller
     public function produkEdit($id)
     {
         $umkm = Umkm::where('user_id', Auth::id())->first();
+        
+        if (!$umkm || $umkm->status !== 'approved') {
+            return redirect()->route('masyarakat.umkm.status')
+                ->with('error', 'Akun UMKM Anda belum aktif.');
+        }
+        
         $produk = $umkm->produk()->findOrFail($id);
         return view('umkm.produk.edit', compact('umkm', 'produk'));
     }
@@ -197,6 +169,12 @@ class UmkmController extends Controller
     public function produkUpdate(Request $request, $id)
     {
         $umkm = Umkm::where('user_id', Auth::id())->first();
+        
+        if (!$umkm || $umkm->status !== 'approved') {
+            return redirect()->route('masyarakat.umkm.status')
+                ->with('error', 'Akun UMKM Anda belum aktif.');
+        }
+        
         $produk = $umkm->produk()->findOrFail($id);
         
         $request->validate([
@@ -230,6 +208,12 @@ class UmkmController extends Controller
     public function produkDestroy($id)
     {
         $umkm = Umkm::where('user_id', Auth::id())->first();
+        
+        if (!$umkm || $umkm->status !== 'approved') {
+            return redirect()->route('masyarakat.umkm.status')
+                ->with('error', 'Akun UMKM Anda belum aktif.');
+        }
+        
         $produk = $umkm->produk()->findOrFail($id);
         
         if ($produk->foto_produk && Storage::disk('public')->exists($produk->foto_produk)) {
@@ -239,5 +223,55 @@ class UmkmController extends Controller
         $produk->delete();
         
         return back()->with('success', 'Produk berhasil dihapus!');
+    }
+
+    public function editProfil()
+    {
+        $umkm = Umkm::where('user_id', Auth::id())->first();
+        
+        if (!$umkm || $umkm->status !== 'approved') {
+            return redirect()->route('masyarakat.umkm.status')
+                ->with('error', 'Akun UMKM Anda belum aktif.');
+        }
+        
+        return view('umkm.profil', compact('umkm'));
+    }
+
+    public function updateProfil(Request $request)
+    {
+        $umkm = Umkm::where('user_id', Auth::id())->first();
+        
+        if (!$umkm || $umkm->status !== 'approved') {
+            return redirect()->route('masyarakat.umkm.status')
+                ->with('error', 'Akun UMKM Anda belum aktif.');
+        }
+        
+        $request->validate([
+            'nama_usaha' => 'required|min:3',
+            'kategori' => 'required',
+            'no_telepon' => 'required',
+            'alamat_usaha' => 'required',
+            'deskripsi' => 'required',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $logoPath = $umkm->logo;
+        if ($request->hasFile('logo')) {
+            if ($logoPath && Storage::disk('public')->exists($logoPath)) {
+                Storage::disk('public')->delete($logoPath);
+            }
+            $logoPath = $request->file('logo')->store('umkm_logo', 'public');
+        }
+
+        $umkm->update([
+            'nama_usaha' => $request->nama_usaha,
+            'kategori' => $request->kategori,
+            'no_telepon' => $request->no_telepon,
+            'alamat_usaha' => $request->alamat_usaha,
+            'deskripsi' => $request->deskripsi,
+            'logo' => $logoPath,
+        ]);
+
+        return back()->with('success', 'Profil UMKM berhasil diperbarui!');
     }
 }

@@ -5,31 +5,36 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        // 1. Cek apakah user sudah login
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
-
-        // 2. Cek apakah user memiliki role yang diizinkan
-        // Kita asumsikan relasi 'role' sudah ada di model User
-        if ($user->role && in_array($user->role->nama_role, $roles)) {
+        
+        // Jika user tidak punya role, redirect ke home
+        if (!$user->role) {
+            return redirect('/')->with('error', 'Role tidak ditemukan.');
+        }
+        
+        // Cek apakah role user diizinkan untuk akses halaman ini
+        if (in_array($user->role->nama_role, $roles)) {
             return $next($request);
         }
-
-        // 3. Jika tidak punya akses, lempar ke halaman dashboard umum
-        return redirect('/dashboard')->with('error', 'Anda tidak memiliki hak akses ke halaman tersebut.');
+        
+        // Jika role tidak cocok, redirect ke halaman yang sesuai (BUKAN ROUTE YANG SAMA)
+        if ($user->role->nama_role === 'admin') {
+            return redirect('/admin/dashboard');
+        }
+        
+        if ($user->role->nama_role === 'umkm') {
+            return redirect('/');
+        }
+        
+        return redirect('/');
     }
 }

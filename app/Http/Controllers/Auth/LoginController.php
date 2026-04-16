@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/Auth/LoginController.php
 
 namespace App\Http\Controllers\Auth;
 
@@ -9,17 +8,20 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /**
-     * Tampilkan halaman login
-     */
     public function showLoginForm()
     {
+        // Jika sudah login, redirect ke dashboard sesuai role
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->role && $user->role->nama_role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+            return redirect()->route('masyarakat.dashboard');
+        }
+        
         return view('auth.login');
     }
 
-    /**
-     * Proses login
-     */
     public function login(Request $request)
     {
         $request->validate([
@@ -35,16 +37,13 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
             
-            // Redirect berdasarkan role
             $user = Auth::user();
             
             if ($user->role && $user->role->nama_role === 'admin') {
-                return redirect()->intended('/admin/dashboard');
-            } elseif ($user->role && $user->role->nama_role === 'umkm') {
-                return redirect()->intended('/umkm/dashboard');
-            } else {
-                return redirect()->intended('/dashboard');
+                return redirect()->route('admin.dashboard');
             }
+            
+            return redirect()->route('masyarakat.dashboard');
         }
 
         return back()->withErrors([
@@ -52,15 +51,12 @@ class LoginController extends Controller
         ])->onlyInput('email');
     }
 
-    /**
-     * Proses logout
-     */
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         
-        return redirect('/')->with('success', 'Anda telah keluar dari portal.');
+        return redirect('/');
     }
 }

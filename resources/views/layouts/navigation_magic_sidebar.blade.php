@@ -1,4 +1,3 @@
-{{-- resources/views/layouts/navigation_magic_sidebar.blade.php --}}
 <aside class="magic-sidebar">
     {{-- Menu Beranda (sesuai role setelah login) --}}
     @auth
@@ -12,12 +11,12 @@
                 </div>
             </a>
         @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
-            <a href="{{ route('umkm.dashboard') }}" class="side-item group">
+            <a href="{{ route('home') }}" class="side-item group">
                 <i class="fa-solid fa-house"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Beranda</h5>
-                    <p class="text-xs text-gray-400">Dashboard UMKM</p>
+                    <p class="text-xs text-gray-400">Halaman utama</p>
                 </div>
             </a>
         @else
@@ -94,7 +93,6 @@
     @if(Auth::user()->role && Auth::user()->role->nama_role == 'admin')
         {{-- Admin sudah punya Beranda yang mengarah ke admin.dashboard --}}
     @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
-        {{-- UMKM sudah punya Beranda yang mengarah ke umkm.dashboard --}}
         <a href="{{ route('umkm.produk.index') }}" class="side-item group">
             <i class="fa-solid fa-box"></i>
             <div class="info-box">
@@ -104,7 +102,6 @@
             </div>
         </a>
     @else
-        {{-- Masyarakat sudah punya Beranda yang mengarah ke masyarakat.dashboard --}}
         <a href="{{ route('masyarakat.surat.index') }}" class="side-item group">
             <i class="fa-solid fa-envelope"></i>
             <div class="info-box">
@@ -145,7 +142,7 @@
                 <i class="fa-solid fa-house"></i>
             </a>
         @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
-            <a href="{{ route('umkm.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition">
+            <a href="{{ route('home') }}" class="text-white/60 hover:text-emerald-400 text-xl transition">
                 <i class="fa-solid fa-house"></i>
             </a>
         @else

@@ -13,4 +13,16 @@ class Galeri extends Model
     protected $fillable = [
         'judul_galeri', 'gambar_galeri', 'kategori'
     ];
+    
+    // Optional: tambahkan accessor untuk mendapatkan URL foto
+    public function getFotoUrlAttribute()
+    {
+        return asset('storage/' . $this->gambar_galeri);
+    }
+    
+    // Optional: format tanggal
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }
