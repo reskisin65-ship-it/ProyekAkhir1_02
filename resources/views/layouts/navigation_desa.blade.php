@@ -28,7 +28,7 @@
                         <a href="{{ route('admin.aspirasi.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Aspirasi</a>
                         <a href="{{ route('admin.umkm.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">UMKM</a>
                         <a href="{{ route('admin.pengurus.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Pengurus</a>
-                        <a href="{{ route('admin.statistik') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik</a>
+                        <a href="{{ route('admin.statistik.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik</a>
                         
                 {{-- ============================================= --}}
                 {{-- MENU UNTUK ROLE: UMKM --}}
@@ -53,6 +53,8 @@
                         <a href="{{ route('berita') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Berita</a>
                         <a href="{{ route('galeri') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Galeri</a>
                         <a href="{{ route('umkm') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">UMKM</a>
+                        {{-- TAMBAHKAN MENU STATISTIK UNTUK MASYARAKAT --}}
+                        <a href="{{ route('statistik.publik') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik Desa</a>
                     @endif
                 @else
                     {{-- ============================================= --}}
@@ -64,6 +66,8 @@
                     <a href="{{ route('galeri') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Galeri</a>
                     <a href="{{ route('umkm') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">UMKM</a>
                     <a href="{{ route('kontak') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Kontak</a>
+                    {{-- TAMBAHKAN MENU STATISTIK UNTUK GUEST --}}
+                    <a href="{{ route('statistik.publik') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik Desa</a>
                 @endauth
             </div>
             
@@ -99,7 +103,7 @@
                                     <a href="{{ route('admin.galeri.index') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">Galeri</a>
                                     <a href="{{ route('admin.aspirasi.index') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">Aspirasi</a>
                                     <a href="{{ route('admin.umkm.index') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">UMKM</a>
-                                    <a href="{{ route('admin.statistik') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">Statistik</a>
+                                    <a href="{{ route('admin.statistik.index') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">Statistik</a>
                                 @elseif(Auth::user()->role->nama_role == 'umkm')
                                     <a href="{{ route('umkm.dashboard') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">Dashboard</a>
                                     <a href="{{ route('umkm.produk.index') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">Produk Saya</a>
@@ -149,13 +153,14 @@
                     <a href="{{ route('admin.galeri.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Galeri</a>
                     <a href="{{ route('admin.aspirasi.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Aspirasi</a>
                     <a href="{{ route('admin.umkm.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">UMKM</a>
-                    <a href="{{ route('admin.statistik') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Statistik</a>
+                    <a href="{{ route('admin.statistik.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Statistik</a>
                 @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
                     <a href="{{ route('umkm.dashboard') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Dashboard</a>
                     <a href="{{ route('umkm.produk.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Produk Saya</a>
                     <a href="{{ route('umkm.profil.edit') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Profil UMKM</a>
                     <a href="{{ route('berita') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Berita</a>
                     <a href="{{ route('galeri') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Galeri</a>
+                    <a href="{{ route('statistik.publik') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Statistik Desa</a>
                 @else
                     <a href="{{ route('masyarakat.dashboard') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Dashboard</a>
                     <a href="{{ route('masyarakat.surat.create') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Ajukan Surat</a>
@@ -163,6 +168,7 @@
                     <a href="{{ route('masyarakat.aspirasi.create') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Kirim Aspirasi</a>
                     <a href="{{ route('berita') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Berita</a>
                     <a href="{{ route('galeri') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Galeri</a>
+                    <a href="{{ route('statistik.publik') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Statistik Desa</a>
                 @endif
             @else
                 <a href="{{ route('home') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Beranda</a>
@@ -171,6 +177,7 @@
                 <a href="{{ route('galeri') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Galeri</a>
                 <a href="{{ route('umkm') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">UMKM</a>
                 <a href="{{ route('kontak') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Kontak</a>
+                <a href="{{ route('statistik.publik') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Statistik Desa</a>
             @endauth
             
             <div class="border-t border-gray-100 my-2"></div>

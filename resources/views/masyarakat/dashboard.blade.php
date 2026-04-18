@@ -25,14 +25,6 @@
         0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
         50% { box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
     }
-    @keyframes border-flow {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
-    @keyframes shimmer {
-        0% { background-position: -1000px 0; }
-        100% { background-position: 1000px 0; }
-    }
     @keyframes slide-up {
         from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
@@ -49,18 +41,9 @@
         from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
     }
-    @keyframes rotate-in {
-        from { opacity: 0; transform: rotate(-5deg) scale(0.95); }
-        to { opacity: 1; transform: rotate(0) scale(1); }
-    }
-    @keyframes ripple {
-        0% { transform: scale(0); opacity: 0.5; }
-        100% { transform: scale(4); opacity: 0; }
-    }
-    @keyframes wave {
-        0% { transform: translateX(0); }
-        50% { transform: translateX(-25px); }
-        100% { transform: translateX(0); }
+    @keyframes count-up {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     /* ============================================ */
@@ -80,23 +63,6 @@
         background: linear-gradient(115deg, rgba(255,255,255,0) 10%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 90%);
         transform: rotate(25deg);
         animation: shine 4s infinite;
-    }
-    .ripple-effect { position: relative; overflow: hidden; }
-    .ripple-effect::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.3);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }
-    .ripple-effect:active::after {
-        width: 300px;
-        height: 300px;
     }
 
     /* ============================================ */
@@ -199,38 +165,11 @@
     .btn-outline-premium:hover { background: rgba(255,255,255,0.2); border-color: white; transform: translateY(-2px); }
     
     /* ============================================ */
-    /* GLASSMORPHISM */
+    /* FAQ STYLES */
     /* ============================================ */
-    .glass-card {
-        background: rgba(255,255,255,0.9);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.2);
-    }
-    
-    /* ============================================ */
-    /* GRADIENT BORDERS */
-    /* ============================================ */
-    .gradient-border {
-        position: relative;
-        background: white;
-        border-radius: 24px;
-    }
-    .gradient-border::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(45deg, #10b981, #34d399, #059669, #10b981);
-        background-size: 300% 300%;
-        border-radius: 26px;
-        opacity: 0;
-        transition: opacity 0.4s ease;
-        z-index: -1;
-        animation: border-flow 3s ease infinite;
-    }
-    .gradient-border:hover::before { opacity: 1; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+    .faq-item.active .faq-answer { max-height: 400px; transition: max-height 0.4s ease-in; }
+    .faq-item.active .faq-icon { transform: rotate(180deg); }
     
     /* ============================================ */
     /* LINE CLAMP */
@@ -238,12 +177,6 @@
     .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
@@ -256,11 +189,29 @@
     ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #10b981, #059669); border-radius: 10px; }
     
     /* ============================================ */
-    /* FAQ STYLES */
+    /* STAT CARD MINI */
     /* ============================================ */
-    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
-    .faq-item.active .faq-answer { max-height: 400px; transition: max-height 0.4s ease-in; }
-    .faq-item.active .faq-icon { transform: rotate(180deg); }
+    .stat-card-mini {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+    .stat-card-mini:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* ============================================ */
+    /* CHART CONTAINER */
+    /* ============================================ */
+    .chart-container {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .chart-container:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 30px 50px -20px rgba(16, 185, 129, 0.3);
+    }
+    
+    [x-cloak] { display: none !important; }
 </style>
 
 {{-- ============================================= --}}
@@ -284,9 +235,9 @@
                 <img src="{{ $h['img'] }}?auto=format&fit=crop&q=80&w=2070" class="absolute inset-0 w-full h-full object-cover brightness-[0.6]">
                 <div class="slide-content">
                     <span class="inline-block px-5 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white text-xs font-bold rounded-full mb-5 tracking-wide shadow-lg animate-pulse">{{ $h['badge'] }}</span>
-                    <h2 class="text-5xl md:text-7xl font-serif italic mb-5 leading-tight" data-aos="fade-up">{{ $h['t'] }}</h2>
-                    <p class="text-lg md:text-2xl font-light italic opacity-95 max-w-2xl" data-aos="fade-up" data-aos-delay="200">{{ $h['d'] }}</p>
-                    <div class="mt-10 flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="400">
+                    <h2 class="text-5xl md:text-7xl font-serif italic mb-5 leading-tight">{{ $h['t'] }}</h2>
+                    <p class="text-lg md:text-2xl font-light italic opacity-95 max-w-2xl">{{ $h['d'] }}</p>
+                    <div class="mt-10 flex flex-wrap gap-4">
                         <a href="{{ route('masyarakat.surat.create') }}" class="btn-premium">📝 Ajukan Surat</a>
                         <a href="{{ route('masyarakat.aspirasi.create') }}" class="btn-outline-premium">💬 Aspirasi →</a>
                     </div>
@@ -331,7 +282,166 @@
 </section>
 
 {{-- ============================================= --}}
-{{-- 3. STATISTIK PENGGUNA (ANIMATED CARDS) --}}
+{{-- 3. STATISTIK DIAGRAM PREMIUM --}}
+{{-- ============================================= --}}
+<section class="px-[5%] py-4 mb-8">
+    <div class="bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 rounded-[60px] shadow-lg">
+        <div class="flex justify-between items-center mb-8 flex-wrap gap-4 p-6 md:p-8">
+            <div>
+                <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block shadow-sm">📊 Data Statistik</span>
+                <h2 class="text-4xl md:text-5xl font-serif italic text-emerald-900 mt-4">Visualisasi Data Penduduk</h2>
+                <p class="text-gray-500 text-sm mt-2">Data realtime dari database desa</p>
+            </div>
+            
+            {{-- Tombol Setting Premium - Responsive --}}
+            <div class="relative" x-data="{ settingOpen: false, chartTypeM: 'bar', dataTypeM: 'penduduk' }">
+                <button @click="settingOpen = !settingOpen" class="group flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:shadow-xl transition-all duration-300 text-sm">
+                    <i class="fa-solid fa-sliders-h text-xs group-hover:rotate-90 transition-transform duration-300"></i>
+                    <span class="font-semibold hidden sm:inline">Pengaturan Diagram</span>
+                    <span class="font-semibold sm:hidden">Setting</span>
+                    <i class="fa-solid fa-chevron-down text-xs transition-all duration-300" :class="settingOpen ? 'rotate-180' : ''"></i>
+                </button>
+                
+                {{-- Dropdown Setting Premium - Responsive (Tidak keluar page) --}}
+                <div x-show="settingOpen" @click.away="settingOpen = false" x-cloak 
+                    class="dropdown-setting bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50"
+                    :class="{
+                        'fixed left-4 right-4 top-1/2 transform -translate-y-1/2 max-h-[80vh] overflow-y-auto': window.innerWidth < 768,
+                        'absolute right-0 mt-4 w-96': window.innerWidth >= 768
+                    }"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 scale-95"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-95">
+                    
+                    <!-- Header dengan tombol close di mobile -->
+                    <div class="bg-gradient-to-r from-emerald-50 to-emerald-100/30 px-5 py-3 border-b border-emerald-100 flex items-center justify-between">
+                        <h3 class="font-bold text-emerald-800"><i class="fa-solid fa-chart-simple mr-2"></i> Customize Chart</h3>
+                        <button @click="settingOpen = false" class="sm:hidden text-gray-400 hover:text-gray-600">
+                            <i class="fa-solid fa-times text-lg"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="p-5">
+                        <!-- Jenis Diagram -->
+                        <div class="mb-6">
+                            <label class="block text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line text-emerald-500"></i> Jenis Diagram
+                            </label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button @click="chartTypeM = 'bar'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300" :class="chartTypeM === 'bar' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
+                                    <i class="fa-solid fa-chart-bar mr-1"></i> Bar
+                                </button>
+                                <button @click="chartTypeM = 'line'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300" :class="chartTypeM === 'line' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
+                                    <i class="fa-solid fa-chart-line mr-1"></i> Line
+                                </button>
+                                <button @click="chartTypeM = 'pie'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300" :class="chartTypeM === 'pie' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
+                                    <i class="fa-solid fa-chart-pie mr-1"></i> Pie
+                                </button>
+                                <button @click="chartTypeM = 'doughnut'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300" :class="chartTypeM === 'doughnut' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
+                                    <i class="fa-solid fa-chart-simple mr-1"></i> Donut
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Data yang Ditampilkan -->
+                        <div class="mb-3">
+                            <label class="block text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-database text-emerald-500"></i> Data yang Ditampilkan
+                            </label>
+                            <div class="space-y-2">
+                                <button @click="dataTypeM = 'penduduk'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="w-full px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 text-left flex items-center justify-between" :class="dataTypeM === 'penduduk' ? 'bg-emerald-50 text-emerald-700 border-l-2 border-emerald-500' : 'bg-gray-50 text-gray-600 hover:bg-emerald-50'">
+                                    <span class="flex items-center gap-2">
+                                        <i class="fa-solid fa-users text-base" :class="dataTypeM === 'penduduk' ? 'text-emerald-500' : 'text-gray-400'"></i>
+                                        <div>
+                                            <p class="font-semibold text-xs sm:text-sm">Statistik Penduduk</p>
+                                            <p class="text-[8px] text-gray-400">Laki-laki, Perempuan, KK</p>
+                                        </div>
+                                    </span>
+                                    <i x-show="dataTypeM === 'penduduk'" class="fa-solid fa-check-circle text-emerald-500 text-sm"></i>
+                                </button>
+                                <button @click="dataTypeM = 'umur'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="w-full px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 text-left flex items-center justify-between" :class="dataTypeM === 'umur' ? 'bg-emerald-50 text-emerald-700 border-l-2 border-emerald-500' : 'bg-gray-50 text-gray-600 hover:bg-emerald-50'">
+                                    <span class="flex items-center gap-2">
+                                        <i class="fa-solid fa-chart-line text-base" :class="dataTypeM === 'umur' ? 'text-emerald-500' : 'text-gray-400'"></i>
+                                        <div>
+                                            <p class="font-semibold text-xs sm:text-sm">Kelompok Umur</p>
+                                            <p class="text-[8px] text-gray-400">0-14, 15-29, 30-59, 60+</p>
+                                        </div>
+                                    </span>
+                                    <i x-show="dataTypeM === 'umur'" class="fa-solid fa-check-circle text-emerald-500 text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 px-5 py-3 border-t border-gray-100">
+                        <p class="text-[9px] text-gray-400 text-center flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-sync-alt text-emerald-500"></i> Data diupdate secara realtime
+                            <i class="fa-solid fa-magic text-purple-500"></i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {{-- Canvas untuk Diagram dengan Efek Premium --}}
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 mb-6 shadow-xl border border-gray-100 relative overflow-hidden group mx-6 md:mx-8 chart-container">
+            <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-400/10 to-transparent rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-blue-400/5 to-transparent rounded-full blur-2xl"></div>
+            
+            <canvas id="masyarakatStatistikChart" width="800" height="450" style="max-height: 450px; width: 100%; position: relative; z-index: 1;"></canvas>
+        </div>
+        
+        {{-- Statistik Cards Mini --}}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 px-6 md:px-8 pb-4">
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-blue-200 shadow-sm stat-card-mini" onclick="quickChangeMasyarakat('bar', 'penduduk')">
+                <div class="flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-venus-mars text-blue-500"></i>
+                    <span class="text-xs font-semibold text-gray-600">Jenis Kelamin</span>
+                </div>
+                <p class="text-lg font-bold text-blue-600">{{ number_format(($statistik['penduduk_pria'] ?? 0) + ($statistik['penduduk_wanita'] ?? 0)) }}</p>
+                <p class="text-[9px] text-gray-400">Total Jiwa</p>
+            </div>
+            <div class="bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-xl p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-emerald-200 shadow-sm stat-card-mini" onclick="quickChangeMasyarakat('pie', 'penduduk')">
+                <div class="flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-emerald-500"></i>
+                    <span class="text-xs font-semibold text-gray-600">Komposisi</span>
+                </div>
+                <p class="text-lg font-bold text-emerald-600">{{ number_format($statistik['penduduk_pria'] ?? 0) }} : {{ number_format($statistik['penduduk_wanita'] ?? 0) }}</p>
+                <p class="text-[9px] text-gray-400">Pria : Wanita</p>
+            </div>
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-purple-200 shadow-sm stat-card-mini" onclick="quickChangeMasyarakat('bar', 'umur')">
+                <div class="flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-calendar-week text-purple-500"></i>
+                    <span class="text-xs font-semibold text-gray-600">Produktif</span>
+                </div>
+                <p class="text-lg font-bold text-purple-600">{{ number_format(($statistik['kelompok_umur_15_29'] ?? 0) + ($statistik['kelompok_umur_30_59'] ?? 0)) }}</p>
+                <p class="text-[9px] text-gray-400">Usia Produktif</p>
+            </div>
+            <div class="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-amber-200 shadow-sm stat-card-mini" onclick="quickChangeMasyarakat('doughnut', 'umur')">
+                <div class="flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-chart-simple text-amber-500"></i>
+                    <span class="text-xs font-semibold text-gray-600">Rasio</span>
+                </div>
+                <p class="text-lg font-bold text-amber-600">{{ number_format((($statistik['kelompok_umur_0_14'] ?? 0) / max(($statistik['kelompok_umur_60'] ?? 0), 1)) * 100, 1) }}%</p>
+                <p class="text-[9px] text-gray-400">Rasio Anak vs Lansia</p>
+            </div>
+        </div>
+        
+        {{-- Keterangan --}}
+        <div class="text-center text-xs text-gray-400 mt-2 pb-8 flex items-center justify-center gap-4 flex-wrap px-6">
+            <span class="flex items-center gap-1"><i class="fa-solid fa-chart-simple text-emerald-500"></i> Klik "Pengaturan Diagram" untuk mengubah tampilan</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-chart-line text-blue-500"></i> Hover pada diagram untuk melihat detail</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-arrow-pointer text-purple-500"></i> Klik card statistik untuk切换 cepat</span>
+        </div>
+    </div>
+</section>
+
+{{-- ============================================= --}}
+{{-- 4. STATISTIK PENGGUNA (ANIMATED CARDS) --}}
 {{-- ============================================= --}}
 <section class="px-[5%] mb-16">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -379,10 +489,10 @@
 </section>
 
 {{-- ============================================= --}}
-{{-- 4. LAYANAN DIGITAL PREMIUM --}}
+{{-- 5. LAYANAN DIGITAL PREMIUM --}}
 {{-- ============================================= --}}
 <section class="px-[5%] mb-20">
-    <div class="text-center mb-12" data-aos="fade-up">
+    <div class="text-center mb-12">
         <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">⚡ Akses Cepat</span>
         <h2 class="text-5xl md:text-6xl font-serif italic text-emerald-900 mt-4">Layanan Digital Desa</h2>
         <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mt-5 rounded-full"></div>
@@ -443,10 +553,10 @@
 </section>
 
 {{-- ============================================= --}}
-{{-- 5. STATUS PENGAJUAN SURAT TERBARU --}}
+{{-- 6. STATUS PENGAJUAN SURAT TERBARU --}}
 {{-- ============================================= --}}
 <section class="px-[5%] mb-20">
-    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100" data-aos="fade-up">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         <div class="bg-gradient-to-r from-emerald-50 to-white px-8 py-5 border-b border-gray-100">
             <div class="flex justify-between items-center flex-wrap gap-4">
                 <div>
@@ -509,11 +619,11 @@
 </section>
 
 {{-- ============================================= --}}
-{{-- 6. BERITA TERKINI & PENGUMUMAN --}}
+{{-- 7. BERITA TERKINI & PENGUMUMAN --}}
 {{-- ============================================= --}}
 <section class="px-[5%] mb-20">
     <div class="grid lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-2 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100" data-aos="fade-right">
+        <div class="lg:col-span-2 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
             <div class="bg-gradient-to-r from-emerald-50 to-white px-8 py-5 border-b border-gray-100">
                 <div class="flex justify-between items-center flex-wrap gap-4">
                     <div>
@@ -541,7 +651,7 @@
                                     {{ ucfirst($berita->kategori) }}
                                 </span>
                                 <h3 class="font-bold text-gray-800 mt-1 hover:text-emerald-600 transition line-clamp-2">
-                                    <a href="{{ route('berita.show', $berita->id_berita) }}">{{ $berita->judul }}</a>
+                                    <a href="{{ route('berita.show', $berita->slug) }}">{{ $berita->judul }}</a>
                                 </h3>
                                 <div class="flex items-center gap-3 mt-1">
                                     <p class="text-xs text-gray-400"><i class="fa-regular fa-calendar mr-1"></i> {{ $berita->created_at->translatedFormat('d M Y') }}</p>
@@ -562,7 +672,7 @@
             </div>
         </div>
 
-        <div class="space-y-6" data-aos="fade-left">
+        <div class="space-y-6">
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
                 <div class="bg-gradient-to-r from-amber-50 to-white px-6 py-4 border-b border-gray-100">
                     <h2 class="text-xl font-serif italic text-emerald-800 flex items-center gap-2">
@@ -604,10 +714,10 @@
 </section>
 
 {{-- ============================================= --}}
-{{-- 7. GALERI KEGIATAN PREMIUM --}}
+{{-- 8. GALERI KEGIATAN PREMIUM --}}
 {{-- ============================================= --}}
 <section class="px-[5%] mb-20">
-    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100" data-aos="fade-up">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         <div class="bg-gradient-to-r from-emerald-50 to-white px-8 py-5 border-b border-gray-100">
             <div class="flex justify-between items-center flex-wrap gap-4">
                 <div>
@@ -622,7 +732,7 @@
         <div class="p-6">
             @if(isset($galeris) && $galeris->count() > 0)
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    @foreach($galeris as $index => $g)
+                    @foreach($galeris as $g)
                     <div class="gallery-item group relative rounded-xl overflow-hidden shadow-md cursor-pointer">
                         <div class="h-40 overflow-hidden">
                             <img src="{{ $g->gambar_galeri ? asset('storage/' . $g->gambar_galeri) : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300' }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
@@ -649,10 +759,10 @@
 </section>
 
 {{-- ============================================= --}}
-{{-- 8. TIPS & PANDUAN (ACCORDION PREMIUM) --}}
+{{-- 9. TIPS & PANDUAN (ACCORDION PREMIUM) --}}
 {{-- ============================================= --}}
 <section class="px-[5%] mb-20">
-    <div class="text-center mb-12" data-aos="fade-up">
+    <div class="text-center mb-12">
         <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">💡 Panduan Pengguna</span>
         <h2 class="text-5xl md:text-6xl font-serif italic text-emerald-900 mt-4">Tips & Panduan</h2>
         <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mt-5 rounded-full"></div>
@@ -664,7 +774,7 @@
         <div class="faq-item bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 transition-all duration-300" :class="{ 'active': activeFaq === 1, 'shadow-xl': activeFaq === 1 }" @click="activeFaq = activeFaq === 1 ? null : 1">
             <div class="flex justify-between items-center p-6 cursor-pointer hover:bg-emerald-50/30 transition">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-md">
                         <i class="fa-solid fa-file-circle-check text-white text-xl"></i>
                     </div>
                     <div>
@@ -791,10 +901,10 @@
 </section>
 
 {{-- ============================================= --}}
-{{-- 9. CTA BANTUAN PREMIUM --}}
+{{-- 10. CTA BANTUAN PREMIUM --}}
 {{-- ============================================= --}}
 <section class="px-[5%] mb-20">
-    <div class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-800 rounded-2xl p-12 text-center text-white shadow-2xl relative overflow-hidden group" data-aos="zoom-in">
+    <div class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-800 rounded-2xl p-12 text-center text-white shadow-2xl relative overflow-hidden group">
         <div class="absolute top-0 right-0 opacity-10 group-hover:scale-110 transition-transform duration-700">
             <i class="fa-solid fa-headset text-8xl"></i>
         </div>
@@ -817,7 +927,191 @@
     </div>
 </section>
 
+{{-- Script untuk Chart.js Premium (SAMA PERSIS SEPERTI HOME) --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Data untuk diagram (sama persis seperti di home)
+    const statistikDataMasyarakat = {
+        penduduk: {
+            labels: ['👨 Laki-laki', '👩 Perempuan', '🏠 Kepala Keluarga'],
+            values: [{{ $statistik['penduduk_pria'] ?? 0 }}, {{ $statistik['penduduk_wanita'] ?? 0 }}, {{ $statistik['total_kk'] ?? 0 }}],
+            colors: ['rgba(59, 130, 246, 0.85)', 'rgba(236, 72, 153, 0.85)', 'rgba(245, 158, 11, 0.85)'],
+            borderColors: ['rgb(59, 130, 246)', 'rgb(236, 72, 153)', 'rgb(245, 158, 11)'],
+            hoverColors: ['rgba(59, 130, 246, 1)', 'rgba(236, 72, 153, 1)', 'rgba(245, 158, 11, 1)'],
+            title: '📊 Statistik Penduduk',
+            unit: 'Jiwa'
+        },
+        umur: {
+            labels: ['👶 0-14 tahun', '🧑 15-29 tahun', '👨 30-59 tahun', '👴 60+ tahun'],
+            values: [{{ $statistik['kelompok_umur_0_14'] ?? 0 }}, {{ $statistik['kelompok_umur_15_29'] ?? 0 }}, {{ $statistik['kelompok_umur_30_59'] ?? 0 }}, {{ $statistik['kelompok_umur_60'] ?? 0 }}],
+            colors: ['rgba(16, 185, 129, 0.85)', 'rgba(59, 130, 246, 0.85)', 'rgba(245, 158, 11, 0.85)', 'rgba(139, 92, 246, 0.85)'],
+            borderColors: ['rgb(16, 185, 129)', 'rgb(59, 130, 246)', 'rgb(245, 158, 11)', 'rgb(139, 92, 246)'],
+            hoverColors: ['rgba(16, 185, 129, 1)', 'rgba(59, 130, 246, 1)', 'rgba(245, 158, 11, 1)', 'rgba(139, 92, 246, 1)'],
+            title: '📈 Kelompok Umur Penduduk',
+            unit: 'Jiwa'
+        }
+    };
+
+    let masyarakatHomeChart = null;
+    let currentChartTypeMasyarakat = 'bar';
+    let currentDataTypeMasyarakat = 'penduduk';
+
+    function formatNumberMasyarakat(value) {
+        if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
+        if (value >= 1000) return (value / 1000).toFixed(1) + 'K';
+        return value.toString();
+    }
+
+    function updateChartMasyarakat(chartType, dataType) {
+        currentChartTypeMasyarakat = chartType;
+        currentDataTypeMasyarakat = dataType;
+        
+        const data = statistikDataMasyarakat[dataType];
+        if (!data) return;
+        
+        const ctx = document.getElementById('masyarakatStatistikChart').getContext('2d');
+        
+        if (masyarakatHomeChart) {
+            masyarakatHomeChart.destroy();
+        }
+        
+        const isPieType = ['pie', 'doughnut'].includes(chartType);
+        
+        const baseOptions = {
+            responsive: true,
+            maintainAspectRatio: true,
+            animation: {
+                duration: 1000,
+                easing: 'easeInOutQuart',
+                animateRotate: true,
+                animateScale: true
+            },
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    titleColor: '#fff',
+                    bodyColor: '#e5e7eb',
+                    borderColor: '#10b981',
+                    borderWidth: 2,
+                    cornerRadius: 12,
+                    padding: 12,
+                    displayColors: true,
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            let value = context.raw;
+                            let percentage = '';
+                            if (isPieType && data.values.reduce((a, b) => a + b, 0) > 0) {
+                                percentage = ` (${((value / data.values.reduce((a, b) => a + b, 0)) * 100).toFixed(1)}%)`;
+                            }
+                            return `${label}: ${value.toLocaleString()} ${data.unit}${percentage}`;
+                        }
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        boxWidth: 10,
+                        boxHeight: 10,
+                        padding: 15,
+                        font: { size: 11, weight: 'bold' }
+                    }
+                }
+            },
+            onHover: function(event, activeElements) {
+                const canvas = document.getElementById('masyarakatStatistikChart');
+                canvas.style.cursor = activeElements.length ? 'pointer' : 'default';
+            }
+        };
+        
+        if (!isPieType) {
+            baseOptions.scales = {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)',
+                        drawBorder: false,
+                        lineWidth: 1
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return formatNumberMasyarakat(value);
+                        },
+                        font: { size: 11 }
+                    },
+                    title: {
+                        display: true,
+                        text: `Jumlah (${data.unit})`,
+                        font: { size: 11, weight: 'bold' },
+                        color: '#6b7280'
+                    }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 11, weight: 'bold' } }
+                }
+            };
+        } else {
+            baseOptions.plugins.tooltip.callbacks.label = function(context) {
+                const total = data.values.reduce((a, b) => a + b, 0);
+                const percentage = ((context.raw / total) * 100).toFixed(1);
+                return `${context.label}: ${context.raw.toLocaleString()} ${data.unit} (${percentage}%)`;
+            };
+        }
+        
+        if (isPieType) {
+            masyarakatHomeChart = new Chart(ctx, {
+                type: chartType,
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        data: data.values,
+                        backgroundColor: data.colors,
+                        borderColor: '#fff',
+                        borderWidth: 3,
+                        hoverOffset: 15,
+                        cutout: chartType === 'doughnut' ? '60%' : 0
+                    }]
+                },
+                options: baseOptions
+            });
+        } else {
+            masyarakatHomeChart = new Chart(ctx, {
+                type: chartType,
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: data.title,
+                        data: data.values,
+                        backgroundColor: chartType === 'line' ? 'rgba(16, 185, 129, 0.1)' : data.colors,
+                        borderColor: chartType === 'line' ? '#10b981' : data.borderColors,
+                        borderWidth: chartType === 'line' ? 3 : 1,
+                        borderRadius: chartType === 'bar' ? 8 : 0,
+                        tension: chartType === 'line' ? 0.4 : 0,
+                        fill: chartType === 'line',
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: chartType === 'line' ? 5 : 0,
+                        pointHoverRadius: chartType === 'line' ? 8 : 0,
+                        pointHoverBackgroundColor: '#059669'
+                    }]
+                },
+                options: baseOptions
+            });
+        }
+    }
+    
+    // Fungsi quick change
+    function quickChangeMasyarakat(chartType, dataType) {
+        updateChartMasyarakat(chartType, dataType);
+    }
+    
     // Counter Animation for Stats
     document.addEventListener('DOMContentLoaded', function() {
         const counters = document.querySelectorAll('.count-up');
@@ -838,6 +1132,13 @@
                 updateCounter();
             }
         });
+        
+        // Inisialisasi chart default
+        updateChartMasyarakat('bar', 'penduduk');
     });
+    
+    // Expose fungsi ke global
+    window.updateChartMasyarakat = updateChartMasyarakat;
+    window.quickChangeMasyarakat = quickChangeMasyarakat;
 </script>
 @endsection

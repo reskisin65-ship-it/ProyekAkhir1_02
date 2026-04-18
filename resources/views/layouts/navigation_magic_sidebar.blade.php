@@ -53,6 +53,15 @@
                 <p class="text-xs text-gray-400">Hubungi kami</p>
             </div>
         </a>
+        {{-- TAMBAHKAN STATISTIK UNTUK GUEST --}}
+        <a href="{{ route('statistik.publik') }}" class="side-item group">
+            <i class="fa-solid fa-chart-simple"></i>
+            <div class="info-box">
+                <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Statistik Desa</h5>
+                <p class="text-xs text-gray-400">Data statistik desa</p>
+            </div>
+        </a>
     @endguest
 
     {{-- ============================================= --}}
@@ -89,6 +98,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Berita</h5>
+                    <p class="text-xs text-gray-400">Kelola berita desa</p>
                 </div>
             </a>
             <a href="{{ route('admin.galeri.index') }}" class="side-item group">
@@ -96,6 +106,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Galeri</h5>
+                    <p class="text-xs text-gray-400">Kelola galeri foto</p>
                 </div>
             </a>
             <a href="{{ route('admin.aspirasi.index') }}" class="side-item group">
@@ -103,6 +114,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Aspirasi</h5>
+                    <p class="text-xs text-gray-400">Kelola aspirasi warga</p>
                 </div>
             </a>
             <a href="{{ route('admin.umkm.index') }}" class="side-item group">
@@ -110,6 +122,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">UMKM</h5>
+                    <p class="text-xs text-gray-400">Kelola UMKM desa</p>
                 </div>
             </a>
             <a href="{{ route('admin.pengurus.index') }}" class="side-item group">
@@ -117,13 +130,15 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Pengurus Desa</h5>
+                    <p class="text-xs text-gray-400">Kelola data pengurus</p>
                 </div>
             </a>
-            <a href="{{ route('admin.statistik') }}" class="side-item group">
+            <a href="{{ route('admin.statistik.index') }}" class="side-item group">
                 <i class="fa-solid fa-chart-simple"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Statistik</h5>
+                    <p class="text-xs text-gray-400">Data statistik desa</p>
                 </div>
             </a>
 
@@ -136,6 +151,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Dashboard</h5>
+                    <p class="text-xs text-gray-400">Ringkasan toko Anda</p>
                 </div>
             </a>
             <a href="{{ route('umkm.produk.index') }}" class="side-item group">
@@ -143,6 +159,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Produk Saya</h5>
+                    <p class="text-xs text-gray-400">Kelola produk UMKM</p>
                 </div>
             </a>
             <a href="{{ route('umkm.profil.edit') }}" class="side-item group">
@@ -150,6 +167,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Profil UMKM</h5>
+                    <p class="text-xs text-gray-400">Edit informasi toko</p>
                 </div>
             </a>
             <a href="{{ route('berita') }}" class="side-item group">
@@ -157,6 +175,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Berita</h5>
+                    <p class="text-xs text-gray-400">Informasi terkini</p>
                 </div>
             </a>
             <a href="{{ route('galeri') }}" class="side-item group">
@@ -164,6 +183,15 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Galeri</h5>
+                    <p class="text-xs text-gray-400">Dokumentasi kegiatan</p>
+                </div>
+            </a>
+            <a href="{{ route('statistik.publik') }}" class="side-item group">
+                <i class="fa-solid fa-chart-simple"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Statistik Desa</h5>
+                    <p class="text-xs text-gray-400">Data statistik desa</p>
                 </div>
             </a>
 
@@ -176,6 +204,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Dashboard</h5>
+                    <p class="text-xs text-gray-400">Aktivitas Anda</p>
                 </div>
             </a>
             <a href="{{ route('masyarakat.surat.create') }}" class="side-item group">
@@ -183,6 +212,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Ajukan Surat</h5>
+                    <p class="text-xs text-gray-400">Buat pengajuan surat</p>
                 </div>
             </a>
             <a href="{{ route('masyarakat.surat.index') }}" class="side-item group">
@@ -190,6 +220,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Riwayat Surat</h5>
+                    <p class="text-xs text-gray-400">Status pengajuan surat</p>
                 </div>
             </a>
             <a href="{{ route('masyarakat.aspirasi.create') }}" class="side-item group">
@@ -197,6 +228,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Kirim Aspirasi</h5>
+                    <p class="text-xs text-gray-400">Sampaikan keluhan/saran</p>
                 </div>
             </a>
             <a href="{{ route('masyarakat.aspirasi.index') }}" class="side-item group">
@@ -204,6 +236,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Aspirasi Saya</h5>
+                    <p class="text-xs text-gray-400">Lihat aspirasi yang dikirim</p>
                 </div>
             </a>
             <a href="{{ route('berita') }}" class="side-item group">
@@ -211,6 +244,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Berita</h5>
+                    <p class="text-xs text-gray-400">Informasi terkini</p>
                 </div>
             </a>
             <a href="{{ route('galeri') }}" class="side-item group">
@@ -218,6 +252,7 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Galeri</h5>
+                    <p class="text-xs text-gray-400">Dokumentasi kegiatan</p>
                 </div>
             </a>
             <a href="{{ route('umkm') }}" class="side-item group">
@@ -225,6 +260,16 @@
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">UMKM</h5>
+                    <p class="text-xs text-gray-400">Produk unggulan desa</p>
+                </div>
+            </a>
+            {{-- TAMBAHKAN STATISTIK UNTUK MASYARAKAT --}}
+            <a href="{{ route('statistik.publik') }}" class="side-item group">
+                <i class="fa-solid fa-chart-simple"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Statistik Desa</h5>
+                    <p class="text-xs text-gray-400">Data statistik desa</p>
                 </div>
             </a>
         @endif
@@ -252,16 +297,18 @@
             <a href="{{ route('admin.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
             <a href="{{ route('admin.pengajuan-surat.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-envelope"></i></a>
             <a href="{{ route('admin.penduduk.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-users"></i></a>
-            <a href="{{ route('admin.statistik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
+            <a href="{{ route('admin.statistik.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
         @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
             <a href="{{ route('umkm.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
             <a href="{{ route('umkm.produk.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-box"></i></a>
             <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
+            <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
         @else
             <a href="{{ route('masyarakat.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
             <a href="{{ route('masyarakat.surat.create') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-file-signature"></i></a>
             <a href="{{ route('masyarakat.aspirasi.create') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-comment-dots"></i></a>
             <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
+            <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
         @endif
     @else
         <a href="{{ route('home') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-house"></i></a>
@@ -269,6 +316,7 @@
         <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
         <a href="{{ route('galeri') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-photo-film"></i></a>
         <a href="{{ route('umkm') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-store"></i></a>
+        <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
     @endauth
     
     @auth

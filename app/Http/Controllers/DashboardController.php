@@ -7,6 +7,8 @@ use App\Models\Berita;
 use App\Models\PengajuanSurat;
 use App\Models\Aspirasi;
 use App\Models\Galeri;
+use App\Models\DataPenduduk;
+use App\Models\Umkm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,9 +60,35 @@ class DashboardController extends Controller
         
         $galeris = Galeri::orderBy('created_at', 'desc')->limit(4)->get();
         
+        // ==============================================
+        // DATA STATISTIK UNTUK DIAGRAM (SAMA SEPERTI GUEST)
+        // ==============================================
+        $totalPenduduk = DataPenduduk::count();
+        $pendudukPria = DataPenduduk::where('jenis_kelamin', 'L')->count();
+        $pendudukWanita = DataPenduduk::where('jenis_kelamin', 'P')->count();
+        $totalKK = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
+        
+        // Kelompok Umur (menggunakan whereRaw untuk kompatibilitas MySQL)
+        $kelompokUmur014 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count();
+        $kelompokUmur1529 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count();
+        $kelompokUmur3059 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count();
+        $kelompokUmur60 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count();
+        
+        // Data untuk diagram (sama persis seperti di home)
+        $statistik = [
+            'total_penduduk' => $totalPenduduk,
+            'penduduk_pria' => $pendudukPria,
+            'penduduk_wanita' => $pendudukWanita,
+            'total_kk' => $totalKK,
+            'kelompok_umur_0_14' => $kelompokUmur014,
+            'kelompok_umur_15_29' => $kelompokUmur1529,
+            'kelompok_umur_30_59' => $kelompokUmur3059,
+            'kelompok_umur_60' => $kelompokUmur60,
+        ];
+        
         return view('masyarakat.dashboard', compact(
             'totalSurat', 'totalAspirasi', 'suratSelesai', 'suratMenunggu',
-            'pengajuanTerbaru', 'beritas', 'pengumuman', 'galeris'
+            'pengajuanTerbaru', 'beritas', 'pengumuman', 'galeris', 'statistik'
         ));
     }
 

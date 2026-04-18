@@ -12,6 +12,7 @@ use App\Models\ProfilDesa;
 use App\Models\DataPengurus;
 use App\Models\DataPenduduk;
 use App\Models\Role;
+use App\Models\PengaturanStatistik;  // <-- TARUH SINI, setelah use lainnya
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -287,120 +288,118 @@ class AdminController extends Controller
             ->with('success', 'UMKM berhasil dihapus!');
     }
 
-// ==============================================
-// MANAJEMEN PENGAJUAN SURAT (ADMIN)
-// ==============================================
+    // ==============================================
+    // MANAJEMEN PENGAJUAN SURAT
+    // ==============================================
 
-public function pengajuanSurat()
-{
-    $status = request('status', 'all');
-    $query = PengajuanSurat::with('user')->orderBy('created_at', 'desc');
-    
-    if ($status != 'all') {
-        $query->where('status', $status);
+    public function pengajuanSurat()
+    {
+        $status = request('status', 'all');
+        $query = PengajuanSurat::with('user')->orderBy('created_at', 'desc');
+        
+        if ($status != 'all') {
+            $query->where('status', $status);
+        }
+        
+        $pengajuan = $query->paginate(15);
+        
+        $statistik = [
+            'total' => PengajuanSurat::count(),
+            'menunggu' => PengajuanSurat::where('status', 'menunggu')->count(),
+            'diproses' => PengajuanSurat::where('status', 'diproses')->count(),
+            'selesai' => PengajuanSurat::where('status', 'selesai')->count(),
+            'ditolak' => PengajuanSurat::where('status', 'ditolak')->count(),
+        ];
+        
+        return view('admin.pengajuan-surat', compact('pengajuan', 'statistik'));
     }
-    
-    $pengajuan = $query->paginate(15);
-    
-    $statistik = [
-        'total' => PengajuanSurat::count(),
-        'menunggu' => PengajuanSurat::where('status', 'menunggu')->count(),
-        'diproses' => PengajuanSurat::where('status', 'diproses')->count(),
-        'selesai' => PengajuanSurat::where('status', 'selesai')->count(),
-        'ditolak' => PengajuanSurat::where('status', 'ditolak')->count(),
-    ];
-    
-    return view('admin.pengajuan-surat', compact('pengajuan', 'statistik'));
-}
 
-public function pengajuanSuratShow($id)
-{
-    $pengajuan = PengajuanSurat::with('user')->findOrFail($id);
-    return view('admin.pengajuan-surat-show', compact('pengajuan'));
-}
-
-public function pengajuanSuratApprove($id)
-{
-    $pengajuan = PengajuanSurat::findOrFail($id);
-    $pengajuan->update(['status' => 'diproses']);
-    
-    return back()->with('success', 'Pengajuan surat diterima dan sedang diproses!');
-}
-
-public function pengajuanSuratComplete(Request $request, $id)
-{
-    $request->validate([
-        'file_surat' => 'required|file|mimes:pdf|max:2048',
-    ]);
-    
-    $pengajuan = PengajuanSurat::findOrFail($id);
-    
-    $filePath = $request->file('file_surat')->store('surat_selesai', 'public');
-    
-    $pengajuan->update([
-        'status' => 'selesai',
-        'file_surat' => $filePath,
-    ]);
-    
-    return redirect()->route('admin.pengajuan-surat.index')
-        ->with('success', 'Surat selesai dan telah diunggah!');
-}
-
-public function pengajuanSuratReject(Request $request, $id)
-{
-    $request->validate([
-        'catatan' => 'required|min:5',
-    ]);
-    
-    $pengajuan = PengajuanSurat::findOrFail($id);
-    $pengajuan->update([
-        'status' => 'ditolak',
-        'catatan_penolakan' => $request->catatan,
-    ]);
-    
-    return back()->with('success', 'Pengajuan surat ditolak!');
-}
-
-public function pengajuanSuratDestroy($id)
-{
-    $pengajuan = PengajuanSurat::findOrFail($id);
-    
-    // PERBAIKAN: gunakan berkas_pendukung
-    if ($pengajuan->berkas_pendukung && Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
-        Storage::disk('public')->delete($pengajuan->berkas_pendukung);
+    public function pengajuanSuratShow($id)
+    {
+        $pengajuan = PengajuanSurat::with('user')->findOrFail($id);
+        return view('admin.pengajuan-surat-show', compact('pengajuan'));
     }
-    if ($pengajuan->file_surat && Storage::disk('public')->exists($pengajuan->file_surat)) {
-        Storage::disk('public')->delete($pengajuan->file_surat);
-    }
-    
-    $pengajuan->delete();
-    
-    return redirect()->route('admin.pengajuan-surat.index')
-        ->with('success', 'Pengajuan surat berhasil dihapus!');
-}
 
-public function pengajuanSuratDownload($id)
-{
-    $pengajuan = PengajuanSurat::findOrFail($id);
-    
-    if (!$pengajuan->file_surat || !Storage::disk('public')->exists($pengajuan->file_surat)) {
-        return back()->with('error', 'File surat tidak ditemukan!');
+    public function pengajuanSuratApprove($id)
+    {
+        $pengajuan = PengajuanSurat::findOrFail($id);
+        $pengajuan->update(['status' => 'diproses']);
+        
+        return back()->with('success', 'Pengajuan surat diterima dan sedang diproses!');
     }
-    
-    return Storage::disk('public')->download($pengajuan->file_surat, 'Surat_' . $pengajuan->jenis_surat . '.pdf');
-}
 
-public function pengajuanSuratDownloadPendukung($id)
-{
-    $pengajuan = PengajuanSurat::findOrFail($id);
-    
-    // PERBAIKAN: gunakan berkas_pendukung
-    if (!$pengajuan->berkas_pendukung || !Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
-        return back()->with('error', 'File pendukung tidak ditemukan!');
+    public function pengajuanSuratComplete(Request $request, $id)
+    {
+        $request->validate([
+            'file_surat' => 'required|file|mimes:pdf|max:2048',
+        ]);
+        
+        $pengajuan = PengajuanSurat::findOrFail($id);
+        
+        $filePath = $request->file('file_surat')->store('surat_selesai', 'public');
+        
+        $pengajuan->update([
+            'status' => 'selesai',
+            'file_surat' => $filePath,
+        ]);
+        
+        return redirect()->route('admin.pengajuan-surat.index')
+            ->with('success', 'Surat selesai dan telah diunggah!');
     }
-    
-    return Storage::disk('public')->download($pengajuan->berkas_pendukung, 'Pendukung_' . $pengajuan->jenis_surat . '.pdf');
-}
+
+    public function pengajuanSuratReject(Request $request, $id)
+    {
+        $request->validate([
+            'catatan' => 'required|min:5',
+        ]);
+        
+        $pengajuan = PengajuanSurat::findOrFail($id);
+        $pengajuan->update([
+            'status' => 'ditolak',
+            'catatan_penolakan' => $request->catatan,
+        ]);
+        
+        return back()->with('success', 'Pengajuan surat ditolak!');
+    }
+
+    public function pengajuanSuratDestroy($id)
+    {
+        $pengajuan = PengajuanSurat::findOrFail($id);
+        
+        if ($pengajuan->berkas_pendukung && Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
+            Storage::disk('public')->delete($pengajuan->berkas_pendukung);
+        }
+        if ($pengajuan->file_surat && Storage::disk('public')->exists($pengajuan->file_surat)) {
+            Storage::disk('public')->delete($pengajuan->file_surat);
+        }
+        
+        $pengajuan->delete();
+        
+        return redirect()->route('admin.pengajuan-surat.index')
+            ->with('success', 'Pengajuan surat berhasil dihapus!');
+    }
+
+    public function pengajuanSuratDownload($id)
+    {
+        $pengajuan = PengajuanSurat::findOrFail($id);
+        
+        if (!$pengajuan->file_surat || !Storage::disk('public')->exists($pengajuan->file_surat)) {
+            return back()->with('error', 'File surat tidak ditemukan!');
+        }
+        
+        return Storage::disk('public')->download($pengajuan->file_surat, 'Surat_' . $pengajuan->jenis_surat . '.pdf');
+    }
+
+    public function pengajuanSuratDownloadPendukung($id)
+    {
+        $pengajuan = PengajuanSurat::findOrFail($id);
+        
+        if (!$pengajuan->berkas_pendukung || !Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
+            return back()->with('error', 'File pendukung tidak ditemukan!');
+        }
+        
+        return Storage::disk('public')->download($pengajuan->berkas_pendukung, 'Pendukung_' . $pengajuan->jenis_surat . '.pdf');
+    }
 
     // ==============================================
     // MANAJEMEN ASPIRASI
@@ -676,49 +675,87 @@ public function pengajuanSuratDownloadPendukung($id)
             ->with('success', 'Pengurus berhasil dihapus!');
     }
 
-    // ==============================================
-    // STATISTIK
-    // ==============================================
 
-    public function statistik()
-    {
-        // Data Penduduk
-        $totalPenduduk = DataPenduduk::count();
-        $pendudukPria = DataPenduduk::where('jenis_kelamin', 'L')->count();
-        $pendudukWanita = DataPenduduk::where('jenis_kelamin', 'P')->count();
-        $totalKK = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
-        
-        // Kelompok Umur
-        $kelompokUmur0_14 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count();
-        $kelompokUmur15_29 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count();
-        $kelompokUmur30_59 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count();
-        $kelompokUmur60 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count();
-        
-        // UMKM
-        $totalUmkm = Umkm::count();
-        $umkmApproved = Umkm::where('status', 'approved')->count();
-        
-        // Layanan
-        $totalBerita = Berita::count();
-        $totalAspirasi = Aspirasi::count();
-        $totalSurat = PengajuanSurat::count();
-        
-        $statistik = [
-            'total_penduduk' => $totalPenduduk,
-            'penduduk_pria' => $pendudukPria,
-            'penduduk_wanita' => $pendudukWanita,
-            'total_kk' => $totalKK,
-            'kelompok_umur_0_14' => $kelompokUmur0_14,
-            'kelompok_umur_15_29' => $kelompokUmur15_29,
-            'kelompok_umur_30_59' => $kelompokUmur30_59,
-            'kelompok_umur_60' => $kelompokUmur60,
-            'total_umkm' => $totalUmkm,
-            'umkm_approved' => $umkmApproved,
-            'total_berita' => $totalBerita,
-            'total_aspirasi' => $totalAspirasi,
-            'total_surat' => $totalSurat,
-        ];
-        
-        return view('admin.statistik', compact('statistik'));
-    }
+
+
+// ==============================================
+// MANAJEMEN STATISTIK (DAPAT DIEDIT ADMIN)
+// ==============================================
+
+public function statistik()
+{
+    $statistik = [
+        'total_penduduk' => DataPenduduk::count(),
+        'penduduk_pria' => DataPenduduk::where('jenis_kelamin', 'L')->count(),
+        'penduduk_wanita' => DataPenduduk::where('jenis_kelamin', 'P')->count(),
+        'total_kk' => DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count(),
+        'kelompok_umur_0_14' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count(),
+        'kelompok_umur_15_29' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count(),
+        'kelompok_umur_30_59' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count(),
+        'kelompok_umur_60' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count(),
+        'total_umkm' => Umkm::count(),
+        'umkm_approved' => Umkm::where('status', 'approved')->count(),
+        'total_berita' => Berita::count(),
+        'total_aspirasi' => Aspirasi::count(),
+        'total_surat' => PengajuanSurat::count(),
+    ];
+    
+    return view('admin.statistik', compact('statistik'));
 }
+public function statistikKelola()
+{
+    // Data realtime dari database
+    $realtime = [
+        'total_penduduk' => DataPenduduk::count(),
+        'laki_laki' => DataPenduduk::where('jenis_kelamin', 'L')->count(),
+        'perempuan' => DataPenduduk::where('jenis_kelamin', 'P')->count(),
+        'kepala_keluarga' => DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count(),
+        'kelompok_umur_0_14' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count(),
+        'kelompok_umur_15_29' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count(),
+        'kelompok_umur_30_59' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count(),
+        'kelompok_umur_60' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count(),
+        'total_umkm' => Umkm::count(),
+        'umkm_aktif' => Umkm::where('status', 'approved')->count(),
+        'total_surat' => PengajuanSurat::count(),
+        'total_aspirasi' => Aspirasi::count(),
+        'total_berita' => Berita::count(),
+    ];
+    
+    // Data pengaturan dari database
+    $pengaturan = PengaturanStatistik::all()->keyBy('key');
+    
+    return view('admin.statistik.kelola', compact('realtime', 'pengaturan'));
+}
+
+public function statistikUpdate(Request $request)
+{
+    $keys = [
+        'total_penduduk', 'laki_laki', 'perempuan', 'kepala_keluarga',
+        'kelompok_umur_0_14', 'kelompok_umur_15_29', 'kelompok_umur_30_59', 'kelompok_umur_60',
+        'total_umkm', 'umkm_aktif', 'total_surat', 'total_aspirasi', 'total_berita'
+    ];
+    
+    foreach ($keys as $key) {
+        $mode = $request->input("mode_{$key}", 'otomatis');
+        $nilai = $request->input($key);
+        
+        if ($mode == 'manual' && $nilai !== null) {
+            // Mode Manual: simpan nilai manual
+            PengaturanStatistik::updateOrCreate(
+                ['key' => $key],
+                ['nilai_awal' => $nilai, 'mode' => 'manual']
+            );
+        } elseif ($mode == 'hybrid' && $nilai !== null) {
+            // Mode Hybrid: simpan nilai awal
+            PengaturanStatistik::updateOrCreate(
+                ['key' => $key],
+                ['nilai_awal' => $nilai, 'mode' => 'hybrid']
+            );
+        } else {
+            // Mode Otomatis: hapus pengaturan
+            PengaturanStatistik::where('key', $key)->delete();
+        }
+    }
+    
+    return redirect()->route('admin.statistik.kelola')->with('success', 'Pengaturan statistik berhasil disimpan!');
+}}
