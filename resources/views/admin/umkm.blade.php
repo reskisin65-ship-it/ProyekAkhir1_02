@@ -1,6 +1,5 @@
 {{-- resources/views/admin/umkm.blade.php --}}
-@extends('layouts.app')
-
+@extends('layouts.admin')
 @section('title', 'Kelola UMKM')
 
 @section('content')

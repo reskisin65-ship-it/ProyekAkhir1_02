@@ -102,13 +102,72 @@
             border: 2px dashed #e2e8f0; border-radius: 40px; padding: 60px 30px;
             text-align: center; background: #f8fafc;
         }
-        .glass-footer {
-            background: linear-gradient(rgba(6, 78, 59, 0.96), rgba(0, 0, 0, 0.98)), 
-                        url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=2070');
-            background-size: cover; background-attachment: fixed;
-            border-radius: 60px 60px 0 0;
+
+        /* ============================================ */
+        /* FOOTER - GAMBAR CERAH, TEKS BESAR PUTIH/HIJAU */
+        /* ============================================ */
+        .footer-cerah {
+            background: linear-gradient(180deg, #0a2a1f 0%, #041a10 100%);
+            border-radius: 32px 32px 0 0;
             margin-top: 60px;
+            position: relative;
+            overflow: hidden;
         }
+        
+        /* Background gambar dengan blur minimal */
+        .footer-cerah::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center 35%;
+            background-repeat: no-repeat;
+            opacity: 0.35;
+            filter: blur(2px);
+            pointer-events: none;
+        }
+        
+        /* Overlay tipis untuk kontras */
+        .footer-cerah::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(10, 42, 31, 0.5) 0%, rgba(4, 26, 16, 0.85) 100%);
+            pointer-events: none;
+        }
+        
+        /* Teks navigasi lebih besar dan putih */
+        .footer-link-cerah {
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .footer-link-cerah:hover {
+            color: #34d399;
+            transform: translateX(5px);
+        }
+        
+        .footer-heading {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: #34d399;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -125,84 +184,65 @@
     </div>
 
     {{-- ============================================= --}}
-    {{-- FOOTER - TAMPIL DI SEMUA HALAMAN --}}
+    {{-- FOOTER - GAMBAR CERAH, TEKS BESAR PUTIH/HIJAU --}}
     {{-- ============================================= --}}
-    <footer class="glass-footer text-white pt-20 pb-8 px-[8%]">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 relative z-10 mb-12">
+    <footer class="footer-cerah text-white pt-16 pb-10 px-[6%]">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col md:flex-row justify-between gap-10 mb-10">
                 
-                {{-- Kolom 1: Brand --}}
-                <div class="md:col-span-5">
-                    <div class="flex items-center gap-3 mb-5">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur border border-white/20">
-                            <span class="text-2xl font-black text-white">LS</span>
-                        </div>
-                        <span class="text-2xl font-serif italic text-white">Lumban Silintong</span>
-                    </div>
-                    <p class="text-base font-light text-emerald-100/50 italic max-w-sm mb-6 leading-relaxed">
-                        "Mewujudkan kemandirian desa melalui tata kelola cerdas dan digitalisasi yang inklusif."
+                {{-- Left Section - Silintong --}}
+                <div class="md:w-2/5">
+                    <h1 class="text-6xl md:text-7xl font-serif italic text-emerald-400 tracking-wide mb-3 leading-tight">Silintong</h1>
+                    <p class="text-white/60 text-base italic mt-2 leading-relaxed max-w-sm">
+                        Pusat Digitalisasi Peradaban Desa<br>Pesisir Danau Toba.
                     </p>
-                    <div class="flex gap-3">
-                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gradient-to-r hover:from-emerald-500 hover:to-emerald-600 transition-all duration-300 group">
-                            <i class="fa-brands fa-instagram text-sm text-white/60 group-hover:text-white"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gradient-to-r hover:from-emerald-500 hover:to-emerald-600 transition-all duration-300 group">
-                            <i class="fa-brands fa-facebook-f text-sm text-white/60 group-hover:text-white"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gradient-to-r hover:from-emerald-500 hover:to-emerald-600 transition-all duration-300 group">
-                            <i class="fa-brands fa-youtube text-sm text-white/60 group-hover:text-white"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gradient-to-r hover:from-emerald-500 hover:to-emerald-600 transition-all duration-300 group">
-                            <i class="fa-brands fa-whatsapp text-sm text-white/60 group-hover:text-white"></i>
-                        </a>
+                </div>
+
+                {{-- Middle Section - Navigasi & Layanan --}}
+                <div class="md:w-2/5">
+                    <div class="grid grid-cols-2 gap-10">
+                        <div>
+                            <h5 class="footer-heading">NAVIGASI</h5>
+                            <ul class="space-y-3">
+                                <li><a href="{{ route('home') }}" class="footer-link-cerah">Beranda</a></li>
+                                <li><a href="{{ route('profil-desa') }}" class="footer-link-cerah">Profil Desa</a></li>
+                                <li><a href="{{ route('berita') }}" class="footer-link-cerah">Berita</a></li>
+                                <li><a href="{{ route('galeri') }}" class="footer-link-cerah">Galeri</a></li>
+                                <li><a href="{{ route('umkm') }}" class="footer-link-cerah">UMKM</a></li>
+                                <li><a href="{{ route('kontak') }}" class="footer-link-cerah">Kontak</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="footer-heading">LAYANAN</h5>
+                            <ul class="space-y-3">
+                                <li><a href="{{ route('masyarakat.surat.create') }}" class="footer-link-cerah">Layanan Surat</a></li>
+                                <li><a href="{{ route('masyarakat.aspirasi.create') }}" class="footer-link-cerah">Aspirasi & Pengaduan</a></li>
+                                <li><a href="#" class="footer-link-cerah">UMKM Lokal</a></li>
+                                <li><a href="#" class="footer-link-cerah">Galeri Desa</a></li>
+                                <li><a href="#" class="footer-link-cerah">Informasi Publik</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
-                {{-- Kolom 2: Navigasi Cepat --}}
-                <div class="md:col-span-3">
-                    <h5 class="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-400 mb-5">Navigasi</h5>
-                    <ul class="space-y-3 text-emerald-100/40 text-sm">
-                        <li><a href="{{ route('home') }}" class="hover:text-white transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-emerald-400"></i> Beranda</a></li>
-                        <li><a href="{{ route('profil-desa') }}" class="hover:text-white transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-emerald-400"></i> Profil Desa</a></li>
-                        <li><a href="{{ route('berita') }}" class="hover:text-white transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-emerald-400"></i> Berita & Acara</a></li>
-                        <li><a href="{{ route('umkm') }}" class="hover:text-white transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-emerald-400"></i> Katalog UMKM</a></li>
-                        <li><a href="#layanan-publik" class="hover:text-white transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-emerald-400"></i> Portal Mandiri</a></li>
-                    </ul>
-                </div>
-
-                {{-- Kolom 3: Kontak & Informasi --}}
-                <div class="md:col-span-4">
-                    <h5 class="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-400 mb-5">Hubungi Kami</h5>
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
-                                <i class="fa-solid fa-location-dot text-emerald-400 text-sm"></i>
-                            </div>
-                            <p class="text-sm text-emerald-100/40 leading-relaxed">Kec. Balige, Kab. Toba, Sumatera Utara, 22312</p>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
-                                <i class="fa-regular fa-envelope text-emerald-400 text-sm"></i>
-                            </div>
-                            <p class="text-sm text-emerald-100/40">halo@lumbansilintong.id</p>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
-                                <i class="fa-solid fa-phone text-emerald-400 text-sm"></i>
-                            </div>
-                            <p class="text-sm text-emerald-100/40">+62 822 1234 5678</p>
-                        </div>
-                    </div>
+                {{-- Right Section - Lokasi --}}
+                <div class="md:w-1/5">
+                    <h5 class="footer-heading">KANTOR</h5>
+                    <p class="text-white/60 text-sm leading-relaxed">
+                        Kabupaten Toba,<br>
+                        Sumatera Utara,<br>
+                        Indonesia.
+                    </p>
                 </div>
             </div>
 
-            {{-- Copyright --}}
-            <div class="pt-8 border-t border-white/10 text-center">
-                <p class="text-[9px] font-black uppercase tracking-[0.5em] text-emerald-100/20">
-                    © <span x-text="tahun"></span> Lumban Silintong - Digital Excellence for Rural Innovation
+            {{-- Bottom Tagline --}}
+            <div class="border-t border-white/15 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-white/40 text-sm italic tracking-wide">
+                    Mewujudkan masa depan desa digital yang harmonis dengan keindahan alam Toba.
                 </p>
-                <p class="text-[8px] text-emerald-100/10 mt-3 tracking-wider">
-                    Dikembangkan oleh Tim Proyek Akhir IT DEL
+                <p class="text-white/25 text-[10px] tracking-wider">
+                    © <span x-text="tahun"></span> DESA LUMBAN SILINTONG
                 </p>
             </div>
         </div>

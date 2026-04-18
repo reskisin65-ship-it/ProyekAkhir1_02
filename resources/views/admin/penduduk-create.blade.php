@@ -1,5 +1,5 @@
 {{-- resources/views/admin/penduduk-create.blade.php --}}
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Tambah Data Penduduk')
 

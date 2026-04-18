@@ -11,14 +11,25 @@ class PengajuanSurat extends Model
     protected $primaryKey = 'id_surat';
     
     protected $fillable = [
-        'user_id', 'jenis_surat', 'nama_lengkap', 'nik', 'tempat_lahir',
-        'tanggal_lahir', 'nomor_telepon', 'keperluan', 'berkas_pendukung',
-        'status', 'catatan_penolakan', 'file_surat', 'tgl_pengajuan'
+        'user_id',
+        'jenis_surat',
+        'nama_lengkap',
+        'nik',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'nomor_telepon',
+        'keperluan',
+        'keterangan',
+        'berkas_pendukung',
+        'status',
+        'catatan_penolakan',
+        'file_surat',
+        'tgl_pengajuan'
     ];
     
     protected $casts = [
+        'tgl_pengajuan' => 'date',
         'tanggal_lahir' => 'date',
-        'tgl_pengajuan' => 'date'
     ];
     
     public function user()

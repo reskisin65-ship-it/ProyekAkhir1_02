@@ -52,7 +52,7 @@ class AdminController extends Controller
 
     public function berita()
     {
-        $beritas = Berita::orderBy('created_at', 'desc')->get();
+        $beritas = Berita::orderBy('created_at', 'desc')->paginate(15);
         return view('admin.berita', compact('beritas'));
     }
 
@@ -144,101 +144,103 @@ class AdminController extends Controller
         return redirect()->route('admin.berita.index')
             ->with('success', 'Berita berhasil dihapus!');
     }
-// ==============================================
-// MANAJEMEN GALERI
-// ==============================================
 
-public function galeri()
-{
-    $galeris = Galeri::orderBy('created_at', 'desc')->paginate(12);
-    return view('admin.galeri', compact('galeris'));
-}
+    // ==============================================
+    // MANAJEMEN GALERI
+    // ==============================================
 
-public function galeriCreate()
-{
-    return view('admin.galeri-create');
-}
+    public function galeri()
+    {
+        $galeris = Galeri::orderBy('created_at', 'desc')->paginate(12);
+        return view('admin.galeri', compact('galeris'));
+    }
 
-public function galeriStore(Request $request)
-{
-    $request->validate([
-        'judul' => 'required|min:3',
-        'kategori' => 'required',
-        'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
+    public function galeriCreate()
+    {
+        return view('admin.galeri-create');
+    }
 
-    $gambarPath = $request->file('foto')->store('galeri', 'public');
+    public function galeriStore(Request $request)
+    {
+        $request->validate([
+            'judul' => 'required|min:3',
+            'kategori' => 'required',
+            'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-    Galeri::create([
-        'judul_galeri' => $request->judul,
-        'gambar_galeri' => $gambarPath,
-        'kategori' => $request->kategori,
-    ]);
+        $gambarPath = $request->file('foto')->store('galeri', 'public');
 
-    return redirect()->route('admin.galeri.index')
-        ->with('success', 'Foto berhasil ditambahkan!');
-}
+        Galeri::create([
+            'judul_galeri' => $request->judul,
+            'gambar_galeri' => $gambarPath,
+            'kategori' => $request->kategori,
+        ]);
 
-public function galeriShow($id)
-{
-    $galeri = Galeri::findOrFail($id);
-    return view('admin.galeri-show', compact('galeri'));
-}
+        return redirect()->route('admin.galeri.index')
+            ->with('success', 'Foto berhasil ditambahkan!');
+    }
 
-public function galeriEdit($id)
-{
-    $galeri = Galeri::findOrFail($id);
-    return view('admin.galeri-edit', compact('galeri'));
-}
+    public function galeriShow($id)
+    {
+        $galeri = Galeri::findOrFail($id);
+        return view('admin.galeri-show', compact('galeri'));
+    }
 
-public function galeriUpdate(Request $request, $id)
-{
-    $galeri = Galeri::findOrFail($id);
-    
-    $request->validate([
-        'judul' => 'required|min:3',
-        'kategori' => 'required',
-        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
+    public function galeriEdit($id)
+    {
+        $galeri = Galeri::findOrFail($id);
+        return view('admin.galeri-edit', compact('galeri'));
+    }
 
-    $data = [
-        'judul_galeri' => $request->judul,
-        'kategori' => $request->kategori,
-    ];
+    public function galeriUpdate(Request $request, $id)
+    {
+        $galeri = Galeri::findOrFail($id);
+        
+        $request->validate([
+            'judul' => 'required|min:3',
+            'kategori' => 'required',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-    if ($request->hasFile('foto')) {
+        $data = [
+            'judul_galeri' => $request->judul,
+            'kategori' => $request->kategori,
+        ];
+
+        if ($request->hasFile('foto')) {
+            if ($galeri->gambar_galeri && Storage::disk('public')->exists($galeri->gambar_galeri)) {
+                Storage::disk('public')->delete($galeri->gambar_galeri);
+            }
+            $data['gambar_galeri'] = $request->file('foto')->store('galeri', 'public');
+        }
+
+        $galeri->update($data);
+
+        return redirect()->route('admin.galeri.index')
+            ->with('success', 'Galeri berhasil diperbarui!');
+    }
+
+    public function galeriDestroy($id)
+    {
+        $galeri = Galeri::findOrFail($id);
+        
         if ($galeri->gambar_galeri && Storage::disk('public')->exists($galeri->gambar_galeri)) {
             Storage::disk('public')->delete($galeri->gambar_galeri);
         }
-        $data['gambar_galeri'] = $request->file('foto')->store('galeri', 'public');
+        
+        $galeri->delete();
+        
+        return redirect()->route('admin.galeri.index')
+            ->with('success', 'Foto berhasil dihapus!');
     }
 
-    $galeri->update($data);
-
-    return redirect()->route('admin.galeri.index')
-        ->with('success', 'Galeri berhasil diperbarui!');
-}
-
-public function galeriDestroy($id)
-{
-    $galeri = Galeri::findOrFail($id);
-    
-    if ($galeri->gambar_galeri && Storage::disk('public')->exists($galeri->gambar_galeri)) {
-        Storage::disk('public')->delete($galeri->gambar_galeri);
-    }
-    
-    $galeri->delete();
-    
-    return redirect()->route('admin.galeri.index')
-        ->with('success', 'Foto berhasil dihapus!');
-}
     // ==============================================
     // MANAJEMEN UMKM
     // ==============================================
 
     public function umkm()
     {
-        $umkms = Umkm::with('user')->orderBy('created_at', 'desc')->get();
+        $umkms = Umkm::with('user')->orderBy('created_at', 'desc')->paginate(15);
         return view('admin.umkm', compact('umkms'));
     }
 
@@ -247,7 +249,7 @@ public function galeriDestroy($id)
         $umkm = Umkm::findOrFail($id);
         $umkm->update(['status' => 'approved']);
         
-        $roleUmkm = \App\Models\Role::where('nama_role', 'umkm')->first();
+        $roleUmkm = Role::where('nama_role', 'umkm')->first();
         if ($roleUmkm) {
             $umkm->user->update(['id_role' => $roleUmkm->id_role]);
         }
@@ -269,8 +271,8 @@ public function galeriDestroy($id)
     {
         $umkm = Umkm::findOrFail($id);
         
-        if ($umkm->bukti_usaha && Storage::disk('public')->exists($umkm->bukti_usaha)) {
-            Storage::disk('public')->delete($umkm->bukti_usaha);
+        if ($umkm->logo && Storage::disk('public')->exists($umkm->logo)) {
+            Storage::disk('public')->delete($umkm->logo);
         }
         
         foreach ($umkm->produk as $produk) {
@@ -285,48 +287,120 @@ public function galeriDestroy($id)
             ->with('success', 'UMKM berhasil dihapus!');
     }
 
-    // ==============================================
-    // MANAJEMEN PENGAJUAN SURAT
-    // ==============================================
+// ==============================================
+// MANAJEMEN PENGAJUAN SURAT (ADMIN)
+// ==============================================
 
-    public function pengajuanSurat()
-    {
-        $pengajuan = PengajuanSurat::with('user')->orderBy('created_at', 'desc')->get();
-        return view('admin.pengajuan-surat', compact('pengajuan'));
+public function pengajuanSurat()
+{
+    $status = request('status', 'all');
+    $query = PengajuanSurat::with('user')->orderBy('created_at', 'desc');
+    
+    if ($status != 'all') {
+        $query->where('status', $status);
     }
+    
+    $pengajuan = $query->paginate(15);
+    
+    $statistik = [
+        'total' => PengajuanSurat::count(),
+        'menunggu' => PengajuanSurat::where('status', 'menunggu')->count(),
+        'diproses' => PengajuanSurat::where('status', 'diproses')->count(),
+        'selesai' => PengajuanSurat::where('status', 'selesai')->count(),
+        'ditolak' => PengajuanSurat::where('status', 'ditolak')->count(),
+    ];
+    
+    return view('admin.pengajuan-surat', compact('pengajuan', 'statistik'));
+}
 
-    public function pengajuanSuratShow($id)
-    {
-        $pengajuan = PengajuanSurat::findOrFail($id);
-        return response()->json($pengajuan);
-    }
+public function pengajuanSuratShow($id)
+{
+    $pengajuan = PengajuanSurat::with('user')->findOrFail($id);
+    return view('admin.pengajuan-surat-show', compact('pengajuan'));
+}
 
-    public function pengajuanSuratApprove($id)
-    {
-        $pengajuan = PengajuanSurat::findOrFail($id);
-        $pengajuan->update(['status' => 'diproses']);
-        
-        return back()->with('success', 'Pengajuan surat diproses!');
-    }
+public function pengajuanSuratApprove($id)
+{
+    $pengajuan = PengajuanSurat::findOrFail($id);
+    $pengajuan->update(['status' => 'diproses']);
+    
+    return back()->with('success', 'Pengajuan surat diterima dan sedang diproses!');
+}
 
-    public function pengajuanSuratComplete($id)
-    {
-        $pengajuan = PengajuanSurat::findOrFail($id);
-        $pengajuan->update(['status' => 'selesai']);
-        
-        return back()->with('success', 'Pengajuan surat selesai!');
-    }
+public function pengajuanSuratComplete(Request $request, $id)
+{
+    $request->validate([
+        'file_surat' => 'required|file|mimes:pdf|max:2048',
+    ]);
+    
+    $pengajuan = PengajuanSurat::findOrFail($id);
+    
+    $filePath = $request->file('file_surat')->store('surat_selesai', 'public');
+    
+    $pengajuan->update([
+        'status' => 'selesai',
+        'file_surat' => $filePath,
+    ]);
+    
+    return redirect()->route('admin.pengajuan-surat.index')
+        ->with('success', 'Surat selesai dan telah diunggah!');
+}
 
-    public function pengajuanSuratReject(Request $request, $id)
-    {
-        $pengajuan = PengajuanSurat::findOrFail($id);
-        $pengajuan->update([
-            'status' => 'ditolak',
-            'catatan_penolakan' => $request->catatan
-        ]);
-        
-        return back()->with('success', 'Pengajuan surat ditolak!');
+public function pengajuanSuratReject(Request $request, $id)
+{
+    $request->validate([
+        'catatan' => 'required|min:5',
+    ]);
+    
+    $pengajuan = PengajuanSurat::findOrFail($id);
+    $pengajuan->update([
+        'status' => 'ditolak',
+        'catatan_penolakan' => $request->catatan,
+    ]);
+    
+    return back()->with('success', 'Pengajuan surat ditolak!');
+}
+
+public function pengajuanSuratDestroy($id)
+{
+    $pengajuan = PengajuanSurat::findOrFail($id);
+    
+    // PERBAIKAN: gunakan berkas_pendukung
+    if ($pengajuan->berkas_pendukung && Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
+        Storage::disk('public')->delete($pengajuan->berkas_pendukung);
     }
+    if ($pengajuan->file_surat && Storage::disk('public')->exists($pengajuan->file_surat)) {
+        Storage::disk('public')->delete($pengajuan->file_surat);
+    }
+    
+    $pengajuan->delete();
+    
+    return redirect()->route('admin.pengajuan-surat.index')
+        ->with('success', 'Pengajuan surat berhasil dihapus!');
+}
+
+public function pengajuanSuratDownload($id)
+{
+    $pengajuan = PengajuanSurat::findOrFail($id);
+    
+    if (!$pengajuan->file_surat || !Storage::disk('public')->exists($pengajuan->file_surat)) {
+        return back()->with('error', 'File surat tidak ditemukan!');
+    }
+    
+    return Storage::disk('public')->download($pengajuan->file_surat, 'Surat_' . $pengajuan->jenis_surat . '.pdf');
+}
+
+public function pengajuanSuratDownloadPendukung($id)
+{
+    $pengajuan = PengajuanSurat::findOrFail($id);
+    
+    // PERBAIKAN: gunakan berkas_pendukung
+    if (!$pengajuan->berkas_pendukung || !Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
+        return back()->with('error', 'File pendukung tidak ditemukan!');
+    }
+    
+    return Storage::disk('public')->download($pengajuan->berkas_pendukung, 'Pendukung_' . $pengajuan->jenis_surat . '.pdf');
+}
 
     // ==============================================
     // MANAJEMEN ASPIRASI
@@ -334,19 +408,38 @@ public function galeriDestroy($id)
 
     public function aspirasi()
     {
-        $aspirasi = Aspirasi::with('user')->orderBy('created_at', 'desc')->get();
-        return view('admin.aspirasi', compact('aspirasi'));
+        $status = request('status', 'all');
+        $query = Aspirasi::with('user')->orderBy('created_at', 'desc');
+        
+        if ($status != 'all') {
+            $query->where('status', $status);
+        }
+        
+        $aspirasi = $query->paginate(15);
+        
+        $statistik = [
+            'total' => Aspirasi::count(),
+            'baru' => Aspirasi::where('status', 'baru')->count(),
+            'diproses' => Aspirasi::where('status', 'diproses')->count(),
+            'selesai' => Aspirasi::where('status', 'selesai')->count(),
+        ];
+        
+        return view('admin.aspirasi', compact('aspirasi', 'statistik'));
     }
 
     public function aspirasiRespond(Request $request, $id)
     {
+        $request->validate([
+            'respon' => 'required|min:5',
+        ]);
+        
         $aspirasi = Aspirasi::findOrFail($id);
         $aspirasi->update([
             'respon' => $request->respon,
             'status' => 'selesai'
         ]);
         
-        return back()->with('success', 'Aspirasi berhasil ditanggapi!');
+        return back()->with('success', 'Respon berhasil dikirim!');
     }
 
     public function aspirasiStatus($id)
@@ -357,101 +450,110 @@ public function galeriDestroy($id)
         return back()->with('success', 'Status aspirasi diperbarui!');
     }
 
+    public function aspirasiDestroy($id)
+    {
+        $aspirasi = Aspirasi::findOrFail($id);
+        $aspirasi->delete();
+        
+        return back()->with('success', 'Aspirasi berhasil dihapus!');
+    }
+
     // ==============================================
-// MANAJEMEN DATA PENDUDUK
-// ==============================================
+    // MANAJEMEN DATA PENDUDUK
+    // ==============================================
 
-public function penduduk()
-{
-    $penduduk = DataPenduduk::orderBy('created_at', 'desc')->get();
-    return view('admin.penduduk', compact('penduduk'));
-}
+    public function penduduk()
+    {
+        $penduduk = DataPenduduk::orderBy('created_at', 'desc')->paginate(20);
+        return view('admin.penduduk', compact('penduduk'));
+    }
 
-public function pendudukCreate()
-{
-    $roleMasyarakat = Role::where('nama_role', 'masyarakat')->first();
-    $users = User::when($roleMasyarakat, function($query) use ($roleMasyarakat) {
-        return $query->where('id_role', $roleMasyarakat->id_role);
-    })->get();
-    
-    return view('admin.penduduk-create', compact('users'));
-}
+    public function pendudukCreate()
+    {
+        $roleMasyarakat = Role::where('nama_role', 'masyarakat')->first();
+        $users = User::when($roleMasyarakat, function($query) use ($roleMasyarakat) {
+            return $query->where('id_role', $roleMasyarakat->id_role);
+        })->get();
+        
+        return view('admin.penduduk-create', compact('users'));
+    }
 
-public function pendudukStore(Request $request)
-{
-    $request->validate([
-        'nik' => 'required|size:16|unique:data_penduduk,nik',
-        'nama_lengkap' => 'required',
-        'jenis_kelamin' => 'required',
-        'tempat_lahir' => 'required',
-        'tanggal_lahir' => 'required|date',
-        'agama' => 'required',
-        'pendidikan' => 'required',
-        'pekerjaan' => 'required',
-        'status_perkawinan' => 'required',
-        'alamat' => 'required',
-        'rt_rw' => 'required',
-        'kelurahan_desa' => 'required',
-        'kecamatan' => 'required',
-        'kabupaten_kota' => 'required',
-        'provinsi' => 'required',
-        'status_keluarga' => 'required',
-    ]);
+    public function pendudukStore(Request $request)
+    {
+        $request->validate([
+            'nik' => 'required|size:16|unique:data_penduduk,nik',
+            'nama_lengkap' => 'required',
+            'jenis_kelamin' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required|date',
+            'agama' => 'required',
+            'pendidikan' => 'required',
+            'pekerjaan' => 'required',
+            'status_perkawinan' => 'required',
+            'alamat' => 'required',
+            'rt_rw' => 'required',
+            'kelurahan_desa' => 'required',
+            'kecamatan' => 'required',
+            'kabupaten_kota' => 'required',
+            'provinsi' => 'required',
+            'status_keluarga' => 'required',
+        ]);
 
-    DataPenduduk::create($request->all());
+        DataPenduduk::create($request->all());
 
-    return redirect()->route('admin.penduduk.index')
-        ->with('success', 'Data penduduk berhasil ditambahkan!');
-}
+        return redirect()->route('admin.penduduk.index')
+            ->with('success', 'Data penduduk berhasil ditambahkan!');
+    }
 
-public function pendudukEdit($id)
-{
-    $penduduk = DataPenduduk::findOrFail($id);
-    $roleMasyarakat = Role::where('nama_role', 'masyarakat')->first();
-    $users = User::when($roleMasyarakat, function($query) use ($roleMasyarakat) {
-        return $query->where('id_role', $roleMasyarakat->id_role);
-    })->get();
-    
-    return view('admin.penduduk-edit', compact('penduduk', 'users'));
-}
+    public function pendudukEdit($id)
+    {
+        $penduduk = DataPenduduk::findOrFail($id);
+        $roleMasyarakat = Role::where('nama_role', 'masyarakat')->first();
+        $users = User::when($roleMasyarakat, function($query) use ($roleMasyarakat) {
+            return $query->where('id_role', $roleMasyarakat->id_role);
+        })->get();
+        
+        return view('admin.penduduk-edit', compact('penduduk', 'users'));
+    }
 
-public function pendudukUpdate(Request $request, $id)
-{
-    $penduduk = DataPenduduk::findOrFail($id);
-    
-    $request->validate([
-        'nik' => 'required|size:16|unique:data_penduduk,nik,' . $id . ',id_penduduk',
-        'nama_lengkap' => 'required',
-        'jenis_kelamin' => 'required',
-        'tempat_lahir' => 'required',
-        'tanggal_lahir' => 'required|date',
-        'agama' => 'required',
-        'pendidikan' => 'required',
-        'pekerjaan' => 'required',
-        'status_perkawinan' => 'required',
-        'alamat' => 'required',
-        'rt_rw' => 'required',
-        'kelurahan_desa' => 'required',
-        'kecamatan' => 'required',
-        'kabupaten_kota' => 'required',
-        'provinsi' => 'required',
-        'status_keluarga' => 'required',
-    ]);
+    public function pendudukUpdate(Request $request, $id)
+    {
+        $penduduk = DataPenduduk::findOrFail($id);
+        
+        $request->validate([
+            'nik' => 'required|size:16|unique:data_penduduk,nik,' . $id . ',id_penduduk',
+            'nama_lengkap' => 'required',
+            'jenis_kelamin' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required|date',
+            'agama' => 'required',
+            'pendidikan' => 'required',
+            'pekerjaan' => 'required',
+            'status_perkawinan' => 'required',
+            'alamat' => 'required',
+            'rt_rw' => 'required',
+            'kelurahan_desa' => 'required',
+            'kecamatan' => 'required',
+            'kabupaten_kota' => 'required',
+            'provinsi' => 'required',
+            'status_keluarga' => 'required',
+        ]);
 
-    $penduduk->update($request->all());
+        $penduduk->update($request->all());
 
-    return redirect()->route('admin.penduduk.index')
-        ->with('success', 'Data penduduk berhasil diperbarui!');
-}
+        return redirect()->route('admin.penduduk.index')
+            ->with('success', 'Data penduduk berhasil diperbarui!');
+    }
 
-public function pendudukDestroy($id)
-{
-    $penduduk = DataPenduduk::findOrFail($id);
-    $penduduk->delete();
-    
-    return redirect()->route('admin.penduduk.index')
-        ->with('success', 'Data penduduk berhasil dihapus!');
-}
+    public function pendudukDestroy($id)
+    {
+        $penduduk = DataPenduduk::findOrFail($id);
+        $penduduk->delete();
+        
+        return redirect()->route('admin.penduduk.index')
+            ->with('success', 'Data penduduk berhasil dihapus!');
+    }
+
     // ==============================================
     // MANAJEMEN PROFIL DESA
     // ==============================================
@@ -488,7 +590,7 @@ public function pendudukDestroy($id)
 
     public function pengurus()
     {
-        $pengurus = DataPengurus::orderBy('urutan')->get();
+        $pengurus = DataPengurus::orderBy('urutan')->paginate(15);
         return view('admin.pengurus', compact('pengurus'));
     }
 
@@ -580,16 +682,41 @@ public function pendudukDestroy($id)
 
     public function statistik()
     {
+        // Data Penduduk
+        $totalPenduduk = DataPenduduk::count();
+        $pendudukPria = DataPenduduk::where('jenis_kelamin', 'L')->count();
+        $pendudukWanita = DataPenduduk::where('jenis_kelamin', 'P')->count();
+        $totalKK = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
+        
+        // Kelompok Umur
+        $kelompokUmur0_14 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count();
+        $kelompokUmur15_29 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count();
+        $kelompokUmur30_59 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count();
+        $kelompokUmur60 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count();
+        
+        // UMKM
+        $totalUmkm = Umkm::count();
+        $umkmApproved = Umkm::where('status', 'approved')->count();
+        
+        // Layanan
+        $totalBerita = Berita::count();
+        $totalAspirasi = Aspirasi::count();
+        $totalSurat = PengajuanSurat::count();
+        
         $statistik = [
-            'total_penduduk' => DataPenduduk::count(),
-            'penduduk_pria' => DataPenduduk::where('jenis_kelamin', 'L')->count(),
-            'penduduk_wanita' => DataPenduduk::where('jenis_kelamin', 'P')->count(),
-            'total_kk' => DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count(),
-            'total_umkm' => Umkm::count(),
-            'umkm_approved' => Umkm::where('status', 'approved')->count(),
-            'total_berita' => Berita::count(),
-            'total_aspirasi' => Aspirasi::count(),
-            'total_surat' => PengajuanSurat::count(),
+            'total_penduduk' => $totalPenduduk,
+            'penduduk_pria' => $pendudukPria,
+            'penduduk_wanita' => $pendudukWanita,
+            'total_kk' => $totalKK,
+            'kelompok_umur_0_14' => $kelompokUmur0_14,
+            'kelompok_umur_15_29' => $kelompokUmur15_29,
+            'kelompok_umur_30_59' => $kelompokUmur30_59,
+            'kelompok_umur_60' => $kelompokUmur60,
+            'total_umkm' => $totalUmkm,
+            'umkm_approved' => $umkmApproved,
+            'total_berita' => $totalBerita,
+            'total_aspirasi' => $totalAspirasi,
+            'total_surat' => $totalSurat,
         ];
         
         return view('admin.statistik', compact('statistik'));

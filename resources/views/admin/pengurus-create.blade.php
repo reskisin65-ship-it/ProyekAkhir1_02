@@ -1,6 +1,5 @@
 {{-- resources/views/admin/pengurus-create.blade.php --}}
-@extends('layouts.app')
-
+@extends('layouts.admin')
 @section('title', 'Tambah Pengurus Desa')
 
 @section('content')

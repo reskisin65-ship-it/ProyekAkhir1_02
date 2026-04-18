@@ -1,5 +1,5 @@
 {{-- resources/views/admin/pengurus-edit.blade.php --}}
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Edit Pengurus Desa')
 

@@ -1,6 +1,5 @@
 {{-- resources/views/admin/galeri-show.blade.php --}}
-@extends('layouts.app')
-
+@extends('layouts.admin')
 @section('title', 'Detail Galeri')
 
 @section('content')

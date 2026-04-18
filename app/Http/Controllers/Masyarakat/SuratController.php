@@ -7,16 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Models\PengajuanSurat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class SuratController extends Controller
 {
     public function index()
     {
-        $surat = PengajuanSurat::where('user_id', Auth::id())
+        $pengajuan = PengajuanSurat::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
-            ->get();
-        
-        return view('masyarakat.surat.index', compact('surat'));
+            ->paginate(10);
+        return view('masyarakat.surat.index', compact('pengajuan'));
     }
 
     public function create()
@@ -28,17 +28,19 @@ class SuratController extends Controller
     {
         $request->validate([
             'jenis_surat' => 'required',
-            'nama_lengkap' => 'required',
+            'nama_lengkap' => 'required|min:3',
             'nik' => 'required|size:16',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required|date',
-            'nomor_telepon' => 'required',
-            'keperluan' => 'required',
+            'nomor_telepon' => 'required|max:15',
+            'keperluan' => 'required|min:5',
+            'keterangan' => 'nullable',
+            'berkas_pendukung' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        $berkasPath = null;
+        $filePath = null;
         if ($request->hasFile('berkas_pendukung')) {
-            $berkasPath = $request->file('berkas_pendukung')->store('berkas_surat', 'public');
+            $filePath = $request->file('berkas_pendukung')->store('pendukung_surat', 'public');
         }
 
         PengajuanSurat::create([
@@ -50,7 +52,8 @@ class SuratController extends Controller
             'tanggal_lahir' => $request->tanggal_lahir,
             'nomor_telepon' => $request->nomor_telepon,
             'keperluan' => $request->keperluan,
-            'berkas_pendukung' => $berkasPath,
+            'keterangan' => $request->keterangan,
+            'berkas_pendukung' => $filePath,
             'status' => 'menunggu',
             'tgl_pengajuan' => now(),
         ]);
@@ -59,60 +62,47 @@ class SuratController extends Controller
             ->with('success', 'Pengajuan surat berhasil dikirim!');
     }
 
-    /**
-     * Tampilkan form edit surat (hanya jika status masih 'menunggu')
-     */
-    public function edit($id)
+    public function show($id)
     {
-        $surat = PengajuanSurat::where('user_id', Auth::id())
-            ->where('id_surat', $id)
-            ->firstOrFail();
-        
-        // Hanya bisa edit jika status masih 'menunggu'
-        if ($surat->status !== 'menunggu') {
-            return redirect()->route('masyarakat.surat.index')
-                ->with('error', 'Surat tidak dapat diedit karena sudah diproses!');
-        }
-        
-        return view('masyarakat.surat.edit', compact('surat'));
+        $pengajuan = PengajuanSurat::where('user_id', Auth::id())->findOrFail($id);
+        return view('masyarakat.surat.show', compact('pengajuan'));
     }
 
-    /**
-     * Update data surat (hanya jika status masih 'menunggu')
-     */
+    public function edit($id)
+    {
+        $pengajuan = PengajuanSurat::where('user_id', Auth::id())
+            ->where('status', 'menunggu')
+            ->findOrFail($id);
+        return view('masyarakat.surat.edit', compact('pengajuan'));
+    }
+
     public function update(Request $request, $id)
     {
-        $surat = PengajuanSurat::where('user_id', Auth::id())
-            ->where('id_surat', $id)
-            ->firstOrFail();
-        
-        // Hanya bisa update jika status masih 'menunggu'
-        if ($surat->status !== 'menunggu') {
-            return redirect()->route('masyarakat.surat.index')
-                ->with('error', 'Surat tidak dapat diedit karena sudah diproses!');
-        }
+        $pengajuan = PengajuanSurat::where('user_id', Auth::id())
+            ->where('status', 'menunggu')
+            ->findOrFail($id);
         
         $request->validate([
             'jenis_surat' => 'required',
-            'nama_lengkap' => 'required',
+            'nama_lengkap' => 'required|min:3',
             'nik' => 'required|size:16',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required|date',
-            'nomor_telepon' => 'required',
-            'keperluan' => 'required',
+            'nomor_telepon' => 'required|max:15',
+            'keperluan' => 'required|min:5',
+            'keterangan' => 'nullable',
+            'berkas_pendukung' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // Upload berkas baru jika ada
-        $berkasPath = $surat->berkas_pendukung;
+        $filePath = $pengajuan->berkas_pendukung;
         if ($request->hasFile('berkas_pendukung')) {
-            // Hapus berkas lama jika ada
-            if ($berkasPath && \Storage::disk('public')->exists($berkasPath)) {
-                \Storage::disk('public')->delete($berkasPath);
+            if ($filePath && Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
             }
-            $berkasPath = $request->file('berkas_pendukung')->store('berkas_surat', 'public');
+            $filePath = $request->file('berkas_pendukung')->store('pendukung_surat', 'public');
         }
 
-        $surat->update([
+        $pengajuan->update([
             'jenis_surat' => $request->jenis_surat,
             'nama_lengkap' => $request->nama_lengkap,
             'nik' => $request->nik,
@@ -120,55 +110,38 @@ class SuratController extends Controller
             'tanggal_lahir' => $request->tanggal_lahir,
             'nomor_telepon' => $request->nomor_telepon,
             'keperluan' => $request->keperluan,
-            'berkas_pendukung' => $berkasPath,
+            'keterangan' => $request->keterangan,
+            'berkas_pendukung' => $filePath,
         ]);
 
         return redirect()->route('masyarakat.surat.index')
             ->with('success', 'Pengajuan surat berhasil diperbarui!');
     }
 
-    /**
-     * Batalkan/Hapus surat (hanya jika status masih 'menunggu')
-     */
     public function destroy($id)
     {
-        $surat = PengajuanSurat::where('user_id', Auth::id())
-            ->where('id_surat', $id)
-            ->firstOrFail();
+        $pengajuan = PengajuanSurat::where('user_id', Auth::id())
+            ->where('status', 'menunggu')
+            ->findOrFail($id);
         
-        // Hanya bisa hapus jika status masih 'menunggu'
-        if ($surat->status !== 'menunggu') {
-            return redirect()->route('masyarakat.surat.index')
-                ->with('error', 'Surat tidak dapat dibatalkan karena sudah diproses!');
+        if ($pengajuan->berkas_pendukung && Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
+            Storage::disk('public')->delete($pengajuan->berkas_pendukung);
         }
         
-        // Hapus berkas jika ada
-        if ($surat->berkas_pendukung && \Storage::disk('public')->exists($surat->berkas_pendukung)) {
-            \Storage::disk('public')->delete($surat->berkas_pendukung);
-        }
-        
-        $surat->delete();
-        
+        $pengajuan->delete();
+
         return redirect()->route('masyarakat.surat.index')
             ->with('success', 'Pengajuan surat berhasil dibatalkan!');
     }
 
-    public function show($id)
-    {
-        $surat = PengajuanSurat::where('user_id', Auth::id())
-            ->where('id_surat', $id)
-            ->firstOrFail();
-        
-        return view('masyarakat.surat.show', compact('surat'));
-    }
-
     public function download($id)
     {
-        $surat = PengajuanSurat::where('user_id', Auth::id())
-            ->where('id_surat', $id)
-            ->firstOrFail();
+        $pengajuan = PengajuanSurat::where('user_id', Auth::id())->findOrFail($id);
         
-        // Logika download file surat
-        return back()->with('info', 'Fitur download sedang dalam pengembangan');
+        if (!$pengajuan->file_surat || !Storage::disk('public')->exists($pengajuan->file_surat)) {
+            return back()->with('error', 'File surat tidak ditemukan!');
+        }
+        
+        return Storage::disk('public')->download($pengajuan->file_surat, 'Surat_' . $pengajuan->jenis_surat . '.pdf');
     }
 }
