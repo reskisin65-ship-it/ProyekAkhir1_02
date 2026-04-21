@@ -12,7 +12,7 @@ use App\Models\ProfilDesa;
 use App\Models\DataPengurus;
 use App\Models\DataPenduduk;
 use App\Models\Role;
-use App\Models\PengaturanStatistik;  // <-- TARUH SINI, setelah use lainnya
+use App\Models\PengaturanStatistik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -45,6 +45,67 @@ class AdminController extends Controller
             'totalAspirasi', 'aspirasiBaru', 'pengajuanTerbaru', 
             'umkmTerbaru', 'aspirasiTerbaru'
         ));
+    }
+
+// ==============================================
+    // MANAJEMEN ASPIRASI
+    // ==============================================
+
+    public function aspirasi()
+    {
+        $status = request('status', 'all');
+        $query = Aspirasi::with('user')->orderBy('created_at', 'desc');
+        
+        if ($status != 'all') {
+            $query->where('status', $status);
+        }
+        
+        $aspirasi = $query->paginate(15);
+        
+        $statistik = [
+            'total' => Aspirasi::count(),
+            'baru' => Aspirasi::where('status', 'baru')->count(),
+            'diproses' => Aspirasi::where('status', 'diproses')->count(),
+            'selesai' => Aspirasi::where('status', 'selesai')->count(),
+        ];
+        
+        return view('admin.aspirasi', compact('aspirasi', 'statistik'));
+    }
+
+    public function aspirasiRespond(Request $request, $id)
+    {
+        $request->validate([
+            'respon' => 'required|min:5',
+        ]);
+        
+        $aspirasi = Aspirasi::findOrFail($id);
+        $aspirasi->update([
+            'respon_admin' => $request->respon,
+            'status' => 'selesai'
+        ]);
+        
+        return redirect()->route('admin.aspirasi.index')->with('success', 'Respon berhasil dikirim!');
+    }
+
+    public function aspirasiStatus($id)
+    {
+        $aspirasi = Aspirasi::findOrFail($id);
+        $aspirasi->update(['status' => 'diproses']);
+        
+        return back()->with('success', 'Status aspirasi diperbarui!');
+    }
+
+    public function aspirasiDestroy($id)
+    {
+        $aspirasi = Aspirasi::findOrFail($id);
+        
+        if ($aspirasi->lampiran && Storage::disk('public')->exists($aspirasi->lampiran)) {
+            Storage::disk('public')->delete($aspirasi->lampiran);
+        }
+        
+        $aspirasi->delete();
+        
+        return back()->with('success', 'Aspirasi berhasil dihapus!');
     }
 
     // ==============================================
@@ -86,6 +147,7 @@ class AdminController extends Controller
             'foto' => $fotoPath,
             'status' => $request->status ?? 'publish',
             'tanggal_publikasi' => $request->tanggal_publikasi,
+            'slug' => Str::slug($request->judul) . '-' . time(),
         ]);
 
         return redirect()->route('admin.berita.index')
@@ -126,6 +188,7 @@ class AdminController extends Controller
             'foto' => $fotoPath,
             'status' => $request->status ?? 'publish',
             'tanggal_publikasi' => $request->tanggal_publikasi,
+            'slug' => Str::slug($request->judul) . '-' . time(),
         ]);
 
         return redirect()->route('admin.berita.index')
@@ -402,62 +465,6 @@ class AdminController extends Controller
     }
 
     // ==============================================
-    // MANAJEMEN ASPIRASI
-    // ==============================================
-
-    public function aspirasi()
-    {
-        $status = request('status', 'all');
-        $query = Aspirasi::with('user')->orderBy('created_at', 'desc');
-        
-        if ($status != 'all') {
-            $query->where('status', $status);
-        }
-        
-        $aspirasi = $query->paginate(15);
-        
-        $statistik = [
-            'total' => Aspirasi::count(),
-            'baru' => Aspirasi::where('status', 'baru')->count(),
-            'diproses' => Aspirasi::where('status', 'diproses')->count(),
-            'selesai' => Aspirasi::where('status', 'selesai')->count(),
-        ];
-        
-        return view('admin.aspirasi', compact('aspirasi', 'statistik'));
-    }
-
-    public function aspirasiRespond(Request $request, $id)
-    {
-        $request->validate([
-            'respon' => 'required|min:5',
-        ]);
-        
-        $aspirasi = Aspirasi::findOrFail($id);
-        $aspirasi->update([
-            'respon' => $request->respon,
-            'status' => 'selesai'
-        ]);
-        
-        return back()->with('success', 'Respon berhasil dikirim!');
-    }
-
-    public function aspirasiStatus($id)
-    {
-        $aspirasi = Aspirasi::findOrFail($id);
-        $aspirasi->update(['status' => 'diproses']);
-        
-        return back()->with('success', 'Status aspirasi diperbarui!');
-    }
-
-    public function aspirasiDestroy($id)
-    {
-        $aspirasi = Aspirasi::findOrFail($id);
-        $aspirasi->delete();
-        
-        return back()->with('success', 'Aspirasi berhasil dihapus!');
-    }
-
-    // ==============================================
     // MANAJEMEN DATA PENDUDUK
     // ==============================================
 
@@ -675,87 +682,81 @@ class AdminController extends Controller
             ->with('success', 'Pengurus berhasil dihapus!');
     }
 
+    // ==============================================
+    // MANAJEMEN STATISTIK
+    // ==============================================
 
-
-
-// ==============================================
-// MANAJEMEN STATISTIK (DAPAT DIEDIT ADMIN)
-// ==============================================
-
-public function statistik()
-{
-    $statistik = [
-        'total_penduduk' => DataPenduduk::count(),
-        'penduduk_pria' => DataPenduduk::where('jenis_kelamin', 'L')->count(),
-        'penduduk_wanita' => DataPenduduk::where('jenis_kelamin', 'P')->count(),
-        'total_kk' => DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count(),
-        'kelompok_umur_0_14' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count(),
-        'kelompok_umur_15_29' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count(),
-        'kelompok_umur_30_59' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count(),
-        'kelompok_umur_60' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count(),
-        'total_umkm' => Umkm::count(),
-        'umkm_approved' => Umkm::where('status', 'approved')->count(),
-        'total_berita' => Berita::count(),
-        'total_aspirasi' => Aspirasi::count(),
-        'total_surat' => PengajuanSurat::count(),
-    ];
-    
-    return view('admin.statistik', compact('statistik'));
-}
-public function statistikKelola()
-{
-    // Data realtime dari database
-    $realtime = [
-        'total_penduduk' => DataPenduduk::count(),
-        'laki_laki' => DataPenduduk::where('jenis_kelamin', 'L')->count(),
-        'perempuan' => DataPenduduk::where('jenis_kelamin', 'P')->count(),
-        'kepala_keluarga' => DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count(),
-        'kelompok_umur_0_14' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count(),
-        'kelompok_umur_15_29' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count(),
-        'kelompok_umur_30_59' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count(),
-        'kelompok_umur_60' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count(),
-        'total_umkm' => Umkm::count(),
-        'umkm_aktif' => Umkm::where('status', 'approved')->count(),
-        'total_surat' => PengajuanSurat::count(),
-        'total_aspirasi' => Aspirasi::count(),
-        'total_berita' => Berita::count(),
-    ];
-    
-    // Data pengaturan dari database
-    $pengaturan = PengaturanStatistik::all()->keyBy('key');
-    
-    return view('admin.statistik.kelola', compact('realtime', 'pengaturan'));
-}
-
-public function statistikUpdate(Request $request)
-{
-    $keys = [
-        'total_penduduk', 'laki_laki', 'perempuan', 'kepala_keluarga',
-        'kelompok_umur_0_14', 'kelompok_umur_15_29', 'kelompok_umur_30_59', 'kelompok_umur_60',
-        'total_umkm', 'umkm_aktif', 'total_surat', 'total_aspirasi', 'total_berita'
-    ];
-    
-    foreach ($keys as $key) {
-        $mode = $request->input("mode_{$key}", 'otomatis');
-        $nilai = $request->input($key);
+    public function statistik()
+    {
+        $statistik = [
+            'total_penduduk' => DataPenduduk::count(),
+            'penduduk_pria' => DataPenduduk::where('jenis_kelamin', 'L')->count(),
+            'penduduk_wanita' => DataPenduduk::where('jenis_kelamin', 'P')->count(),
+            'total_kk' => DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count(),
+            'kelompok_umur_0_14' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count(),
+            'kelompok_umur_15_29' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count(),
+            'kelompok_umur_30_59' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count(),
+            'kelompok_umur_60' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count(),
+            'total_umkm' => Umkm::count(),
+            'umkm_approved' => Umkm::where('status', 'approved')->count(),
+            'total_berita' => Berita::count(),
+            'total_aspirasi' => Aspirasi::count(),
+            'total_surat' => PengajuanSurat::count(),
+        ];
         
-        if ($mode == 'manual' && $nilai !== null) {
-            // Mode Manual: simpan nilai manual
-            PengaturanStatistik::updateOrCreate(
-                ['key' => $key],
-                ['nilai_awal' => $nilai, 'mode' => 'manual']
-            );
-        } elseif ($mode == 'hybrid' && $nilai !== null) {
-            // Mode Hybrid: simpan nilai awal
-            PengaturanStatistik::updateOrCreate(
-                ['key' => $key],
-                ['nilai_awal' => $nilai, 'mode' => 'hybrid']
-            );
-        } else {
-            // Mode Otomatis: hapus pengaturan
-            PengaturanStatistik::where('key', $key)->delete();
-        }
+        return view('admin.statistik', compact('statistik'));
     }
-    
-    return redirect()->route('admin.statistik.kelola')->with('success', 'Pengaturan statistik berhasil disimpan!');
-}}
+
+    public function statistikKelola()
+    {
+        $realtime = [
+            'total_penduduk' => DataPenduduk::count(),
+            'laki_laki' => DataPenduduk::where('jenis_kelamin', 'L')->count(),
+            'perempuan' => DataPenduduk::where('jenis_kelamin', 'P')->count(),
+            'kepala_keluarga' => DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count(),
+            'kelompok_umur_0_14' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count(),
+            'kelompok_umur_15_29' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count(),
+            'kelompok_umur_30_59' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count(),
+            'kelompok_umur_60' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count(),
+            'total_umkm' => Umkm::count(),
+            'umkm_aktif' => Umkm::where('status', 'approved')->count(),
+            'total_surat' => PengajuanSurat::count(),
+            'total_aspirasi' => Aspirasi::count(),
+            'total_berita' => Berita::count(),
+        ];
+        
+        $pengaturan = PengaturanStatistik::all()->keyBy('key');
+        
+        return view('admin.statistik.kelola', compact('realtime', 'pengaturan'));
+    }
+
+    public function statistikUpdate(Request $request)
+    {
+        $keys = [
+            'total_penduduk', 'laki_laki', 'perempuan', 'kepala_keluarga',
+            'kelompok_umur_0_14', 'kelompok_umur_15_29', 'kelompok_umur_30_59', 'kelompok_umur_60',
+            'total_umkm', 'umkm_aktif', 'total_surat', 'total_aspirasi', 'total_berita'
+        ];
+        
+        foreach ($keys as $key) {
+            $mode = $request->input("mode_{$key}", 'otomatis');
+            $nilai = $request->input($key);
+            
+            if ($mode == 'manual' && $nilai !== null) {
+                PengaturanStatistik::updateOrCreate(
+                    ['key' => $key],
+                    ['nilai_awal' => $nilai, 'mode' => 'manual']
+                );
+            } elseif ($mode == 'hybrid' && $nilai !== null) {
+                PengaturanStatistik::updateOrCreate(
+                    ['key' => $key],
+                    ['nilai_awal' => $nilai, 'mode' => 'hybrid']
+                );
+            } else {
+                PengaturanStatistik::where('key', $key)->delete();
+            }
+        }
+        
+        return redirect()->route('admin.statistik.kelola')->with('success', 'Pengaturan statistik berhasil disimpan!');
+    }
+}

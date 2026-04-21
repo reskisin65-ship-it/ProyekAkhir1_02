@@ -1,161 +1,282 @@
 {{-- resources/views/admin/aspirasi.blade.php --}}
-@extends('layouts.admin')
+@extends('layouts.app')
 
-@section('title', 'Kelola Aspirasi')
+@section('title', 'Kelola Aspirasi - Admin')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 py-6">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">💬 Kelola Aspirasi</h1>
-        <p class="text-gray-500">Kelola dan tanggapi aspirasi dari masyarakat</p>
-    </div>
+<style>
+    .modal-transition {
+        transition: all 0.3s ease;
+    }
+    .response-card {
+        background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+        border-left: 4px solid #10b981;
+    }
+</style>
 
-    @if(session('success'))
-    <div class="mb-4 p-4 bg-green-50 text-green-700 rounded-lg border-l-4 border-green-500">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    {{-- Statistik Cards --}}
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <a href="{{ route('admin.aspirasi.index', ['status' => 'all']) }}" 
-           class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition {{ request('status') == 'all' || !request('status') ? 'ring-2 ring-emerald-500' : '' }}">
-            <p class="text-gray-400 text-sm">Total</p>
-            <p class="text-2xl font-bold text-gray-800">{{ $statistik['total'] }}</p>
-        </a>
-        <a href="{{ route('admin.aspirasi.index', ['status' => 'baru']) }}" 
-           class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition {{ request('status') == 'baru' ? 'ring-2 ring-red-500' : '' }}">
-            <p class="text-red-500 text-sm">Baru</p>
-            <p class="text-2xl font-bold text-red-600">{{ $statistik['baru'] }}</p>
-        </a>
-        <a href="{{ route('admin.aspirasi.index', ['status' => 'diproses']) }}" 
-           class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition {{ request('status') == 'diproses' ? 'ring-2 ring-yellow-500' : '' }}">
-            <p class="text-yellow-500 text-sm">Diproses</p>
-            <p class="text-2xl font-bold text-yellow-600">{{ $statistik['diproses'] }}</p>
-        </a>
-        <a href="{{ route('admin.aspirasi.index', ['status' => 'selesai']) }}" 
-           class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition {{ request('status') == 'selesai' ? 'ring-2 ring-green-500' : '' }}">
-            <p class="text-green-500 text-sm">Selesai</p>
-            <p class="text-2xl font-bold text-green-600">{{ $statistik['selesai'] }}</p>
-        </a>
-    </div>
-
-    {{-- List Aspirasi --}}
-    <div class="space-y-4">
-        @forelse($aspirasi as $item)
-        <div class="bg-white rounded-xl shadow-sm border-l-4 
-            @if($item->status == 'baru') border-red-500
-            @elseif($item->status == 'diproses') border-yellow-500
-            @else border-green-500 @endif">
-            <div class="p-5">
-                <div class="flex justify-between items-start">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold">
-                                {{ substr($item->user->name ?? 'U', 0, 1) }}
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-800">{{ $item->judul }}</h3>
-                                <p class="text-xs text-gray-400">
-                                    {{ $item->user->name ?? 'Anonim' }} • 
-                                    {{ $item->kategori }} • 
-                                    {{ $item->created_at->translatedFormat('d M Y, H:i') }}
-                                </p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mt-2">{{ $item->isi_aspirasi }}</p>
-                        
-                        @if($item->respon)
-                        <div class="mt-3 p-3 bg-gray-50 rounded-lg">
-                            <p class="text-xs text-emerald-600 font-semibold">📝 Respon Admin:</p>
-                            <p class="text-sm text-gray-600">{{ $item->respon }}</p>
-                        </div>
-                        @endif
-                    </div>
-                    
-                    <div class="flex flex-col items-end gap-2 ml-4">
-                        <span class="px-2 py-1 rounded-full text-xs font-semibold
-                            @if($item->status == 'baru') bg-red-100 text-red-700
-                            @elseif($item->status == 'diproses') bg-yellow-100 text-yellow-700
-                            @else bg-green-100 text-green-700 @endif">
-                            @if($item->status == 'baru') 🆕 Baru
-                            @elseif($item->status == 'diproses') ⏳ Diproses
-                            @else ✅ Selesai @endif
-                        </span>
-                        
-                        <div class="flex gap-2">
-                            @if($item->status == 'baru')
-                            <form action="{{ route('admin.aspirasi.status', $item->id_aspirasi) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="px-3 py-1 bg-yellow-500 text-white text-xs rounded-lg hover:bg-yellow-600">
-                                    Proses
-                                </button>
-                            </form>
-                            @endif
-                            
-                            @if($item->status != 'selesai')
-                            <button onclick="openResponModal({{ $item->id_aspirasi }}, '{{ addslashes($item->judul) }}')" 
-                                    class="px-3 py-1 bg-emerald-500 text-white text-xs rounded-lg hover:bg-emerald-600">
-                                Respon
-                            </button>
-                            @endif
-                            
-                            <form action="{{ route('admin.aspirasi.destroy', $item->id_aspirasi) }}" method="POST" onsubmit="return confirm('Yakin hapus aspirasi ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="px-3 py-1 bg-red-500 text-white text-xs rounded-lg hover:bg-red-600">
-                                    Hapus
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {{-- Header --}}
+        <div class="relative mb-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-serif italic text-emerald-800">📋 Kelola Aspirasi</h1>
+                    <p class="text-gray-500 mt-1">Kelola dan tanggapi aspirasi dari masyarakat</p>
                 </div>
             </div>
+            <div class="w-20 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full mt-3"></div>
         </div>
-        @empty
-        <div class="bg-white rounded-xl shadow-md p-12 text-center">
-            <i class="fa-regular fa-comment-dots text-5xl text-gray-300 mb-3"></i>
-            <p class="text-gray-400">Belum ada aspirasi yang masuk</p>
-        </div>
-        @endforelse
-    </div>
 
-    <div class="mt-6">
-        {{ $aspirasi->links() }}
+        {{-- Statistik Cards --}}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-8">
+            <div class="bg-white rounded-2xl p-5 text-center shadow-md border border-gray-100">
+                <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-solid fa-list-check text-emerald-600 text-xl"></i>
+                </div>
+                <p class="text-2xl font-bold text-emerald-700">{{ $statistik['total'] }}</p>
+                <p class="text-xs text-gray-500">Total Aspirasi</p>
+            </div>
+            <div class="bg-white rounded-2xl p-5 text-center shadow-md border border-gray-100">
+                <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-regular fa-clock text-yellow-600 text-xl"></i>
+                </div>
+                <p class="text-2xl font-bold text-yellow-600">{{ $statistik['baru'] }}</p>
+                <p class="text-xs text-gray-500">Baru</p>
+            </div>
+            <div class="bg-white rounded-2xl p-5 text-center shadow-md border border-gray-100">
+                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-solid fa-spinner fa-spin text-blue-600 text-xl"></i>
+                </div>
+                <p class="text-2xl font-bold text-blue-600">{{ $statistik['diproses'] }}</p>
+                <p class="text-xs text-gray-500">Diproses</p>
+            </div>
+            <div class="bg-white rounded-2xl p-5 text-center shadow-md border border-gray-100">
+                <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-regular fa-circle-check text-green-600 text-xl"></i>
+                </div>
+                <p class="text-2xl font-bold text-green-600">{{ $statistik['selesai'] }}</p>
+                <p class="text-xs text-gray-500">Selesai</p>
+            </div>
+        </div>
+
+        {{-- Filter Status --}}
+        <div class="mb-6 flex flex-wrap gap-2">
+            <a href="{{ route('admin.aspirasi.index', ['status' => 'all']) }}" 
+               class="px-4 py-2 rounded-xl text-sm font-semibold transition-all {{ request('status', 'all') == 'all' ? 'bg-emerald-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-50' }}">
+                Semua
+            </a>
+            <a href="{{ route('admin.aspirasi.index', ['status' => 'baru']) }}" 
+               class="px-4 py-2 rounded-xl text-sm font-semibold transition-all {{ request('status') == 'baru' ? 'bg-emerald-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-50' }}">
+                Baru
+            </a>
+            <a href="{{ route('admin.aspirasi.index', ['status' => 'diproses']) }}" 
+               class="px-4 py-2 rounded-xl text-sm font-semibold transition-all {{ request('status') == 'diproses' ? 'bg-emerald-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-50' }}">
+                Diproses
+            </a>
+            <a href="{{ route('admin.aspirasi.index', ['status' => 'selesai']) }}" 
+               class="px-4 py-2 rounded-xl text-sm font-semibold transition-all {{ request('status') == 'selesai' ? 'bg-emerald-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-50' }}">
+                Selesai
+            </a>
+        </div>
+
+        {{-- Alert Messages --}}
+        @if(session('success'))
+        <div class="mb-6 p-4 bg-green-50 text-green-700 rounded-xl border-l-4 border-green-500">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+        </div>
+        @endif
+
+        @if(session('error'))
+        <div class="mb-6 p-4 bg-red-50 text-red-700 rounded-xl border-l-4 border-red-500">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+        </div>
+        @endif
+
+        {{-- Tabel Aspirasi --}}
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gradient-to-r from-emerald-50 to-white border-b border-gray-200">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-emerald-700 uppercase">No</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-emerald-700 uppercase">Pengirim</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-emerald-700 uppercase">Kategori</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-emerald-700 uppercase">Judul</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-emerald-700 uppercase">Tanggal</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-emerald-700 uppercase">Status</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-emerald-700 uppercase">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($aspirasi as $index => $a)
+                        <tr class="hover:bg-emerald-50/30 transition">
+                            <td class="px-6 py-4 text-sm text-gray-600">{{ $aspirasi->firstItem() + $index }}</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white text-xs font-bold">
+                                        {{ substr($a->user->name ?? 'W', 0, 1) }}
+                                    </div>
+                                    <span class="font-medium text-gray-800">{{ $a->user->name ?? 'Warga' }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 rounded-full text-xs font-semibold
+                                    @if($a->kategori == 'saran') bg-green-100 text-green-700
+                                    @elseif($a->kategori == 'keluhan') bg-red-100 text-red-700
+                                    @elseif($a->kategori == 'masukan') bg-blue-100 text-blue-700
+                                    @else bg-purple-100 text-purple-700 @endif">
+                                    @if($a->kategori == 'saran') 💡 Saran
+                                    @elseif($a->kategori == 'keluhan') 😞 Keluhan
+                                    @elseif($a->kategori == 'masukan') 📝 Masukan
+                                    @else ❓ Pertanyaan @endif
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="font-medium text-gray-800">{{ Str::limit($a->judul, 40) }}</p>
+                                <p class="text-xs text-gray-400 mt-1">{{ Str::limit($a->isi_aspirasi, 50) }}</p>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-500">{{ $a->created_at->translatedFormat('d F Y, H:i') }}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 w-fit
+                                    @if($a->status == 'baru') bg-yellow-100 text-yellow-700
+                                    @elseif($a->status == 'diproses') bg-blue-100 text-blue-700
+                                    @else bg-green-100 text-green-700 @endif">
+                                    @if($a->status == 'baru') <i class="fa-regular fa-clock"></i> Baru
+                                    @elseif($a->status == 'diproses') <i class="fa-solid fa-spinner fa-spin"></i> Diproses
+                                    @else <i class="fa-regular fa-circle-check"></i> Selesai @endif
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    @if($a->status == 'baru')
+                                    <button onclick="openResponModal({{ $a->id_aspirasi }}, '{{ addslashes($a->judul) }}')" 
+                                            class="px-3 py-1.5 bg-emerald-500 text-white rounded-lg text-xs font-semibold hover:bg-emerald-600 transition">
+                                        <i class="fa-regular fa-reply mr-1"></i> Respon
+                                    </button>
+                                    <a href="{{ route('admin.aspirasi.status', $a->id_aspirasi) }}" 
+                                       class="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-xs font-semibold hover:bg-blue-600 transition"
+                                       onclick="return confirm('Ubah status menjadi diproses?')">
+                                        <i class="fa-solid fa-play mr-1"></i> Proses
+                                    </a>
+                                    @elseif($a->status == 'diproses')
+                                    <button onclick="openResponModal({{ $a->id_aspirasi }}, '{{ addslashes($a->judul) }}')" 
+                                            class="px-3 py-1.5 bg-emerald-500 text-white rounded-lg text-xs font-semibold hover:bg-emerald-600 transition">
+                                        <i class="fa-regular fa-reply mr-1"></i> Respon
+                                    </button>
+                                    @endif
+                                    
+                                    <form action="{{ route('admin.aspirasi.destroy', $a->id_aspirasi) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus aspirasi ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="px-3 py-1.5 bg-red-500 text-white rounded-lg text-xs font-semibold hover:bg-red-600 transition">
+                                            <i class="fa-solid fa-trash mr-1"></i> Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-400">
+                                <i class="fa-regular fa-comment-dots text-4xl mb-3 block"></i>
+                                <p>Belum ada aspirasi</p>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        {{-- Pagination --}}
+        <div class="mt-6">
+            {{ $aspirasi->appends(request()->query())->links() }}
+        </div>
     </div>
 </div>
 
 {{-- Modal Respon --}}
-<div id="responModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-lg w-full p-6">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-bold text-gray-800">📝 Beri Respon</h3>
-            <button onclick="closeResponModal()" class="text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-times text-xl"></i>
-            </button>
-        </div>
-        <form id="responForm" method="POST">
-            @csrf
-            <p class="text-sm text-gray-500 mb-3">Aspirasi: <span id="aspirasiJudul" class="font-semibold text-emerald-700"></span></p>
-            <textarea name="respon" rows="5" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Tulis respon Anda..." required></textarea>
-            <div class="flex gap-3 mt-4">
-                <button type="submit" class="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">Kirim Respon</button>
-                <button type="button" onclick="closeResponModal()" class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">Batal</button>
+<div id="responModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 py-8">
+        <div class="fixed inset-0 bg-black/50 transition-opacity" onclick="closeResponModal()"></div>
+        
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-auto z-10 transform transition-all">
+            <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-4 rounded-t-2xl">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-bold text-white">
+                        <i class="fa-regular fa-reply mr-2"></i> Beri Respon
+                    </h3>
+                    <button onclick="closeResponModal()" class="text-white/80 hover:text-white">
+                        <i class="fa-solid fa-times text-xl"></i>
+                    </button>
+                </div>
             </div>
-        </form>
+            
+            <form id="formRespon" method="POST" class="p-6">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fa-regular fa-message text-emerald-500 mr-1"></i> Aspirasi:
+                    </label>
+                    <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                        <p class="text-gray-700 text-sm" id="aspirasiJudul"></p>
+                    </div>
+                </div>
+                
+                <div class="mb-5">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fa-regular fa-reply-all text-emerald-500 mr-1"></i> Respon / Tanggapan:
+                    </label>
+                    <textarea name="respon" rows="5" required
+                              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition resize-none"
+                              placeholder="Tulis tanggapan untuk aspirasi warga..."></textarea>
+                    <p class="text-xs text-gray-400 mt-1">Respon akan langsung terlihat oleh masyarakat</p>
+                </div>
+                
+                <div class="flex gap-3 justify-end">
+                    <button type="button" onclick="closeResponModal()" 
+                            class="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition">
+                        Batal
+                    </button>
+                    <button type="submit" 
+                            class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-emerald-600 hover:to-emerald-700 transition shadow-md flex items-center gap-2">
+                        <i class="fa-regular fa-paper-plane"></i> Kirim Respon
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <script>
     function openResponModal(id, judul) {
-        document.getElementById('responModal').classList.remove('hidden');
-        document.getElementById('responModal').classList.add('flex');
-        document.getElementById('aspirasiJudul').textContent = judul;
-        document.getElementById('responForm').action = '/admin/aspirasi/' + id + '/respond';
+        const modal = document.getElementById('responModal');
+        const form = document.getElementById('formRespon');
+        const judulEl = document.getElementById('aspirasiJudul');
+        
+        judulEl.innerHTML = judul;
+        form.action = `/admin/aspirasi/${id}/respond`;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
     }
+    
     function closeResponModal() {
-        document.getElementById('responModal').classList.add('hidden');
-        document.getElementById('responModal').classList.remove('flex');
+        const modal = document.getElementById('responModal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
     }
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeResponModal();
+        }
+    });
 </script>
 @endsection

@@ -6,7 +6,7 @@
 @section('content')
 <style>
     /* ============================================ */
-    /* ANIMATIONS & KEYFRAMES */
+    /* ANIMATIONS & KEYFRAMES - SAMA PERSIS DENGAN HOME */
     /* ============================================ */
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
@@ -45,9 +45,25 @@
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes pulse-slow {
+        0%, 100% { opacity: 0.3; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.05); }
+    }
+    @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes bounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
 
     /* ============================================ */
-    /* UTILITY CLASSES */
+    /* UTILITY CLASSES - SAMA PERSIS DENGAN HOME */
     /* ============================================ */
     .floating { animation: float 3s ease-in-out infinite; }
     .floating-slow { animation: float-slow 4s ease-in-out infinite; }
@@ -64,9 +80,12 @@
         transform: rotate(25deg);
         animation: shine 4s infinite;
     }
+    .animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
+    .animate-spin-slow { animation: spin-slow 2s linear infinite; }
+    .animate-bounce { animation: bounce 0.5s ease-in-out; }
 
     /* ============================================ */
-    /* CARD STYLES */
+    /* CARD STYLES - SAMA PERSIS DENGAN HOME */
     /* ============================================ */
     .stat-card {
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -121,7 +140,7 @@
     .faq-item:hover { background-color: #f0fdf4; transform: translateX(5px); }
     
     /* ============================================ */
-    /* HERO SLIDER */
+    /* HERO SLIDER - SAMA PERSIS DENGAN HOME */
     /* ============================================ */
     .slider-container { border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.15); }
     .slider-wrapper { display: flex; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1); }
@@ -133,7 +152,7 @@
     }
     
     /* ============================================ */
-    /* PREMIUM BUTTONS */
+    /* PREMIUM BUTTONS - SAMA PERSIS DENGAN HOME */
     /* ============================================ */
     .btn-premium {
         background: linear-gradient(135deg, #064e3b, #065f46);
@@ -165,6 +184,118 @@
     .btn-outline-premium:hover { background: rgba(255,255,255,0.2); border-color: white; transform: translateY(-2px); }
     
     /* ============================================ */
+    /* STAT CARD PREMIUM - SAMA PERSIS DENGAN HOME */
+    /* ============================================ */
+    .stat-card-premium {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stat-card-premium::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }
+    .stat-card-premium:hover::before {
+        left: 100%;
+    }
+    .stat-card-premium:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* ============================================ */
+    /* CHART CONTAINER & OPTIONS - SAMA PERSIS DENGAN HOME */
+    /* ============================================ */
+    .chart-container {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .chart-container:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 30px 50px -20px rgba(16, 185, 129, 0.3);
+    }
+    
+    .chart-option {
+        position: relative;
+        overflow: hidden;
+    }
+    .chart-option::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    .chart-option:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .setting-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    .setting-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    .setting-btn:hover::before {
+        width: 400px;
+        height: 400px;
+    }
+    
+    .data-option {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .data-option:hover {
+        transform: translateX(5px);
+    }
+    
+    /* Quick Card */
+    .quick-card {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .quick-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #10b981, #059669);
+        transition: width 0.3s ease;
+    }
+    .quick-card:hover::after {
+        width: 100%;
+    }
+    .quick-card:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* ============================================ */
     /* FAQ STYLES */
     /* ============================================ */
     .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
@@ -187,29 +318,6 @@
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
     ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #10b981, #059669); border-radius: 10px; }
-    
-    /* ============================================ */
-    /* STAT CARD MINI */
-    /* ============================================ */
-    .stat-card-mini {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-    }
-    .stat-card-mini:hover {
-        transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15);
-    }
-    
-    /* ============================================ */
-    /* CHART CONTAINER */
-    /* ============================================ */
-    .chart-container {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .chart-container:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 30px 50px -20px rgba(16, 185, 129, 0.3);
-    }
     
     [x-cloak] { display: none !important; }
 </style>
@@ -282,160 +390,172 @@
 </section>
 
 {{-- ============================================= --}}
-{{-- 3. STATISTIK DIAGRAM PREMIUM --}}
+{{-- 3. STATISTIK DIAGRAM PREMIUM (SAMA PERSIS DENGAN HOME) --}}
 {{-- ============================================= --}}
 <section class="px-[5%] py-4 mb-8">
     <div class="bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 rounded-[60px] shadow-lg">
-        <div class="flex justify-between items-center mb-8 flex-wrap gap-4 p-6 md:p-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 p-6 md:p-8">
             <div>
                 <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block shadow-sm">📊 Data Statistik</span>
                 <h2 class="text-4xl md:text-5xl font-serif italic text-emerald-900 mt-4">Visualisasi Data Penduduk</h2>
                 <p class="text-gray-500 text-sm mt-2">Data realtime dari database desa</p>
             </div>
             
-            {{-- Tombol Setting Premium - Responsive --}}
-            <div class="relative" x-data="{ settingOpen: false, chartTypeM: 'bar', dataTypeM: 'penduduk' }">
-                <button @click="settingOpen = !settingOpen" class="group flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:shadow-xl transition-all duration-300 text-sm">
-                    <i class="fa-solid fa-sliders-h text-xs group-hover:rotate-90 transition-transform duration-300"></i>
-                    <span class="font-semibold hidden sm:inline">Pengaturan Diagram</span>
-                    <span class="font-semibold sm:hidden">Setting</span>
+            {{-- Tombol Setting Premium - SAMA PERSIS DENGAN HOME --}}
+            <div class="w-full md:w-auto" x-data="{ 
+                settingOpen: false, 
+                chartType: 'bar', 
+                dataType: 'penduduk'
+            }">
+                <button @click="settingOpen = !settingOpen" class="setting-btn group flex items-center justify-center gap-2 px-4 py-2.5 md:px-6 md:py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:shadow-xl transition-all duration-300 hover:scale-105 text-sm md:text-base w-full md:w-auto">
+                    <i class="fa-solid fa-sliders-h text-xs md:text-sm group-hover:rotate-90 transition-transform duration-500"></i>
+                    <span class="font-semibold">Pengaturan Diagram</span>
                     <i class="fa-solid fa-chevron-down text-xs transition-all duration-300" :class="settingOpen ? 'rotate-180' : ''"></i>
                 </button>
                 
-                {{-- Dropdown Setting Premium - Responsive (Tidak keluar page) --}}
+                {{-- Dropdown Setting - Melebar ke dalam layar --}}
                 <div x-show="settingOpen" @click.away="settingOpen = false" x-cloak 
-                    class="dropdown-setting bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50"
-                    :class="{
-                        'fixed left-4 right-4 top-1/2 transform -translate-y-1/2 max-h-[80vh] overflow-y-auto': window.innerWidth < 768,
-                        'absolute right-0 mt-4 w-96': window.innerWidth >= 768
-                    }"
                     x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="opacity-0 scale-95"
                     x-transition:enter-end="opacity-100 scale-100"
                     x-transition:leave="transition ease-in duration-150"
                     x-transition:leave-start="opacity-100 scale-100"
-                    x-transition:leave-end="opacity-0 scale-95">
+                    x-transition:leave-end="opacity-0 scale-95"
+                    class="mt-3 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden z-50 w-full md:w-[480px]">
                     
-                    <!-- Header dengan tombol close di mobile -->
-                    <div class="bg-gradient-to-r from-emerald-50 to-emerald-100/30 px-5 py-3 border-b border-emerald-100 flex items-center justify-between">
-                        <h3 class="font-bold text-emerald-800"><i class="fa-solid fa-chart-simple mr-2"></i> Customize Chart</h3>
-                        <button @click="settingOpen = false" class="sm:hidden text-gray-400 hover:text-gray-600">
+                    <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 md:px-5 py-3 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-white text-sm md:text-base"><i class="fa-solid fa-chart-simple mr-2"></i> Customize Chart</h3>
+                            <p class="text-[9px] md:text-[10px] text-emerald-100">Sesuaikan tampilan diagram sesuai kebutuhan</p>
+                        </div>
+                        <button @click="settingOpen = false" class="text-white/80 hover:text-white transition-transform hover:rotate-90 duration-300">
                             <i class="fa-solid fa-times text-lg"></i>
                         </button>
                     </div>
                     
-                    <div class="p-5">
-                        <!-- Jenis Diagram -->
-                        <div class="mb-6">
+                    <div class="p-4 md:p-5">
+                        <div class="mb-5 md:mb-6">
                             <label class="block text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-2">
                                 <i class="fa-solid fa-chart-line text-emerald-500"></i> Jenis Diagram
                             </label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <button @click="chartTypeM = 'bar'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300" :class="chartTypeM === 'bar' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
-                                    <i class="fa-solid fa-chart-bar mr-1"></i> Bar
+                            <div class="grid grid-cols-2 gap-2 md:gap-3">
+                                <button @click="chartType = 'bar'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="chart-option group px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300" :class="chartType === 'bar' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:scale-105'">
+                                    <i class="fa-solid fa-chart-bar mr-1 md:mr-2"></i> Bar Chart
+                                    <div x-show="chartType === 'bar'" class="w-full h-0.5 bg-white/50 mt-1 rounded-full animate-pulse"></div>
                                 </button>
-                                <button @click="chartTypeM = 'line'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300" :class="chartTypeM === 'line' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
-                                    <i class="fa-solid fa-chart-line mr-1"></i> Line
+                                <button @click="chartType = 'line'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="chart-option group px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300" :class="chartType === 'line' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:scale-105'">
+                                    <i class="fa-solid fa-chart-line mr-1 md:mr-2"></i> Line Chart
+                                    <div x-show="chartType === 'line'" class="w-full h-0.5 bg-white/50 mt-1 rounded-full animate-pulse"></div>
                                 </button>
-                                <button @click="chartTypeM = 'pie'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300" :class="chartTypeM === 'pie' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
-                                    <i class="fa-solid fa-chart-pie mr-1"></i> Pie
+                                <button @click="chartType = 'pie'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="chart-option group px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300" :class="chartType === 'pie' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:scale-105'">
+                                    <i class="fa-solid fa-chart-pie mr-1 md:mr-2"></i> Pie Chart
+                                    <div x-show="chartType === 'pie'" class="w-full h-0.5 bg-white/50 mt-1 rounded-full animate-pulse"></div>
                                 </button>
-                                <button @click="chartTypeM = 'doughnut'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300" :class="chartTypeM === 'doughnut' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
-                                    <i class="fa-solid fa-chart-simple mr-1"></i> Donut
+                                <button @click="chartType = 'doughnut'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="chart-option group px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300" :class="chartType === 'doughnut' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:scale-105'">
+                                    <i class="fa-solid fa-chart-simple mr-1 md:mr-2"></i> Donut Chart
+                                    <div x-show="chartType === 'doughnut'" class="w-full h-0.5 bg-white/50 mt-1 rounded-full animate-pulse"></div>
                                 </button>
                             </div>
                         </div>
                         
-                        <!-- Data yang Ditampilkan -->
-                        <div class="mb-3">
+                        <div>
                             <label class="block text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-database text-emerald-500"></i> Data yang Ditampilkan
+                                <i class="fa-solid fa-database text-emerald-500"></i> Kategori Data
                             </label>
                             <div class="space-y-2">
-                                <button @click="dataTypeM = 'penduduk'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="w-full px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 text-left flex items-center justify-between" :class="dataTypeM === 'penduduk' ? 'bg-emerald-50 text-emerald-700 border-l-2 border-emerald-500' : 'bg-gray-50 text-gray-600 hover:bg-emerald-50'">
-                                    <span class="flex items-center gap-2">
-                                        <i class="fa-solid fa-users text-base" :class="dataTypeM === 'penduduk' ? 'text-emerald-500' : 'text-gray-400'"></i>
+                                <button @click="dataType = 'penduduk'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="data-option w-full px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300 text-left flex items-center justify-between group" :class="dataType === 'penduduk' ? 'bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 border-l-4 border-emerald-500 shadow-md' : 'bg-gray-50 text-gray-600 hover:bg-emerald-50'">
+                                    <span class="flex items-center gap-2 md:gap-3">
+                                        <i class="fa-solid fa-users text-base md:text-lg" :class="dataType === 'penduduk' ? 'text-emerald-500' : 'text-gray-400'"></i>
                                         <div>
-                                            <p class="font-semibold text-xs sm:text-sm">Statistik Penduduk</p>
-                                            <p class="text-[8px] text-gray-400">Laki-laki, Perempuan, KK</p>
+                                            <p class="font-semibold text-xs md:text-sm">📊 Statistik Penduduk</p>
+                                            <p class="text-[8px] md:text-[10px] text-gray-400">Laki-laki, Perempuan, Kepala Keluarga</p>
                                         </div>
                                     </span>
-                                    <i x-show="dataTypeM === 'penduduk'" class="fa-solid fa-check-circle text-emerald-500 text-sm"></i>
+                                    <i x-show="dataType === 'penduduk'" class="fa-solid fa-check-circle text-emerald-500 text-sm md:text-xl animate-bounce"></i>
                                 </button>
-                                <button @click="dataTypeM = 'umur'; updateChartMasyarakat(chartTypeM, dataTypeM); settingOpen = false" class="w-full px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 text-left flex items-center justify-between" :class="dataTypeM === 'umur' ? 'bg-emerald-50 text-emerald-700 border-l-2 border-emerald-500' : 'bg-gray-50 text-gray-600 hover:bg-emerald-50'">
-                                    <span class="flex items-center gap-2">
-                                        <i class="fa-solid fa-chart-line text-base" :class="dataTypeM === 'umur' ? 'text-emerald-500' : 'text-gray-400'"></i>
+                                <button @click="dataType = 'umur'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="data-option w-full px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300 text-left flex items-center justify-between group" :class="dataType === 'umur' ? 'bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 border-l-4 border-emerald-500 shadow-md' : 'bg-gray-50 text-gray-600 hover:bg-emerald-50'">
+                                    <span class="flex items-center gap-2 md:gap-3">
+                                        <i class="fa-solid fa-chart-line text-base md:text-lg" :class="dataType === 'umur' ? 'text-emerald-500' : 'text-gray-400'"></i>
                                         <div>
-                                            <p class="font-semibold text-xs sm:text-sm">Kelompok Umur</p>
-                                            <p class="text-[8px] text-gray-400">0-14, 15-29, 30-59, 60+</p>
+                                            <p class="font-semibold text-xs md:text-sm">📈 Kelompok Umur</p>
+                                            <p class="text-[8px] md:text-[10px] text-gray-400">0-14, 15-29, 30-59, 60+ tahun</p>
                                         </div>
                                     </span>
-                                    <i x-show="dataTypeM === 'umur'" class="fa-solid fa-check-circle text-emerald-500 text-sm"></i>
+                                    <i x-show="dataType === 'umur'" class="fa-solid fa-check-circle text-emerald-500 text-sm md:text-xl animate-bounce"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="bg-gray-50 px-5 py-3 border-t border-gray-100">
-                        <p class="text-[9px] text-gray-400 text-center flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-sync-alt text-emerald-500"></i> Data diupdate secara realtime
-                            <i class="fa-solid fa-magic text-purple-500"></i>
+                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-4 md:px-5 py-3 border-t border-gray-100">
+                        <p class="text-[9px] md:text-[10px] text-gray-400 text-center flex items-center justify-center gap-2 flex-wrap">
+                            <i class="fa-solid fa-sync-alt text-emerald-500 animate-spin-slow"></i> Data diupdate secara realtime
+                            <i class="fa-solid fa-magic text-purple-500"></i> Premium Visualization
                         </p>
                     </div>
                 </div>
             </div>
         </div>
         
-        {{-- Canvas untuk Diagram dengan Efek Premium --}}
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 mb-6 shadow-xl border border-gray-100 relative overflow-hidden group mx-6 md:mx-8 chart-container">
-            <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-400/10 to-transparent rounded-full blur-3xl"></div>
-            <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-blue-400/5 to-transparent rounded-full blur-2xl"></div>
+        {{-- Canvas untuk Diagram dengan Efek Premium (SAMA PERSIS DENGAN HOME) --}}
+        <div class="chart-container bg-gradient-to-br from-white to-gray-50 rounded-2xl p-4 md:p-8 mb-6 shadow-xl border border-gray-100 relative overflow-hidden group transition-all duration-500 hover:shadow-2xl mx-6 md:mx-8">
+            <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div class="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-gradient-to-br from-emerald-400/10 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
+            <div class="absolute bottom-0 left-0 w-48 md:w-64 h-48 md:h-64 bg-gradient-to-tr from-blue-400/5 to-transparent rounded-full blur-2xl"></div>
+            
+            <!-- Loading overlay - SAMA PERSIS DENGAN HOME -->
+            <div id="chartLoadingM" class="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-10 opacity-0 invisible transition-all duration-300 rounded-2xl">
+                <div class="flex flex-col items-center gap-3">
+                    <div class="w-10 h-10 md:w-12 md:h-12 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
+                    <p class="text-xs md:text-sm text-emerald-600 font-semibold">Memuat diagram...</p>
+                </div>
+            </div>
             
             <canvas id="masyarakatStatistikChart" width="800" height="450" style="max-height: 450px; width: 100%; position: relative; z-index: 1;"></canvas>
         </div>
         
-        {{-- Statistik Cards Mini --}}
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 px-6 md:px-8 pb-4">
-            <div class="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-blue-200 shadow-sm stat-card-mini" onclick="quickChangeMasyarakat('bar', 'penduduk')">
-                <div class="flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-venus-mars text-blue-500"></i>
-                    <span class="text-xs font-semibold text-gray-600">Jenis Kelamin</span>
+        {{-- Statistik Cards Mini Premium (SAMA PERSIS DENGAN HOME) --}}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-6 px-6 md:px-8 pb-4">
+            <div class="quick-card bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-2 md:p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-blue-200 shadow-sm group" onclick="quickChangeMasyarakat('bar', 'penduduk')">
+                <div class="flex items-center justify-center gap-1 md:gap-2">
+                    <i class="fa-solid fa-venus-mars text-blue-500 text-xs md:text-base group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[10px] md:text-xs font-semibold text-gray-600 group-hover:text-blue-700 transition-colors">Jenis Kelamin</span>
                 </div>
-                <p class="text-lg font-bold text-blue-600">{{ number_format(($statistik['penduduk_pria'] ?? 0) + ($statistik['penduduk_wanita'] ?? 0)) }}</p>
-                <p class="text-[9px] text-gray-400">Total Jiwa</p>
+                <p class="text-base md:text-lg font-bold text-blue-600 group-hover:text-blue-700 transition-colors">{{ number_format(($statistik['penduduk_pria'] ?? 0) + ($statistik['penduduk_wanita'] ?? 0)) }}</p>
+                <p class="text-[8px] md:text-[9px] text-gray-400">Total Jiwa</p>
+                <div class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 rounded-xl transition-all duration-300"></div>
             </div>
-            <div class="bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-xl p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-emerald-200 shadow-sm stat-card-mini" onclick="quickChangeMasyarakat('pie', 'penduduk')">
-                <div class="flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-chart-pie text-emerald-500"></i>
-                    <span class="text-xs font-semibold text-gray-600">Komposisi</span>
+            <div class="quick-card bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-xl p-2 md:p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-emerald-200 shadow-sm group" onclick="quickChangeMasyarakat('pie', 'penduduk')">
+                <div class="flex items-center justify-center gap-1 md:gap-2">
+                    <i class="fa-solid fa-chart-pie text-emerald-500 text-xs md:text-base group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[10px] md:text-xs font-semibold text-gray-600 group-hover:text-emerald-700 transition-colors">Komposisi</span>
                 </div>
-                <p class="text-lg font-bold text-emerald-600">{{ number_format($statistik['penduduk_pria'] ?? 0) }} : {{ number_format($statistik['penduduk_wanita'] ?? 0) }}</p>
-                <p class="text-[9px] text-gray-400">Pria : Wanita</p>
+                <p class="text-base md:text-lg font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors">{{ number_format($statistik['penduduk_pria'] ?? 0) }} : {{ number_format($statistik['penduduk_wanita'] ?? 0) }}</p>
+                <p class="text-[8px] md:text-[9px] text-gray-400">Pria : Wanita</p>
             </div>
-            <div class="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-purple-200 shadow-sm stat-card-mini" onclick="quickChangeMasyarakat('bar', 'umur')">
-                <div class="flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-calendar-week text-purple-500"></i>
-                    <span class="text-xs font-semibold text-gray-600">Produktif</span>
+            <div class="quick-card bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl p-2 md:p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-purple-200 shadow-sm group" onclick="quickChangeMasyarakat('bar', 'umur')">
+                <div class="flex items-center justify-center gap-1 md:gap-2">
+                    <i class="fa-solid fa-calendar-week text-purple-500 text-xs md:text-base group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[10px] md:text-xs font-semibold text-gray-600 group-hover:text-purple-700 transition-colors">Produktif</span>
                 </div>
-                <p class="text-lg font-bold text-purple-600">{{ number_format(($statistik['kelompok_umur_15_29'] ?? 0) + ($statistik['kelompok_umur_30_59'] ?? 0)) }}</p>
-                <p class="text-[9px] text-gray-400">Usia Produktif</p>
+                <p class="text-base md:text-lg font-bold text-purple-600 group-hover:text-purple-700 transition-colors">{{ number_format(($statistik['kelompok_umur_15_29'] ?? 0) + ($statistik['kelompok_umur_30_59'] ?? 0)) }}</p>
+                <p class="text-[8px] md:text-[9px] text-gray-400">Usia Produktif</p>
             </div>
-            <div class="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-amber-200 shadow-sm stat-card-mini" onclick="quickChangeMasyarakat('doughnut', 'umur')">
-                <div class="flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-chart-simple text-amber-500"></i>
-                    <span class="text-xs font-semibold text-gray-600">Rasio</span>
+            <div class="quick-card bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl p-2 md:p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-amber-200 shadow-sm group" onclick="quickChangeMasyarakat('doughnut', 'umur')">
+                <div class="flex items-center justify-center gap-1 md:gap-2">
+                    <i class="fa-solid fa-chart-simple text-amber-500 text-xs md:text-base group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[10px] md:text-xs font-semibold text-gray-600 group-hover:text-amber-700 transition-colors">Rasio</span>
                 </div>
-                <p class="text-lg font-bold text-amber-600">{{ number_format((($statistik['kelompok_umur_0_14'] ?? 0) / max(($statistik['kelompok_umur_60'] ?? 0), 1)) * 100, 1) }}%</p>
-                <p class="text-[9px] text-gray-400">Rasio Anak vs Lansia</p>
+                <p class="text-base md:text-lg font-bold text-amber-600 group-hover:text-amber-700 transition-colors">{{ number_format((($statistik['kelompok_umur_0_14'] ?? 0) / max(($statistik['kelompok_umur_60'] ?? 0), 1)) * 100, 1) }}%</p>
+                <p class="text-[8px] md:text-[9px] text-gray-400">Rasio Anak vs Lansia</p>
             </div>
         </div>
         
-        {{-- Keterangan --}}
-        <div class="text-center text-xs text-gray-400 mt-2 pb-8 flex items-center justify-center gap-4 flex-wrap px-6">
-            <span class="flex items-center gap-1"><i class="fa-solid fa-chart-simple text-emerald-500"></i> Klik "Pengaturan Diagram" untuk mengubah tampilan</span>
-            <span class="flex items-center gap-1"><i class="fa-solid fa-chart-line text-blue-500"></i> Hover pada diagram untuk melihat detail</span>
-            <span class="flex items-center gap-1"><i class="fa-solid fa-arrow-pointer text-purple-500"></i> Klik card statistik untuk切换 cepat</span>
+        {{-- Keterangan Premium (SAMA PERSIS DENGAN HOME) --}}
+        <div class="text-center text-[10px] md:text-xs text-gray-400 mt-2 pb-8 flex items-center justify-center gap-2 md:gap-4 flex-wrap px-6">
+            <span class="flex items-center gap-1 px-2 md:px-3 py-1 bg-emerald-50 rounded-full hover:bg-emerald-100 transition-colors"><i class="fa-solid fa-chart-simple text-emerald-500 text-xs"></i> Klik "Pengaturan Diagram"</span>
+            <span class="flex items-center gap-1 px-2 md:px-3 py-1 bg-blue-50 rounded-full hover:bg-blue-100 transition-colors"><i class="fa-solid fa-chart-line text-blue-500 text-xs"></i> Hover untuk detail</span>
+            <span class="flex items-center gap-1 px-2 md:px-3 py-1 bg-purple-50 rounded-full hover:bg-purple-100 transition-colors"><i class="fa-solid fa-arrow-pointer text-purple-500 text-xs"></i> Klik card untuk akses cepat</span>
         </div>
     </div>
 </section>
@@ -500,7 +620,6 @@
     </div>
     
     <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {{-- Layanan Ajukan Surat --}}
         <a href="{{ route('masyarakat.surat.create') }}" class="service-card group relative bg-white rounded-2xl overflow-hidden shadow-xl cursor-pointer">
             <div class="absolute inset-0 bg-gradient-to-br from-emerald-500 to-emerald-600 opacity-0 group-hover:opacity-5 transition duration-500"></div>
             <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
@@ -525,7 +644,6 @@
             <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
         </a>
 
-        {{-- Layanan Aspirasi --}}
         <a href="{{ route('masyarakat.aspirasi.create') }}" class="service-card group relative bg-white rounded-2xl overflow-hidden shadow-xl cursor-pointer">
             <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 opacity-0 group-hover:opacity-5 transition duration-500"></div>
             <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
@@ -759,6 +877,136 @@
 </section>
 
 {{-- ============================================= --}}
+{{-- ASPIRASI PUBLIK (SEMUA ASPIRASI WARGA) --}}
+{{-- ============================================= --}}
+<section class="px-[5%] mb-20">
+    <div class="text-center mb-12">
+        <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">💬 Aspirasi Warga</span>
+        <h2 class="text-5xl md:text-6xl font-serif italic text-emerald-900 mt-4">Suara Warga</h2>
+        <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mt-5 rounded-full"></div>
+        <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Aspirasi, saran, dan keluhan warga Desa Lumban Silintong</p>
+    </div>
+
+    <div class="max-w-5xl mx-auto">
+        @if(isset($aspirasiPublik) && $aspirasiPublik->count() > 0)
+            <div class="grid md:grid-cols-2 gap-6">
+                @foreach($aspirasiPublik as $aspirasi)
+                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden border border-gray-100">
+                    {{-- Header --}}
+                    <div class="bg-gradient-to-r from-blue-50 to-white px-6 py-4 border-b border-gray-100">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-md">
+                                    <i class="fa-solid fa-user text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">{{ $aspirasi->user->name ?? 'Warga' }}</p>
+                                    <p class="text-[10px] text-gray-400 flex items-center gap-1">
+                                        <i class="fa-regular fa-calendar"></i> 
+                                        {{ $aspirasi->created_at->translatedFormat('d F Y') }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-3 py-1 rounded-full text-[10px] font-semibold
+                                    @if($aspirasi->kategori == 'saran') bg-green-100 text-green-700
+                                    @elseif($aspirasi->kategori == 'keluhan') bg-red-100 text-red-700
+                                    @elseif($aspirasi->kategori == 'masukan') bg-blue-100 text-blue-700
+                                    @else bg-purple-100 text-purple-700 @endif">
+                                    @if($aspirasi->kategori == 'saran') 💡 Saran
+                                    @elseif($aspirasi->kategori == 'keluhan') 😞 Keluhan
+                                    @elseif($aspirasi->kategori == 'masukan') 📝 Masukan
+                                    @else ❓ Pertanyaan @endif
+                                </span>
+                                <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold
+                                    @if($aspirasi->status == 'baru') bg-yellow-100 text-yellow-700
+                                    @elseif($aspirasi->status == 'diproses') bg-blue-100 text-blue-700
+                                    @else bg-green-100 text-green-700 @endif">
+                                    @if($aspirasi->status == 'baru') 🆕 Baru
+                                    @elseif($aspirasi->status == 'diproses') ⚙️ Diproses
+                                    @else ✅ Selesai @endif
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {{-- Body --}}
+                    <div class="px-6 py-4">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">{{ $aspirasi->judul }}</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed line-clamp-3">
+                            {{ $aspirasi->isi_aspirasi }}
+                        </p>
+                    </div>
+                    
+                    {{-- Jawaban Admin (jika ada) --}}
+                    @if($aspirasi->respon_admin && $aspirasi->respon_admin != '')
+                    <div class="mx-6 mb-4 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border-l-4 border-emerald-500">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+                                <i class="fa-solid fa-headset text-white text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs font-bold text-emerald-700">Admin Desa</span>
+                                    <span class="text-[9px] text-gray-400">{{ $aspirasi->updated_at->translatedFormat('d F Y') }}</span>
+                                </div>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    {{ $aspirasi->respon_admin }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    @else
+                    <div class="mx-6 mb-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border-l-4 border-gray-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-regular fa-hourglass-half text-white text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-xs text-gray-500">⏳ Menunggu tanggapan dari admin desa</p>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    
+                    {{-- Footer --}}
+                    <div class="px-6 py-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+                        <div class="flex items-center gap-2 text-xs text-gray-400">
+                            <i class="fa-regular fa-heart"></i>
+                            <span>Dukung aspirasi ini</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('masyarakat.aspirasi.create') }}" class="text-[10px] text-emerald-600 hover:text-emerald-700 transition flex items-center gap-1">
+                                <i class="fa-regular fa-comment"></i> Sampaikan Aspirasi
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            
+            <div class="text-center mt-10">
+                <a href="{{ route('masyarakat.aspirasi.create') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm font-semibold">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                    Sampaikan Aspirasi Baru
+                </a>
+            </div>
+        @else
+            <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                    <i class="fa-regular fa-comment-dots text-4xl text-gray-400"></i>
+                </div>
+                <h3 class="text-xl font-serif italic text-gray-400">Belum Ada Aspirasi</h3>
+                <p class="text-gray-400 mt-2">Jadilah yang pertama menyampaikan aspirasi, saran, atau keluhan Anda.</p>
+                <a href="{{ route('masyarakat.aspirasi.create') }}" class="inline-block mt-4 px-6 py-2 bg-emerald-500 text-white rounded-lg text-sm hover:bg-emerald-600 transition">
+                    Sampaikan Aspirasi Sekarang
+                </a>
+            </div>
+        @endif
+    </div>
+</section>
+
+{{-- ============================================= --}}
 {{-- 9. TIPS & PANDUAN (ACCORDION PREMIUM) --}}
 {{-- ============================================= --}}
 <section class="px-[5%] mb-20">
@@ -900,6 +1148,9 @@
     </div>
 </section>
 
+
+
+
 {{-- ============================================= --}}
 {{-- 10. CTA BANTUAN PREMIUM --}}
 {{-- ============================================= --}}
@@ -927,7 +1178,7 @@
     </div>
 </section>
 
-{{-- Script untuk Chart.js Premium (SAMA PERSIS SEPERTI HOME) --}}
+{{-- Script untuk Chart.js Premium (SAMA PERSIS DENGAN HOME) --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Data untuk diagram (sama persis seperti di home)
@@ -962,149 +1213,192 @@
         return value.toString();
     }
 
-    function updateChartMasyarakat(chartType, dataType) {
-        currentChartTypeMasyarakat = chartType;
-        currentDataTypeMasyarakat = dataType;
-        
-        const data = statistikDataMasyarakat[dataType];
-        if (!data) return;
-        
-        const ctx = document.getElementById('masyarakatStatistikChart').getContext('2d');
-        
-        if (masyarakatHomeChart) {
-            masyarakatHomeChart.destroy();
+    function showLoadingMasyarakat() {
+        const loading = document.getElementById('chartLoadingM');
+        if (loading) {
+            loading.classList.remove('opacity-0', 'invisible');
+            loading.classList.add('opacity-100', 'visible');
         }
+    }
+
+    function hideLoadingMasyarakat() {
+        const loading = document.getElementById('chartLoadingM');
+        if (loading) {
+            loading.classList.add('opacity-0', 'invisible');
+            loading.classList.remove('opacity-100', 'visible');
+        }
+    }
+
+    function updateChartMasyarakat(chartType, dataType) {
+        showLoadingMasyarakat();
         
-        const isPieType = ['pie', 'doughnut'].includes(chartType);
-        
-        const baseOptions = {
-            responsive: true,
-            maintainAspectRatio: true,
-            animation: {
-                duration: 1000,
-                easing: 'easeInOutQuart',
-                animateRotate: true,
-                animateScale: true
-            },
-            interaction: {
-                mode: 'index',
-                intersect: false,
-            },
-            plugins: {
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                    titleColor: '#fff',
-                    bodyColor: '#e5e7eb',
-                    borderColor: '#10b981',
-                    borderWidth: 2,
-                    cornerRadius: 12,
-                    padding: 12,
-                    displayColors: true,
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            let value = context.raw;
-                            let percentage = '';
-                            if (isPieType && data.values.reduce((a, b) => a + b, 0) > 0) {
-                                percentage = ` (${((value / data.values.reduce((a, b) => a + b, 0)) * 100).toFixed(1)}%)`;
+        setTimeout(() => {
+            currentChartTypeMasyarakat = chartType;
+            currentDataTypeMasyarakat = dataType;
+            
+            const data = statistikDataMasyarakat[dataType];
+            if (!data) {
+                hideLoadingMasyarakat();
+                return;
+            }
+            
+            const ctx = document.getElementById('masyarakatStatistikChart').getContext('2d');
+            
+            if (masyarakatHomeChart) {
+                masyarakatHomeChart.destroy();
+            }
+            
+            const isPieType = ['pie', 'doughnut'].includes(chartType);
+            
+            const baseOptions = {
+                responsive: true,
+                maintainAspectRatio: true,
+                animation: {
+                    duration: 1200,
+                    easing: 'easeInOutQuart',
+                    animateRotate: true,
+                    animateScale: true
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                        titleColor: '#f3f4f6',
+                        bodyColor: '#d1d5db',
+                        borderColor: '#10b981',
+                        borderWidth: 2,
+                        cornerRadius: 12,
+                        padding: 12,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                let value = context.raw;
+                                let percentage = '';
+                                if (isPieType && data.values.reduce((a, b) => a + b, 0) > 0) {
+                                    percentage = ` (${((value / data.values.reduce((a, b) => a + b, 0)) * 100).toFixed(1)}%)`;
+                                }
+                                return `${label}: ${value.toLocaleString()} ${data.unit}${percentage}`;
                             }
-                            return `${label}: ${value.toLocaleString()} ${data.unit}${percentage}`;
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 12,
+                            boxHeight: 12,
+                            padding: 15,
+                            font: { size: 11, weight: 'bold', family: "'Inter', sans-serif" },
+                            color: '#374151'
+                        },
+                        onClick: function(e, legendItem, legend) {
+                            const index = legendItem.index;
+                            const ci = legend.chart;
+                            const meta = ci.getDatasetMeta(0);
+                            meta.data[index].hidden = !meta.data[index].hidden;
+                            ci.update();
                         }
                     }
                 },
-                legend: {
-                    position: 'top',
-                    labels: {
-                        usePointStyle: true,
-                        boxWidth: 10,
-                        boxHeight: 10,
-                        padding: 15,
-                        font: { size: 11, weight: 'bold' }
-                    }
+                onHover: function(event, activeElements) {
+                    const canvas = document.getElementById('masyarakatStatistikChart');
+                    canvas.style.cursor = activeElements.length ? 'pointer' : 'default';
                 }
-            },
-            onHover: function(event, activeElements) {
-                const canvas = document.getElementById('masyarakatStatistikChart');
-                canvas.style.cursor = activeElements.length ? 'pointer' : 'default';
-            }
-        };
-        
-        if (!isPieType) {
-            baseOptions.scales = {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.05)',
-                        drawBorder: false,
-                        lineWidth: 1
-                    },
-                    ticks: {
-                        callback: function(value) {
-                            return formatNumberMasyarakat(value);
+            };
+            
+            if (!isPieType) {
+                baseOptions.scales = {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)',
+                            drawBorder: false,
+                            lineWidth: 1,
+                            drawTicks: false
                         },
-                        font: { size: 11 }
+                        ticks: {
+                            callback: function(value) {
+                                return formatNumberMasyarakat(value);
+                            },
+                            font: { size: 11, family: "'Inter', sans-serif" },
+                            color: '#6b7280'
+                        },
+                        title: {
+                            display: true,
+                            text: `📊 Jumlah (${data.unit})`,
+                            font: { size: 11, weight: 'bold', family: "'Inter', sans-serif" },
+                            color: '#6b7280'
+                        }
                     },
-                    title: {
-                        display: true,
-                        text: `Jumlah (${data.unit})`,
-                        font: { size: 11, weight: 'bold' },
-                        color: '#6b7280'
+                    x: {
+                        grid: { display: false },
+                        ticks: { 
+                            font: { size: 12, weight: 'bold', family: "'Inter', sans-serif" },
+                            color: '#374151'
+                        }
                     }
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: { font: { size: 11, weight: 'bold' } }
-                }
-            };
-        } else {
-            baseOptions.plugins.tooltip.callbacks.label = function(context) {
-                const total = data.values.reduce((a, b) => a + b, 0);
-                const percentage = ((context.raw / total) * 100).toFixed(1);
-                return `${context.label}: ${context.raw.toLocaleString()} ${data.unit} (${percentage}%)`;
-            };
-        }
-        
-        if (isPieType) {
-            masyarakatHomeChart = new Chart(ctx, {
-                type: chartType,
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        data: data.values,
-                        backgroundColor: data.colors,
-                        borderColor: '#fff',
-                        borderWidth: 3,
-                        hoverOffset: 15,
-                        cutout: chartType === 'doughnut' ? '60%' : 0
-                    }]
-                },
-                options: baseOptions
-            });
-        } else {
-            masyarakatHomeChart = new Chart(ctx, {
-                type: chartType,
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: data.title,
-                        data: data.values,
-                        backgroundColor: chartType === 'line' ? 'rgba(16, 185, 129, 0.1)' : data.colors,
-                        borderColor: chartType === 'line' ? '#10b981' : data.borderColors,
-                        borderWidth: chartType === 'line' ? 3 : 1,
-                        borderRadius: chartType === 'bar' ? 8 : 0,
-                        tension: chartType === 'line' ? 0.4 : 0,
-                        fill: chartType === 'line',
-                        pointBackgroundColor: '#10b981',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2,
-                        pointRadius: chartType === 'line' ? 5 : 0,
-                        pointHoverRadius: chartType === 'line' ? 8 : 0,
-                        pointHoverBackgroundColor: '#059669'
-                    }]
-                },
-                options: baseOptions
-            });
-        }
+                };
+            } else {
+                baseOptions.plugins.tooltip.callbacks.label = function(context) {
+                    const total = data.values.reduce((a, b) => a + b, 0);
+                    const percentage = ((context.raw / total) * 100).toFixed(1);
+                    return `${context.label}: ${context.raw.toLocaleString()} ${data.unit} (${percentage}%)`;
+                };
+            }
+            
+            if (isPieType) {
+                masyarakatHomeChart = new Chart(ctx, {
+                    type: chartType,
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.values,
+                            backgroundColor: data.colors,
+                            borderColor: '#fff',
+                            borderWidth: 3,
+                            hoverOffset: 20,
+                            cutout: chartType === 'doughnut' ? '65%' : 0,
+                            hoverBackgroundColor: data.hoverColors
+                        }]
+                    },
+                    options: baseOptions
+                });
+            } else {
+                masyarakatHomeChart = new Chart(ctx, {
+                    type: chartType,
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: data.title,
+                            data: data.values,
+                            backgroundColor: chartType === 'line' ? 'rgba(16, 185, 129, 0.1)' : data.colors,
+                            borderColor: chartType === 'line' ? '#10b981' : data.borderColors,
+                            borderWidth: chartType === 'line' ? 3 : 1,
+                            borderRadius: chartType === 'bar' ? 10 : 0,
+                            tension: chartType === 'line' ? 0.4 : 0,
+                            fill: chartType === 'line',
+                            pointBackgroundColor: '#10b981',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: chartType === 'line' ? 6 : 0,
+                            pointHoverRadius: chartType === 'line' ? 10 : 0,
+                            pointHoverBackgroundColor: '#059669',
+                            hoverBackgroundColor: chartType === 'bar' ? data.hoverColors : null,
+                            hoverBorderWidth: chartType === 'bar' ? 2 : 0,
+                            hoverBorderColor: chartType === 'bar' ? '#fff' : null,
+                            maxBarThickness: 80
+                        }]
+                    },
+                    options: baseOptions
+                });
+            }
+            
+            hideLoadingMasyarakat();
+        }, 300);
     }
     
     // Fungsi quick change

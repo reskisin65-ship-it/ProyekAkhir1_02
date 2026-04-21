@@ -1,9 +1,7 @@
 {{-- resources/views/layouts/navigation_magic_sidebar.blade.php --}}
 <aside class="magic-sidebar">
     
-    {{-- ============================================= --}}
-    {{-- SIDEBAR UNTUK GUEST (BELUM LOGIN) --}}
-    {{-- ============================================= --}}
+    {{-- SIDEBAR UNTUK GUEST --}}
     @guest
         <a href="{{ route('home') }}" class="side-item group">
             <i class="fa-solid fa-house"></i>
@@ -53,7 +51,6 @@
                 <p class="text-xs text-gray-400">Hubungi kami</p>
             </div>
         </a>
-        {{-- TAMBAHKAN STATISTIK UNTUK GUEST --}}
         <a href="{{ route('statistik.publik') }}" class="side-item group">
             <i class="fa-solid fa-chart-simple"></i>
             <div class="info-box">
@@ -64,9 +61,7 @@
         </a>
     @endguest
 
-    {{-- ============================================= --}}
     {{-- SIDEBAR UNTUK ROLE: ADMIN --}}
-    {{-- ============================================= --}}
     @auth
         @if(Auth::user()->role && Auth::user()->role->nama_role == 'admin')
             <a href="{{ route('admin.dashboard') }}" class="side-item group">
@@ -142,9 +137,7 @@
                 </div>
             </a>
 
-    {{-- ============================================= --}}
     {{-- SIDEBAR UNTUK ROLE: UMKM --}}
-    {{-- ============================================= --}}
         @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
             <a href="{{ route('umkm.dashboard') }}" class="side-item group">
                 <i class="fa-solid fa-chart-line"></i>
@@ -195,9 +188,7 @@
                 </div>
             </a>
 
-    {{-- ============================================= --}}
     {{-- SIDEBAR UNTUK ROLE: MASYARAKAT --}}
-    {{-- ============================================= --}}
         @else
             <a href="{{ route('masyarakat.dashboard') }}" class="side-item group">
                 <i class="fa-solid fa-chart-line"></i>
@@ -223,16 +214,8 @@
                     <p class="text-xs text-gray-400">Status pengajuan surat</p>
                 </div>
             </a>
-            <a href="{{ route('masyarakat.aspirasi.create') }}" class="side-item group">
-                <i class="fa-solid fa-comment-dots"></i>
-                <div class="info-box">
-                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Kirim Aspirasi</h5>
-                    <p class="text-xs text-gray-400">Sampaikan keluhan/saran</p>
-                </div>
-            </a>
             <a href="{{ route('masyarakat.aspirasi.index') }}" class="side-item group">
-                <i class="fa-solid fa-list-check"></i>
+                <i class="fa-solid fa-comment-dots"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Aspirasi Saya</h5>
@@ -263,7 +246,6 @@
                     <p class="text-xs text-gray-400">Produk unggulan desa</p>
                 </div>
             </a>
-            {{-- TAMBAHKAN STATISTIK UNTUK MASYARAKAT --}}
             <a href="{{ route('statistik.publik') }}" class="side-item group">
                 <i class="fa-solid fa-chart-simple"></i>
                 <div class="info-box">
@@ -306,7 +288,7 @@
         @else
             <a href="{{ route('masyarakat.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
             <a href="{{ route('masyarakat.surat.create') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-file-signature"></i></a>
-            <a href="{{ route('masyarakat.aspirasi.create') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-comment-dots"></i></a>
+            <a href="{{ route('masyarakat.aspirasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-comment-dots"></i></a>
             <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
             <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
         @endif

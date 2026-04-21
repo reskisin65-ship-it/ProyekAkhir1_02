@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->prefix('masyarakat')->name('masyarakat.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'masyarakat'])->name('dashboard');
     
+    // SURAT
     Route::get('/surat', [SuratController::class, 'index'])->name('surat.index');
     Route::get('/surat/create', [SuratController::class, 'create'])->name('surat.create');
     Route::post('/surat', [SuratController::class, 'store'])->name('surat.store');
@@ -79,6 +80,7 @@ Route::middleware(['auth'])->prefix('masyarakat')->name('masyarakat.')->group(fu
     Route::get('/surat/{id}', [SuratController::class, 'show'])->name('surat.show');
     Route::get('/surat/{id}/download', [SuratController::class, 'download'])->name('surat.download');
     
+    // ASPIRASI
     Route::get('/aspirasi', [AspirasiController::class, 'index'])->name('aspirasi.index');
     Route::get('/aspirasi/create', [AspirasiController::class, 'create'])->name('aspirasi.create');
     Route::post('/aspirasi', [AspirasiController::class, 'store'])->name('aspirasi.store');
@@ -87,9 +89,11 @@ Route::middleware(['auth'])->prefix('masyarakat')->name('masyarakat.')->group(fu
     Route::put('/aspirasi/{id}', [AspirasiController::class, 'update'])->name('aspirasi.update');
     Route::delete('/aspirasi/{id}', [AspirasiController::class, 'destroy'])->name('aspirasi.destroy');
     
+    // PROFIL
     Route::get('/profil', [DashboardController::class, 'profil'])->name('profil');
     Route::put('/profil', [DashboardController::class, 'updateProfil'])->name('profil.update');
     
+    // UMKM
     Route::get('/umkm/create', [UmkmController::class, 'createForm'])->name('umkm.create');
     Route::post('/umkm/store', [UmkmController::class, 'storeMasyarakat'])->name('umkm.store');
     Route::get('/umkm/status', [UmkmController::class, 'statusMasyarakat'])->name('umkm.status');
@@ -115,13 +119,16 @@ Route::middleware(['auth', 'role:umkm'])->prefix('umkm')->name('umkm.')->group(f
 // ==============================================
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // DASHBOARD
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
+    // UMKM
     Route::get('/umkm', [AdminController::class, 'umkm'])->name('umkm.index');
     Route::post('/umkm/{id}/approve', [AdminController::class, 'umkmApprove'])->name('umkm.approve');
     Route::post('/umkm/{id}/reject', [AdminController::class, 'umkmReject'])->name('umkm.reject');
     Route::delete('/umkm/{id}', [AdminController::class, 'umkmDestroy'])->name('umkm.destroy');
     
+    // PENGAJUAN SURAT
     Route::get('/pengajuan-surat', [AdminController::class, 'pengajuanSurat'])->name('pengajuan-surat.index');
     Route::get('/pengajuan-surat/{id}', [AdminController::class, 'pengajuanSuratShow'])->name('pengajuan-surat.show');
     Route::post('/pengajuan-surat/{id}/approve', [AdminController::class, 'pengajuanSuratApprove'])->name('pengajuan-surat.approve');
@@ -131,11 +138,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/pengajuan-surat/{id}/download-surat', [AdminController::class, 'pengajuanSuratDownload'])->name('pengajuan-surat.download-surat');
     Route::get('/pengajuan-surat/{id}/download-pendukung', [AdminController::class, 'pengajuanSuratDownloadPendukung'])->name('pengajuan-surat.download-pendukung');
     
+    // ASPIRASI
     Route::get('/aspirasi', [AdminController::class, 'aspirasi'])->name('aspirasi.index');
     Route::post('/aspirasi/{id}/respond', [AdminController::class, 'aspirasiRespond'])->name('aspirasi.respond');
     Route::post('/aspirasi/{id}/status', [AdminController::class, 'aspirasiStatus'])->name('aspirasi.status');
     Route::delete('/aspirasi/{id}', [AdminController::class, 'aspirasiDestroy'])->name('aspirasi.destroy');
     
+    // BERITA
     Route::get('/berita', [AdminController::class, 'berita'])->name('berita.index');
     Route::get('/berita/create', [AdminController::class, 'beritaCreate'])->name('berita.create');
     Route::post('/berita', [AdminController::class, 'beritaStore'])->name('berita.store');
@@ -143,6 +152,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/berita/{id}', [AdminController::class, 'beritaUpdate'])->name('berita.update');
     Route::delete('/berita/{id}', [AdminController::class, 'beritaDestroy'])->name('berita.destroy');
     
+    // GALERI
     Route::get('/galeri', [AdminController::class, 'galeri'])->name('galeri.index');
     Route::get('/galeri/create', [AdminController::class, 'galeriCreate'])->name('galeri.create');
     Route::post('/galeri', [AdminController::class, 'galeriStore'])->name('galeri.store');
@@ -151,6 +161,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/galeri/{id}', [AdminController::class, 'galeriUpdate'])->name('galeri.update');
     Route::delete('/galeri/{id}', [AdminController::class, 'galeriDestroy'])->name('galeri.destroy');
     
+    // DATA PENDUDUK
     Route::get('/penduduk', [AdminController::class, 'penduduk'])->name('penduduk.index');
     Route::get('/penduduk/create', [AdminController::class, 'pendudukCreate'])->name('penduduk.create');
     Route::post('/penduduk', [AdminController::class, 'pendudukStore'])->name('penduduk.store');
@@ -158,9 +169,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/penduduk/{id}', [AdminController::class, 'pendudukUpdate'])->name('penduduk.update');
     Route::delete('/penduduk/{id}', [AdminController::class, 'pendudukDestroy'])->name('penduduk.destroy');
     
+    // PROFIL DESA
     Route::get('/profil-desa', [AdminController::class, 'profilDesa'])->name('profil-desa');
     Route::put('/profil-desa', [AdminController::class, 'updateProfilDesa'])->name('profil-desa.update');
     
+    // DATA PENGURUS
     Route::get('/pengurus', [AdminController::class, 'pengurus'])->name('pengurus.index');
     Route::get('/pengurus/create', [AdminController::class, 'pengurusCreate'])->name('pengurus.create');
     Route::post('/pengurus', [AdminController::class, 'pengurusStore'])->name('pengurus.store');
@@ -168,9 +181,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/pengurus/{id}', [AdminController::class, 'pengurusUpdate'])->name('pengurus.update');
     Route::delete('/pengurus/{id}', [AdminController::class, 'pengurusDestroy'])->name('pengurus.destroy');
     
-    // ==============================================
-    // STATISTIK UNTUK ADMIN
-    // ==============================================
+    // STATISTIK
     Route::get('/statistik', [AdminController::class, 'statistik'])->name('statistik.index');
-
+    Route::get('/statistik/kelola', [AdminController::class, 'statistikKelola'])->name('statistik.kelola');
+    Route::put('/statistik/update', [AdminController::class, 'statistikUpdate'])->name('statistik.update');
 });

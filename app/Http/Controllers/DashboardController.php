@@ -14,29 +14,34 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    // HAPUS METHOD index() ATAU JADIKAN SEPERTI INI
+    /**
+     * Redirect berdasarkan role
+     */
     public function index()
     {
-        // Redirect langsung ke halaman sesuai role
         $user = Auth::user();
         
         if ($user->role && $user->role->nama_role === 'admin') {
             return redirect('/admin/dashboard');
         }
         
-        // Masyarakat dan UMKM sama-sama ke dashboard masyarakat
         return redirect('/masyarakat/dashboard');
     }
 
+    /**
+     * Dashboard Masyarakat
+     */
     public function masyarakat()
     {
-        // Cegah redirect loop - pastikan user login
         if (!Auth::check()) {
             return redirect('/login');
         }
         
         $userId = Auth::id();
         
+        // ==============================================
+        // STATISTIK PENGGUNA
+        // ==============================================
         $totalSurat = PengajuanSurat::where('user_id', $userId)->count();
         $totalAspirasi = Aspirasi::where('user_id', $userId)->count();
         $suratSelesai = PengajuanSurat::where('user_id', $userId)->where('status', 'selesai')->count();
@@ -47,6 +52,9 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
         
+        // ==============================================
+        // BERITA & PENGUMUMAN
+        // ==============================================
         $beritas = Berita::where('status', 'publish')
             ->orderBy('created_at', 'desc')
             ->limit(4)
@@ -58,23 +66,25 @@ class DashboardController extends Controller
             ->limit(3)
             ->get();
         
+        // ==============================================
+        // GALERI
+        // ==============================================
         $galeris = Galeri::orderBy('created_at', 'desc')->limit(4)->get();
         
         // ==============================================
-        // DATA STATISTIK UNTUK DIAGRAM (SAMA SEPERTI GUEST)
+        // DATA STATISTIK UNTUK DIAGRAM
         // ==============================================
         $totalPenduduk = DataPenduduk::count();
         $pendudukPria = DataPenduduk::where('jenis_kelamin', 'L')->count();
         $pendudukWanita = DataPenduduk::where('jenis_kelamin', 'P')->count();
         $totalKK = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
         
-        // Kelompok Umur (menggunakan whereRaw untuk kompatibilitas MySQL)
+        // Kelompok Umur
         $kelompokUmur014 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count();
         $kelompokUmur1529 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count();
         $kelompokUmur3059 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count();
         $kelompokUmur60 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count();
         
-        // Data untuk diagram (sama persis seperti di home)
         $statistik = [
             'total_penduduk' => $totalPenduduk,
             'penduduk_pria' => $pendudukPria,
@@ -86,12 +96,23 @@ class DashboardController extends Controller
             'kelompok_umur_60' => $kelompokUmur60,
         ];
         
+        // ==============================================
+        // DATA ASPIRASI PUBLIK - TAMPILKAN SEMUA ASPIRASI
+        // ==============================================
+        $aspirasiPublik = Aspirasi::orderBy('created_at', 'desc')
+            ->limit(6)
+            ->get();
+        
         return view('masyarakat.dashboard', compact(
             'totalSurat', 'totalAspirasi', 'suratSelesai', 'suratMenunggu',
-            'pengajuanTerbaru', 'beritas', 'pengumuman', 'galeris', 'statistik'
+            'pengajuanTerbaru', 'beritas', 'pengumuman', 'galeris', 'statistik',
+            'aspirasiPublik'
         ));
     }
 
+    /**
+     * Halaman Profil Masyarakat
+     */
     public function profil()
     {
         if (!Auth::check()) {
@@ -100,6 +121,9 @@ class DashboardController extends Controller
         return view('masyarakat.profil');
     }
 
+    /**
+     * Update Profil Masyarakat
+     */
     public function updateProfil(Request $request)
     {
         if (!Auth::check()) {
