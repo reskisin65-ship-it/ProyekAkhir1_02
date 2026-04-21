@@ -97,6 +97,12 @@ Route::middleware(['auth'])->prefix('masyarakat')->name('masyarakat.')->group(fu
     Route::get('/umkm/create', [UmkmController::class, 'createForm'])->name('umkm.create');
     Route::post('/umkm/store', [UmkmController::class, 'storeMasyarakat'])->name('umkm.store');
     Route::get('/umkm/status', [UmkmController::class, 'statusMasyarakat'])->name('umkm.status');
+    
+    // ==============================================
+    // KEUANGAN MASYARAKAT
+    // ==============================================
+    Route::get('/keuangan', [App\Http\Controllers\Masyarakat\KeuanganController::class, 'index'])->name('keuangan.index');
+    Route::get('/keuangan/{id}', [App\Http\Controllers\Masyarakat\KeuanganController::class, 'show'])->name('keuangan.show');
 });
 
 // ==============================================
@@ -185,4 +191,23 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/statistik', [AdminController::class, 'statistik'])->name('statistik.index');
     Route::get('/statistik/kelola', [AdminController::class, 'statistikKelola'])->name('statistik.kelola');
     Route::put('/statistik/update', [AdminController::class, 'statistikUpdate'])->name('statistik.update');
+    
+    // ==============================================
+    // KEUANGAN ADMIN
+    // ==============================================
+    Route::prefix('keuangan')->name('keuangan.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\KeuanganController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\KeuanganController::class, 'create'])->name('create');
+        Route::post('/store', [App\Http\Controllers\Admin\KeuanganController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [App\Http\Controllers\Admin\KeuanganController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [App\Http\Controllers\Admin\KeuanganController::class, 'update'])->name('update');
+        Route::delete('/{id}', [App\Http\Controllers\Admin\KeuanganController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/approve', [App\Http\Controllers\Admin\KeuanganController::class, 'approve'])->name('approve');
+        Route::post('/{id}/reject', [App\Http\Controllers\Admin\KeuanganController::class, 'reject'])->name('reject');
+        Route::get('/kategori', [App\Http\Controllers\Admin\KeuanganController::class, 'kategori'])->name('kategori');
+        Route::post('/kategori/store', [App\Http\Controllers\Admin\KeuanganController::class, 'kategoriStore'])->name('kategori.store');
+        Route::put('/kategori/{id}', [App\Http\Controllers\Admin\KeuanganController::class, 'kategoriUpdate'])->name('kategori.update');
+        Route::delete('/kategori/{id}', [App\Http\Controllers\Admin\KeuanganController::class, 'kategoriDestroy'])->name('kategori.destroy');
+        Route::get('/laporan', [App\Http\Controllers\Admin\KeuanganController::class, 'laporan'])->name('laporan');
+    });
 });
