@@ -17,8 +17,8 @@
             <i class="fa-solid fa-landmark-dome"></i>
             <div class="info-box">
                 <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Profil Desa</h5>
-                <p class="text-xs text-gray-400">Sejarah, visi misi</p>
+                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
+                <p class="text-xs text-gray-400">Sejarah, visi misi, struktur</p>
             </div>
         </a>
         <a href="{{ route('berita') }}" class="side-item group">
@@ -148,6 +148,14 @@
                     <p class="text-xs text-gray-400">Kelola pemasukan & pengeluaran</p>
                 </div>
             </a>
+            <a href="{{ route('admin.profil-desa.index') }}" class="side-item group">
+                <i class="fa-solid fa-building"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
+                    <p class="text-xs text-gray-400">Kelola profil desa</p>
+                </div>
+            </a>
 
     {{-- ============================================= --}}
     {{-- SIDEBAR UNTUK ROLE: UMKM --}}
@@ -207,6 +215,14 @@
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Keuangan Desa</h5>
                     <p class="text-xs text-gray-400">Lihat transparansi keuangan</p>
+                </div>
+            </a>
+            <a href="{{ route('profil-desa') }}" class="side-item group">
+                <i class="fa-solid fa-landmark-dome"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
+                    <p class="text-xs text-gray-400">Sejarah, visi misi, struktur</p>
                 </div>
             </a>
 
@@ -286,6 +302,14 @@
                     <p class="text-xs text-gray-400">Lihat transparansi keuangan</p>
                 </div>
             </a>
+            <a href="{{ route('profil-desa') }}" class="side-item group">
+                <i class="fa-solid fa-landmark-dome"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
+                    <p class="text-xs text-gray-400">Sejarah, visi misi, struktur</p>
+                </div>
+            </a>
         @endif
         
         {{-- Logout untuk semua role yang login --}}
@@ -304,9 +328,7 @@
     @endauth
 </aside>
 
-{{-- ============================================= --}}
-{{-- MOBILE BOTTOM NAVIGATION --}}
-{{-- ============================================= --}}
+{{-- Mobile Bottom Navigation --}}
 <div class="mobile-nav">
     @auth
         @if(Auth::user()->role && Auth::user()->role->nama_role == 'admin')
@@ -315,12 +337,14 @@
             <a href="{{ route('admin.penduduk.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-users"></i></a>
             <a href="{{ route('admin.statistik.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
             <a href="{{ route('admin.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
+            <a href="{{ route('admin.profil-desa.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-building"></i></a>
         @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
             <a href="{{ route('umkm.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
             <a href="{{ route('umkm.produk.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-box"></i></a>
             <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
             <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
             <a href="{{ route('masyarakat.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
+            <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-landmark-dome"></i></a>
         @else
             <a href="{{ route('masyarakat.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
             <a href="{{ route('masyarakat.surat.create') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-file-signature"></i></a>
@@ -328,6 +352,7 @@
             <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
             <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
             <a href="{{ route('masyarakat.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
+            <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-landmark-dome"></i></a>
         @endif
     @else
         <a href="{{ route('home') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-house"></i></a>
@@ -368,6 +393,7 @@
         cursor: pointer;
     }
     .side-item:hover, .side-item.active { color: #fff; background: rgba(255,255,255,0.12); transform: translateY(-3px); }
+    .side-item.active { color: #10b981; background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
     .info-box {
         position: absolute; left: 80px; background: white; padding: 16px 24px;
         border-radius: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.12);

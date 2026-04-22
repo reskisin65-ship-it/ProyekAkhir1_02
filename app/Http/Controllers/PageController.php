@@ -107,11 +107,17 @@ class PageController extends Controller
         $stat_dusun = '6';
         $stat_tahun_berdiri = '1920';
         
+        // ==============================================
+        // DATA GALERI UNTUK PROFIL DESA
+        // ==============================================
+        $galeris = Galeri::orderBy('created_at', 'desc')->limit(6)->get();
+        
         return view('pages.profil-desa', compact(
             'profil', 'aparaturs', 
             'stat_penduduk', 'stat_kk', 
             'stat_umkm_count', 'stat_luas', 
-            'stat_dusun', 'stat_tahun_berdiri'
+            'stat_dusun', 'stat_tahun_berdiri',
+            'galeris'  // <-- INI YANG DITAMBAHKAN
         ));
     }
 

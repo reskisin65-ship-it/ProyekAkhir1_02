@@ -47,7 +47,7 @@ class AdminController extends Controller
         ));
     }
 
-// ==============================================
+    // ==============================================
     // MANAJEMEN ASPIRASI
     // ==============================================
 
@@ -560,6 +560,91 @@ class AdminController extends Controller
             ->with('success', 'Data penduduk berhasil dihapus!');
     }
 
+// ==============================================
+// MANAJEMEN DATA PENGURUS (APARATUR DESA)
+// ==============================================
+
+public function pengurus()
+{
+    $pengurus = DataPengurus::orderBy('id_pengurus', 'asc')->paginate(15);
+    return view('admin.pengurus', compact('pengurus'));
+}
+
+public function pengurusCreate()
+{
+    return view('admin.pengurus-create');
+}
+
+public function pengurusStore(Request $request)
+{
+    $request->validate([
+        'nama_pengurus' => 'required|min:3|max:100',  // PERBAIKI: nama_pengurus
+        'jabatan' => 'required|min:3|max:100',
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    $fotoPath = null;
+    if ($request->hasFile('foto')) {
+        $fotoPath = $request->file('foto')->store('pengurus', 'public');
+    }
+
+    DataPengurus::create([
+        'nama_pengurus' => $request->nama_pengurus,  // PERBAIKI: $request->nama_pengurus
+        'jabatan' => $request->jabatan,
+        'foto' => $fotoPath,
+    ]);
+
+    return redirect()->route('admin.pengurus.index')
+        ->with('success', 'Pengurus berhasil ditambahkan!');
+}
+
+public function pengurusEdit($id)
+{
+    $pengurus = DataPengurus::findOrFail($id);
+    return view('admin.pengurus-edit', compact('pengurus'));
+}
+
+public function pengurusUpdate(Request $request, $id)
+{
+    $pengurus = DataPengurus::findOrFail($id);
+    
+    $request->validate([
+        'nama_pengurus' => 'required|min:3|max:100',  // PERBAIKI: nama_pengurus
+        'jabatan' => 'required|min:3|max:100',
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    $fotoPath = $pengurus->foto;
+    if ($request->hasFile('foto')) {
+        if ($fotoPath && Storage::disk('public')->exists($fotoPath)) {
+            Storage::disk('public')->delete($fotoPath);
+        }
+        $fotoPath = $request->file('foto')->store('pengurus', 'public');
+    }
+
+    $pengurus->update([
+        'nama_pengurus' => $request->nama_pengurus,  // PERBAIKI: $request->nama_pengurus
+        'jabatan' => $request->jabatan,
+        'foto' => $fotoPath,
+    ]);
+
+    return redirect()->route('admin.pengurus.index')
+        ->with('success', 'Pengurus berhasil diperbarui!');
+}
+
+public function pengurusDestroy($id)
+{
+    $pengurus = DataPengurus::findOrFail($id);
+    
+    if ($pengurus->foto && Storage::disk('public')->exists($pengurus->foto)) {
+        Storage::disk('public')->delete($pengurus->foto);
+    }
+    
+    $pengurus->delete();
+    
+    return redirect()->route('admin.pengurus.index')
+        ->with('success', 'Pengurus berhasil dihapus!');
+}
     // ==============================================
     // MANAJEMEN PROFIL DESA
     // ==============================================
@@ -588,98 +673,6 @@ class AdminController extends Controller
 
         return redirect()->route('admin.profil-desa')
             ->with('success', 'Profil desa berhasil diperbarui!');
-    }
-
-    // ==============================================
-    // MANAJEMEN DATA PENGURUS
-    // ==============================================
-
-    public function pengurus()
-    {
-        $pengurus = DataPengurus::orderBy('urutan')->paginate(15);
-        return view('admin.pengurus', compact('pengurus'));
-    }
-
-    public function pengurusCreate()
-    {
-        return view('admin.pengurus-create');
-    }
-
-    public function pengurusStore(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required',
-            'jabatan' => 'required',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
-        $fotoPath = null;
-        if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('pengurus', 'public');
-        }
-
-        DataPengurus::create([
-            'nama' => $request->nama,
-            'jabatan' => $request->jabatan,
-            'foto' => $fotoPath,
-            'nip' => $request->nip,
-            'tugas' => $request->tugas,
-            'urutan' => $request->urutan ?? 0,
-        ]);
-
-        return redirect()->route('admin.pengurus.index')
-            ->with('success', 'Pengurus berhasil ditambahkan!');
-    }
-
-    public function pengurusEdit($id)
-    {
-        $pengurus = DataPengurus::findOrFail($id);
-        return view('admin.pengurus-edit', compact('pengurus'));
-    }
-
-    public function pengurusUpdate(Request $request, $id)
-    {
-        $pengurus = DataPengurus::findOrFail($id);
-        
-        $request->validate([
-            'nama' => 'required',
-            'jabatan' => 'required',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
-        $fotoPath = $pengurus->foto;
-        if ($request->hasFile('foto')) {
-            if ($fotoPath && Storage::disk('public')->exists($fotoPath)) {
-                Storage::disk('public')->delete($fotoPath);
-            }
-            $fotoPath = $request->file('foto')->store('pengurus', 'public');
-        }
-
-        $pengurus->update([
-            'nama' => $request->nama,
-            'jabatan' => $request->jabatan,
-            'foto' => $fotoPath,
-            'nip' => $request->nip,
-            'tugas' => $request->tugas,
-            'urutan' => $request->urutan ?? 0,
-        ]);
-
-        return redirect()->route('admin.pengurus.index')
-            ->with('success', 'Pengurus berhasil diperbarui!');
-    }
-
-    public function pengurusDestroy($id)
-    {
-        $pengurus = DataPengurus::findOrFail($id);
-        
-        if ($pengurus->foto && Storage::disk('public')->exists($pengurus->foto)) {
-            Storage::disk('public')->delete($pengurus->foto);
-        }
-        
-        $pengurus->delete();
-        
-        return redirect()->route('admin.pengurus.index')
-            ->with('success', 'Pengurus berhasil dihapus!');
     }
 
     // ==============================================

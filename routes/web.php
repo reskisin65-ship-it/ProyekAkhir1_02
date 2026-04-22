@@ -98,9 +98,7 @@ Route::middleware(['auth'])->prefix('masyarakat')->name('masyarakat.')->group(fu
     Route::post('/umkm/store', [UmkmController::class, 'storeMasyarakat'])->name('umkm.store');
     Route::get('/umkm/status', [UmkmController::class, 'statusMasyarakat'])->name('umkm.status');
     
-    // ==============================================
     // KEUANGAN MASYARAKAT
-    // ==============================================
     Route::get('/keuangan', [App\Http\Controllers\Masyarakat\KeuanganController::class, 'index'])->name('keuangan.index');
     Route::get('/keuangan/{id}', [App\Http\Controllers\Masyarakat\KeuanganController::class, 'show'])->name('keuangan.show');
 });
@@ -175,11 +173,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/penduduk/{id}', [AdminController::class, 'pendudukUpdate'])->name('penduduk.update');
     Route::delete('/penduduk/{id}', [AdminController::class, 'pendudukDestroy'])->name('penduduk.destroy');
     
-    // PROFIL DESA
-    Route::get('/profil-desa', [AdminController::class, 'profilDesa'])->name('profil-desa');
-    Route::put('/profil-desa', [AdminController::class, 'updateProfilDesa'])->name('profil-desa.update');
+    // PROFIL DESA (ADMIN)
+    Route::get('/profil-desa', [App\Http\Controllers\Admin\ProfilDesaController::class, 'index'])->name('profil-desa.index');
+    Route::get('/profil-desa/edit', [App\Http\Controllers\Admin\ProfilDesaController::class, 'edit'])->name('profil-desa.edit');
+    Route::put('/profil-desa', [App\Http\Controllers\Admin\ProfilDesaController::class, 'update'])->name('profil-desa.update');
     
-    // DATA PENGURUS
+    // DATA PENGURUS (APARATUR DESA)
     Route::get('/pengurus', [AdminController::class, 'pengurus'])->name('pengurus.index');
     Route::get('/pengurus/create', [AdminController::class, 'pengurusCreate'])->name('pengurus.create');
     Route::post('/pengurus', [AdminController::class, 'pengurusStore'])->name('pengurus.store');
@@ -192,9 +191,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/statistik/kelola', [AdminController::class, 'statistikKelola'])->name('statistik.kelola');
     Route::put('/statistik/update', [AdminController::class, 'statistikUpdate'])->name('statistik.update');
     
-    // ==============================================
     // KEUANGAN ADMIN
-    // ==============================================
     Route::prefix('keuangan')->name('keuangan.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\KeuanganController::class, 'index'])->name('index');
         Route::get('/create', [App\Http\Controllers\Admin\KeuanganController::class, 'create'])->name('create');
