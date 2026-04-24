@@ -1,97 +1,103 @@
-{{-- resources/views/umkm/dashboard.blade.php --}}
-@extends('layouts.app')
-
-@section('title', 'Kelola UMKM')
+@extends('layouts.app') {{-- Sesuaikan dengan layout utama web kamu --}}
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 py-6">
-    
-    {{-- Header --}}
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">🏪 Kelola UMKM Saya</h1>
-        <a href="{{ route('umkm') }}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
-            ← Lihat Toko Saya
-        </a>
+<div class="min-h-screen bg-white pb-20">
+    {{-- Header Section --}}
+    <div class="pt-16 pb-10 text-center px-4">
+        <div class="flex justify-center mb-4">
+            <span class="text-5xl">🛍️</span>
+        </div>
+        <h1 class="text-5xl font-black text-emerald-950 italic mb-4 tracking-tighter">
+            UMKM Desa <span class="text-emerald-500">Lumban Silintong</span>
+        </h1>
+        <p class="text-slate-500 max-w-2xl mx-auto font-medium">
+            Dukung produk lokal! Temukan berbagai produk unggulan dari UMKM Desa Lumban Silintong yang berkualitas dan autentik.
+        </p>
     </div>
 
-    @if(session('success'))
-    <div class="mb-4 p-3 bg-green-50 text-green-700 rounded-lg border-l-4 border-green-500">
-        {{ session('success') }}
-    </div>
-    @endif
+    {{-- FITUR PENDAFTARAN & KELOLA (LOGIKA OTOMATIS) --}}
+    <div class="flex justify-center mb-12">
+        @auth
+            @php
+                $myUmkm = \App\Models\Umkm::where('user_id', auth()->id())->first();
+            @endphp
 
-    {{-- Tabs --}}
-    <div class="mb-6 border-b border-gray-200">
-        <ul class="flex flex-wrap gap-4">
-            <li>
-                <a href="{{ route('umkm.dashboard') }}" class="inline-block px-4 py-2 text-emerald-600 border-b-2 border-emerald-600 font-semibold">
-                    Profil Usaha
+            @if(!$myUmkm)
+                {{-- Jika Belum Daftar --}}
+                <a href="{{ route('umkm.create') }}" class="group flex items-center gap-4 px-8 py-5 bg-emerald-600 text-white rounded-[2rem] font-black shadow-2xl shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all">
+                    <i class="fa-solid fa-rocket text-xl"></i>
+                    <span>DAFTARKAN UMKM SAYA SEKARANG</span>
                 </a>
-            </li>
-            <li>
-                <a href="{{ route('umkm.produk.index') }}" class="inline-block px-4 py-2 text-gray-500 hover:text-emerald-600">
-                    Produk Saya
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    {{-- Form Edit Profil UMKM --}}
-    <div class="bg-white rounded-xl shadow-md p-6">
-        <form action="{{ route('umkm.profil.update') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-
-            <div class="mb-4">
-                <label class="block text-gray-700 font-medium mb-2">Logo UMKM</label>
-                @if($umkm->logo)
-                <div class="mb-2">
-                    <img src="{{ asset('storage/' . $umkm->logo) }}" class="w-24 h-24 rounded-full object-cover border-2 border-emerald-500">
+            @elseif($myUmkm->status == 'pending')
+                {{-- Jika Menunggu --}}
+                <div class="flex items-center gap-4 px-8 py-5 bg-amber-50 text-amber-700 rounded-[2rem] font-bold border border-amber-100 shadow-lg shadow-amber-100">
+                    <i class="fa-solid fa-clock-rotate-left animate-spin-slow"></i>
+                    <span>PENDAFTARAN SEDANG DITINJAU ADMIN</span>
                 </div>
-                @endif
-                <input type="file" name="logo" accept="image/*" class="w-full border border-gray-300 rounded-lg px-4 py-2">
-                <p class="text-gray-400 text-sm mt-1">Format: JPG, JPEG, PNG. Maks: 2MB</p>
-            </div>
+            @elseif($myUmkm->status == 'approved')
+                {{-- Jika Sudah Disetujui --}}
+                <a href="{{ route('umkm.dashboard') }}" class="group flex items-center gap-4 px-8 py-5 bg-emerald-950 text-white rounded-[2rem] font-black shadow-2xl shadow-emerald-900/20 hover:bg-black hover:-translate-y-1 transition-all">
+                    <i class="fa-solid fa-gauge-high text-xl text-emerald-400"></i>
+                    <span>BUKA PANEL KELOLA UMKM</span>
+                </a>
+            @endif
+        @else
+            {{-- Jika Belum Login --}}
+            <a href="{{ route('login') }}" class="px-8 py-5 bg-slate-100 text-slate-500 rounded-[2rem] font-bold hover:bg-slate-200 transition">
+                Masuk untuk mendaftarkan UMKM Anda
+            </a>
+        @endauth
+    </div>
 
-            <div class="mb-4">
-                <label class="block text-gray-700 font-medium mb-2">Nama Usaha <span class="text-red-500">*</span></label>
-                <input type="text" name="nama_usaha" class="w-full border border-gray-300 rounded-lg px-4 py-2" value="{{ old('nama_usaha', $umkm->nama_usaha) }}" required>
-            </div>
+    {{-- Filter Kategori --}}
+    <div class="flex flex-wrap justify-center gap-3 mb-16">
+        <button class="px-6 py-2 bg-emerald-500 text-white rounded-full font-bold shadow-lg shadow-emerald-100">Semua</button>
+        <button class="px-6 py-2 bg-slate-50 text-slate-500 rounded-full font-bold hover:bg-slate-100 transition">🍔 Makanan</button>
+        <button class="px-6 py-2 bg-slate-50 text-slate-500 rounded-full font-bold hover:bg-slate-100 transition">🎨 Kerajinan</button>
+        <button class="px-6 py-2 bg-slate-50 text-slate-500 rounded-full font-bold hover:bg-slate-100 transition">👕 Fashion</button>
+        <button class="px-6 py-2 bg-slate-50 text-slate-500 rounded-full font-bold hover:bg-slate-100 transition">🌾 Pertanian</button>
+    </div>
 
-            <div class="mb-4">
-                <label class="block text-gray-700 font-medium mb-2">Kategori <span class="text-red-500">*</span></label>
-                <select name="kategori" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>
-                    <option value="makanan" {{ $umkm->kategori == 'makanan' ? 'selected' : '' }}>🍔 Makanan & Minuman</option>
-                    <option value="kerajinan" {{ $umkm->kategori == 'kerajinan' ? 'selected' : '' }}>🎨 Kerajinan Tangan</option>
-                    <option value="fashion" {{ $umkm->kategori == 'fashion' ? 'selected' : '' }}>👕 Fashion & Aksesoris</option>
-                    <option value="pertanian" {{ $umkm->kategori == 'pertanian' ? 'selected' : '' }}>🌾 Pertanian & Perkebunan</option>
-                </select>
+    {{-- Daftar UMKM (Data dari Database) --}}
+    <div class="max-w-7xl mx-auto px-6">
+        @if($umkms->isEmpty())
+            <div class="text-center py-20 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
+                <div class="text-6xl mb-4">🏪</div>
+                <h3 class="text-2xl font-black text-slate-300 uppercase tracking-tighter italic">Belum Ada UMKM</h3>
+                <p class="text-slate-400">Belum ada UMKM yang terdaftar atau disetujui saat ini.</p>
             </div>
-
-            <div class="mb-4">
-                <label class="block text-gray-700 font-medium mb-2">Nama Pemilik <span class="text-red-500">*</span></label>
-                <input type="text" name="pemilik" class="w-full border border-gray-300 rounded-lg px-4 py-2" value="{{ old('pemilik', $umkm->pemilik) }}" required>
+        @else
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                @foreach($umkms as $item)
+                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
+                        {{-- PERBAIKAN: Gambar Muncul (Pastikan jalankan php artisan storage:link) --}}
+                        <img src="{{ asset('storage/'.$item->logo) }}" class="w-full h-48 object-cover rounded-[2rem] mb-6 shadow-inner bg-slate-100" onerror="this.src='https://via.placeholder.com/400x300?text=Logo+UMKM'">
+                        
+                        <h4 class="text-xl font-black text-emerald-950 mb-2">{{ $item->nama_usaha }}</h4>
+                        <span class="inline-block px-4 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase rounded-full mb-4">{{ $item->kategori }}</span>
+                        <p class="text-slate-500 text-sm mb-6 line-clamp-2">{{ $item->deskripsi }}</p>
+                        
+                        {{-- FIX: Mengirimkan objek $item secara utuh untuk menghindari missing parameter --}}
+                        <a href="{{ route('umkm.show', $item) }}" class="block text-center py-4 bg-slate-50 text-emerald-950 font-black rounded-2xl group-hover:bg-emerald-600 group-hover:text-white transition-all uppercase text-xs tracking-widest mb-3">Detail Usaha</a>
+                        
+                        {{-- TAMBAHAN: Fitur CRUD (Edit & Hapus) --}}
+                        @auth
+                            @if(auth()->id() == $item->user_id || auth()->user()->role == 'admin')
+                            <div class="flex gap-2">
+                                {{-- FIX: Mengirimkan objek $item untuk route edit & destroy --}}
+                                <a href="{{ route('umkm.edit', $item) }}" class="flex-1 text-center py-2 bg-amber-50 text-amber-600 rounded-xl font-bold text-xs hover:bg-amber-100 transition">EDIT</a>
+                                <form action="{{ route('umkm.destroy', $item) }}" method="POST" class="flex-1" onsubmit="return confirm('Hapus UMKM ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-full text-center py-2 bg-red-50 text-red-600 rounded-xl font-bold text-xs hover:bg-red-100 transition">HAPUS</button>
+                                </form>
+                            </div>
+                            @endif
+                        @endauth
+                    </div>
+                @endforeach
             </div>
-
-            <div class="mb-4">
-                <label class="block text-gray-700 font-medium mb-2">Nomor Telepon <span class="text-red-500">*</span></label>
-                <input type="tel" name="no_telepon" class="w-full border border-gray-300 rounded-lg px-4 py-2" value="{{ old('no_telepon', $umkm->no_telepon) }}" required>
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-gray-700 font-medium mb-2">Alamat Usaha <span class="text-red-500">*</span></label>
-                <textarea name="alamat_usaha" rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>{{ old('alamat_usaha', $umkm->alamat_usaha) }}</textarea>
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-gray-700 font-medium mb-2">Deskripsi Usaha <span class="text-red-500">*</span></label>
-                <textarea name="deskripsi" rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>{{ old('deskripsi', $umkm->deskripsi) }}</textarea>
-            </div>
-
-            <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
-                Simpan Perubahan
-            </button>
-        </form>
+        @endif
     </div>
 </div>
 @endsection

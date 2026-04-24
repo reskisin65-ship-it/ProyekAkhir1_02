@@ -5,12 +5,14 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UmkmController;
+use App\Http\Controllers\Admin\UmkmController;
 use App\Http\Controllers\Masyarakat\SuratController;
 use App\Http\Controllers\Masyarakat\AspirasiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TestimoniController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +34,6 @@ Route::get('/berita/{slug}', [PageController::class, 'beritaShow'])->name('berit
 
 Route::get('/galeri', [PageController::class, 'galeri'])->name('galeri');
 Route::get('/umkm', [UmkmController::class, 'index'])->name('umkm');
-Route::get('/umkm/{id}', [UmkmController::class, 'show'])->name('umkm.show');
 Route::get('/kontak', [PageController::class, 'kontak'])->name('kontak');
 Route::post('/kontak', [PageController::class, 'kirimPesan'])->name('kontak.send');
 
@@ -58,10 +59,26 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 // ROUTES YANG MEMERLUKAN LOGIN (SEMUA ROLE)
 // ==============================================
 
+
+// UMKM CRUD
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/testimoni', [TestimoniController::class, 'store'])->name('testimoni.store');
+
+    Route::get('/umkm/daftar', [UmkmController::class, 'create'])->name('umkm.create');
+    Route::post('/umkm/daftar', [UmkmController::class, 'store'])->name('umkm.store');
+    Route::get('/umkm/dashboard', [UmkmController::class, 'dashboard'])->name('umkm.dashboard');
+    Route::get('/admin/umkm/list', [UmkmController::class, 'index'])->name('umkm.index');
+    Route::put('/umkm/profil/update', [UmkmController::class, 'updateProfil'])->name('umkm.profil.update');
+    Route::delete('/umkm/{id}', [UmkmController::class, 'destroy'])->name('umkm.destroy');
+    Route::get('/umkm/{id}', [UmkmController::class, 'show'])->name('umkm.show');
+    Route::get('/umkm/{id}/edit', [UmkmController::class, 'edit'])->name('umkm.edit');
+    Route::put('/umkm/{id}', [UmkmController::class, 'update'])->name('umkm.update');
+    Route::post('/produk/store', [ProductController::class, 'store'])->name('produk.store');
+    Route::delete('/produk/{product}', [ProductController::class, 'destroy'])->name('produk.destroy');
 });
+Route::get('/umkm/{id}', [UmkmController::class, 'show'])->name('umkm.show');
+
 
 // ==============================================
 // ROUTES UNTUK MASYARAKAT & UMKM (SEMUA USER LOGIN)
@@ -173,4 +190,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // ==============================================
     Route::get('/statistik', [AdminController::class, 'statistik'])->name('statistik.index');
 
+
+    
 });
