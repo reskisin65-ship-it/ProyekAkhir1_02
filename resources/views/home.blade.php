@@ -924,7 +924,7 @@
                 <div class="relative h-72 overflow-hidden">
                     <img src="{{ $u->logo ? asset('storage/' . $u->logo) : 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500' }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                     <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md px-4 py-2 rounded-xl shadow-md">
-                        <span class="text-lg font-black text-emerald-700">Rp {{ number_format($u->produk->first()->harga ?? 0, 0, ',', '.') }}</span>
+                      <span class="text-lg font-black text-emerald-700">Rp {{ number_format(optional(optional($u->produk)->first())->harga ?? 0, 0, ',', '.') }}</span>
                     </div>
                     <div class="absolute top-4 right-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 py-1 rounded-full text-[9px] font-bold shadow-md">⭐ UMKM Unggulan</div>
                 </div>

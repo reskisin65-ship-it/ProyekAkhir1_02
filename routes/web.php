@@ -216,11 +216,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // STATISTIK
     Route::get('/statistik', [AdminController::class, 'statistik'])->name('statistik.index');
-<<<<<<< HEAD
-
-
-    
-=======
     Route::get('/statistik/kelola', [AdminController::class, 'statistikKelola'])->name('statistik.kelola');
     Route::put('/statistik/update', [AdminController::class, 'statistikUpdate'])->name('statistik.update');
     
@@ -240,5 +235,4 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::delete('/kategori/{id}', [App\Http\Controllers\Admin\KeuanganController::class, 'kategoriDestroy'])->name('kategori.destroy');
         Route::get('/laporan', [App\Http\Controllers\Admin\KeuanganController::class, 'laporan'])->name('laporan');
     });
->>>>>>> d9dd5a8ad1ab87918813517aa3ff317a4c21fa04
 });
