@@ -75,9 +75,118 @@
                 @endauth
             </div>
             
-            {{-- Tombol Auth --}}
+            {{-- Tombol Auth & Notifikasi --}}
             <div class="flex gap-3">
                 @auth
+                    {{-- ============================================= --}}
+                    {{-- NOTIFICATION BELL LANGSUNG DI SINI --}}
+                    {{-- ============================================= --}}
+                    <div class="relative" x-data="{ 
+                        open: false, 
+                        notif: [], 
+                        total: 0,
+                        ambil() {
+                            fetch('{{ route("notifikasi.ambil") }}')
+                                .then(res => res.json())
+                                .then(data => {
+                                    this.notif = data.data;
+                                    this.total = data.total;
+                                })
+                                .catch(err => console.error('Error ambil notif:', err));
+                        },
+                        baca(id) {
+                            fetch('{{ route("notifikasi.baca") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ id: id })
+                            }).then(() => this.ambil());
+                        },
+                        bacaSemua() {
+                            fetch('{{ route("notifikasi.baca-semua") }}', {
+                                method: 'POST',
+                                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                            }).then(() => this.ambil());
+                        }
+                    }" x-init="ambil(); setInterval(() => ambil(), 30000)">
+                        
+                        <button @click="open = !open" class="relative w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 transition flex items-center justify-center">
+                            <i class="fa-regular fa-bell text-emerald-600 text-xl"></i>
+                            
+                            {{-- BADGE MERAH DENGAN ANGKA --}}
+                            <span x-show="total > 0" 
+                                  x-cloak 
+                                  class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 shadow-md">
+                                <span x-text="total > 99 ? '99+' : total"></span>
+                            </span>
+                        </button>
+                        
+                        {{-- Dropdown Notifikasi --}}
+                        <div x-show="open" @click.away="open = false" x-cloak
+                             class="absolute top-full right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 scale-100"
+                             x-transition:leave-end="opacity-0 scale-95">
+                            
+                            <div class="flex justify-between items-center px-4 py-3 border-b border-gray-100 bg-gray-50">
+                                <h3 class="font-semibold text-gray-800">🔔 Notifikasi</h3>
+                                <a href="{{ route('notifikasi.index') }}" class="text-xs text-emerald-600 hover:text-emerald-700">Lihat semua</a>
+                            </div>
+                            
+                            <div class="max-h-96 overflow-y-auto">
+                                <template x-for="item in notif" :key="item.id">
+                                    <a :href="item.link" @click="baca(item.id)" 
+                                       class="block px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition"
+                                       :class="!item.dibaca ? 'bg-emerald-50/30' : ''">
+                                        <div class="flex gap-3">
+                                            <div class="flex-shrink-0">
+                                                <div class="w-8 h-8 rounded-full flex items-center justify-center"
+                                                     :class="{
+                                                         'bg-emerald-100': item.jenis == 'pengajuan_surat',
+                                                         'bg-blue-100': item.jenis == 'aspirasi',
+                                                         'bg-amber-100': item.jenis == 'umkm',
+                                                         'bg-gray-100': true
+                                                     }">
+                                                    <i class="text-sm" :class="{
+                                                        'fa-regular fa-file-lines text-emerald-600': item.jenis == 'pengajuan_surat',
+                                                        'fa-regular fa-comment-dots text-blue-600': item.jenis == 'aspirasi',
+                                                        'fa-solid fa-store text-amber-600': item.jenis == 'umkm',
+                                                        'fa-regular fa-bell text-gray-600': true
+                                                    }"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-sm font-medium text-gray-800 truncate" x-text="item.judul"></p>
+                                                <p class="text-xs text-gray-500 truncate" x-text="item.pesan"></p>
+                                                <p class="text-[10px] text-gray-400 mt-1" x-text="item.waktu"></p>
+                                            </div>
+                                            <div x-show="!item.dibaca" class="flex-shrink-0">
+                                                <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </template>
+                                
+                                <div x-show="notif.length === 0" class="px-4 py-8 text-center">
+                                    <i class="fa-regular fa-bell-slash text-3xl text-gray-300 mb-2 block"></i>
+                                    <p class="text-sm text-gray-400">Tidak ada notifikasi</p>
+                                </div>
+                            </div>
+                            
+                            <div x-show="notif.length > 0" class="border-t border-gray-100 p-2 text-center">
+                                <button @click="bacaSemua()" class="text-xs text-emerald-600 hover:text-emerald-700 w-full py-1">
+                                    ✓ Tandai semua dibaca
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {{-- User Menu --}}
                     <div class="flex items-center gap-3 relative" x-data="{ userMenu: false }">
                         <button @click="userMenu = !userMenu" class="flex items-center gap-2 px-3 py-2 rounded-full bg-emerald-50 hover:bg-emerald-100 transition">
                             <div class="w-8 h-8 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
@@ -116,12 +225,14 @@
                                     <a href="{{ route('umkm.profil.edit') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">Profil UMKM</a>
                                     <a href="{{ route('masyarakat.keuangan.index') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">💰 Keuangan</a>
                                     <a href="{{ route('profil-desa') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">🏛️ Profil Desa</a>
+                                    <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">🔔 Notifikasi</a>
                                 @else
                                     <a href="{{ route('masyarakat.dashboard') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">Dashboard</a>
                                     <a href="{{ route('masyarakat.surat.create') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">Ajukan Surat</a>
                                     <a href="{{ route('masyarakat.aspirasi.index') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">Aspirasi Saya</a>
                                     <a href="{{ route('masyarakat.keuangan.index') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">💰 Keuangan</a>
                                     <a href="{{ route('profil-desa') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">🏛️ Profil Desa</a>
+                                    <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-emerald-50 transition">🔔 Notifikasi</a>
                                 @endif
                             </div>
                             <div class="border-t border-gray-100 mt-1 pt-1">
@@ -166,6 +277,7 @@
                     <a href="{{ route('admin.statistik.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Statistik</a>
                     <a href="{{ route('admin.keuangan.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">💰 Keuangan</a>
                     <a href="{{ route('admin.profil-desa.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">🏛️ Profil Desa</a>
+                    <a href="{{ route('notifikasi.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">🔔 Notifikasi</a>
                 @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
                     <a href="{{ route('umkm.dashboard') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Dashboard</a>
                     <a href="{{ route('umkm.produk.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Produk Saya</a>
@@ -175,6 +287,7 @@
                     <a href="{{ route('statistik.publik') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Statistik Desa</a>
                     <a href="{{ route('masyarakat.keuangan.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">💰 Keuangan</a>
                     <a href="{{ route('profil-desa') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">🏛️ Profil Desa</a>
+                    <a href="{{ route('notifikasi.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">🔔 Notifikasi</a>
                 @else
                     <a href="{{ route('masyarakat.dashboard') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Dashboard</a>
                     <a href="{{ route('masyarakat.surat.create') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Ajukan Surat</a>
@@ -185,6 +298,7 @@
                     <a href="{{ route('statistik.publik') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Statistik Desa</a>
                     <a href="{{ route('masyarakat.keuangan.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">💰 Keuangan</a>
                     <a href="{{ route('profil-desa') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">🏛️ Profil Desa</a>
+                    <a href="{{ route('notifikasi.index') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">🔔 Notifikasi</a>
                 @endif
             @else
                 <a href="{{ route('home') }}" class="px-5 py-3 text-emerald-800 hover:bg-emerald-50 transition">Beranda</a>
@@ -208,7 +322,7 @@
                 </div>
             @else
                 <a href="{{ route('register') }}" class="mx-4 my-1 px-4 py-2 rounded-xl bg-emerald-500 text-white text-center">Daftar</a>
-                <a href="{{ route('login') }}" class="mx-4 my-1 px-4 py-2 rounded-xl border border-emerald-500 text-emerald-600 text-center">Masuk</a>
+                <a href="{{ route('login') }}" class="mx-4 my-1 px-4 py-2 rounded-xl border border-emerald-500 text-emerald-600 text-center">Login</a>
             @endauth
         </div>
     </div>

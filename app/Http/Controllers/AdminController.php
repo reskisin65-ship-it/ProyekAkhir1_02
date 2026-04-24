@@ -1,4 +1,5 @@
 <?php
+// app/Http/Controllers/AdminController.php
 
 namespace App\Http\Controllers;
 
@@ -13,7 +14,9 @@ use App\Models\DataPengurus;
 use App\Models\DataPenduduk;
 use App\Models\Role;
 use App\Models\PengaturanStatistik;
+use App\Models\Notifikasi; // TAMBAHKAN INI
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -84,6 +87,19 @@ class AdminController extends Controller
             'status' => 'selesai'
         ]);
         
+        // KIRIM NOTIFIKASI KE PENGIRIM ASPIRASI
+        if ($aspirasi->user_id) {
+            Notifikasi::create([
+                'user_id' => $aspirasi->user_id,
+                'jenis' => 'aspirasi',
+                'judul' => '✅ Aspirasi Telah Dijawab',
+                'pesan' => 'Aspirasi Anda telah direspon oleh admin desa.',
+                'link' => route('masyarakat.aspirasi.show', $aspirasi->id_aspirasi),
+                'ref_id' => $aspirasi->id_aspirasi,
+                'dibaca' => false
+            ]);
+        }
+        
         return redirect()->route('admin.aspirasi.index')->with('success', 'Respon berhasil dikirim!');
     }
 
@@ -139,7 +155,7 @@ class AdminController extends Controller
         }
 
         Berita::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::user()->user_id, // PERBAIKI: dari auth()->id()
             'judul' => $request->judul,
             'kategori' => $request->kategori,
             'ringkasan' => Str::limit($request->isi, 150),
@@ -318,6 +334,19 @@ class AdminController extends Controller
             $umkm->user->update(['id_role' => $roleUmkm->id_role]);
         }
         
+        // KIRIM NOTIFIKASI KE PEMILIK UMKM
+        if ($umkm->user_id) {
+            Notifikasi::create([
+                'user_id' => $umkm->user_id,
+                'jenis' => 'umkm',
+                'judul' => '✅ UMKM Disetujui',
+                'pesan' => 'Pendaftaran UMKM ' . $umkm->nama_usaha . ' Anda telah disetujui.',
+                'link' => route('umkm.show', $umkm->id_umkm),
+                'ref_id' => $umkm->id_umkm,
+                'dibaca' => false
+            ]);
+        }
+        
         return redirect()->route('admin.umkm.index')
             ->with('success', 'UMKM berhasil disetujui!');
     }
@@ -326,6 +355,19 @@ class AdminController extends Controller
     {
         $umkm = Umkm::findOrFail($id);
         $umkm->update(['status' => 'rejected']);
+        
+        // KIRIM NOTIFIKASI KE PEMILIK UMKM
+        if ($umkm->user_id) {
+            Notifikasi::create([
+                'user_id' => $umkm->user_id,
+                'jenis' => 'umkm',
+                'judul' => '❌ UMKM Ditolak',
+                'pesan' => 'Pendaftaran UMKM ' . $umkm->nama_usaha . ' Anda ditolak. Silakan hubungi admin.',
+                'link' => route('umkm.show', $umkm->id_umkm),
+                'ref_id' => $umkm->id_umkm,
+                'dibaca' => false
+            ]);
+        }
         
         return redirect()->route('admin.umkm.index')
             ->with('success', 'UMKM ditolak!');
@@ -388,6 +430,19 @@ class AdminController extends Controller
         $pengajuan = PengajuanSurat::findOrFail($id);
         $pengajuan->update(['status' => 'diproses']);
         
+        // KIRIM NOTIFIKASI KE PEMOHON
+        if ($pengajuan->user_id) {
+            Notifikasi::create([
+                'user_id' => $pengajuan->user_id,
+                'jenis' => 'pengajuan_surat',
+                'judul' => '🔄 Pengajuan Surat Diproses',
+                'pesan' => 'Pengajuan surat ' . $pengajuan->jenis_surat . ' Anda sedang diproses oleh admin.',
+                'link' => route('masyarakat.surat.show', $pengajuan->id_surat),
+                'ref_id' => $pengajuan->id_surat,
+                'dibaca' => false
+            ]);
+        }
+        
         return back()->with('success', 'Pengajuan surat diterima dan sedang diproses!');
     }
 
@@ -406,6 +461,19 @@ class AdminController extends Controller
             'file_surat' => $filePath,
         ]);
         
+        // KIRIM NOTIFIKASI SURAT SELESAI
+        if ($pengajuan->user_id) {
+            Notifikasi::create([
+                'user_id' => $pengajuan->user_id,
+                'jenis' => 'pengajuan_surat',
+                'judul' => '✅ Surat Selesai',
+                'pesan' => 'Surat ' . $pengajuan->jenis_surat . ' Anda telah selesai. Silakan download.',
+                'link' => route('masyarakat.surat.show', $pengajuan->id_surat),
+                'ref_id' => $pengajuan->id_surat,
+                'dibaca' => false
+            ]);
+        }
+        
         return redirect()->route('admin.pengajuan-surat.index')
             ->with('success', 'Surat selesai dan telah diunggah!');
     }
@@ -421,6 +489,19 @@ class AdminController extends Controller
             'status' => 'ditolak',
             'catatan_penolakan' => $request->catatan,
         ]);
+        
+        // KIRIM NOTIFIKASI PENOLAKAN
+        if ($pengajuan->user_id) {
+            Notifikasi::create([
+                'user_id' => $pengajuan->user_id,
+                'jenis' => 'pengajuan_surat',
+                'judul' => '❌ Pengajuan Surat Ditolak',
+                'pesan' => 'Pengajuan surat ' . $pengajuan->jenis_surat . ' ditolak. Catatan: ' . $request->catatan,
+                'link' => route('masyarakat.surat.show', $pengajuan->id_surat),
+                'ref_id' => $pengajuan->id_surat,
+                'dibaca' => false
+            ]);
+        }
         
         return back()->with('success', 'Pengajuan surat ditolak!');
     }
@@ -560,91 +641,92 @@ class AdminController extends Controller
             ->with('success', 'Data penduduk berhasil dihapus!');
     }
 
-// ==============================================
-// MANAJEMEN DATA PENGURUS (APARATUR DESA)
-// ==============================================
+    // ==============================================
+    // MANAJEMEN DATA PENGURUS (APARATUR DESA)
+    // ==============================================
 
-public function pengurus()
-{
-    $pengurus = DataPengurus::orderBy('id_pengurus', 'asc')->paginate(15);
-    return view('admin.pengurus', compact('pengurus'));
-}
-
-public function pengurusCreate()
-{
-    return view('admin.pengurus-create');
-}
-
-public function pengurusStore(Request $request)
-{
-    $request->validate([
-        'nama_pengurus' => 'required|min:3|max:100',  // PERBAIKI: nama_pengurus
-        'jabatan' => 'required|min:3|max:100',
-        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
-
-    $fotoPath = null;
-    if ($request->hasFile('foto')) {
-        $fotoPath = $request->file('foto')->store('pengurus', 'public');
+    public function pengurus()
+    {
+        $pengurus = DataPengurus::orderBy('id_pengurus', 'asc')->paginate(15);
+        return view('admin.pengurus', compact('pengurus'));
     }
 
-    DataPengurus::create([
-        'nama_pengurus' => $request->nama_pengurus,  // PERBAIKI: $request->nama_pengurus
-        'jabatan' => $request->jabatan,
-        'foto' => $fotoPath,
-    ]);
+    public function pengurusCreate()
+    {
+        return view('admin.pengurus-create');
+    }
 
-    return redirect()->route('admin.pengurus.index')
-        ->with('success', 'Pengurus berhasil ditambahkan!');
-}
+    public function pengurusStore(Request $request)
+    {
+        $request->validate([
+            'nama_pengurus' => 'required|min:3|max:100',
+            'jabatan' => 'required|min:3|max:100',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-public function pengurusEdit($id)
-{
-    $pengurus = DataPengurus::findOrFail($id);
-    return view('admin.pengurus-edit', compact('pengurus'));
-}
-
-public function pengurusUpdate(Request $request, $id)
-{
-    $pengurus = DataPengurus::findOrFail($id);
-    
-    $request->validate([
-        'nama_pengurus' => 'required|min:3|max:100',  // PERBAIKI: nama_pengurus
-        'jabatan' => 'required|min:3|max:100',
-        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
-
-    $fotoPath = $pengurus->foto;
-    if ($request->hasFile('foto')) {
-        if ($fotoPath && Storage::disk('public')->exists($fotoPath)) {
-            Storage::disk('public')->delete($fotoPath);
+        $fotoPath = null;
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('pengurus', 'public');
         }
-        $fotoPath = $request->file('foto')->store('pengurus', 'public');
+
+        DataPengurus::create([
+            'nama_pengurus' => $request->nama_pengurus,
+            'jabatan' => $request->jabatan,
+            'foto' => $fotoPath,
+        ]);
+
+        return redirect()->route('admin.pengurus.index')
+            ->with('success', 'Pengurus berhasil ditambahkan!');
     }
 
-    $pengurus->update([
-        'nama_pengurus' => $request->nama_pengurus,  // PERBAIKI: $request->nama_pengurus
-        'jabatan' => $request->jabatan,
-        'foto' => $fotoPath,
-    ]);
-
-    return redirect()->route('admin.pengurus.index')
-        ->with('success', 'Pengurus berhasil diperbarui!');
-}
-
-public function pengurusDestroy($id)
-{
-    $pengurus = DataPengurus::findOrFail($id);
-    
-    if ($pengurus->foto && Storage::disk('public')->exists($pengurus->foto)) {
-        Storage::disk('public')->delete($pengurus->foto);
+    public function pengurusEdit($id)
+    {
+        $pengurus = DataPengurus::findOrFail($id);
+        return view('admin.pengurus-edit', compact('pengurus'));
     }
-    
-    $pengurus->delete();
-    
-    return redirect()->route('admin.pengurus.index')
-        ->with('success', 'Pengurus berhasil dihapus!');
-}
+
+    public function pengurusUpdate(Request $request, $id)
+    {
+        $pengurus = DataPengurus::findOrFail($id);
+        
+        $request->validate([
+            'nama_pengurus' => 'required|min:3|max:100',
+            'jabatan' => 'required|min:3|max:100',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $fotoPath = $pengurus->foto;
+        if ($request->hasFile('foto')) {
+            if ($fotoPath && Storage::disk('public')->exists($fotoPath)) {
+                Storage::disk('public')->delete($fotoPath);
+            }
+            $fotoPath = $request->file('foto')->store('pengurus', 'public');
+        }
+
+        $pengurus->update([
+            'nama_pengurus' => $request->nama_pengurus,
+            'jabatan' => $request->jabatan,
+            'foto' => $fotoPath,
+        ]);
+
+        return redirect()->route('admin.pengurus.index')
+            ->with('success', 'Pengurus berhasil diperbarui!');
+    }
+
+    public function pengurusDestroy($id)
+    {
+        $pengurus = DataPengurus::findOrFail($id);
+        
+        if ($pengurus->foto && Storage::disk('public')->exists($pengurus->foto)) {
+            Storage::disk('public')->delete($pengurus->foto);
+        }
+        
+        $pengurus->delete();
+        
+        return redirect()->route('admin.pengurus.index')
+            ->with('success', 'Pengurus berhasil dihapus!');
+    }
+
     // ==============================================
     // MANAJEMEN PROFIL DESA
     // ==============================================

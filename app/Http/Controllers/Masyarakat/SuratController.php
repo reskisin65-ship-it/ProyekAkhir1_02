@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Masyarakat;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengajuanSurat;
+use App\Models\Notifikasi;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,7 +15,7 @@ class SuratController extends Controller
 {
     public function index()
     {
-        $pengajuan = PengajuanSurat::where('user_id', Auth::id())
+        $pengajuan = PengajuanSurat::where('user_id', Auth::user()->user_id)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         return view('masyarakat.surat.index', compact('pengajuan'));
@@ -43,8 +45,8 @@ class SuratController extends Controller
             $filePath = $request->file('berkas_pendukung')->store('pendukung_surat', 'public');
         }
 
-        PengajuanSurat::create([
-            'user_id' => Auth::id(),
+        $pengajuan = PengajuanSurat::create([
+            'user_id' => Auth::user()->user_id,
             'jenis_surat' => $request->jenis_surat,
             'nama_lengkap' => $request->nama_lengkap,
             'nik' => $request->nik,
@@ -58,19 +60,51 @@ class SuratController extends Controller
             'tgl_pengajuan' => now(),
         ]);
 
+        // ==============================================
+        // KIRIM NOTIFIKASI
+        // ==============================================
+        
+        // 1. Notifikasi untuk pengirim (masyarakat)
+        Notifikasi::create([
+            'user_id' => Auth::user()->user_id,
+            'jenis' => 'pengajuan_surat',
+            'judul' => '✅ Pengajuan Surat Berhasil',
+            'pesan' => 'Pengajuan surat ' . $request->jenis_surat . ' Anda telah dikirim dan sedang diproses.',
+            'link' => route('masyarakat.surat.show', $pengajuan->id_surat),
+            'ref_id' => $pengajuan->id_surat,
+            'dibaca' => false
+        ]);
+        
+        // 2. Notifikasi untuk semua admin
+        $admins = User::whereHas('role', function($q) {
+            $q->where('nama_role', 'admin');
+        })->get();
+        
+        foreach ($admins as $admin) {
+            Notifikasi::create([
+                'user_id' => $admin->user_id,
+                'jenis' => 'pengajuan_surat',
+                'judul' => '📋 Pengajuan Surat Baru',
+                'pesan' => Auth::user()->name . ' mengajukan surat ' . $request->jenis_surat,
+                'link' => route('admin.pengajuan-surat.show', $pengajuan->id_surat),
+                'ref_id' => $pengajuan->id_surat,
+                'dibaca' => false
+            ]);
+        }
+
         return redirect()->route('masyarakat.surat.index')
             ->with('success', 'Pengajuan surat berhasil dikirim!');
     }
 
     public function show($id)
     {
-        $pengajuan = PengajuanSurat::where('user_id', Auth::id())->findOrFail($id);
+        $pengajuan = PengajuanSurat::where('user_id', Auth::user()->user_id)->findOrFail($id);
         return view('masyarakat.surat.show', compact('pengajuan'));
     }
 
     public function edit($id)
     {
-        $pengajuan = PengajuanSurat::where('user_id', Auth::id())
+        $pengajuan = PengajuanSurat::where('user_id', Auth::user()->user_id)
             ->where('status', 'menunggu')
             ->findOrFail($id);
         return view('masyarakat.surat.edit', compact('pengajuan'));
@@ -78,7 +112,7 @@ class SuratController extends Controller
 
     public function update(Request $request, $id)
     {
-        $pengajuan = PengajuanSurat::where('user_id', Auth::id())
+        $pengajuan = PengajuanSurat::where('user_id', Auth::user()->user_id)
             ->where('status', 'menunggu')
             ->findOrFail($id);
         
@@ -120,7 +154,7 @@ class SuratController extends Controller
 
     public function destroy($id)
     {
-        $pengajuan = PengajuanSurat::where('user_id', Auth::id())
+        $pengajuan = PengajuanSurat::where('user_id', Auth::user()->user_id)
             ->where('status', 'menunggu')
             ->findOrFail($id);
         
@@ -136,7 +170,7 @@ class SuratController extends Controller
 
     public function download($id)
     {
-        $pengajuan = PengajuanSurat::where('user_id', Auth::id())->findOrFail($id);
+        $pengajuan = PengajuanSurat::where('user_id', Auth::user()->user_id)->findOrFail($id);
         
         if (!$pengajuan->file_surat || !Storage::disk('public')->exists($pengajuan->file_surat)) {
             return back()->with('error', 'File surat tidak ditemukan!');

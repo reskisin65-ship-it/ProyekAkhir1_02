@@ -1,5 +1,5 @@
 <?php
-// database/migrations/2025_01_01_000010_create_notifikasi_table.php
+// database/migrations/2026_04_23_xxxxxx_create_notifikasi_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -10,17 +10,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifikasi', function (Blueprint $table) {
-            $table->id('id_notifikasi');
+            $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('judul', 191);
+            $table->string('jenis')->default('umum');
+            $table->string('judul');
             $table->text('pesan');
+            $table->string('link')->nullable();
+            $table->unsignedBigInteger('ref_id')->nullable();
+            $table->boolean('dibaca')->default(false);
             $table->timestamps();
             
-            // PERBAIKAN: gunakan ->on('users') BUKAN -->('users')
-            $table->foreign('user_id')
-                  ->references('user_id')
-                  ->on('users')           // ← ini yang benar
-                  ->onDelete('cascade');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->index(['user_id', 'dibaca']);
         });
     }
 

@@ -156,6 +156,15 @@
                     <p class="text-xs text-gray-400">Kelola profil desa</p>
                 </div>
             </a>
+            {{-- NOTIFIKASI UNTUK ADMIN --}}
+            <a href="{{ route('notifikasi.index') }}" class="side-item group">
+                <i class="fa-regular fa-bell"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🔔 Notifikasi</h5>
+                    <p class="text-xs text-gray-400">Lihat semua notifikasi</p>
+                </div>
+            </a>
 
     {{-- ============================================= --}}
     {{-- SIDEBAR UNTUK ROLE: UMKM --}}
@@ -223,6 +232,15 @@
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
                     <p class="text-xs text-gray-400">Sejarah, visi misi, struktur</p>
+                </div>
+            </a>
+            {{-- NOTIFIKASI UNTUK UMKM --}}
+            <a href="{{ route('notifikasi.index') }}" class="side-item group">
+                <i class="fa-regular fa-bell"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🔔 Notifikasi</h5>
+                    <p class="text-xs text-gray-400">Lihat semua notifikasi</p>
                 </div>
             </a>
 
@@ -310,6 +328,15 @@
                     <p class="text-xs text-gray-400">Sejarah, visi misi, struktur</p>
                 </div>
             </a>
+            {{-- NOTIFIKASI UNTUK MASYARAKAT --}}
+            <a href="{{ route('notifikasi.index') }}" class="side-item group">
+                <i class="fa-regular fa-bell"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🔔 Notifikasi</h5>
+                    <p class="text-xs text-gray-400">Lihat semua notifikasi</p>
+                </div>
+            </a>
         @endif
         
         {{-- Logout untuk semua role yang login --}}
@@ -338,6 +365,7 @@
             <a href="{{ route('admin.statistik.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
             <a href="{{ route('admin.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
             <a href="{{ route('admin.profil-desa.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-building"></i></a>
+            <a href="{{ route('notifikasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-regular fa-bell"></i></a>
         @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
             <a href="{{ route('umkm.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
             <a href="{{ route('umkm.produk.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-box"></i></a>
@@ -345,6 +373,7 @@
             <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
             <a href="{{ route('masyarakat.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
             <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-landmark-dome"></i></a>
+            <a href="{{ route('notifikasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-regular fa-bell"></i></a>
         @else
             <a href="{{ route('masyarakat.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
             <a href="{{ route('masyarakat.surat.create') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-file-signature"></i></a>
@@ -353,6 +382,7 @@
             <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
             <a href="{{ route('masyarakat.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
             <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-landmark-dome"></i></a>
+            <a href="{{ route('notifikasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-regular fa-bell"></i></a>
         @endif
     @else
         <a href="{{ route('home') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-house"></i></a>

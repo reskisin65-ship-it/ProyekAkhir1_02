@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Notifikasi extends Model
 {
     protected $table = 'notifikasi';
-    protected $primaryKey = 'id_notifikasi';
     
     protected $fillable = [
-        'user_id', 'judul', 'pesan'
+        'user_id', 'jenis', 'judul', 'pesan', 'link', 'ref_id', 'dibaca'
+    ];
+    
+    protected $casts = [
+        'dibaca' => 'boolean',
     ];
     
     public function user()

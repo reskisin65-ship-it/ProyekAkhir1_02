@@ -10,6 +10,7 @@ use App\Http\Controllers\Masyarakat\SuratController;
 use App\Http\Controllers\Masyarakat\AspirasiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TestimoniController;
+use App\Http\Controllers\NotifikasiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,6 +62,16 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/testimoni', [TestimoniController::class, 'store'])->name('testimoni.store');
+    
+    // ==============================================
+    // NOTIFIKASI
+    // ==============================================
+    Route::get('/notifikasi', [NotifikasiController::class, 'index'])->name('notifikasi.index');
+    Route::get('/notifikasi/ambil', [NotifikasiController::class, 'ambil'])->name('notifikasi.ambil');
+    Route::post('/notifikasi/baca', [NotifikasiController::class, 'baca'])->name('notifikasi.baca');
+    Route::post('/notifikasi/baca-semua', [NotifikasiController::class, 'bacaSemua'])->name('notifikasi.baca-semua');
+    Route::delete('/notifikasi/{id}', [NotifikasiController::class, 'hapus'])->name('notifikasi.hapus');
+    Route::delete('/notifikasi/hapus-semua', [NotifikasiController::class, 'hapusSemua'])->name('notifikasi.hapus-semua');
 });
 
 // ==============================================
