@@ -68,13 +68,21 @@ class PageController extends Controller
         $kelompok_umur_30_59 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count();
         $kelompok_umur_60 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count();
         
+        // ==============================================
+        // DATA ASPIRASI PUBLIK - TAMPILKAN SEMUA ASPIRASI
+        // ==============================================
+        $aspirasiPublik = Aspirasi::orderBy('created_at', 'desc')
+            ->limit(6)
+            ->get();
+        
         return view('home', compact(
             'profil', 'beritas', 'pengumumans', 'aparaturs', 
             'galeris', 'umkms', 'stat_penduduk', 'stat_kk', 
             'stat_umkm_count', 'stat_luas',
             'penduduk_pria', 'penduduk_wanita',
             'kelompok_umur_0_14', 'kelompok_umur_15_29', 
-            'kelompok_umur_30_59', 'kelompok_umur_60'
+            'kelompok_umur_30_59', 'kelompok_umur_60',
+            'aspirasiPublik'
         ));
     }
 
@@ -99,11 +107,17 @@ class PageController extends Controller
         $stat_dusun = '6';
         $stat_tahun_berdiri = '1920';
         
+        // ==============================================
+        // DATA GALERI UNTUK PROFIL DESA
+        // ==============================================
+        $galeris = Galeri::orderBy('created_at', 'desc')->limit(6)->get();
+        
         return view('pages.profil-desa', compact(
             'profil', 'aparaturs', 
             'stat_penduduk', 'stat_kk', 
             'stat_umkm_count', 'stat_luas', 
-            'stat_dusun', 'stat_tahun_berdiri'
+            'stat_dusun', 'stat_tahun_berdiri',
+            'galeris'  // <-- INI YANG DITAMBAHKAN
         ));
     }
 
@@ -212,17 +226,11 @@ class PageController extends Controller
      * ==============================================
      * Halaman Statistik Desa untuk Publik
      * ==============================================
-     * Menampilkan data statistik realtime dari database:
-     * - Jumlah penduduk berdasarkan jenis kelamin
-     * - Jumlah Kepala Keluarga
-     * - Kelompok umur penduduk
-     * - Jumlah UMKM (aktif & pending)
-     * - Jumlah layanan (berita, aspirasi, pengajuan surat)
      */
     public function statistik()
     {
         // ==============================================
-        // DATA PENDUDUK (menggunakan model DataPenduduk)
+        // DATA PENDUDUK
         // ==============================================
         $totalPenduduk = DataPenduduk::count();
         $pendudukPria = DataPenduduk::where('jenis_kelamin', 'L')->count();
@@ -230,7 +238,7 @@ class PageController extends Controller
         $totalKK = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
 
         // ==============================================
-        // KELOMPOK UMUR (menggunakan tanggal_lahir)
+        // KELOMPOK UMUR
         // ==============================================
         $kelompokUmur014 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count();
         $kelompokUmur1529 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count();

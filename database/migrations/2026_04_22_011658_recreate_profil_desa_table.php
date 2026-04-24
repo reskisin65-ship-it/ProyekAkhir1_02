@@ -1,5 +1,5 @@
 <?php
-// database/migrations/2024_xx_xx_xxxxxx_update_profil_desa_table.php
+// database/migrations/2024_xx_xx_xxxxxx_recreate_profil_desa_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -9,6 +9,8 @@ return new class extends Migration
 {
     public function up()
     {
+        Schema::dropIfExists('profil_desa');
+        
         Schema::create('profil_desa', function (Blueprint $table) {
             $table->id();
             $table->text('sejarah')->nullable();
@@ -25,7 +27,7 @@ return new class extends Migration
             $table->text('alamat_kantor')->nullable();
             $table->string('email_desa')->nullable();
             $table->string('telepon_desa')->nullable();
-            $table->string('maps_embed')->nullable();
+            $table->text('maps_embed')->nullable();
             $table->timestamps();
         });
     }

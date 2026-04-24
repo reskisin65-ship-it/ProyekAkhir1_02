@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/Masyarakat/AspirasiController.php
 
 namespace App\Http\Controllers\Masyarakat;
 
@@ -7,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Aspirasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class AspirasiController extends Controller
 {
@@ -15,7 +14,7 @@ class AspirasiController extends Controller
     {
         $aspirasi = Aspirasi::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
         
         return view('masyarakat.aspirasi.index', compact('aspirasi'));
     }
@@ -29,14 +28,14 @@ class AspirasiController extends Controller
     {
         $request->validate([
             'kategori' => 'required|in:saran,keluhan,masukan,pertanyaan',
-            'judul' => 'required|min:5|max:100',
+            'judul' => 'required|min:5|max:255',
             'isi' => 'required|min:10',
-            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048'
         ]);
 
         $lampiranPath = null;
         if ($request->hasFile('lampiran')) {
-            $lampiranPath = $request->file('lampiran')->store('aspirasi_lampiran', 'public');
+            $lampiranPath = $request->file('lampiran')->store('aspirasi-lampiran', 'public');
         }
 
         Aspirasi::create([
@@ -45,11 +44,11 @@ class AspirasiController extends Controller
             'judul' => $request->judul,
             'isi_aspirasi' => $request->isi,
             'lampiran' => $lampiranPath,
-            'status' => 'baru',
+            'status' => 'baru'
         ]);
 
         return redirect()->route('masyarakat.aspirasi.index')
-            ->with('success', 'Aspirasi berhasil dikirim!');
+            ->with('success', 'Aspirasi berhasil dikirim! Akan segera ditanggapi.');
     }
 
     public function show($id)
@@ -65,12 +64,8 @@ class AspirasiController extends Controller
     {
         $aspirasi = Aspirasi::where('user_id', Auth::id())
             ->where('id_aspirasi', $id)
+            ->where('status', 'baru')
             ->firstOrFail();
-        
-        if ($aspirasi->status !== 'baru') {
-            return redirect()->route('masyarakat.aspirasi.index')
-                ->with('error', 'Aspirasi tidak dapat diedit karena sudah diproses!');
-        }
         
         return view('masyarakat.aspirasi.edit', compact('aspirasi'));
     }
@@ -79,34 +74,30 @@ class AspirasiController extends Controller
     {
         $aspirasi = Aspirasi::where('user_id', Auth::id())
             ->where('id_aspirasi', $id)
+            ->where('status', 'baru')
             ->firstOrFail();
-        
-        if ($aspirasi->status !== 'baru') {
-            return redirect()->route('masyarakat.aspirasi.index')
-                ->with('error', 'Aspirasi tidak dapat diedit karena sudah diproses!');
-        }
-        
+
         $request->validate([
             'kategori' => 'required|in:saran,keluhan,masukan,pertanyaan',
-            'judul' => 'required|min:5|max:100',
+            'judul' => 'required|min:5|max:255',
             'isi' => 'required|min:10',
-            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lampiran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048'
         ]);
 
-        $lampiranPath = $aspirasi->lampiran;
-        if ($request->hasFile('lampiran')) {
-            if ($lampiranPath && \Storage::disk('public')->exists($lampiranPath)) {
-                \Storage::disk('public')->delete($lampiranPath);
-            }
-            $lampiranPath = $request->file('lampiran')->store('aspirasi_lampiran', 'public');
-        }
-
-        $aspirasi->update([
+        $data = [
             'kategori' => $request->kategori,
             'judul' => $request->judul,
             'isi_aspirasi' => $request->isi,
-            'lampiran' => $lampiranPath,
-        ]);
+        ];
+
+        if ($request->hasFile('lampiran')) {
+            if ($aspirasi->lampiran) {
+                Storage::disk('public')->delete($aspirasi->lampiran);
+            }
+            $data['lampiran'] = $request->file('lampiran')->store('aspirasi-lampiran', 'public');
+        }
+
+        $aspirasi->update($data);
 
         return redirect()->route('masyarakat.aspirasi.index')
             ->with('success', 'Aspirasi berhasil diperbarui!');
@@ -116,19 +107,15 @@ class AspirasiController extends Controller
     {
         $aspirasi = Aspirasi::where('user_id', Auth::id())
             ->where('id_aspirasi', $id)
+            ->where('status', 'baru')
             ->firstOrFail();
-        
-        if ($aspirasi->status !== 'baru') {
-            return redirect()->route('masyarakat.aspirasi.index')
-                ->with('error', 'Aspirasi tidak dapat dibatalkan karena sudah diproses!');
+
+        if ($aspirasi->lampiran) {
+            Storage::disk('public')->delete($aspirasi->lampiran);
         }
-        
-        if ($aspirasi->lampiran && \Storage::disk('public')->exists($aspirasi->lampiran)) {
-            \Storage::disk('public')->delete($aspirasi->lampiran);
-        }
-        
+
         $aspirasi->delete();
-        
+
         return redirect()->route('masyarakat.aspirasi.index')
             ->with('success', 'Aspirasi berhasil dibatalkan!');
     }
