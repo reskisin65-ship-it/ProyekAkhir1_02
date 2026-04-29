@@ -9,7 +9,7 @@
             <i class="fa-solid fa-house"></i>
             <div class="info-box">
                 <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Beranda</h5>
+                <h5 class="text-base font-serif italic text-emerald-950 mt-1">Beranda</h5>
                 <p class="text-xs text-gray-400">Halaman utama</p>
             </div>
         </a>
@@ -17,7 +17,7 @@
             <i class="fa-solid fa-landmark-dome"></i>
             <div class="info-box">
                 <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
+                <h5 class="text-base font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
                 <p class="text-xs text-gray-400">Sejarah, visi misi, struktur</p>
             </div>
         </a>
@@ -25,7 +25,7 @@
             <i class="fa-solid fa-newspaper"></i>
             <div class="info-box">
                 <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Berita</h5>
+                <h5 class="text-base font-serif italic text-emerald-950 mt-1">Berita</h5>
                 <p class="text-xs text-gray-400">Informasi terkini</p>
             </div>
         </a>
@@ -33,7 +33,7 @@
             <i class="fa-solid fa-photo-film"></i>
             <div class="info-box">
                 <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Galeri</h5>
+                <h5 class="text-base font-serif italic text-emerald-950 mt-1">Galeri</h5>
                 <p class="text-xs text-gray-400">Dokumentasi kegiatan</p>
             </div>
         </a>
@@ -41,7 +41,7 @@
             <i class="fa-solid fa-shop"></i>
             <div class="info-box">
                 <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">UMKM</h5>
+                <h5 class="text-base font-serif italic text-emerald-950 mt-1">UMKM</h5>
                 <p class="text-xs text-gray-400">Produk unggulan</p>
             </div>
         </a>
@@ -49,7 +49,7 @@
             <i class="fa-solid fa-envelope"></i>
             <div class="info-box">
                 <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Kontak</h5>
+                <h5 class="text-base font-serif italic text-emerald-950 mt-1">Kontak</h5>
                 <p class="text-xs text-gray-400">Hubungi kami</p>
             </div>
         </a>
@@ -57,7 +57,7 @@
             <i class="fa-solid fa-chart-simple"></i>
             <div class="info-box">
                 <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Statistik Desa</h5>
+                <h5 class="text-base font-serif italic text-emerald-950 mt-1">Statistik Desa</h5>
                 <p class="text-xs text-gray-400">Data statistik desa</p>
             </div>
         </a>
@@ -72,7 +72,7 @@
                 <i class="fa-solid fa-chart-line"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Dashboard</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Dashboard</h5>
                     <p class="text-xs text-gray-400">Ringkasan data desa</p>
                 </div>
             </a>
@@ -80,7 +80,7 @@
                 <i class="fa-solid fa-envelope"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Pengajuan Surat</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Pengajuan Surat</h5>
                     <p class="text-xs text-gray-400">Kelola surat warga</p>
                 </div>
             </a>
@@ -88,7 +88,7 @@
                 <i class="fa-solid fa-users"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Data Penduduk</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Data Penduduk</h5>
                     <p class="text-xs text-gray-400">Kelola data warga</p>
                 </div>
             </a>
@@ -96,7 +96,7 @@
                 <i class="fa-solid fa-newspaper"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Berita</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Berita</h5>
                     <p class="text-xs text-gray-400">Kelola berita desa</p>
                 </div>
             </a>
@@ -104,7 +104,7 @@
                 <i class="fa-solid fa-photo-film"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Galeri</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Galeri</h5>
                     <p class="text-xs text-gray-400">Kelola galeri foto</p>
                 </div>
             </a>
@@ -112,7 +112,7 @@
                 <i class="fa-solid fa-comment-dots"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Aspirasi</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Aspirasi</h5>
                     <p class="text-xs text-gray-400">Kelola aspirasi warga</p>
                 </div>
             </a>
@@ -120,7 +120,7 @@
                 <i class="fa-solid fa-store"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">UMKM</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">UMKM</h5>
                     <p class="text-xs text-gray-400">Kelola UMKM desa</p>
                 </div>
             </a>
@@ -128,7 +128,7 @@
                 <i class="fa-solid fa-user-tie"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Pengurus Desa</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Pengurus Desa</h5>
                     <p class="text-xs text-gray-400">Kelola data pengurus</p>
                 </div>
             </a>
@@ -136,7 +136,7 @@
                 <i class="fa-solid fa-chart-simple"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Statistik</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Statistik</h5>
                     <p class="text-xs text-gray-400">Data statistik desa</p>
                 </div>
             </a>
@@ -144,7 +144,7 @@
                 <i class="fa-solid fa-coins"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Keuangan Desa</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Keuangan Desa</h5>
                     <p class="text-xs text-gray-400">Kelola pemasukan & pengeluaran</p>
                 </div>
             </a>
@@ -152,16 +152,15 @@
                 <i class="fa-solid fa-building"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
                     <p class="text-xs text-gray-400">Kelola profil desa</p>
                 </div>
             </a>
-            {{-- NOTIFIKASI UNTUK ADMIN --}}
             <a href="{{ route('notifikasi.index') }}" class="side-item group">
                 <i class="fa-regular fa-bell"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🔔 Notifikasi</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">🔔 Notifikasi</h5>
                     <p class="text-xs text-gray-400">Lihat semua notifikasi</p>
                 </div>
             </a>
@@ -170,35 +169,43 @@
     {{-- SIDEBAR UNTUK ROLE: UMKM --}}
     {{-- ============================================= --}}
         @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
-            <a href="{{ route('umkm.dashboard') }}" class="side-item group">
+            <a href="{{ route('masyarakat.dashboard') }}" class="side-item group">
                 <i class="fa-solid fa-chart-line"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Dashboard</h5>
-                    <p class="text-xs text-gray-400">Ringkasan toko Anda</p>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Dashboard</h5>
+                    <p class="text-xs text-gray-400">Dashboard anda</p>
                 </div>
             </a>
-            <a href="{{ route('umkm.produk.index') }}" class="side-item group">
-                <i class="fa-solid fa-box"></i>
+            <a href="{{ route('masyarakat.surat.create') }}" class="side-item group">
+                <i class="fa-solid fa-file-signature"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Produk Saya</h5>
-                    <p class="text-xs text-gray-400">Kelola produk UMKM</p>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Ajukan Surat</h5>
+                    <p class="text-xs text-gray-400">Buat pengajuan surat</p>
                 </div>
             </a>
-            <a href="{{ route('umkm.profil.edit') }}" class="side-item group">
-                <i class="fa-solid fa-store"></i>
+            <a href="{{ route('masyarakat.surat.index') }}" class="side-item group">
+                <i class="fa-solid fa-envelope"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Profil UMKM</h5>
-                    <p class="text-xs text-gray-400">Edit informasi toko</p>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Riwayat Surat</h5>
+                    <p class="text-xs text-gray-400">Status pengajuan surat</p>
+                </div>
+            </a>
+            <a href="{{ route('masyarakat.aspirasi.index') }}" class="side-item group">
+                <i class="fa-solid fa-comment-dots"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Aspirasi Saya</h5>
+                    <p class="text-xs text-gray-400">Lihat aspirasi yang dikirim</p>
                 </div>
             </a>
             <a href="{{ route('berita') }}" class="side-item group">
                 <i class="fa-solid fa-newspaper"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Berita</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Berita</h5>
                     <p class="text-xs text-gray-400">Informasi terkini</p>
                 </div>
             </a>
@@ -206,15 +213,23 @@
                 <i class="fa-solid fa-photo-film"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Galeri</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Galeri</h5>
                     <p class="text-xs text-gray-400">Dokumentasi kegiatan</p>
+                </div>
+            </a>
+            <a href="{{ route('umkm') }}" class="side-item group">
+                <i class="fa-solid fa-store"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">UMKM</h5>
+                    <p class="text-xs text-gray-400">Produk unggulan desa</p>
                 </div>
             </a>
             <a href="{{ route('statistik.publik') }}" class="side-item group">
                 <i class="fa-solid fa-chart-simple"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Statistik Desa</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Statistik Desa</h5>
                     <p class="text-xs text-gray-400">Data statistik desa</p>
                 </div>
             </a>
@@ -222,7 +237,7 @@
                 <i class="fa-solid fa-coins"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Keuangan Desa</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Keuangan Desa</h5>
                     <p class="text-xs text-gray-400">Lihat transparansi keuangan</p>
                 </div>
             </a>
@@ -230,16 +245,15 @@
                 <i class="fa-solid fa-landmark-dome"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
                     <p class="text-xs text-gray-400">Sejarah, visi misi, struktur</p>
                 </div>
             </a>
-            {{-- NOTIFIKASI UNTUK UMKM --}}
             <a href="{{ route('notifikasi.index') }}" class="side-item group">
                 <i class="fa-regular fa-bell"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🔔 Notifikasi</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">🔔 Notifikasi</h5>
                     <p class="text-xs text-gray-400">Lihat semua notifikasi</p>
                 </div>
             </a>
@@ -252,7 +266,7 @@
                 <i class="fa-solid fa-chart-line"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Dashboard</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Dashboard</h5>
                     <p class="text-xs text-gray-400">Aktivitas Anda</p>
                 </div>
             </a>
@@ -260,7 +274,7 @@
                 <i class="fa-solid fa-file-signature"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Ajukan Surat</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Ajukan Surat</h5>
                     <p class="text-xs text-gray-400">Buat pengajuan surat</p>
                 </div>
             </a>
@@ -268,7 +282,7 @@
                 <i class="fa-solid fa-envelope"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Riwayat Surat</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Riwayat Surat</h5>
                     <p class="text-xs text-gray-400">Status pengajuan surat</p>
                 </div>
             </a>
@@ -276,7 +290,7 @@
                 <i class="fa-solid fa-comment-dots"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Aspirasi Saya</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Aspirasi Saya</h5>
                     <p class="text-xs text-gray-400">Lihat aspirasi yang dikirim</p>
                 </div>
             </a>
@@ -284,7 +298,7 @@
                 <i class="fa-solid fa-newspaper"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Berita</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Berita</h5>
                     <p class="text-xs text-gray-400">Informasi terkini</p>
                 </div>
             </a>
@@ -292,7 +306,7 @@
                 <i class="fa-solid fa-photo-film"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Galeri</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Galeri</h5>
                     <p class="text-xs text-gray-400">Dokumentasi kegiatan</p>
                 </div>
             </a>
@@ -300,7 +314,7 @@
                 <i class="fa-solid fa-store"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">UMKM</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">UMKM</h5>
                     <p class="text-xs text-gray-400">Produk unggulan desa</p>
                 </div>
             </a>
@@ -308,7 +322,7 @@
                 <i class="fa-solid fa-chart-simple"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Statistik Desa</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Statistik Desa</h5>
                     <p class="text-xs text-gray-400">Data statistik desa</p>
                 </div>
             </a>
@@ -316,7 +330,7 @@
                 <i class="fa-solid fa-coins"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Keuangan Desa</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Keuangan Desa</h5>
                     <p class="text-xs text-gray-400">Lihat transparansi keuangan</p>
                 </div>
             </a>
@@ -324,16 +338,15 @@
                 <i class="fa-solid fa-landmark-dome"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">🏛️ Profil Desa</h5>
                     <p class="text-xs text-gray-400">Sejarah, visi misi, struktur</p>
                 </div>
             </a>
-            {{-- NOTIFIKASI UNTUK MASYARAKAT --}}
             <a href="{{ route('notifikasi.index') }}" class="side-item group">
                 <i class="fa-regular fa-bell"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-lg font-serif italic text-emerald-950 mt-1">🔔 Notifikasi</h5>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">🔔 Notifikasi</h5>
                     <p class="text-xs text-gray-400">Lihat semua notifikasi</p>
                 </div>
             </a>
@@ -345,7 +358,7 @@
             <i class="fa-solid fa-sign-out-alt"></i>
             <div class="info-box">
                 <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                <h5 class="text-lg font-serif italic text-emerald-950 mt-1">Logout</h5>
+                <h5 class="text-base font-serif italic text-emerald-950 mt-1">Logout</h5>
                 <p class="text-xs text-gray-400">Keluar dari portal</p>
             </div>
         </a>
@@ -367,9 +380,12 @@
             <a href="{{ route('admin.profil-desa.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-building"></i></a>
             <a href="{{ route('notifikasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-regular fa-bell"></i></a>
         @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
-            <a href="{{ route('umkm.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
-            <a href="{{ route('umkm.produk.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-box"></i></a>
+            <a href="{{ route('masyarakat.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
+            <a href="{{ route('masyarakat.surat.create') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-file-signature"></i></a>
+            <a href="{{ route('masyarakat.surat.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-envelope"></i></a>
+            <a href="{{ route('masyarakat.aspirasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-comment-dots"></i></a>
             <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
+            <a href="{{ route('galeri') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-photo-film"></i></a>
             <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
             <a href="{{ route('masyarakat.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
             <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-landmark-dome"></i></a>
@@ -377,8 +393,10 @@
         @else
             <a href="{{ route('masyarakat.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
             <a href="{{ route('masyarakat.surat.create') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-file-signature"></i></a>
+            <a href="{{ route('masyarakat.surat.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-envelope"></i></a>
             <a href="{{ route('masyarakat.aspirasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-comment-dots"></i></a>
             <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
+            <a href="{{ route('galeri') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-photo-film"></i></a>
             <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
             <a href="{{ route('masyarakat.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
             <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-landmark-dome"></i></a>
@@ -409,40 +427,123 @@
 
 <style>
     .magic-sidebar {
-        position: fixed; left: 30px; top: 50%; transform: translateY(-50%);
-        width: 80px; background: linear-gradient(135deg, #064e3b, #022c22);
-        backdrop-filter: blur(20px); border-radius: 45px; z-index: 1100; 
-        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
-        padding: 25px 0;
-        box-shadow: 0 25px 50px rgba(6, 78, 59, 0.3); border: 1px solid rgba(255,255,255,0.12);
+        position: fixed;
+        left: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 65px;  /* DIPERKECIL dari 80px menjadi 65px */
+        background: linear-gradient(135deg, #064e3b, #022c22);
+        backdrop-filter: blur(20px);
+        border-radius: 40px; /* DIPERKECIL */
+        z-index: 1100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px; /* DIPERKECIL dari 18px menjadi 12px */
+        padding: 20px 0; /* DIPERKECIL */
+        box-shadow: 0 25px 50px rgba(6, 78, 59, 0.3);
+        border: 1px solid rgba(255,255,255,0.12);
     }
+    
     .side-item {
-        position: relative; width: 52px; height: 52px; display: flex;
-        align-items: center; justify-content: center; border-radius: 24px;
-        color: rgba(255,255,255,0.45); font-size: 22px; transition: 0.3s;
+        position: relative;
+        width: 44px; /* DIPERKECIL dari 52px menjadi 44px */
+        height: 44px; /* DIPERKECIL dari 52px menjadi 44px */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px; /* DIPERKECIL */
+        color: rgba(255,255,255,0.45);
+        font-size: 18px; /* DIPERKECIL dari 22px menjadi 18px */
+        transition: 0.3s;
         cursor: pointer;
     }
-    .side-item:hover, .side-item.active { color: #fff; background: rgba(255,255,255,0.12); transform: translateY(-3px); }
-    .side-item.active { color: #10b981; background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    
+    .side-item:hover, .side-item.active {
+        color: #fff;
+        background: rgba(255,255,255,0.12);
+        transform: translateY(-2px);
+    }
+    
+    .side-item.active {
+        color: #10b981;
+        background: #fff;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
     .info-box {
-        position: absolute; left: 80px; background: white; padding: 16px 24px;
-        border-radius: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-        opacity: 0; visibility: hidden; transform: translateX(-15px); transition: 0.3s;
-        min-width: 260px; border: 1px solid rgba(0,0,0,0.04);
+        position: absolute;
+        left: 70px; /* DIPERKECIL */
+        background: white;
+        padding: 12px 20px; /* DIPERKECIL */
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-15px);
+        transition: 0.3s;
+        min-width: 220px; /* DIPERKECIL */
+        border: 1px solid rgba(0,0,0,0.04);
         z-index: 1200;
     }
-    .side-item:hover .info-box { opacity: 1; visibility: visible; transform: translateX(0); }
+    
+    .info-box h5 {
+        font-size: 14px; /* UKURAN TEKS DIKECILKAN */
+        margin-top: 4px;
+    }
+    
+    .info-box p {
+        font-size: 10px;
+    }
+    
+    .info-box span {
+        font-size: 8px;
+    }
+    
+    .side-item:hover .info-box {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+    }
+    
     .mobile-nav {
-        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-        width: 90%; height: 70px; background: #064e3b;
-        border-radius: 35px; z-index: 1100; display: none;
-        align-items: center; justify-content: space-around; padding: 0 20px;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        height: 65px; /* DIPERKECIL */
+        background: #064e3b;
+        border-radius: 35px;
+        z-index: 1100;
+        display: none;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0 20px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     }
-    @media (max-width: 1024px) {
-        .magic-sidebar { display: none; }
-        .mobile-nav { display: flex; }
-        .main-container { margin-left: 0 !important; padding-top: 110px !important; }
+    
+    .mobile-nav a {
+        font-size: 18px; /* DIPERKECIL */
     }
-    .main-container { margin-left: 140px; padding-top: 120px; transition: 0.3s; }
+    
+    @media (max-width: 1024px) {
+        .magic-sidebar {
+            display: none;
+        }
+        .mobile-nav {
+            display: flex;
+        }
+        .main-container {
+            margin-left: 0 !important;
+            padding-top: 110px !important;
+        }
+    }
+    
+    .main-container {
+        margin-left: 120px; /* DIPERKECIL dari 140px menjadi 120px */
+        padding-top: 120px;
+        transition: 0.3s;
+    }
 </style>
