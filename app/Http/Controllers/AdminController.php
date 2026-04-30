@@ -111,6 +111,12 @@ class AdminController extends Controller
         return back()->with('success', 'Status aspirasi diperbarui!');
     }
 
+    public function aspirasiShow($id)
+    {
+        $aspirasi = Aspirasi::with('user')->findOrFail($id);
+        return view('admin.aspirasi-show', compact('aspirasi'));
+    }
+
     public function aspirasiDestroy($id)
     {
         $aspirasi = Aspirasi::findOrFail($id);
@@ -320,8 +326,26 @@ class AdminController extends Controller
 
     public function umkm()
     {
-        $umkms = Umkm::with('user')->orderBy('created_at', 'desc')->paginate(15);
-        return view('admin.umkm', compact('umkms'));
+        // Hitung statistik dari SEMUA UMKM (tanpa filter)
+        $statistik = [
+            'total' => Umkm::count(),
+            'pending' => Umkm::where('status', 'pending')->count(),
+            'approved' => Umkm::where('status', 'approved')->count(),
+            'rejected' => Umkm::where('status', 'rejected')->count(),
+        ];
+        
+        $status = request('status', 'all');
+        
+        $query = Umkm::with('user')->orderBy('created_at', 'desc');
+        
+        // Filter berdasarkan status jika bukan 'all'
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+        
+        $umkms = $query->paginate(15);
+        
+        return view('admin.umkm', compact('umkms', 'statistik'));
     }
 
     public function umkmApprove($id)

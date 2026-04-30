@@ -175,6 +175,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/aspirasi/{id}/respond', [AdminController::class, 'aspirasiRespond'])->name('aspirasi.respond');
     Route::post('/aspirasi/{id}/status', [AdminController::class, 'aspirasiStatus'])->name('aspirasi.status');
     Route::delete('/aspirasi/{id}', [AdminController::class, 'aspirasiDestroy'])->name('aspirasi.destroy');
+    Route::get('/aspirasi/{id}', [AdminController::class, 'aspirasiShow'])->name('aspirasi.show');
     
     // BERITA
     Route::get('/berita', [AdminController::class, 'berita'])->name('berita.index');
