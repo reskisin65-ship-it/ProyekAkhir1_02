@@ -45,7 +45,7 @@
             <div class="relative group">
                 <div class="absolute -inset-1 bg-gradient-to-r from-emerald-100 to-teal-100 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
                 <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-[16/9]">
-                    <img src="{{ $berita->gambar }}" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-1000">
+                    <img src="{{ asset('storage/' . $berita->gambar) }}" alt="{{ $berita->judul }}" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-1000">
                 </div>
             </div>
             @endif
@@ -108,8 +108,8 @@
                 @foreach($rekomendasi as $item)
                 <a href="{{ route('berita.show', $item->slug) }}" class="group">
                     <div class="relative overflow-hidden rounded-xl aspect-video mb-4">
-                        <img src="{{ $item->gambar ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500' }}" 
-                             class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 opacity-80 group-hover:opacity-100">
+                        <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500' }}" 
+                             alt="{{ $item->judul }}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 opacity-80 group-hover:opacity-100">
                     </div>
                     <h4 class="text-lg font-bold leading-snug group-hover:text-emerald-400 transition">{{ $item->judul }}</h4>
                     <p class="text-emerald-700 text-xs mt-3 uppercase tracking-tighter font-black">{{ $item->tanggal_publikasi->format('d M Y') }}</p>

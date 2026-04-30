@@ -37,7 +37,7 @@ class BeritaController extends Controller
             'user_id' => Auth::id(),
             'judul' => $request->judul,
             'isi_berita' => $request->isi_berita,
-            'foto' => $fotoPath,
+            'gambar' => $fotoPath,
             'kategori' => $request->kategori,
             'status' => 'publik',
         ]);
@@ -47,8 +47,8 @@ class BeritaController extends Controller
 
     public function destroy(Berita $berita)
     {
-        if ($berita->foto) {
-            Storage::disk('public')->delete($berita->foto);
+        if ($berita->gambar) {
+            Storage::disk('public')->delete($berita->gambar);
         }
         $berita->delete();
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil dihapus.');

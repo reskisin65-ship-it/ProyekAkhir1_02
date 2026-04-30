@@ -62,8 +62,8 @@
         <div class="mb-20 animate-fadeInUp" style="animation-delay: 0.3s">
             <div class="group relative rounded-2xl overflow-hidden shadow-2xl">
                 <div class="h-[400px] md:h-[480px] overflow-hidden">
-                    <img src="{{ $beritaUtama->foto ? asset('storage/' . $beritaUtama->foto) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200' }}" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+                    <img src="{{ $beritaUtama->gambar ? asset('storage/' . $beritaUtama->gambar) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200' }}" 
+                         alt="{{ $beritaUtama->judul }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
                 </div>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent"></div>
                 <div class="absolute inset-0 flex items-end">
@@ -180,8 +180,8 @@
                     <div class="berita-card bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 border border-gray-100 animate-slideInLeft" style="animation-delay: {{ 0.05 * $index }}s" data-kategori="{{ $berita->kategori }}">
                         <div class="flex flex-col sm:flex-row gap-5 p-5">
                             <div class="sm:w-40 h-28 flex-shrink-0 overflow-hidden rounded-xl group">
-                                <img src="{{ $berita->foto ? asset('storage/' . $berita->foto) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200' }}" 
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <img src="{{ $berita->gambar ? asset('storage/' . $berita->gambar) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200' }}" 
+                                     alt="{{ $berita->judul }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <div class="flex-1">
                                 <div class="flex flex-wrap items-center gap-3 mb-2">

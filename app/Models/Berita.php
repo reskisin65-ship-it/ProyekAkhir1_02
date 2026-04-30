@@ -13,7 +13,7 @@ class Berita extends Model
     
     protected $fillable = [
         'user_id', 'judul', 'slug', 'kategori', 'ringkasan', 
-        'isi_berita', 'gambar', 'status', 'dibaca', 'tanggal_publikasi'
+        'isi_berita', 'gambar', 'foto', 'status', 'dibaca', 'tanggal_publikasi'
     ];
     
     protected $casts = [
@@ -23,6 +23,20 @@ class Berita extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+    
+    /**
+     * Accessor untuk memastikan gambar selalu terambil dari field yang tersedia
+     * Prioritas: gambar > foto
+     */
+    protected function getGambarAttribute($value)
+    {
+        // Jika field gambar ada dan tidak kosong, gunakan itu
+        if ($value) {
+            return $value;
+        }
+        // Fallback ke field foto jika gambar kosong
+        return $this->attributes['foto'] ?? null;
     }
     
     // Auto-generate slug ketika membuat berita baru
