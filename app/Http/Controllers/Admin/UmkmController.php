@@ -26,6 +26,7 @@ class UmkmController extends Controller
             'no_telepon' => 'required',
             'alamat_usaha' => 'required',
             'deskripsi' => 'required',
+            'logo' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'bukti_usaha' => 'required|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
@@ -33,6 +34,12 @@ class UmkmController extends Controller
         $data['user_id'] = Auth::id();
         $data['status'] = 'pending';
 
+        // Simpan logo
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('umkm/logos', 'public');
+        }
+
+        // Simpan bukti usaha
         if ($request->hasFile('bukti_usaha')) {
             $data['bukti_usaha'] = $request->file('bukti_usaha')->store('bukti_umkm', 'public');
         }

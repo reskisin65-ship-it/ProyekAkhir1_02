@@ -93,7 +93,7 @@
                 @forelse($umkm->products as $produk)
                     <div class="bg-white rounded-[2.5rem] p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
                         <div class="relative h-56 w-full mb-6 overflow-hidden rounded-[2rem]">
-                            <img src="{{ asset('storage/'.$produk->foto) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/400x400?text=Produk'">
+                            <img src="{{ asset('storage/'.$produk->foto_produk) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/400x400?text=Produk'">>
                         </div>
                         <h4 class="text-xl font-black text-emerald-950 mb-2">{{ $produk->nama_produk }}</h4>
                         <p class="text-emerald-600 font-black text-lg mb-4">Rp {{ number_format($produk->harga, 0, ',', '.') }}</p>
@@ -101,7 +101,7 @@
                         
                         @auth
                             @if(auth()->id() == $umkm->user_id)
-                            <form action="{{ route('produk.destroy', $produk->id) }}" method="POST" onsubmit="return confirm('Hapus produk ini?')">
+                            <form action="{{ route('produk.destroy', $produk->id_produk) }}" method="POST" onsubmit="return confirm('Hapus produk ini?')">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="w-full py-3 bg-red-50 text-red-500 font-bold rounded-xl hover:bg-red-500 hover:text-white transition-colors text-xs tracking-widest uppercase">
                                     <i class="fa-solid fa-trash-can mr-2"></i> Hapus Produk

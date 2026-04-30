@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\ProdukUmkm; 
 use App\Models\Umkm; // Import model Umkm
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -33,11 +33,11 @@ class ProductController extends Controller
 
         // 4. Proses Upload Foto Produk
         if ($request->hasFile('foto')) {
-            $data['foto'] = $request->file('foto')->store('products', 'public');
+            $data['foto_produk'] = $request->file('foto')->store('products', 'public');
         }
 
         // 5. Simpan ke database
-        Product::create($data);
+        ProdukUmkm::create($data);
 
         return back()->with('success', 'Produk berhasil ditambahkan!');
     }
@@ -45,7 +45,7 @@ class ProductController extends Controller
     // Menghapus produk
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
+        $product = ProdukUmkm::findOrFail($id);
         
         // Hapus foto dari storage jika ada agar tidak memenuhi server
         if ($product->foto) {

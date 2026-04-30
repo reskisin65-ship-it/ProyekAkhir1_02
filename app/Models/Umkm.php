@@ -45,6 +45,7 @@ class Umkm extends Model
     {
         // Parameter 2: Foreign Key di tabel products (umkm_id)
         // Parameter 3: Local Key di tabel umkm (id_umkm)
-        return $this->hasMany(Product::class, 'umkm_id', 'id_umkm');
+        return $this->hasMany(ProdukUmkm::class, 'umkm_id', 'id_umkm');
+
     }
 }

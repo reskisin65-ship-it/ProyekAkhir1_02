@@ -18,7 +18,6 @@
                 <h1 class="text-3xl font-black italic tracking-tighter uppercase">📋 Daftar <span class="text-emerald-400">UMKM Baru</span></h1>
                 <p class="text-emerald-100 mt-2 font-medium">Lengkapi data di bawah untuk mempromosikan usaha Anda di website desa.</p>
             </div>
-            {{-- Ornamen --}}
             <div class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-700 rounded-full blur-3xl opacity-50"></div>
         </div>
 
@@ -54,12 +53,12 @@
                         <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Kategori Usaha *</label>
                         <select name="kategori" required class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-emerald-500 font-bold text-slate-700 transition">
                             <option value="">Pilih Kategori</option>
-                            <option value="makanan">🍔 Makanan & Minuman</option>
-                            <option value="kerajinan">🎨 Kerajinan Tangan</option>
-                            <option value="fashion">👕 Fashion & Aksesoris</option>
-                            <option value="pertanian">🌾 Pertanian & Perkebunan</option>
-                            <option value="jasa">💼 Jasa & Layanan</option>
-                            <option value="lainnya">📦 Lainnya</option>
+                            <option value="Makanan">🍔 Makanan & Minuman</option>
+                            <option value="Kerajinan">🎨 Kerajinan Tangan</option>
+                            <option value="Fashion">👕 Fashion & Aksesoris</option>
+                            <option value="Pertanian">🌾 Pertanian & Perkebunan</option>
+                            <option value="Jasa">💼 Jasa & Layanan</option>
+                            <option value="Lainnya">📦 Lainnya</option>
                         </select>
                     </div>
 
@@ -94,14 +93,25 @@
                                   placeholder="Ceritakan keunggulan produk atau usaha Anda agar orang tertarik membeli.">{{ old('deskripsi') }}</textarea>
                     </div>
 
-                    {{-- INPUT BUKTI USAHA (INI YANG TADI KURANG) --}}
+                    {{-- INPUT LOGO USAHA (WAJIB) --}}
                     <div class="col-span-2">
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Unggah Bukti Usaha *</label>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Logo Usaha *</label>
                         <div class="bg-emerald-50 border-2 border-dashed border-emerald-200 rounded-2xl p-8 text-center group hover:border-emerald-500 transition-all">
-                            <i class="fa-solid fa-cloud-arrow-up text-4xl text-emerald-300 mb-4 group-hover:text-emerald-500 transition"></i>
-                            <input type="file" name="bukti_usaha" required
+                            <i class="fa-solid fa-image text-4xl text-emerald-300 mb-4 group-hover:text-emerald-500 transition"></i>
+                            <input type="file" name="logo" required accept="image/*"
                                    class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer">
-                            <p class="text-[10px] text-emerald-600 mt-4 font-bold uppercase tracking-widest italic">Format: JPG, PNG, PDF. Maks: 2MB (Foto tempat usaha/Produk)</p>
+                            <p class="text-[10px] text-emerald-600 mt-4 font-bold uppercase tracking-widest italic">Format: JPG, PNG. Maks: 2MB (Logo/Icon Usaha)</p>
+                        </div>
+                    </div>
+
+                    {{-- INPUT BUKTI USAHA (OPSIONAL) --}}
+                    <div class="col-span-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Unggah Bukti Usaha (Opsional)</label>
+                        <div class="bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl p-8 text-center group hover:border-emerald-500 transition-all">
+                            <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-300 mb-4 group-hover:text-emerald-500 transition"></i>
+                            <input type="file" name="bukti_usaha" accept="image/*"
+                                   class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-slate-600 file:text-white hover:file:bg-slate-700 cursor-pointer">
+                            <p class="text-[10px] text-slate-400 mt-4 font-bold uppercase tracking-widest italic">Format: JPG, PNG. Maks: 2MB (Foto tempat usaha/Produk)</p>
                         </div>
                     </div>
                 </div>
