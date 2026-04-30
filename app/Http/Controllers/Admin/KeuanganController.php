@@ -21,33 +21,87 @@ class KeuanganController extends Controller
         $tahun = $request->tahun ?? date('Y');
         $bulan = $request->bulan ?? date('m');
         
-        // Data pemasukan dan pengeluaran
-        $totalPemasukan = TransaksiKeuangan::where('jenis', 'pemasukan')
-            ->where('status', 'disetujui')
-            ->whereYear('tanggal', $tahun)
-            ->sum('jumlah');
+        // Helper function untuk apply filter ke query
+        $applyFilters = function($query) use ($request, $tahun) {
+            // Default: filter by year jika tidak ada filter lain
+            $query->whereYear('tanggal', $tahun);
+            
+            if ($request->filled('dari_tanggal')) {
+                $query->whereDate('tanggal', '>=', $request->dari_tanggal);
+            }
+            
+            if ($request->filled('sampai_tanggal')) {
+                $query->whereDate('tanggal', '<=', $request->sampai_tanggal);
+            }
+            
+            if ($request->filled('bulan')) {
+                $query->whereMonth('tanggal', $request->bulan);
+            }
+            
+            if ($request->filled('jenis')) {
+                $query->where('jenis', $request->jenis);
+            }
+            
+            if ($request->filled('kategori')) {
+                $query->where('id_kategori', $request->kategori);
+            }
+            
+            return $query;
+        };
         
-        $totalPengeluaran = TransaksiKeuangan::where('jenis', 'pengeluaran')
-            ->where('status', 'disetujui')
-            ->whereYear('tanggal', $tahun)
-            ->sum('jumlah');
+        // Data pemasukan dan pengeluaran (dengan filter)
+        $totalPemasukan = $applyFilters(
+            TransaksiKeuangan::where('jenis', 'pemasukan')
+                ->where('status', 'disetujui')
+        )->sum('jumlah');
+        
+        $totalPengeluaran = $applyFilters(
+            TransaksiKeuangan::where('jenis', 'pengeluaran')
+                ->where('status', 'disetujui')
+        )->sum('jumlah');
         
         $saldo = $totalPemasukan - $totalPengeluaran;
         
-        // Data per bulan
+        // Data per bulan (dengan filter, tapi tidak filter by bulan karena perlu semua bulan untuk grafik)
         $dataPerBulan = [];
         for ($i = 1; $i <= 12; $i++) {
-            $pemasukan = TransaksiKeuangan::where('jenis', 'pemasukan')
+            $pemasukanQuery = TransaksiKeuangan::where('jenis', 'pemasukan')
                 ->where('status', 'disetujui')
                 ->whereYear('tanggal', $tahun)
-                ->whereMonth('tanggal', $i)
-                ->sum('jumlah');
+                ->whereMonth('tanggal', $i);
             
-            $pengeluaran = TransaksiKeuangan::where('jenis', 'pengeluaran')
+            $pengeluaranQuery = TransaksiKeuangan::where('jenis', 'pengeluaran')
                 ->where('status', 'disetujui')
                 ->whereYear('tanggal', $tahun)
-                ->whereMonth('tanggal', $i)
-                ->sum('jumlah');
+                ->whereMonth('tanggal', $i);
+            
+            // Apply filters except bulan
+            if ($request->filled('dari_tanggal')) {
+                $pemasukanQuery->whereDate('tanggal', '>=', $request->dari_tanggal);
+                $pengeluaranQuery->whereDate('tanggal', '>=', $request->dari_tanggal);
+            }
+            
+            if ($request->filled('sampai_tanggal')) {
+                $pemasukanQuery->whereDate('tanggal', '<=', $request->sampai_tanggal);
+                $pengeluaranQuery->whereDate('tanggal', '<=', $request->sampai_tanggal);
+            }
+            
+            if ($request->filled('kategori')) {
+                $pemasukanQuery->where('id_kategori', $request->kategori);
+                $pengeluaranQuery->where('id_kategori', $request->kategori);
+            }
+            
+            // Jika user filter jenis tertentu, hanya tampilkan jenis itu
+            $pemasukan = 0;
+            $pengeluaran = 0;
+            
+            if (!$request->filled('jenis') || $request->jenis === 'pemasukan') {
+                $pemasukan = $pemasukanQuery->sum('jumlah');
+            }
+            
+            if (!$request->filled('jenis') || $request->jenis === 'pengeluaran') {
+                $pengeluaran = $pengeluaranQuery->sum('jumlah');
+            }
             
             $dataPerBulan[$i] = [
                 'pemasukan' => $pemasukan,
@@ -56,17 +110,43 @@ class KeuanganController extends Controller
             ];
         }
         
+        // Build query dengan filter untuk transaksi terbaru
+        $query = TransaksiKeuangan::with(['kategori', 'creator']);
+        $queryPending = TransaksiKeuangan::where('status', 'pending')->with(['kategori', 'creator']);
+        
+        // Filter berdasarkan request
+        if ($request->filled('dari_tanggal')) {
+            $query->whereDate('tanggal', '>=', $request->dari_tanggal);
+            $queryPending->whereDate('tanggal', '>=', $request->dari_tanggal);
+        }
+        
+        if ($request->filled('sampai_tanggal')) {
+            $query->whereDate('tanggal', '<=', $request->sampai_tanggal);
+            $queryPending->whereDate('tanggal', '<=', $request->sampai_tanggal);
+        }
+        
+        if ($request->filled('bulan')) {
+            $query->whereMonth('tanggal', $request->bulan);
+            $queryPending->whereMonth('tanggal', $request->bulan);
+        }
+        
+        if ($request->filled('jenis')) {
+            $query->where('jenis', $request->jenis);
+            $queryPending->where('jenis', $request->jenis);
+        }
+        
+        if ($request->filled('kategori')) {
+            $query->where('id_kategori', $request->kategori);
+            $queryPending->where('id_kategori', $request->kategori);
+        }
+        
         // Transaksi terbaru
-        $transaksiTerbaru = TransaksiKeuangan::with(['kategori', 'creator'])
-            ->orderBy('created_at', 'desc')
+        $transaksiTerbaru = $query->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
         
         // Transaksi pending
-        $transaksiPending = TransaksiKeuangan::where('status', 'pending')
-            ->with(['kategori', 'creator'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $transaksiPending = $queryPending->orderBy('created_at', 'desc')->get();
         
         // Kategori
         $kategoris = KategoriKeuangan::orderBy('urutan')->get();

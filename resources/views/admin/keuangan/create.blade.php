@@ -1,135 +1,514 @@
 {{-- resources/views/admin/keuangan/create.blade.php --}}
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Tambah Transaksi - Keuangan Desa')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 py-8">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {{-- Header --}}
-        <div class="mb-6">
-            <a href="{{ route('admin.keuangan.index') }}" class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 group">
-                <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition"></i> Kembali
-            </a>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&family=Instrument+Sans:ital,wght@0,400;0,700;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<style>
+    :root {
+        --system-bg: #0a0a0a;
+        --card-bg: #ffffff;
+        --accent-primary: #10b981;
+        --accent-yellow: #f59e0b;
+        --accent-blue: #3b82f6;
+        --accent-purple: #8b5cf6;
+        --accent-red: #ef4444;
+        --text-main: #171717;
+        --text-mute: #737373;
+        --border-color: #f1f1f1;
+    }
+
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: #fafafa;
+        color: var(--text-main);
+        letter-spacing: -0.02em;
+    }
+
+    .font-display { font-family: 'Instrument Sans', sans-serif; }
+
+    .bg-pattern {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image: radial-gradient(#e5e7eb 0.5px, transparent 0.5px);
+        background-size: 24px 24px;
+        mask-image: radial-gradient(ellipse at center, black, transparent 80%);
+    }
+
+    .dashboard-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 2rem;
+    }
+
+    /* Back Button */
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.5rem 1.2rem;
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 40px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-mute);
+        text-decoration: none;
+        transition: all 0.3s;
+        margin-bottom: 2rem;
+    }
+
+    .back-link:hover {
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
+        transform: translateX(-4px);
+    }
+
+    /* Form Card */
+    .form-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 32px;
+        overflow: hidden;
+        transition: all 0.4s;
+    }
+
+    .form-card:hover {
+        box-shadow: 0 20px 35px -12px rgba(0,0,0,0.08);
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, var(--system-bg), var(--system-bg));
+        padding: 1.5rem 2rem;
+        color: white;
+    }
+
+    .form-header h1 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .form-header p {
+        color: rgba(255,255,255,0.6);
+        font-size: 0.8rem;
+        margin-top: 0.3rem;
+    }
+
+    .form-body {
+        padding: 2rem;
+    }
+
+    /* Form Group */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-mute);
+        margin-bottom: 0.5rem;
+    }
+
+    .form-label i {
+        color: var(--accent-primary);
+        margin-right: 0.3rem;
+    }
+
+    .form-label .required {
+        color: #ef4444;
+        margin-left: 0.2rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1.5px solid var(--border-color);
+        border-radius: 16px;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 4px rgba(16,185,129,0.1);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    select.form-control {
+        cursor: pointer;
+        background: white;
+    }
+
+    /* Radio Jenis Transaksi */
+    .radio-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .radio-option {
+        cursor: pointer;
+    }
+
+    .radio-option input {
+        display: none;
+    }
+
+    .radio-card {
+        padding: 1rem;
+        border: 1.5px solid var(--border-color);
+        border-radius: 20px;
+        text-align: center;
+        transition: all 0.3s;
+        background: white;
+    }
+
+    .radio-option input:checked + .radio-card {
+        border-color: var(--accent-primary);
+        background: #ecfdf5;
+    }
+
+    .radio-card i {
+        font-size: 2rem;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .radio-card .text-pemasukan { color: #059669; }
+    .radio-card .text-pengeluaran { color: #dc2626; }
+
+    .radio-card .title {
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .radio-card .desc {
+        font-size: 0.65rem;
+        color: var(--text-mute);
+    }
+
+    .radio-option:hover .radio-card {
+        border-color: var(--accent-primary);
+        transform: translateY(-2px);
+    }
+
+    /* Amount Input */
+    .amount-input {
+        position: relative;
+    }
+
+    .amount-prefix {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-mute);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .amount-input input {
+        padding-left: 3rem;
+    }
+
+    /* Upload Area */
+    .upload-area {
+        border: 2px dashed var(--border-color);
+        border-radius: 20px;
+        padding: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: #fafafa;
+    }
+
+    .upload-area:hover {
+        border-color: var(--accent-primary);
+        background: #ecfdf5;
+        transform: translateY(-2px);
+    }
+
+    .upload-area i {
+        color: var(--gray-light);
+        transition: all 0.3s;
+    }
+
+    .upload-area:hover i {
+        color: var(--accent-primary);
+    }
+
+    .preview-container {
+        display: none;
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .preview-image {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        border: 3px solid white;
+    }
+
+    .btn-remove {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        margin-top: 0.5rem;
+        padding: 0.3rem 0.8rem;
+        background: #fef2f2;
+        border: none;
+        border-radius: 40px;
+        font-size: 0.7rem;
+        color: #ef4444;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-remove:hover {
+        background: #ef4444;
+        color: white;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .btn-primary {
+        padding: 0.75rem 1.8rem;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary));
+        color: white;
+        border: none;
+        border-radius: 60px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16,185,129,0.3);
+    }
+
+    .btn-secondary {
+        padding: 0.75rem 1.8rem;
+        background: transparent;
+        border: 1.5px solid var(--border-color);
+        color: var(--text-mute);
+        border-radius: 60px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
+        transform: translateY(-2px);
+        background: #ecfdf5;
+    }
+
+    /* Alert Error */
+    .alert-error {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: #fef2f2;
+        border-left: 3px solid #ef4444;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #dc2626;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-up { animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+    .delay-1 { animation-delay: 0.05s; }
+    .delay-2 { animation-delay: 0.1s; }
+    .delay-3 { animation-delay: 0.15s; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+        .dashboard-wrapper { padding: 1rem; }
+        .form-body { padding: 1.2rem; }
+        .form-header { padding: 1rem 1.2rem; }
+        .form-header h1 { font-size: 1.2rem; }
+        .radio-group { grid-template-columns: 1fr; }
+        .action-buttons { flex-direction: column; }
+        .btn-primary, .btn-secondary { justify-content: center; }
+    }
+</style>
+
+<div class="bg-pattern"></div>
+
+<div class="dashboard-wrapper">
+    
+    {{-- Back Button --}}
+    <a href="{{ route('admin.keuangan.index') }}" class="back-link animate-up">
+        <i class="fa-solid fa-arrow-left"></i> Kembali ke Keuangan
+    </a>
+
+    {{-- Form Card --}}
+    <div class="form-card animate-up delay-1">
+        <div class="form-header">
+            <h1>
+                <i class="fa-solid fa-plus"></i>
+                Tambah Transaksi
+            </h1>
+            <p>Catat pemasukan atau pengeluaran keuangan desa</p>
         </div>
         
-        {{-- Form Card --}}
-        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
-            <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-8 py-6">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                        <i class="fa-solid fa-plus text-white text-xl"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-bold text-white">Tambah Transaksi</h1>
-                        <p class="text-emerald-100 text-sm">Catat pemasukan atau pengeluaran desa</p>
-                    </div>
+        <div class="form-body">
+            {{-- Error Alert --}}
+            @if($errors->any())
+            <div class="alert-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <div>
+                    <strong>Terjadi kesalahan:</strong>
+                    <ul style="margin-left: 1rem; margin-top: 0.3rem;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
-            
-            <form action="{{ route('admin.keuangan.store') }}" method="POST" enctype="multipart/form-data" class="p-8">
+            @endif
+
+            <form action="{{ route('admin.keuangan.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
-                <div class="space-y-6">
-                    {{-- Tanggal --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fa-regular fa-calendar text-emerald-500 mr-1"></i> Tanggal Transaksi
-                        </label>
-                        <input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" required
-                               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition">
-                    </div>
-                    
-                    {{-- Jenis Transaksi --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">
-                            <i class="fa-solid fa-tag text-emerald-500 mr-1"></i> Jenis Transaksi
-                        </label>
-                        <div class="grid grid-cols-2 gap-4">
-                            <label class="relative cursor-pointer">
-                                <input type="radio" name="jenis" value="pemasukan" class="sr-only peer" required>
-                                <div class="p-5 border-2 rounded-xl text-center transition-all peer-checked:border-emerald-500 peer-checked:bg-emerald-50 hover:border-emerald-300 hover:shadow-md">
-                                    <i class="fa-solid fa-money-bill-trend-up text-3xl text-emerald-500 mb-2 block"></i>
-                                    <span class="font-semibold text-gray-700">💰 Pemasukan</span>
-                                    <p class="text-xs text-gray-400 mt-1">Dana masuk ke kas desa</p>
-                                </div>
-                            </label>
-                            <label class="relative cursor-pointer">
-                                <input type="radio" name="jenis" value="pengeluaran" class="sr-only peer" required>
-                                <div class="p-5 border-2 rounded-xl text-center transition-all peer-checked:border-emerald-500 peer-checked:bg-emerald-50 hover:border-emerald-300 hover:shadow-md">
-                                    <i class="fa-solid fa-money-bill-trend-down text-3xl text-red-500 mb-2 block"></i>
-                                    <span class="font-semibold text-gray-700">💸 Pengeluaran</span>
-                                    <p class="text-xs text-gray-400 mt-1">Dana keluar dari kas desa</p>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    {{-- Kategori --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fa-solid fa-list text-emerald-500 mr-1"></i> Kategori
-                        </label>
-                        <select name="id_kategori" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition">
-                            <option value="">Pilih Kategori</option>
-                            @foreach($kategoris as $k)
-                                <option value="{{ $k->id_kategori }}" data-jenis="{{ $k->jenis }}">
-                                    {{ $k->nama_kategori }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                    {{-- Deskripsi --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fa-solid fa-align-left text-emerald-500 mr-1"></i> Deskripsi
-                        </label>
-                        <textarea name="deskripsi" rows="3" required
-                                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition resize-none"
-                                  placeholder="Contoh: Pembangunan jalan desa, Pembayaran gaji perangkat desa, dll">{{ old('deskripsi') }}</textarea>
-                    </div>
-                    
-                    {{-- Jumlah --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fa-solid fa-money-bill text-emerald-500 mr-1"></i> Jumlah (Rp)
-                        </label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">Rp</span>
-                            <input type="number" name="jumlah" step="1000" required
-                                   class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition"
-                                   placeholder="0" value="{{ old('jumlah') }}">
-                        </div>
-                    </div>
-                    
-                    {{-- Bukti Foto --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fa-solid fa-camera text-emerald-500 mr-1"></i> Bukti Transaksi (Opsional)
-                        </label>
-                        <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-emerald-400 transition">
-                            <input type="file" name="bukti_foto" id="bukti_foto" class="hidden" accept="image/*">
-                            <label for="bukti_foto" class="cursor-pointer flex flex-col items-center gap-2">
-                                <i class="fa-solid fa-cloud-upload-alt text-4xl text-gray-400 hover:text-emerald-500 transition"></i>
-                                <span class="text-sm text-gray-500">Klik untuk upload bukti transaksi</span>
-                                <span class="text-xs text-gray-400">Format: JPG, PNG (Maks. 2MB)</span>
-                            </label>
-                            <div id="preview" class="mt-3 hidden">
-                                <img id="previewImage" src="#" alt="Preview" class="max-h-32 mx-auto rounded-lg">
+                {{-- Tanggal --}}
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-regular fa-calendar"></i> Tanggal Transaksi <span class="required">*</span>
+                    </label>
+                    <input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" required class="form-control">
+                </div>
+                
+                {{-- Jenis Transaksi --}}
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-tag"></i> Jenis Transaksi <span class="required">*</span>
+                    </label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="jenis" value="pemasukan" {{ old('jenis') == 'pemasukan' ? 'checked' : '' }} required>
+                            <div class="radio-card">
+                                <i class="fa-solid fa-money-bill-trend-up text-pemasukan"></i>
+                                <div class="title">💰 Pemasukan</div>
+                                <div class="desc">Dana masuk ke kas desa</div>
                             </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="jenis" value="pengeluaran" {{ old('jenis') == 'pengeluaran' ? 'checked' : '' }} required>
+                            <div class="radio-card">
+                                <i class="fa-solid fa-money-bill-trend-down text-pengeluaran"></i>
+                                <div class="title">💸 Pengeluaran</div>
+                                <div class="desc">Dana keluar dari kas desa</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                {{-- Kategori --}}
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-list"></i> Kategori <span class="required">*</span>
+                    </label>
+                    <select name="id_kategori" required class="form-control">
+                        <option value="">Pilih Kategori</option>
+                        @foreach($kategoris as $k)
+                            <option value="{{ $k->id_kategori }}" {{ old('id_kategori') == $k->id_kategori ? 'selected' : '' }}>
+                                {{ $k->nama_kategori }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                {{-- Deskripsi --}}
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-align-left"></i> Deskripsi <span class="required">*</span>
+                    </label>
+                    <textarea name="deskripsi" rows="3" required class="form-control" placeholder="Contoh: Pembangunan jalan desa, Pembayaran gaji perangkat desa, dll">{{ old('deskripsi') }}</textarea>
+                </div>
+                
+                {{-- Jumlah --}}
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-money-bill"></i> Jumlah (Rp) <span class="required">*</span>
+                    </label>
+                    <div class="amount-input">
+                        <span class="amount-prefix">Rp</span>
+                        <input type="number" name="jumlah" step="1000" value="{{ old('jumlah') }}" required class="form-control" placeholder="0">
+                    </div>
+                </div>
+                
+                {{-- Bukti Foto --}}
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-camera"></i> Bukti Transaksi
+                    </label>
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" name="bukti_foto" id="fotoInput" accept="image/jpeg,image/png,image/jpg" style="display: none;">
+                        <i class="fa-solid fa-cloud-arrow-up fa-2x" style="margin-bottom: 0.5rem; display: block;"></i>
+                        <p class="text-sm text-gray-500">Klik atau drag & drop untuk upload foto</p>
+                        <p class="text-xs text-gray-400 mt-1">Format: JPG, PNG (Maks. 2MB)</p>
+                    </div>
+                    <div class="preview-container" id="previewContainer">
+                        <img id="previewImage" class="preview-image" alt="Preview">
+                        <div>
+                            <button type="button" class="btn-remove" id="removeImage">
+                                <i class="fa-solid fa-trash"></i> Hapus Pilihan
+                            </button>
                         </div>
                     </div>
                 </div>
                 
-                {{-- Submit Button --}}
-                <div class="mt-8 flex gap-4 justify-end">
-                    <a href="{{ route('admin.keuangan.index') }}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition">
-                        Batal
+                {{-- Action Buttons --}}
+                <div class="action-buttons">
+                    <a href="{{ route('admin.keuangan.index') }}" class="btn-secondary">
+                        <i class="fa-solid fa-times"></i> Batal
                     </a>
-                    <button type="submit" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl font-semibold hover:shadow-lg transition flex items-center gap-2">
-                        <i class="fa-solid fa-save"></i> Simpan Transaksi
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-regular fa-floppy-disk"></i> Simpan Transaksi
                     </button>
                 </div>
             </form>
@@ -138,19 +517,66 @@
 </div>
 
 <script>
-    // Preview image
-    document.getElementById('bukti_foto').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
+    (function() {
+        // Preview foto
+        const fotoInput = document.getElementById('fotoInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImage = document.getElementById('previewImage');
+        const removeImage = document.getElementById('removeImage');
+        
+        if (uploadArea) {
+            uploadArea.addEventListener('click', () => {
+                fotoInput.click();
+            });
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('border-primary', 'bg-primary-soft');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('border-primary', 'bg-primary-soft');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('border-primary', 'bg-primary-soft');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    fotoInput.files = e.dataTransfer.files;
+                    previewFile(file);
+                }
+            });
+        }
+        
+        if (fotoInput) {
+            fotoInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    previewFile(e.target.files[0]);
+                }
+            });
+        }
+        
+        function previewFile(file) {
             const reader = new FileReader();
-            reader.onload = function(event) {
-                const preview = document.getElementById('preview');
-                const previewImage = document.getElementById('previewImage');
+            reader.onload = (event) => {
                 previewImage.src = event.target.result;
-                preview.classList.remove('hidden');
+                previewContainer.style.display = 'block';
+                uploadArea.style.display = 'none';
             };
             reader.readAsDataURL(file);
         }
-    });
+        
+        if (removeImage) {
+            removeImage.addEventListener('click', () => {
+                fotoInput.value = '';
+                previewContainer.style.display = 'none';
+                uploadArea.style.display = 'block';
+            });
+        }
+    })();
 </script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 @endsection

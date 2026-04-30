@@ -542,10 +542,6 @@
     {{-- HEADER --}}
     <div class="header-section animate-up">
         <div>
-            <div class="header-badge">
-                <i class="fa-solid fa-crown"></i>
-                <span>Village Administration</span>
-            </div>
             <h1 class="header-title">
                 Struktur<br>
                 <span>Pengurus Desa</span>
