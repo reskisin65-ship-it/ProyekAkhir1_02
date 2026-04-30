@@ -43,10 +43,6 @@
                             <span>Jelajahi Berita</span>
                             <i class="fa-solid fa-arrow-down group-hover:translate-y-1 transition-transform duration-300"></i>
                         </a>
-                        <a href="#trending" class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md text-white rounded-full text-sm font-semibold hover:bg-white/20 transition-all duration-300 border border-white/20 hover:scale-105">
-                            <i class="fa-solid fa-fire-flame"></i>
-                            <span>Trending</span>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -489,6 +485,52 @@
         color: white;
         transform: translateY(-2px);
     }
+    /* Perbaikan untuk card berita - agar teks tidak keluar */
+.berita-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.berita-card .flex-1 {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+/* Batasi tinggi card secara konsisten */
+.berita-card .h-48 {
+    height: 192px;
+    flex-shrink: 0;
+}
+
+.berita-card .p-4 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.berita-card .flex-1:last-child {
+    margin-bottom: 0;
+}
 </style>
 
 <script>

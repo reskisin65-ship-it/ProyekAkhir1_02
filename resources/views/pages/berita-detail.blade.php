@@ -136,6 +136,41 @@
         color: #059669;
         font-family: serif;
     }
+    /* Force text wrapping untuk mencegah teks ke samping */
+.prose {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.prose p {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+/* Untuk semua teks di dalam konten */
+.prose * {
+    max-width: 100%;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Untuk tabel jika ada */
+.prose table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+/* Untuk pre/code jika ada */
+.prose pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
 </style>
 
 <script>
