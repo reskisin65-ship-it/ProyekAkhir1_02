@@ -207,13 +207,27 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/profil-desa/edit', [App\Http\Controllers\Admin\ProfilDesaController::class, 'edit'])->name('profil-desa.edit');
     Route::put('/profil-desa', [App\Http\Controllers\Admin\ProfilDesaController::class, 'update'])->name('profil-desa.update');
     
-    // DATA PENGURUS (APARATUR DESA)
-    Route::get('/pengurus', [AdminController::class, 'pengurus'])->name('pengurus.index');
-    Route::get('/pengurus/create', [AdminController::class, 'pengurusCreate'])->name('pengurus.create');
-    Route::post('/pengurus', [AdminController::class, 'pengurusStore'])->name('pengurus.store');
-    Route::get('/pengurus/{id}/edit', [AdminController::class, 'pengurusEdit'])->name('pengurus.edit');
-    Route::put('/pengurus/{id}', [AdminController::class, 'pengurusUpdate'])->name('pengurus.update');
-    Route::delete('/pengurus/{id}', [AdminController::class, 'pengurusDestroy'])->name('pengurus.destroy');
+    // ==============================================
+    // DATA PENGURUS (APARATUR DESA) - LENGKAP DENGAN KATEGORI
+    // ==============================================
+    Route::prefix('pengurus')->name('pengurus.')->group(function () {
+        // Resource routes (index, create, store, edit, update, destroy)
+        Route::get('/', [App\Http\Controllers\Admin\DataPengurusController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\DataPengurusController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\Admin\DataPengurusController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [App\Http\Controllers\Admin\DataPengurusController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [App\Http\Controllers\Admin\DataPengurusController::class, 'update'])->name('update');
+        Route::delete('/{id}', [App\Http\Controllers\Admin\DataPengurusController::class, 'destroy'])->name('destroy');
+        
+        // Custom routes untuk pengurus
+        Route::post('/update-urutan', [App\Http\Controllers\Admin\DataPengurusController::class, 'updateUrutan'])->name('update-urutan');
+        Route::post('/sync-levels', [App\Http\Controllers\Admin\DataPengurusController::class, 'syncLevels'])->name('sync-levels');
+        
+        // Routes untuk kelola kategori pengurus
+        Route::get('/kategori', [App\Http\Controllers\Admin\DataPengurusController::class, 'showKategori'])->name('kategori');
+        Route::post('/kategori', [App\Http\Controllers\Admin\DataPengurusController::class, 'storeKategori'])->name('kategori.store');
+        Route::delete('/kategori/{key}', [App\Http\Controllers\Admin\DataPengurusController::class, 'destroyKategori'])->name('kategori.destroy');
+    });
     
     // STATISTIK
     Route::get('/statistik', [AdminController::class, 'statistik'])->name('statistik.index');
