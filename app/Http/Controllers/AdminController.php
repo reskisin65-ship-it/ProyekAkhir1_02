@@ -144,7 +144,7 @@ class AdminController extends Controller
         $request->validate([
             'judul' => 'required|min:5',
             'kategori' => 'required',
-            'isi' => 'required|min:10',
+            'isi_berita' => 'required|min:10',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'tanggal_publikasi' => 'required|date',
         ]);
@@ -155,11 +155,11 @@ class AdminController extends Controller
         }
 
         Berita::create([
-            'user_id' => Auth::user()->user_id, // PERBAIKI: dari auth()->id()
+            'user_id' => Auth::user()->user_id,
             'judul' => $request->judul,
             'kategori' => $request->kategori,
-            'ringkasan' => Str::limit($request->isi, 150),
-            'isi_berita' => $request->isi,
+            'ringkasan' => Str::limit($request->isi_berita, 150),
+            'isi_berita' => $request->isi_berita,
             'foto' => $fotoPath,
             'status' => $request->status ?? 'publish',
             'tanggal_publikasi' => $request->tanggal_publikasi,
@@ -183,7 +183,7 @@ class AdminController extends Controller
         $request->validate([
             'judul' => 'required|min:5',
             'kategori' => 'required',
-            'isi' => 'required|min:10',
+            'isi_berita' => 'required|min:10',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'tanggal_publikasi' => 'required|date',
         ]);
@@ -199,8 +199,8 @@ class AdminController extends Controller
         $berita->update([
             'judul' => $request->judul,
             'kategori' => $request->kategori,
-            'ringkasan' => Str::limit($request->isi, 150),
-            'isi_berita' => $request->isi,
+            'ringkasan' => Str::limit($request->isi_berita, 150),
+            'isi_berita' => $request->isi_berita,
             'foto' => $fotoPath,
             'status' => $request->status ?? 'publish',
             'tanggal_publikasi' => $request->tanggal_publikasi,
