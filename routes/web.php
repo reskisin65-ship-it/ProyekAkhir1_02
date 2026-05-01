@@ -34,6 +34,7 @@ Route::get('/berita/cari', [PageController::class, 'beritaSearch'])->name('berit
 Route::get('/berita/{slug}', [PageController::class, 'beritaShow'])->name('berita.show');
 
 Route::get('/galeri', [PageController::class, 'galeri'])->name('galeri');
+Route::get('/galeri/{id}', [PageController::class, 'galeriShow'])->name('galeri.show');
 Route::get('/umkm', [UmkmController::class, 'index'])->name('umkm');
 Route::get('/kontak', [PageController::class, 'kontak'])->name('kontak');
 Route::post('/kontak', [PageController::class, 'kirimPesan'])->name('kontak.send');

@@ -1,587 +1,1700 @@
 {{-- resources/views/pages/berita.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Berita & Pengumuman - Desa Lumban Silintong')
+@section('title', 'Berita & Pengumuman - Lumban Silintong')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/20">
-    
-    {{-- ============================================= --}}
-    {{-- HERO SECTION DENGAN PARALLAX & ANIMASI --}}
-    {{-- ============================================= --}}
-    <div class="relative h-[500px] md:h-[550px] overflow-hidden">
-        <div class="absolute inset-0 animate-scale-slow">
-            <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1920" 
-                 class="w-full h-full object-cover"
-                 alt="Hero Background">
-            <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-900/70 to-emerald-800/40"></div>
-        </div>
-        
-        <!-- Animated Wave Background -->
-        <div class="absolute bottom-0 left-0 right-0">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" fill="#f8fafc">
-                <path d="M0,64L48,69.3C96,75,192,85,288,85.3C384,85,480,75,576,69.3C672,64,768,64,864,69.3C960,75,1056,85,1152,85.3C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"/>
-            </svg>
-        </div>
-        
-        <div class="relative h-full flex items-center animate-fadeInUp">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
-                <div class="max-w-3xl">
-                    <div class="flex items-center gap-2 mb-4 animate-slideInLeft">
-                        <div class="w-12 h-0.5 bg-emerald-400 rounded-full animate-pulse"></div>
-                        <span class="text-sm font-medium tracking-[0.3em] uppercase text-emerald-200">BERITA DESA</span>
-                    </div>
-                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 leading-tight animate-slideInLeft" style="animation-delay: 0.1s">
-                        Berita & <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-200">Pengumuman</span>
-                    </h1>
-                    <p class="text-base md:text-lg text-gray-200 mb-8 leading-relaxed max-w-2xl animate-slideInLeft" style="animation-delay: 0.2s">
-                        Informasi terkini seputar kegiatan, pembangunan, dan pengumuman resmi 
-                        Desa Lumban Silintong disajikan secara transparan dan cepat.
-                    </p>
-                    <div class="flex flex-wrap gap-4 animate-slideInLeft" style="animation-delay: 0.3s">
-                        <a href="#berita-terkini" class="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-sm font-semibold hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
-                            <span>Jelajahi Berita</span>
-                            <i class="fa-solid fa-arrow-down group-hover:translate-y-1 transition-transform duration-300"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        
-
-        {{-- ============================================= --}}
-        {{-- FEATURED BERITA DENGAN OVERLAY ELEGAN --}}
-        @if(isset($beritaUtama) && $beritaUtama)
-        <div class="mb-20 animate-fadeInUp" style="animation-delay: 0.3s">
-            <div class="group relative rounded-2xl overflow-hidden shadow-2xl">
-                <div class="h-[400px] md:h-[480px] overflow-hidden">
-                    <img src="{{ $beritaUtama->gambar ? asset('storage/' . $beritaUtama->gambar) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200' }}" 
-                         alt="{{ $beritaUtama->judul }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent"></div>
-                <div class="absolute inset-0 flex items-end">
-                    <div class="p-8 md:p-10 text-white max-w-3xl animate-slideInUp">
-                        <div class="flex items-center gap-3 mb-4">
-                            <span class="inline-block px-3 py-1.5 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-lg">
-                                {{ ucfirst($beritaUtama->kategori) }}
-                            </span>
-                            <span class="text-sm text-gray-300">
-                                <i class="fa-regular fa-calendar mr-1"></i> {{ $beritaUtama->tanggal_publikasi->format('d F Y') }}
-                            </span>
-                            <span class="text-sm text-gray-300">
-                                <i class="fa-regular fa-clock mr-1"></i> {{ $beritaUtama->created_at->diffForHumans() }}
-                            </span>
-                        </div>
-                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight hover:text-emerald-300 transition-colors duration-300">{{ $beritaUtama->judul }}</h2>
-                        <p class="text-gray-200 mb-6 line-clamp-2 text-lg">{{ $beritaUtama->ringkasan }}</p>
-                        <a href="{{ route('berita.show', $beritaUtama->slug) }}" 
-                           class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 rounded-full text-sm font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 group/btn">
-                            <span>Baca Selengkapnya</span>
-                            <i class="fa-solid fa-arrow-right text-xs group-hover/btn:translate-x-1 transition-transform duration-300"></i>
-                        </a>
-                    </div>
-                </div>
-                <!-- Animated border -->
-                <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left"></div>
-            </div>
-        </div>
-        @endif
-
-        {{-- ============================================= --}}
-        {{-- STATISTIK DENGAN COUNTER ANIMASI --}}
-        {{-- ============================================= --}}
-        {{-- ============================================= --}}
-{{-- STATISTIK CARD - ELEGAN & INTERAKTIF --}}
-{{-- ============================================= --}}
-<div class="flex justify-center mb-20 animate-fadeInUp" style="animation-delay: 0.4s">
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto">
-        {{-- Card 1: Total Berita --}}
-        <div class="stat-card bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100 group cursor-pointer">
-            <div class="relative">
-                <div class="w-20 h-20 bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-md">
-                    <i class="fa-regular fa-newspaper text-emerald-600 text-3xl"></i>
-                </div>
-                <div class="absolute -top-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-            </div>
-            <p class="text-4xl md:text-5xl font-bold text-gray-800 stat-number mb-2" data-target="{{ $beritas->total() }}">0</p>
-            <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Berita</p>
-            <div class="w-12 h-0.5 bg-emerald-200 mx-auto mt-4 group-hover:w-24 transition-all duration-500"></div>
-        </div>
-
-        {{-- Card 2: Total Pembaca --}}
-        <div class="stat-card bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100 group cursor-pointer">
-            <div class="relative">
-                <div class="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-md">
-                    <i class="fa-regular fa-eye text-blue-600 text-3xl"></i>
-                </div>
-                <div class="absolute -top-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <i class="fa-solid fa-eye"></i>
-                </div>
-            </div>
-            <p class="text-4xl md:text-5xl font-bold text-gray-800 stat-number mb-2" data-target="{{ number_format($beritas->sum('dibaca'), 0, '', '') }}">0</p>
-            <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Pembaca</p>
-            <div class="w-12 h-0.5 bg-blue-200 mx-auto mt-4 group-hover:w-24 transition-all duration-500"></div>
-        </div>
-
-        {{-- Card 3: Total Kegiatan --}}
-        <div class="stat-card bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100 group cursor-pointer">
-            <div class="relative">
-                <div class="w-20 h-20 bg-gradient-to-br from-amber-100 to-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-md">
-                    <i class="fa-regular fa-calendar-check text-amber-600 text-3xl"></i>
-                </div>
-                <div class="absolute -top-2 -right-2 w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <i class="fa-solid fa-calendar"></i>
-                </div>
-            </div>
-            <p class="text-4xl md:text-5xl font-bold text-gray-800 stat-number mb-2" data-target="{{ $beritas->where('kategori', 'kegiatan')->count() }}">0</p>
-            <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Kegiatan</p>
-            <div class="w-12 h-0.5 bg-amber-200 mx-auto mt-4 group-hover:w-24 transition-all duration-500"></div>
-        </div>
-    </div>
-</div>
-        {{-- ============================================= --}}
-        {{-- BERITA TERKINI & TRENDING SIDEBAR --}}
-        {{-- ============================================= --}}
-        <div id="berita-terkini" class="grid lg:grid-cols-3 gap-8 mb-16 animate-fadeInUp" style="animation-delay: 0.5s">
-            
-            {{-- Kolom Kiri & Tengah: Daftar Berita --}}
-            <div class="lg:col-span-2">
-                <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-md">
-                            <i class="fa-regular fa-clock text-white text-sm"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl md:text-2xl font-bold text-gray-800">Berita Terkini</h2>
-                            <p class="text-xs text-gray-500">Update terbaru dari desa</p>
-                        </div>
-                    </div>
-                    
-                    {{-- Filter Kategori dengan Animasi --}}
-                    <div class="flex flex-wrap gap-2">
-                        <button data-filter="all" class="filter-btn active px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5">Semua</button>
-                        <button data-filter="berita" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 hover:-translate-y-0.5">📰 Berita</button>
-                        <button data-filter="pengumuman" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 hover:-translate-y-0.5">📢 Pengumuman</button>
-                        <button data-filter="kegiatan" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 hover:-translate-y-0.5">🎉 Kegiatan</button>
-                    </div>
-                </div>
-
-                <div class="space-y-5" id="berita-grid">
-                    @forelse($beritas as $index => $berita)
-                    <div class="berita-card bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 border border-gray-100 animate-slideInLeft" style="animation-delay: {{ 0.05 * $index }}s" data-kategori="{{ $berita->kategori }}">
-                        <div class="flex flex-col sm:flex-row gap-5 p-5">
-                            <div class="sm:w-40 h-28 flex-shrink-0 overflow-hidden rounded-xl group">
-                                <img src="{{ $berita->gambar ? asset('storage/' . $berita->gambar) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200' }}" 
-                                     alt="{{ $berita->judul }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex flex-wrap items-center gap-3 mb-2">
-                                    <span class="inline-block px-2 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider
-                                        @if($berita->kategori == 'berita') bg-blue-100 text-blue-700
-                                        @elseif($berita->kategori == 'pengumuman') bg-amber-100 text-amber-700
-                                        @else bg-emerald-100 text-emerald-700 @endif">
-                                        @if($berita->kategori == 'berita') 📰 Berita
-                                        @elseif($berita->kategori == 'pengumuman') 📢 Pengumuman
-                                        @else 🎉 Kegiatan @endif
-                                    </span>
-                                    <span class="text-xs text-gray-400">
-                                        <i class="fa-regular fa-calendar mr-1"></i> {{ $berita->tanggal_publikasi->format('d M Y') }}
-                                    </span>
-                                    <span class="text-xs text-gray-400">
-                                        <i class="fa-regular fa-eye mr-1"></i> {{ number_format($berita->dibaca) }} dibaca
-                                    </span>
-                                </div>
-                                <h3 class="text-lg font-bold text-gray-800 hover:text-emerald-600 transition-colors duration-300 line-clamp-1">
-                                    <a href="{{ route('berita.show', $berita->slug) }}">{{ $berita->judul }}</a>
-                                </h3>
-                                <p class="text-gray-500 text-sm mt-2 line-clamp-2">{{ $berita->ringkasan }}</p>
-                                <a href="{{ route('berita.show', $berita->slug) }}" class="inline-flex items-center gap-1 mt-3 text-emerald-600 text-sm font-semibold hover:gap-2 transition-all duration-300 group/link">
-                                    <span>Baca Selengkapnya</span>
-                                    <i class="fa-solid fa-arrow-right text-xs group-hover/link:translate-x-1 transition-transform duration-300"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    @empty
-                    <div class="text-center py-20 bg-gray-50 rounded-2xl animate-fadeIn">
-                        <i class="fa-regular fa-newspaper text-6xl text-gray-300 mb-4"></i>
-                        <h3 class="text-xl font-semibold text-gray-500">Belum Ada Berita</h3>
-                        <p class="text-sm text-gray-400 mt-2">Belum ada berita yang dipublikasikan.</p>
-                    </div>
-                    @endforelse
-                </div>
-
-                {{-- Pagination dengan Animasi --}}
-                <div class="mt-10 flex justify-center">
-                    {{ $beritas->appends(request()->query())->links() }}
-                </div>
-            </div>
-
-            {{-- Kolom Kanan: Trending & Populer dengan Animasi --}}
-            <div class="space-y-6">
-                {{-- Trending Card dengan Gradient --}}
-                <div class="trending-card bg-gradient-to-br from-orange-500 via-orange-600 to-red-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 animate-slideInRight">
-                    <div class="flex items-center gap-2 mb-5">
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                            <i class="fa-solid fa-fire-flame text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold">Trending Minggu Ini</h3>
-                            <p class="text-xs text-white/70">Paling banyak dibaca</p>
-                        </div>
-                    </div>
-                    <div class="space-y-4">
-                        @php
-                            $trending = $beritas->sortByDesc('dibaca')->take(5);
-                        @endphp
-                        @foreach($trending as $index => $berita)
-                        <a href="{{ route('berita.show', $berita->slug) }}" class="trending-item flex items-start gap-3 group hover:bg-white/10 p-2 rounded-xl transition-all duration-300">
-                            <span class="text-2xl font-bold text-white/40 w-8 group-hover:text-white/70 transition">{{ str_pad($index+1, 2, '0', STR_PAD_LEFT) }}</span>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium group-hover:text-white transition line-clamp-2">{{ $berita->judul }}</p>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span class="text-xs text-white/60">{{ number_format($berita->dibaca) }} dibaca</span>
-                                    <span class="w-1 h-1 bg-white/40 rounded-full"></span>
-                                    <span class="text-xs text-white/60">{{ $berita->tanggal_publikasi->format('d M Y') }}</span>
-                                </div>
-                            </div>
-                            <i class="fa-solid fa-chevron-right text-white/30 group-hover:text-white/70 group-hover:translate-x-1 transition-all duration-300"></i>
-                        </a>
-                        @endforeach
-                    </div>
-                </div>
-
-
-                {{-- Berita Terpopuler --}}
-                <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 animate-slideInRight" style="animation-delay: 0.2s">
-                    <div class="flex items-center gap-2 mb-5">
-                        <i class="fa-solid fa-chart-line text-emerald-500 text-lg"></i>
-                        <h3 class="font-bold text-gray-800">Terpopuler Bulan Ini</h3>
-                    </div>
-                    <div class="space-y-4">
-                        @foreach($beritas->take(3) as $berita)
-                        <a href="{{ route('berita.show', $berita->slug) }}" class="popular-item flex gap-4 group">
-                            <div class="w-20 h-20 flex-shrink-0 overflow-hidden rounded-xl">
-                                <img src="{{ $berita->foto ? asset('storage/' . $berita->foto) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=100' }}" 
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-800 group-hover:text-emerald-600 transition line-clamp-2">{{ $berita->judul }}</h4>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span class="text-xs text-gray-400">{{ $berita->tanggal_publikasi->format('d M Y') }}</span>
-                                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                    <span class="text-xs text-gray-400"><i class="fa-regular fa-eye mr-1"></i>{{ number_format($berita->dibaca) }}</span>
-                                </div>
-                            </div>
-                        </a>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ============================================= --}}
-    {{-- FOOTER CTA DENGAN ANIMASI --}}
-    {{-- ============================================= --}}
-    <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 py-16 mt-8 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full filter blur-3xl animate-pulse-slow"></div>
-            <div class="absolute bottom-0 right-0 w-96 h-96 bg-emerald-400 rounded-full filter blur-3xl animate-pulse-slow" style="animation-delay: 1s"></div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 animate-fadeInUp">
-            <h3 class="text-3xl md:text-4xl font-bold text-white mb-3">Tetap Terinformasi</h3>
-            <p class="text-emerald-200 mb-8 max-w-md mx-auto">Dapatkan berita terbaru langsung dari website desa kami</p>
-        </div>
-    </div>
-</div>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&family=Instrument+Sans:ital,wght@0,400;0,700;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-    /* Animations */
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    /* ============================================
+       DESIGN SYSTEM PREMIUM (INSPIRED BY ADMIN)
+    ============================================ */
+    :root {
+        --system-bg: #0a0a0a;
+        --card-bg: #ffffff;
+        --accent-primary: #10b981;
+        --accent-primary-dark: #059669;
+        --accent-orange: #f97316;
+        --accent-orange-dark: #ea580c;
+        --accent-blue: #3b82f6;
+        --text-main: #171717;
+        --text-mute: #737373;
+        --border-color: #f1f1f1;
+        --shadow-sm: 0 1px 2px rgba(0,0,0,0.02);
+        --shadow-md: 0 4px 16px rgba(0,0,0,0.04);
+        --shadow-lg: 0 12px 32px rgba(0,0,0,0.06);
+        --shadow-xl: 0 24px 48px rgba(0,0,0,0.08);
+        --transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        --transition-bounce: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
     }
-    
-    @keyframes fadeInLeft {
-        from {
-            opacity: 0;
-            transform: translateX(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
+
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: #fafafa;
+        color: var(--text-main);
+        letter-spacing: -0.02em;
     }
-    
-    @keyframes fadeInRight {
-        from {
-            opacity: 0;
-            transform: translateX(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
+
+    .font-display { font-family: 'Instrument Sans', sans-serif; }
+
+    /* Background Pattern */
+    .bg-pattern {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image: radial-gradient(#e5e7eb 0.5px, transparent 0.5px);
+        background-size: 24px 24px;
+        mask-image: radial-gradient(ellipse at center, black, transparent 80%);
     }
-    
-    @keyframes scaleIn {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
+
+    /* Premium Container */
+    .dashboard-wrapper {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 2rem 2rem;
     }
-    
-    @keyframes scaleSlow {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
+
+    /* ============================================
+       HEADER SECTION (LIKE ADMIN BERITA)
+    ============================================ */
+    .editorial-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+        gap: 1rem;
     }
-    
-    @keyframes pulseSlow {
-        0%, 100% { opacity: 0.3; transform: scale(1); }
-        50% { opacity: 0.5; transform: scale(1.1); }
+
+    .brand-title {
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 0.9;
+        letter-spacing: -0.05em;
+        color: var(--system-bg);
     }
-    
-    @keyframes slideInLeft {
-        from {
-            opacity: 0;
-            transform: translateX(-50px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
+
+    .brand-title span {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark));
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
-    
-    @keyframes slideInUp {
-        from {
-            opacity: 0;
-            transform: translateY(50px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+
+    .brand-subtitle {
+        font-size: 0.9rem;
+        color: var(--text-mute);
+        margin-top: 1rem;
+        max-width: 450px;
+        line-height: 1.6;
     }
-    
-    .animate-fadeInUp {
-        animation: fadeInUp 0.8s ease-out forwards;
+
+    /* ============================================
+       STATISTICS CARDS
+    ============================================ */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
-    
-    .animate-fadeInLeft {
-        animation: fadeInLeft 0.8s ease-out forwards;
+
+    .stat-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 1rem;
+        transition: var(--transition-bounce);
+        text-align: center;
     }
-    
-    .animate-fadeInRight {
-        animation: fadeInRight 0.8s ease-out forwards;
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent-primary);
+        box-shadow: var(--shadow-lg);
     }
-    
-    .animate-scaleIn {
-        animation: scaleIn 0.5s ease-out forwards;
-        opacity: 0;
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.8rem;
+        transition: var(--transition-bounce);
     }
-    
-    .animate-scale-slow {
-        animation: scaleSlow 20s ease-in-out infinite;
+
+    .stat-card:hover .stat-icon {
+        transform: scale(1.1);
     }
-    
-    .animate-pulse-slow {
-        animation: pulseSlow 4s ease-in-out infinite;
+
+    .stat-icon i { font-size: 1.3rem; }
+    .stat-value { font-size: 1.8rem; font-weight: 800; line-height: 1.2; }
+    .stat-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-mute); margin-top: 0.2rem; }
+
+    /* ============================================
+       FEATURED BERITA (HERO CARD)
+    ============================================ */
+    .featured-section {
+        margin-bottom: 3rem;
     }
-    
-    .animate-slideInLeft {
-        animation: slideInLeft 0.6s ease-out forwards;
-        opacity: 0;
+
+    .featured-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 32px;
+        overflow: hidden;
+        transition: var(--transition-slow);
+        cursor: pointer;
     }
-    
-    .animate-slideInRight {
-        animation: fadeInRight 0.6s ease-out forwards;
-        opacity: 0;
+
+    .featured-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--accent-primary);
     }
-    
-    .animate-slideInUp {
-        animation: slideInUp 0.6s ease-out forwards;
-        opacity: 0;
+
+    .featured-inner {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 0;
     }
-    
-    .filter-btn.active { 
-        background: linear-gradient(to right, #10b981, #059669);
-        color: white; 
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+
+    .featured-image {
+        height: 320px;
+        overflow: hidden;
+        position: relative;
     }
-    
-    .filter-btn.active:hover { 
+
+    .featured-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.8s ease;
+    }
+
+    .featured-card:hover .featured-image img {
+        transform: scale(1.05);
+    }
+
+    .featured-overlay {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+    }
+
+    .featured-category {
+        padding: 0.3rem 1rem;
+        background: var(--accent-primary);
+        color: white;
+        border-radius: 40px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .featured-content {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .featured-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.8rem;
+        font-size: 0.7rem;
+        color: var(--text-mute);
+    }
+
+    .featured-meta i { margin-right: 0.3rem; }
+
+    .featured-content h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        line-height: 1.35;
+    }
+
+    .featured-content h2 a {
+        color: var(--text-main);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .featured-content h2 a:hover {
+        color: var(--accent-primary);
+    }
+
+    .featured-excerpt {
+        font-size: 0.85rem;
+        color: var(--text-mute);
+        line-height: 1.6;
+        margin-bottom: 1.2rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .featured-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--accent-primary);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .featured-link:hover {
+        gap: 0.8rem;
+    }
+
+    /* ============================================
+       FILTER BUTTONS
+    ============================================ */
+    .filter-container {
+        margin-bottom: 2rem;
+    }
+
+    .filter-group {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 1.3rem;
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 60px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text-mute);
+        cursor: pointer;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .filter-btn::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent-primary);
+        transition: width 0.3s;
+    }
+
+    .filter-btn:hover::before {
+        width: 100%;
+    }
+
+    .filter-btn:hover {
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
     }
-    
-    .stat-card:hover .stat-number {
-        color: #10b981;
+
+    .filter-btn.active {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark));
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 4px 12px rgba(16,185,129,0.25);
     }
-    
+
+    .filter-btn.active::before {
+        background: white;
+    }
+
+    /* ============================================
+       BERITA GRID
+    ============================================ */
+    .berita-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .berita-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        overflow: hidden;
+        transition: var(--transition-bounce);
+    }
+
+    .berita-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--accent-primary);
+    }
+
+    .berita-image {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .berita-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .berita-card:hover .berita-image img {
+        transform: scale(1.05);
+    }
+
+    .berita-category {
+        position: absolute;
+        top: 0.8rem;
+        left: 0.8rem;
+        padding: 0.25rem 0.8rem;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(4px);
+        color: white;
+        border-radius: 40px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .berita-card:hover .berita-category {
+        background: var(--accent-primary);
+    }
+
+    .berita-content {
+        padding: 1rem;
+    }
+
+    .berita-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.6rem;
+        color: var(--text-mute);
+    }
+
+    .berita-meta i { margin-right: 0.2rem; }
+
+    .berita-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+
+    .berita-title a {
+        color: var(--text-main);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .berita-title a:hover {
+        color: var(--accent-primary);
+    }
+
+    .berita-excerpt {
+        font-size: 0.7rem;
+        color: var(--text-mute);
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 0.8rem;
+    }
+
+    .berita-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--accent-primary);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .berita-link:hover {
+        gap: 0.5rem;
+    }
+
+    /* ============================================
+       SIDEBAR - STICKY
+    ============================================ */
+    .sidebar-grid {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .sidebar-sticky {
+        position: sticky;
+        top: 2rem;
+        align-self: start;
+    }
+
+    /* Trending Card - ORANGE */
     .trending-card {
-        background: linear-gradient(135deg, #f97316, #ea580c, #dc2626);
+        background: linear-gradient(135deg, var(--accent-orange), var(--accent-orange-dark));
+        border-radius: 28px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: var(--transition-bounce);
+        color: white;
     }
-    
+
+    .trending-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .trending-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .trending-icon {
+        width: 48px;
+        height: 48px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .trending-icon i { font-size: 1.3rem; color: white; }
+
+    .trending-header h3 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+    .trending-header p { font-size: 0.65rem; opacity: 0.8; margin: 0; }
+
+    .trending-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
     .trending-item {
-        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.6rem;
+        border-radius: 18px;
+        text-decoration: none;
+        transition: var(--transition);
+        color: white;
     }
-    
-    .category-tag {
-        transition: all 0.3s ease;
+
+    .trending-item:hover {
+        background: rgba(255,255,255,0.15);
+        transform: translateX(5px);
     }
-    
-    .popular-item {
-        transition: all 0.3s ease;
+
+    .trending-number {
+        width: 36px;
+        height: 36px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.9rem;
     }
-    
-    .social-btn {
-        transition: all 0.3s ease;
+
+    .trending-info h4 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
-    
-    .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    
-    html {
-        scroll-behavior: smooth;
+
+    .trending-info span {
+        font-size: 0.65rem;
+        opacity: 0.7;
     }
-    
-    /* Pagination Styling */
+
+    /* Latest Card - GREEN */
+    .latest-card {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark));
+        border-radius: 28px;
+        padding: 1.5rem;
+        transition: var(--transition-bounce);
+        color: white;
+    }
+
+    .latest-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .latest-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .latest-icon {
+        width: 48px;
+        height: 48px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .latest-icon i { font-size: 1.3rem; color: white; }
+
+    .latest-header h3 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+    .latest-header p { font-size: 0.65rem; opacity: 0.8; margin: 0; }
+
+    .latest-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .latest-item {
+        display: flex;
+        gap: 0.8rem;
+        padding: 0.6rem;
+        border-radius: 18px;
+        text-decoration: none;
+        transition: var(--transition);
+        color: white;
+    }
+
+    .latest-item:hover {
+        background: rgba(255,255,255,0.15);
+        transform: translateX(5px);
+    }
+
+    .latest-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .latest-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s;
+    }
+
+    .latest-item:hover .latest-img img {
+        transform: scale(1.05);
+    }
+
+    .latest-info h4 {
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .latest-info span {
+        font-size: 0.6rem;
+        opacity: 0.7;
+    }
+
+    /* ============================================
+       PAGINATION
+    ============================================ */
+    .pagination-container {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+    }
+
     .pagination {
         display: flex;
-        gap: 8px;
+        gap: 0.3rem;
+        flex-wrap: wrap;
     }
-    .pagination .page-item .page-link {
-        padding: 8px 14px;
-        border-radius: 12px;
+
+    .pagination .page-link {
+        padding: 0.5rem 1rem;
+        border-radius: 14px;
         background: white;
-        color: #4b5563;
+        color: #64748b;
+        font-size: 0.8rem;
         font-weight: 500;
-        transition: all 0.3s ease;
+        transition: var(--transition);
+        border: 1px solid #e2e8f0;
+        text-decoration: none;
     }
-    .pagination .page-item.active .page-link {
-        background: linear-gradient(to right, #10b981, #059669);
+
+    .pagination .active .page-link {
+        background: var(--system-bg);
         color: white;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        border-color: transparent;
     }
-    .pagination .page-item .page-link:hover {
-        background: #10b981;
+
+    .pagination .page-link:hover {
+        background: var(--accent-primary);
         color: white;
         transform: translateY(-2px);
     }
-    /* Perbaikan untuk card berita - agar teks tidak keluar */
-.berita-card {
+
+    /* ============================================
+       TUTORIAL SECTION
+    ============================================ */
+    .tutorial-section {
+        margin-top: 3rem;
+        background: white;
+        border-radius: 28px;
+        padding: 1.8rem;
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+    }
+
+    .tutorial-section:hover {
+        border-color: var(--accent-primary);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .tutorial-header {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.8rem;
+    }
+
+    .tutorial-header i { font-size: 1.3rem; color: var(--accent-primary); }
+    .tutorial-header h3 { font-size: 0.9rem; font-weight: 700; margin: 0; }
+
+    .tutorial-intro {
+        font-size: 0.8rem;
+        color: var(--text-mute);
+        margin-bottom: 1.2rem;
+        line-height: 1.6;
+    }
+
+    .tutorial-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+    }
+
+    .tutorial-item {
+        display: flex;
+        gap: 0.8rem;
+        padding: 0.6rem;
+        border-radius: 16px;
+        transition: var(--transition);
+    }
+
+    .tutorial-item:hover {
+        background: rgba(16,185,129,0.08);
+        transform: translateX(3px);
+    }
+
+    .tutorial-num {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark));
+        color: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+
+    .tutorial-text h4 { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .tutorial-text p { font-size: 0.65rem; color: var(--text-mute); line-height: 1.4; }
+
+    .tutorial-footer {
+        margin-top: 1rem;
+        padding: 0.8rem 1rem;
+        background: #ecfdf5;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .tutorial-footer i { color: var(--accent-primary); }
+    .tutorial-footer span { font-size: 0.7rem; color: #059669; }
+
+    /* ============================================
+       RESPONSIVE
+    ============================================ */
+    @media (max-width: 1200px) {
+        .berita-grid { grid-template-columns: repeat(2, 1fr); }
+        .sidebar-grid { grid-template-columns: 1fr; }
+        .sidebar-sticky { position: static; }
+    }
+
+    @media (max-width: 1024px) {
+        .dashboard-wrapper { padding: 1rem; }
+        .featured-inner { grid-template-columns: 1fr; }
+        .featured-image { height: 250px; }
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .tutorial-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+        .editorial-header { flex-direction: column; align-items: flex-start; }
+        .brand-title { font-size: 2.8rem; }
+        .berita-grid { grid-template-columns: 1fr; }
+        .stats-grid { grid-template-columns: 1fr; }
+        .tutorial-grid { grid-template-columns: 1fr; }
+        .filter-group { justify-content: center; }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInRight {
+        from { opacity: 0; transform: translateX(30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    .fade-up { animation: fadeInUp 0.6s ease forwards; opacity: 0; }
+    .fade-right { animation: fadeInRight 0.6s ease forwards; opacity: 0; }
+    .delay-1 { animation-delay: 0.05s; }
+    .delay-2 { animation-delay: 0.1s; }
+    .delay-3 { animation-delay: 0.15s; }
+    .delay-4 { animation-delay: 0.2s; }
+    .delay-5 { animation-delay: 0.25s; }
+
+    :root {
+    --trending-bg: #0f172a; /* Slate 900 */
+    --accent-orange: #f59e0b; /* Amber 500 */
+    --glass-white: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+.premium-trending-card {
+    position: relative;
+    background: var(--trending-bg);
+    border-radius: 32px;
+    padding: 2.5rem 1.5rem 1.5rem;
+    overflow: hidden;
+    color: white;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Glow Effect in Background */
+.trending-bg-glow {
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+    z-index: 0;
+}
+
+/* Header Styling */
+.trending-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+    padding: 0 0.5rem;
+}
+
+.header-icon-box {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--accent-orange), #ea580c);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+}
+
+.pulse-ring {
+    position: absolute;
+    width: 100%;
     height: 100%;
+    border: 2px solid var(--accent-orange);
+    border-radius: 16px;
+    animation: pulseIcon 2s infinite;
+}
+
+.header-text h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+.header-text p {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* List Item Styling */
+.trending-list {
+    position: relative;
+    z-index: 1;
+}
+
+.trending-item {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    padding: 1.25rem 1rem;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 0.5rem;
+    border: 1px solid transparent;
+}
+
+.trending-item:hover {
+    background: var(--glass-white);
+    border-color: var(--glass-border);
+    transform: translateX(8px);
+}
+
+.item-number-box {
+    margin-right: 1.25rem;
+}
+
+.number-outline {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.4s;
+}
+
+.trending-item:hover .number-outline {
+    -webkit-text-stroke: 1px var(--accent-orange);
+    color: var(--accent-orange);
+    opacity: 0.8;
+}
+
+.trending-info {
+    flex: 1;
+}
+
+.item-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 0.4rem;
+    line-height: 1.4;
+    transition: color 0.3s;
+}
+
+.trending-item:hover .item-title {
+    color: white;
+}
+
+.item-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.meta-view i { color: var(--accent-orange); margin-right: 4px; }
+
+/* Arrow Action */
+.arrow-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #64748b;
+    transition: all 0.4s;
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.trending-item:hover .arrow-circle {
+    opacity: 1;
+    transform: translateX(0);
+    background: var(--accent-orange);
+    color: white;
+    border-color: var(--accent-orange);
+}
+
+.trending-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.view-all-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.view-all-link:hover { color: var(--accent-orange); }
+
+/* Animations */
+@keyframes pulseIcon {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.4); opacity: 0; }
+}
+
+.elegant-latest-card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 35px;
+    padding: 2.5rem;
+    overflow: hidden;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.04);
+    transition: all 0.4s ease;
+}
+
+/* Background Decoration */
+.mesh-gradient {
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.05) 0, transparent 50%), 
+        radial-gradient(at 100% 100%, rgba(5, 150, 105, 0.03) 0, transparent 50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.card-content { position: relative; z-index: 1; }
+
+/* Header */
+.latest-header-premium {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.icon-circle-glow {
+    width: 54px;
+    height: 54px;
+    background: #ecfdf5;
+    color: #10b981;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.1);
+}
+
+.top-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #94a3b8;
+    margin-bottom: 2px;
+}
+
+.header-titles h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0;
+}
+
+/* List Feed */
+.feed-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 22px;
+    text-decoration: none;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.feed-item:hover {
+    background: #ffffff;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+    transform: scale(1.02);
+}
+
+/* Thumbnails */
+.thumb-wrapper {
+    position: relative;
+    width: 85px;
+    height: 85px;
+    border-radius: 18px;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-right: 1.25rem;
+}
+
+.thumb-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.feed-item:hover img { transform: scale(1.15); }
+
+.placeholder-img {
+    width: 100%;
+    height: 100%;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.time-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(6, 78, 59, 0.8);
+    backdrop-filter: blur(4px);
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 4px 0;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.feed-item:hover .time-overlay { transform: translateY(0); }
+
+/* Info */
+.feed-info { flex: 1; }
+
+.feed-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    transition: color 0.3s;
+}
+
+.feed-item:hover .feed-title { color: #059669; }
+
+.feed-meta {
+    display: flex;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.meta-date i { margin-right: 5px; color: #10b981; }
+
+/* Indicator */
+.hover-indicator {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #cbd5e1;
+    transition: all 0.3s;
+}
+
+.feed-item:hover .hover-indicator {
+    color: #10b981;
+    transform: translateX(5px);
+}
+
+/* Footer Action */
+.card-action-area {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.btn-modern-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #64748b;
+    font-size: 0.85rem;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 8px;
+    transition: color 0.3s;
+}
+
+.link-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40%;
+    height: 2px;
+    background: #10b981;
+    transition: width 0.3s ease;
+}
+
+.btn-modern-link:hover { color: #1e293b; }
+.btn-modern-link:hover .link-line { width: 100%; }
+
+.stats-premium-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.stat-premium-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 30px;
+    padding: 1rem;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+}
+
+.stat-premium-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Shimmer Effect */
+.card-shimmer {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.6),
+        transparent
+    );
+    transition: 0.5s;
+    z-index: 1;
+}
+
+.stat-premium-card:hover .card-shimmer {
+    left: 100%;
+    transition: 0.8s;
+}
+
+.card-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Icon Aesthetics */
+.icon-box {
+    position: relative;
+    width: 65px;
+    height: 65px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.4s ease;
+}
+
+.icon-aura {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0.15;
+    transition: 0.4s;
+}
+
+.stat-premium-card:hover .icon-box {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.emerald { color: #10b981; background: #ecfdf5; }
+.blue { color: #3b82f6; background: #eff6ff; }
+.amber { color: #f59e0b; background: #fffbeb; }
+
+/* Typography */
+.stat-value-container {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.stat-prefix {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #94a3b8;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0;
+    letter-spacing: -1px;
+}
+
+.stat-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Progress Bar at Bottom */
+.card-progress-bar {
+    margin-top: 1.5rem;
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 10px;
     overflow: hidden;
 }
 
-.berita-card .flex-1 {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+.progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1.5s ease-in-out;
 }
 
-.line-clamp-2 {
+.progress-fill.emerald { background: #10b981; }
+.progress-fill.blue { background: #3b82f6; }
+.progress-fill.amber { background: #f59e0b; }
+
+/* Perbaikan untuk semua teks agar tidak overflow */
+.berita-title a,
+.berita-excerpt,
+.featured-excerpt,
+.featured-content h2 a,
+.trending-info h4,
+.feed-title,
+.item-title,
+.node-title {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+}
+
+/* Perbaikan untuk card */
+.berita-card,
+.featured-card,
+.premium-trending-card,
+.elegant-latest-card {
+    overflow-x: hidden;
+}
+
+/* Perbaikan untuk konten */
+.berita-content,
+.featured-content,
+.trending-info,
+.feed-info {
+    overflow: hidden;
+}
+
+/* Untuk excerpt (ringkasan) */
+.berita-excerpt,
+.featured-excerpt {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    word-break: break-word;
-}
-
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    word-break: break-word;
-}
-
-/* Batasi tinggi card secara konsisten */
-.berita-card .h-48 {
-    height: 192px;
-    flex-shrink: 0;
-}
-
-.berita-card .p-4 {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
-
-.berita-card .flex-1:last-child {
-    margin-bottom: 0;
+    text-overflow: ellipsis;
 }
 </style>
 
-<script>
-    // Counter Animation for Statistics
-    document.addEventListener('DOMContentLoaded', function() {
-        const statNumbers = document.querySelectorAll('.stat-number');
-        
-        const animateNumber = (element) => {
-            const target = parseInt(element.dataset.target);
-            let current = 0;
-            const increment = target / 50;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    element.textContent = target.toLocaleString();
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(current).toLocaleString();
-                }
-            }, 20);
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateNumber(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        
-        statNumbers.forEach(stat => observer.observe(stat));
-    });
+<div class="bg-pattern"></div>
+
+<div class="dashboard-wrapper">
     
+    {{-- Header (Seperti Admin Berita) --}}
+    <header class="editorial-header">
+        <div class="animate__animated animate__fadeInLeft">
+            <h1 class="brand-title font-display">Berita<br><span class="text-white" style="-webkit-text-stroke: 1.5px #000;">Desa</span>.</h1>
+            <p class="brand-subtitle">
+                Informasi terkini dan pengumuman resmi dari Desa Lumban Silintong. 
+            </p>
+        </div>
+
+    {{-- Featured Berita (Jika Ada) --}}
+    @if(isset($beritaUtama) && $beritaUtama)
+    <div class="featured-section fade-up delay-2">
+        <div class="featured-card">
+            <div class="featured-inner">
+                <div class="featured-image">
+                    <img src="{{ $beritaUtama->gambar ? asset('storage/' . $beritaUtama->gambar) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800' }}" alt="{{ $beritaUtama->judul }}">
+                    <div class="featured-overlay">
+                        <span class="featured-category">{{ ucfirst($beritaUtama->kategori) }}</span>
+                    </div>
+                </div>
+                <div class="featured-content">
+                    <div class="featured-meta">
+                        <span><i class="fa-regular fa-calendar"></i> {{ $beritaUtama->tanggal_publikasi->format('d M Y') }}</span>
+                        <span><i class="fa-regular fa-eye"></i> {{ number_format($beritaUtama->dibaca) }} dibaca</span>
+                    </div>
+                    <h2><a href="{{ route('berita.show', $beritaUtama->slug) }}">{{ $beritaUtama->judul }}</a></h2>
+                    <p class="featured-excerpt">{{ Str::limit(strip_tags($beritaUtama->isi_berita), 120) }}</p>
+                    <a href="{{ route('berita.show', $beritaUtama->slug) }}" class="featured-link">
+                        Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    
+   <div class="stats-premium-grid fade-up delay-1">
+    {{-- Card 1: Berita --}}
+    <div class="stat-premium-card">
+        <div class="card-shimmer"></div>
+        <div class="card-inner">
+            <div class="icon-box emerald">
+                <i class="fa-regular fa-newspaper"></i>
+                <div class="icon-aura"></div>
+            </div>
+            <div class="stat-data">
+                <div class="stat-value-container">
+                    <span class="stat-prefix">+</span>
+                    <h2 class="stat-number" data-target="{{ $beritas->total() }}">0</h2>
+                </div>
+                <p class="stat-name">Jumlah Berita</p>
+            </div>
+        </div>
+        <div class="card-progress-bar">
+            <div class="progress-fill emerald" style="width: 70%"></div>
+        </div>
+    </div>
+
+    {{-- Card 2: Pembaca --}}
+    <div class="stat-premium-card">
+        <div class="card-shimmer"></div>
+        <div class="card-inner">
+            <div class="icon-box blue">
+                <i class="fa-regular fa-eye"></i>
+                <div class="icon-aura"></div>
+            </div>
+            <div class="stat-data">
+                <div class="stat-value-container">
+                    <h2 class="stat-number" data-target="{{ $beritas->sum('dibaca') }}">0</h2>
+                </div>
+                <p class="stat-name">Total Interaksi</p>
+            </div>
+        </div>
+        <div class="card-progress-bar">
+            <div class="progress-fill blue" style="width: 85%"></div>
+        </div>
+    </div>
+
+    {{-- Card 3: Kegiatan --}}
+    <div class="stat-premium-card">
+        <div class="card-shimmer"></div>
+        <div class="card-inner">
+            <div class="icon-box amber">
+                <i class="fa-regular fa-calendar-check"></i>
+                <div class="icon-aura"></div>
+            </div>
+            <div class="stat-data">
+                <div class="stat-value-container">
+                    <h2 class="stat-number" data-target="{{ $beritas->where('kategori', 'kegiatan')->count() }}">0</h2>
+                </div>
+                <p class="stat-name">Total Kegiatan</p>
+            </div>
+        </div>
+        <div class="card-progress-bar">
+            <div class="progress-fill amber" style="width: 60%"></div>
+        </div>
+    </div>
+</div>
+
+    {{-- Filter Buttons --}}
+    <div class="filter-container fade-up delay-3">
+        <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="berita">📰 Berita</button>
+            <button class="filter-btn" data-filter="pengumuman">📢 Pengumuman</button>
+            <button class="filter-btn" data-filter="kegiatan">🎉 Kegiatan</button>
+        </div>
+    </div>
+
+    {{-- Main Content + Sidebar --}}
+    <div class="sidebar-grid">
+        
+        {{-- LEFT: Berita Grid --}}
+        <div class="fade-up delay-4">
+            <div class="berita-grid" id="berita-grid">
+                @forelse($beritas as $berita)
+                <div class="berita-card" data-kategori="{{ $berita->kategori }}">
+                    <div class="berita-image">
+                        <img src="{{ $berita->gambar ? asset('storage/' . $berita->gambar) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400' }}" alt="{{ $berita->judul }}">
+                        <span class="berita-category">{{ ucfirst($berita->kategori) }}</span>
+                    </div>
+                    <div class="berita-content">
+                        <div class="berita-meta">
+                            <span><i class="fa-regular fa-calendar"></i> {{ $berita->tanggal_publikasi->format('d M Y') }}</span>
+                            <span><i class="fa-regular fa-eye"></i> {{ number_format($berita->dibaca) }}</span>
+                        </div>
+                        <h3 class="berita-title"><a href="{{ route('berita.show', $berita->slug) }}">{{ $berita->judul }}</a></h3>
+                        <p class="berita-excerpt">{{ Str::limit(strip_tags($berita->isi_berita), 80) }}</p>
+                        <a href="{{ route('berita.show', $berita->slug) }}" class="berita-link">
+                            Baca <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                @empty
+                <div class="void-container" style="grid-column: span 3;">
+                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-regular fa-newspaper text-3xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-medium text-gray-400">Belum Ada Berita</h3>
+                    <p class="text-gray-400 mt-2">Belum ada berita yang dipublikasikan.</p>
+                </div>
+                @endforelse
+            </div>
+
+            {{-- Pagination --}}
+            @if($beritas->hasPages())
+            <div class="pagination-container">
+                {{ $beritas->appends(request()->query())->links() }}
+            </div>
+            @endif
+        </div>
+
+        {{-- RIGHT: Sidebar Sticky --}}
+        <div class="sidebar-sticky fade-right delay-5">
+            
+            <div class="premium-trending-card">
+    {{-- Decorative Background Glow --}}
+    <div class="trending-bg-glow"></div>
+
+    <div class="trending-header">
+        <div class="header-icon-box">
+            <i class="fa-solid fa-fire-flame-curved"></i>
+            <span class="pulse-ring"></span>
+        </div>
+        <div class="header-text">
+            <h3>Artikel Terpopuler</h3>
+            <p>Informasi paling banyak disorot </p>
+        </div>
+    </div>
+
+    <div class="trending-list">
+    @php 
+        $trending = $beritas->sortByDesc('dibaca')->take(5)->values();
+    @endphp
+    @foreach($trending as $index => $item)
+    <a href="{{ route('berita.show', $item->slug) }}" class="trending-item group">
+        <div class="item-number-box">
+            <span class="number-outline">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
+        </div>
+        
+        <div class="trending-info">
+            <h4 class="item-title">{{ Str::limit($item->judul, 45) }}</h4>
+            <div class="item-meta">
+                <span class="meta-view">
+                    <i class="fa-regular fa-eye"></i> {{ number_format($item->dibaca) }}
+                </span>
+                <span class="meta-separator">•</span>
+                <span class="meta-category">{{ $item->kategori }}</span>
+            </div>
+        </div>
+
+        <div class="item-action">
+            <div class="arrow-circle">
+                <i class="fa-solid fa-arrow-right-long"></i>
+            </div>
+        </div>
+    </a>
+    @endforeach
+</div>
+
+    <div class="trending-footer">
+        <a href="#" class="view-all-link">Lihat Semua Artikel <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+</div>
+
+           <div class="elegant-latest-card">
+    {{-- Decorative Mesh Gradient Background --}}
+    <div class="mesh-gradient"></div>
+
+    <div class="card-content">
+        <div class="latest-header-premium">
+            <div class="icon-circle-glow">
+                <i class="fa-regular fa-clock"></i>
+            </div>
+            <div class="header-titles">
+                <span class="top-label">BERITA TERKINI</span>
+                <h3>Update <span class="text-emerald-500">Desa</span></h3>
+            </div>
+        </div>
+
+        <div class="latest-feed">
+            @php $latest = $beritas->sortByDesc('created_at')->take(5); @endphp
+            @foreach($latest as $item)
+            <a href="{{ route('berita.show', $item->slug) }}" class="feed-item group">
+                <div class="thumb-wrapper">
+                    @if($item->gambar)
+                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                    @else
+                        <div class="placeholder-img">
+                            <i class="fa-solid fa-leaf text-emerald-200"></i>
+                        </div>
+                    @endif
+                    <div class="time-overlay">
+                        {{ $item->created_at->diffForHumans() }}
+                    </div>
+                </div>
+
+                <div class="feed-info">
+                    <h4 class="feed-title">{{ Str::limit($item->judul, 42) }}</h4>
+                    <div class="feed-meta">
+                        <span class="meta-date">
+                            <i class="fa-regular fa-calendar-check"></i> {{ $item->created_at->translatedFormat('d M Y') }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="hover-indicator">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+            @endforeach
+        </div>
+
+        <div class="card-action-area">
+            <a href="#" class="btn-modern-link">
+                Lihat Seluruh Berita <i class="fa-solid fa-arrow-right"></i>
+                <div class="link-line"></div>
+            </a>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+
+    {{-- Tutorial Section --}}
+    <div class="tutorial-section fade-up delay-6">
+        <div class="tutorial-header">
+            <i class="fa-regular fa-circle-question"></i>
+            <h3>📖 Tentang Halaman Berita</h3>
+        </div>
+        <p class="tutorial-intro">
+            Halaman <strong>Berita & Pengumuman</strong> menyajikan informasi terkini seputar kegiatan, pembangunan, 
+            dan pengumuman resmi Desa Lumban Silintong.
+        </p>
+        <div class="tutorial-grid">
+            <div class="tutorial-item">
+                <div class="tutorial-num">1</div>
+                <div class="tutorial-text">
+                    <h4>🏷️ Filter Kategori</h4>
+                    <p>Gunakan tombol filter untuk menyaring artikel berdasarkan kategori.</p>
+                </div>
+            </div>
+            <div class="tutorial-item">
+                <div class="tutorial-num">2</div>
+                <div class="tutorial-text">
+                    <h4>📰 Baca Berita</h4>
+                    <p>Klik judul berita atau gambar untuk membaca detail artikel.</p>
+                </div>
+            </div>
+            <div class="tutorial-item">
+                <div class="tutorial-num">3</div>
+                <div class="tutorial-text">
+                    <h4>🔥 Terpopuler & Terbaru</h4>
+                    <p>Lihat berita paling banyak dibaca dan terbaru di sidebar.</p>
+                </div>
+            </div>
+            <div class="tutorial-item">
+                <div class="tutorial-num">4</div>
+                <div class="tutorial-text">
+                    <h4>📊 Statistik</h4>
+                    <p>Pantau total berita, pembaca, dan kegiatan yang telah dipublikasikan.</p>
+                </div>
+            </div>
+        </div>
+        <div class="tutorial-footer">
+            <i class="fa-regular fa-bell"></i>
+            <span>💡 <strong>Tips:</strong> Gunakan filter untuk menemukan berita sesuai kategori yang Anda inginkan.</span>
+        </div>
+    </div>
+</div>
+
+<script>
     // Filter Kategori
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            document.querySelectorAll('.filter-btn').forEach(b => {
-                b.classList.remove('active');
-                b.classList.remove('bg-gradient-to-r', 'from-emerald-600', 'to-emerald-500', 'text-white', 'shadow-md');
-                b.classList.add('bg-gray-100', 'text-gray-600');
-            });
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            this.classList.remove('bg-gray-100', 'text-gray-600');
-            this.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-emerald-500', 'text-white', 'shadow-md');
             
             const filter = this.dataset.filter;
             document.querySelectorAll('.berita-card').forEach(card => {
                 if (filter === 'all' || card.dataset.kategori === filter) {
-                    card.style.display = 'flex';
-                    card.style.opacity = '0';
+                    card.style.display = 'block';
                     setTimeout(() => { card.style.opacity = '1'; }, 10);
                 } else {
                     card.style.display = 'none';
@@ -589,25 +1702,24 @@
             });
         });
     });
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const counters = document.querySelectorAll('.stat-number');
     
-    // Hover animation for trending items
-    document.querySelectorAll('.trending-item').forEach(item => {
-        item.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateX(5px)';
-        });
-        item.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateX(0)';
-        });
-    });
-    
-    // Hover animation for category tags
-    document.querySelectorAll('.category-tag').forEach(tag => {
-        tag.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
-        });
-        tag.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
+    const animateCounter = (el) => {
+        const target = +el.getAttribute('data-target');
+        const count = +el.innerText;
+        const increment = target / 50; // Kecepatan animasi
+
+        if (count < target) {
+            el.innerText = Math.ceil(count + increment);
+            setTimeout(() => animateCounter(el), 20);
+        } else {
+            el.innerText = target.toLocaleString();
+        }
+    };
+
+    counters.forEach(counter => animateCounter(counter));
+});
 </script>
 @endsection

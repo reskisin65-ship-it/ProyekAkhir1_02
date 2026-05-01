@@ -161,25 +161,40 @@ class PageController extends Controller
     /**
      * Halaman Detail Berita (menggunakan slug)
      */
-    public function beritaShow($slug)
-    {
-        $berita = Berita::where('slug', $slug)
-            ->where('status', 'publish')
-            ->firstOrFail();
-        
-        // Increment counter pembaca
-        $berita->increment('dibaca');
-        
-        // Rekomendasi berita terkait (gunakan id_berita, bukan id)
-        $rekomendasi = Berita::where('status', 'publish')
-            ->where('id_berita', '!=', $berita->id_berita)
-            ->where('kategori', $berita->kategori)
-            ->orderBy('tanggal_publikasi', 'desc')
-            ->limit(3)
-            ->get();
-        
-        return view('pages.berita-detail', compact('berita', 'rekomendasi'));
-    }
+        public function beritaShow($slug)
+        {
+            $berita = Berita::where('slug', $slug)
+                ->where('status', 'publish')
+                ->firstOrFail();
+            
+            // Increment counter pembaca
+            $berita->increment('dibaca');
+            
+            // ==============================================
+            // AMBIL BERITA SEBELUMNYA DAN SESUDAHNYA
+            // ==============================================
+            $prevBerita = Berita::where('status', 'publish')
+                ->where('id_berita', '<', $berita->id_berita)
+                ->orderBy('id_berita', 'desc')
+                ->first();
+            
+            $nextBerita = Berita::where('status', 'publish')
+                ->where('id_berita', '>', $berita->id_berita)
+                ->orderBy('id_berita', 'asc')
+                ->first();
+            
+            // ==============================================
+            // REKOMENDASI: 3 BERITA TERBARU (SEMUA KATEGORI)
+            // YANG BUKAN ARTIKEL YANG SEDANG DIBACA
+            // ==============================================
+            $rekomendasi = Berita::where('status', 'publish')
+                ->where('id_berita', '!=', $berita->id_berita)
+                ->orderBy('created_at', 'desc')  // Urutkan berdasarkan created_at terbaru
+                ->limit(3)
+                ->get();
+            
+            return view('pages.berita-detail', compact('berita', 'rekomendasi', 'prevBerita', 'nextBerita'));
+        }
 
     /**
      * Halaman Galeri
@@ -190,6 +205,22 @@ class PageController extends Controller
         return view('pages.galeri', compact('galeris'));
     }
 
+    /**
+     * Halaman Detail Galeri
+     */
+    public function galeriShow($id)
+        {
+            // Gunakan id_galeri, bukan id
+            $galeri = Galeri::where('id_galeri', $id)->firstOrFail();
+            
+            // Rekomendasi galeri lain - gunakan id_galeri juga
+            $rekomendasi = Galeri::where('id_galeri', '!=', $id)
+                ->orderBy('created_at', 'desc')
+                ->limit(4)
+                ->get();
+            
+            return view('pages.galeri-detail', compact('galeri', 'rekomendasi'));
+        }
     /**
      * Halaman UMKM Publik
      */
