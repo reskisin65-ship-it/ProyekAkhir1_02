@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Masyarakat;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aspirasi;
+use App\Models\Notifikasi;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AspirasiController extends Controller
 {
@@ -38,7 +41,7 @@ class AspirasiController extends Controller
             $lampiranPath = $request->file('lampiran')->store('aspirasi-lampiran', 'public');
         }
 
-        Aspirasi::create([
+        $aspirasi = Aspirasi::create([
             'user_id' => Auth::id(),
             'kategori' => $request->kategori,
             'judul' => $request->judul,
@@ -46,6 +49,23 @@ class AspirasiController extends Controller
             'lampiran' => $lampiranPath,
             'status' => 'baru'
         ]);
+
+        // Kirim notifikasi ke semua admin
+        $admins = User::whereHas('role', function($q) {
+            $q->where('nama_role', 'admin');
+        })->get();
+
+        foreach ($admins as $admin) {
+            Notifikasi::create([
+                'user_id' => $admin->user_id,
+                'jenis' => 'aspirasi',
+                'judul' => '💭 Aspirasi Baru dari ' . Auth::user()->name,
+                'pesan' => 'Aspirasi baru (' . $request->kategori . '): ' . Str::limit($request->judul, 50),
+                'link' => route('admin.aspirasi.show', $aspirasi->id_aspirasi),
+                'ref_id' => $aspirasi->id_aspirasi,
+                'dibaca' => false
+            ]);
+        }
 
         return redirect()->route('masyarakat.aspirasi.index')
             ->with('success', 'Aspirasi berhasil dikirim! Akan segera ditanggapi.');

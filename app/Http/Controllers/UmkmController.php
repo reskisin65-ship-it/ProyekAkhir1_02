@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Umkm;
 use App\Models\ProdukUmkm;
+use App\Models\Notifikasi;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UmkmController extends Controller
 {
@@ -63,7 +66,7 @@ class UmkmController extends Controller
             'deskripsi' => 'required|min:10',
         ]);
 
-        Umkm::create([
+        $umkm = Umkm::create([
             'user_id' => Auth::id(),
             'nama_usaha' => $request->nama_usaha,
             'kategori' => $request->kategori,
@@ -73,6 +76,23 @@ class UmkmController extends Controller
             'deskripsi' => $request->deskripsi,
             'status' => 'pending',
         ]);
+
+        // Kirim notifikasi ke semua admin
+        $admins = User::whereHas('role', function($q) {
+            $q->where('nama_role', 'admin');
+        })->get();
+
+        foreach ($admins as $admin) {
+            Notifikasi::create([
+                'user_id' => $admin->user_id,
+                'jenis' => 'umkm',
+                'judul' => '🏪 Pendaftaran UMKM Baru',
+                'pesan' => Auth::user()->name . ' mendaftar UMKM: ' . $request->nama_usaha,
+                'link' => route('admin.umkm.index'),
+                'ref_id' => $umkm->id_umkm,
+                'dibaca' => false
+            ]);
+        }
 
         return redirect()->route('masyarakat.umkm.status')
             ->with('success', 'Pengajuan UMKM berhasil dikirim! Menunggu verifikasi admin.');
