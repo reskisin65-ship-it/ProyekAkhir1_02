@@ -222,13 +222,28 @@ class PageController extends Controller
             return view('pages.galeri-detail', compact('galeri', 'rekomendasi'));
         }
     /**
-     * Halaman UMKM Publik
-     */
-    public function umkm()
-    {
-        $umkms = Umkm::paginate(9);
-        return view('pages.umkm', compact('umkms'));
-    }
+ * Halaman UMKM Publik
+ */
+public function umkm()
+{
+    $umkms = Umkm::where('status', 'approved')
+        ->orderBy('created_at', 'desc')
+        ->paginate(9);
+    
+    return view('pages.umkm', compact('umkms'));
+}
+
+/**
+ * Halaman Detail UMKM Publik
+ */
+public function umkmShow($id)
+{
+    $umkm = Umkm::where('id_umkm', $id)
+        ->where('status', 'approved')
+        ->firstOrFail();
+    
+    return view('pages.umkm-detail', compact('umkm'));
+}
 
     /**
      * Halaman Kontak

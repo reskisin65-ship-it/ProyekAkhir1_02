@@ -78,6 +78,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/umkm/{id}', [UmkmController::class, 'update'])->name('umkm.update');
     Route::post('/produk/store', [ProductController::class, 'store'])->name('produk.store');
     Route::delete('/produk/{product}', [ProductController::class, 'destroy'])->name('produk.destroy');
+    Route::get('/umkm/status', [UmkmController::class, 'status'])->name('umkm.status.admin');
+    Route::get('/umkm/status', [UmkmController::class, 'status'])->name('umkm.status');
+    
     
     // ==============================================
     // NOTIFIKASI
