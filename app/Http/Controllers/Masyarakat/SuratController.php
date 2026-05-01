@@ -13,12 +13,47 @@ use Illuminate\Support\Facades\Storage;
 
 class SuratController extends Controller
 {
-    public function index()
+    public function index(Request $request)  // ← Tambahkan Request $request
     {
-        $pengajuan = PengajuanSurat::where('user_id', Auth::user()->user_id)
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-        return view('masyarakat.surat.index', compact('pengajuan'));
+        $query = PengajuanSurat::where('user_id', Auth::user()->user_id);
+        
+        // ==============================================
+        // FILTER BERDASARKAN STATUS
+        // ==============================================
+        if ($request->filled('status') && $request->status != 'all') {
+            $query->where('status', $request->status);
+        }
+        
+        // ==============================================
+        // FILTER BERDASARKAN JENIS SURAT (Opsional)
+        // ==============================================
+        if ($request->filled('jenis_surat')) {
+            $query->where('jenis_surat', $request->jenis_surat);
+        }
+        
+        // ==============================================
+        // FILTER BERDASARKAN TANGGAL
+        // ==============================================
+        if ($request->filled('dari_tanggal')) {
+            $query->whereDate('created_at', '>=', $request->dari_tanggal);
+        }
+        
+        if ($request->filled('sampai_tanggal')) {
+            $query->whereDate('created_at', '<=', $request->sampai_tanggal);
+        }
+        
+        // ==============================================
+        // EKSEKUSI QUERY
+        // ==============================================
+        $pengajuan = $query->orderBy('created_at', 'desc')->paginate(10);
+        
+        // Kirim data filter ke view untuk menampilkan filter aktif
+        $filterStatus = $request->status;
+        $filterJenisSurat = $request->jenis_surat;
+        $filterDariTanggal = $request->dari_tanggal;
+        $filterSampaiTanggal = $request->sampai_tanggal;
+        
+        return view('masyarakat.surat.index', compact('pengajuan', 'filterStatus', 'filterJenisSurat', 'filterDariTanggal', 'filterSampaiTanggal'));
     }
 
     public function create()
