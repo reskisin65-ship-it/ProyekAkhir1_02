@@ -40,9 +40,9 @@ class UmkmController extends Controller
     {
         $existingUmkm = Umkm::where('user_id', Auth::id())->first();
         
-        if ($existingUmkm) {
+        if ($existingUmkm && in_array($existingUmkm->status, ['pending', 'approved'])) {
             return redirect()->route('masyarakat.umkm.status')
-                ->with('error', 'Anda sudah memiliki pengajuan UMKM!');
+                ->with('error', 'Anda sudah memiliki pengajuan UMKM yang sedang diproses atau sudah aktif.');
         }
         
         return view('umkm.create');
@@ -51,12 +51,12 @@ class UmkmController extends Controller
     public function storeMasyarakat(Request $request)
     {
         $existingUmkm = Umkm::where('user_id', Auth::id())->first();
-            
-        if ($existingUmkm) {
-            return redirect()->route('masyarakat.umkm.status')
-                ->with('error', 'Anda sudah memiliki pengajuan UMKM!');
-        }
         
+        if ($existingUmkm && in_array($existingUmkm->status, ['pending', 'approved'])) {
+            return redirect()->route('masyarakat.umkm.status')
+                ->with('error', 'Anda sudah memiliki pengajuan UMKM yang sedang diproses atau sudah aktif.');
+        }
+
         $request->validate([
             'nama_usaha' => 'required|min:3|max:100',
             'kategori' => 'required',
@@ -64,9 +64,11 @@ class UmkmController extends Controller
             'no_telepon' => 'required|max:15',
             'alamat_usaha' => 'required|min:5',
             'deskripsi' => 'required|min:10',
+            'logo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'bukti_usaha' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $umkm = Umkm::create([
+        $data = [
             'user_id' => Auth::id(),
             'nama_usaha' => $request->nama_usaha,
             'kategori' => $request->kategori,
@@ -75,9 +77,30 @@ class UmkmController extends Controller
             'alamat_usaha' => $request->alamat_usaha,
             'deskripsi' => $request->deskripsi,
             'status' => 'pending',
-        ]);
+        ];
 
-        // Kirim notifikasi ke semua admin
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('umkm/logos', 'public');
+        }
+
+        if ($request->hasFile('bukti_usaha')) {
+            $data['bukti_usaha'] = $request->file('bukti_usaha')->store('umkm/bukti_usaha', 'public');
+        }
+
+        if ($existingUmkm && $existingUmkm->status === 'rejected') {
+            if (!empty($existingUmkm->logo) && isset($data['logo']) && Storage::disk('public')->exists($existingUmkm->logo)) {
+                Storage::disk('public')->delete($existingUmkm->logo);
+            }
+            if (!empty($existingUmkm->bukti_usaha) && isset($data['bukti_usaha']) && Storage::disk('public')->exists($existingUmkm->bukti_usaha)) {
+                Storage::disk('public')->delete($existingUmkm->bukti_usaha);
+            }
+
+            $existingUmkm->update($data);
+            $umkm = $existingUmkm;
+        } else {
+            $umkm = Umkm::create($data);
+        }
+
         $admins = User::whereHas('role', function($q) {
             $q->where('nama_role', 'admin');
         })->get();
@@ -90,7 +113,7 @@ class UmkmController extends Controller
                 'pesan' => Auth::user()->name . ' mendaftar UMKM: ' . $request->nama_usaha,
                 'link' => route('admin.umkm.index'),
                 'ref_id' => $umkm->id_umkm,
-                'dibaca' => false
+                'dibaca' => false,
             ]);
         }
 

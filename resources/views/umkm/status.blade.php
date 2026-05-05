@@ -588,6 +588,16 @@
 </div>
 @endif
 
+{{-- Alert Info --}}
+@if(session('info'))
+<div class="mb-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-xl animate__animated animate__fadeInUp">
+    <div class="flex items-center gap-3">
+        <i class="fa-solid fa-circle-info text-blue-500 text-lg"></i>
+        <p class="text-blue-700 font-medium">{{ session('info') }}</p>
+    </div>
+</div>
+@endif
+
 {{-- Alert Error --}}
 @if(session('error'))
 <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl animate__animated animate__fadeInUp">
@@ -721,6 +731,14 @@
                 <button onclick="openCancelModal()" class="action-button-danger">
                     <i class="fa-solid fa-ban"></i> Batalkan Pengajuan
                 </button>
+            </div>
+            @endif
+
+            @if($umkm->status == 'rejected')
+            <div class="action-group">
+                <a href="{{ route('masyarakat.umkm.create') }}" class="action-button">
+                    <i class="fa-solid fa-rotate-left"></i> Ajukan Ulang UMKM
+                </a>
             </div>
             @endif
 

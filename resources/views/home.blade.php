@@ -4,225 +4,208 @@
 @section('title', 'Beranda - Desa Digital Premium')
 
 @section('content')
+<!-- Google Fonts Premium -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&family=Instrument+Sans:ital,wght@0,400;0,700;1,600&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
 <style>
-    /* ============================================ */
-    /* ANIMATIONS & KEYFRAMES */
-    /* ============================================ */
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-15px); }
-    }
-    @keyframes float-slow {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-8px); }
-    }
-    @keyframes shine {
-        0% { transform: translateX(-100%) rotate(25deg); }
-        20% { transform: translateX(100%) rotate(25deg); }
-        100% { transform: translateX(100%) rotate(25deg); }
-    }
-    @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-        50% { box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
-    }
-    @keyframes slide-up {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slide-left {
-        from { opacity: 0; transform: translateX(-30px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes slide-right {
-        from { opacity: 0; transform: translateX(30px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes zoom-in {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
-    @keyframes count-up {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse-slow {
-        0%, 100% { opacity: 0.3; transform: scale(1); }
-        50% { opacity: 0.6; transform: scale(1.05); }
-    }
-    @keyframes spin-slow {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-    @keyframes bounce {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.2); }
-    }
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+    /* ============================================
+       DESIGN SYSTEM PREMIUM
+    ============================================ */
+    :root {
+        --primary: #10b981;
+        --primary-dark: #059669;
+        --primary-light: #34d399;
+        --primary-soft: rgba(16, 185, 129, 0.08);
+        --primary-glow: rgba(16, 185, 129, 0.15);
+        --emerald-deep: #064e3b;
+        --dark: #0f172a;
+        --gray: #64748b;
+        --gray-light: #94a3b8;
+        --gray-soft: #f1f5f9;
+        --bg: #fafbfc;
+        --card: #ffffff;
+        --border: #eef2f6;
+        --shadow-sm: 0 1px 2px rgba(0,0,0,0.02);
+        --shadow-md: 0 4px 16px rgba(0,0,0,0.04);
+        --shadow-lg: 0 12px 32px rgba(0,0,0,0.06);
+        --shadow-xl: 0 24px 48px rgba(0,0,0,0.1);
+        --shadow-2xl: 0 32px 64px rgba(0,0,0,0.12);
+        --transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+        --transition-bounce: all 0.5s cubic-bezier(0.34, 1.2, 0.64, 1);
     }
 
-    /* ============================================ */
-    /* UTILITY CLASSES */
-    /* ============================================ */
-    .floating { animation: float 3s ease-in-out infinite; }
-    .floating-slow { animation: float-slow 4s ease-in-out infinite; }
-    .pulse-glow { animation: pulse-glow 2s infinite; }
-    .shine { position: relative; overflow: hidden; }
-    .shine::after {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -60%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(115deg, rgba(255,255,255,0) 10%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 90%);
-        transform: rotate(25deg);
-        animation: shine 4s infinite;
-    }
-    .animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
-    .animate-spin-slow { animation: spin-slow 2s linear infinite; }
-    .animate-bounce { animation: bounce 0.5s ease-in-out; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* ============================================ */
-    /* CARD STYLES */
-    /* ============================================ */
-    .stat-card {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: slide-up 0.6s ease forwards;
-        opacity: 0;
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        color: var(--dark);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
     }
-    .stat-card:nth-child(1) { animation-delay: 0.05s; }
-    .stat-card:nth-child(2) { animation-delay: 0.1s; }
-    .stat-card:nth-child(3) { animation-delay: 0.15s; }
-    .stat-card:nth-child(4) { animation-delay: 0.2s; }
-    .stat-card:hover { transform: translateY(-10px) scale(1.02); }
-    
-    .service-card {
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: zoom-in 0.6s ease forwards;
-        opacity: 0;
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: var(--gray-light); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+    /* Scroll Progress Line */
+    .scroll-line {
+        position: fixed;
+        top: 0; left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--primary-light));
+        z-index: 10000;
+        width: 0%;
     }
-    .service-card:nth-child(1) { animation-delay: 0.1s; }
-    .service-card:nth-child(2) { animation-delay: 0.2s; }
-    .service-card:hover { transform: translateY(-12px) scale(1.02); box-shadow: 0 30px 50px -15px rgba(0,0,0,0.25); }
-    
-    .news-card {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: slide-left 0.6s ease forwards;
-        opacity: 0;
+
+    /* Background Pattern */
+    .bg-pattern {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image: radial-gradient(#e2e8f0 0.5px, transparent 0.5px);
+        background-size: 20px 20px;
+        opacity: 0.4;
     }
-    .news-card:nth-child(1) { animation-delay: 0.05s; }
-    .news-card:nth-child(2) { animation-delay: 0.1s; }
-    .news-card:nth-child(3) { animation-delay: 0.15s; }
-    .news-card:nth-child(4) { animation-delay: 0.2s; }
-    .news-card:hover { transform: translateX(8px) translateY(-5px); box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15); }
-    
-    .gallery-item {
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: zoom-in 0.5s ease forwards;
-        opacity: 0;
+
+    .container-premium {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
     }
-    .gallery-item:nth-child(1) { animation-delay: 0.05s; }
-    .gallery-item:nth-child(2) { animation-delay: 0.1s; }
-    .gallery-item:nth-child(3) { animation-delay: 0.15s; }
-    .gallery-item:nth-child(4) { animation-delay: 0.2s; }
-    .gallery-item:hover { transform: scale(1.05) rotate(1deg); box-shadow: 0 25px 40px -15px rgba(0,0,0,0.25); }
-    
-    .faq-item {
-        transition: all 0.3s ease;
-        animation: slide-right 0.5s ease forwards;
-        opacity: 0;
-    }
-    .faq-item:nth-child(1) { animation-delay: 0.05s; }
-    .faq-item:nth-child(2) { animation-delay: 0.1s; }
-    .faq-item:nth-child(3) { animation-delay: 0.15s; }
-    .faq-item:hover { background-color: #f0fdf4; transform: translateX(5px); }
-    
-    /* ============================================ */
-    /* HERO SLIDER */
-    /* ============================================ */
-    .slider-container { border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.15); }
-    .slider-wrapper { display: flex; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1); }
-    .slide { min-width: 100%; height: 85vh; position: relative; }
-    .slide-content { 
-        position: absolute; inset: 0; 
-        background: linear-gradient(105deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
-        display: flex; flex-direction: column; justify-content: center; padding-left: 8%; color: white;
-    }
-    
-    /* ============================================ */
-    /* PREMIUM BUTTONS */
-    /* ============================================ */
-    .btn-premium {
-        background: linear-gradient(135deg, #064e3b, #065f46);
-        color: #fff; padding: 16px 36px; border-radius: 50px;
-        font-weight: 700; font-size: 11px; text-transform: uppercase;
-        letter-spacing: 1.5px; transition: 0.3s; display: inline-block;
-        box-shadow: 0 10px 25px rgba(6, 78, 59, 0.25);
+
+    /* ============================================
+       HERO SLIDER PREMIUM - ELEGAN
+    ============================================ */
+    .hero-slider-container {
         position: relative;
+        border-radius: 32px;
         overflow: hidden;
+        box-shadow: var(--shadow-2xl);
+        background: #f5f5f5;
     }
-    .btn-premium::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
+    .hero-slider-wrapper { display: flex; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1); }
+    .hero-slide { min-width: 100%; height: 85vh; position: relative; }
+    .hero-slide img {
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        transition: left 0.5s;
+        object-fit: cover;
+        filter: brightness(0.75) contrast(1.05);
+        transition: transform 0.5s;
     }
-    .btn-premium:hover::before { left: 100%; }
-    .btn-premium:hover { transform: translateY(-3px) scale(1.02); background: #10b981; box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4); }
-    
-    .btn-outline-premium {
-        background: transparent; border: 2px solid rgba(255,255,255,0.5);
-        backdrop-filter: blur(10px); padding: 14px 32px; border-radius: 50px;
-        font-weight: 600; transition: 0.3s;
-    }
-    .btn-outline-premium:hover { background: rgba(255,255,255,0.2); border-color: white; transform: translateY(-2px); }
-    
-    /* ============================================ */
-    /* LOCKED CARD (UNTUK GUEST) */
-    /* ============================================ */
-    .locked-card {
-        position: relative;
-        overflow: hidden;
-        cursor: pointer;
-    }
-    .locked-card .locked-overlay {
+    .hero-content {
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(4px);
+        background: linear-gradient(105deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
         display: flex;
-        align-items: center;
+        flex-direction: column;
         justify-content: center;
-        opacity: 0;
-        transition: all 0.4s ease;
-        z-index: 20;
+        padding-left: 8%;
+        padding-right: 40%;
     }
-    .locked-card:hover .locked-overlay {
-        opacity: 1;
+    .hero-badge {
+        display: inline-block;
+        padding: 0.3rem 1.2rem;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(8px);
+        border-radius: 40px;
+        width: fit-content;
+        margin-bottom: 1rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: white;
     }
-    .locked-card .locked-content {
-        transform: scale(0.9);
-        transition: transform 0.3s ease;
+    .hero-title {
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: white;
+        line-height: 1.1;
+        margin-bottom: 1rem;
     }
-    .locked-card:hover .locked-content {
-        transform: scale(1);
+    .hero-subtitle {
+        font-size: 1rem;
+        color: rgba(255,255,255,0.85);
+        max-width: 500px;
+        line-height: 1.6;
+        margin-bottom: 2rem;
     }
-    
-    /* ============================================ */
-    /* STAT CARD PREMIUM */
-    /* ============================================ */
-    .stat-card-premium {
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-hero-primary {
+        padding: 0.8rem 2rem;
+        background: white;
+        color: var(--primary-dark);
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: var(--transition-bounce);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); background: var(--primary); color: white; }
+    .btn-hero-secondary {
+        padding: 0.8rem 2rem;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(8px);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.8rem;
+        transition: var(--transition-bounce);
+        text-decoration: none;
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+    .btn-hero-secondary:hover { background: rgba(255,255,255,0.3); transform: translateY(-3px); }
+    .slider-nav {
+        position: absolute;
+        bottom: 2rem;
+        right: 2rem;
+        display: flex;
+        gap: 0.5rem;
+        z-index: 10;
+    }
+    .slider-dot {
+        width: 40px;
+        height: 3px;
+        border-radius: 3px;
+        background: rgba(255,255,255,0.4);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .slider-dot.active { background: white; width: 60px; }
+
+    /* ============================================
+       STATS CARDS PREMIUM (SEPERTI STATISTIK.BLADE.PHP)
+    ============================================ */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+    .stat-card {
+        background: var(--card);
+        border-radius: 28px;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        transition: var(--transition-bounce);
         position: relative;
         overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-sm);
     }
-    .stat-card-premium::before {
+    .stat-card::before {
         content: '';
         position: absolute;
         top: 0;
@@ -230,957 +213,206 @@
         width: 100%;
         height: 100%;
         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s ease;
+        transition: left 0.6s ease;
+        pointer-events: none;
     }
-    .stat-card-premium:hover::before {
-        left: 100%;
+    .stat-card:hover::before { left: 100%; }
+    .stat-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--primary);
+        box-shadow: var(--shadow-xl);
     }
-    .stat-card-premium:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.2);
+    .stat-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        transition: var(--transition-bounce);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
     }
-    
-    /* ============================================ */
-    /* CHART CONTAINER & OPTIONS */
-    /* ============================================ */
-    .chart-container {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    .stat-card:hover .stat-icon {
+        transform: scale(1.05);
+        box-shadow: 0 12px 28px rgba(16, 185, 129, 0.3);
     }
-    .chart-container:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 30px 50px -20px rgba(16, 185, 129, 0.3);
+    .stat-icon i { color: white; font-size: 1.5rem; }
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--dark);
+        line-height: 1.2;
+        margin-bottom: 0.25rem;
     }
-    
-    .chart-option {
+    .stat-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--gray);
+        margin-bottom: 0.5rem;
+    }
+    .stat-progress {
+        margin-top: 0.75rem;
+        height: 4px;
+        background: var(--gray-soft);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .stat-progress-bar {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.6s ease;
+    }
+
+    /* ============================================
+       SECTION BADGE & TITLE
+    ============================================ */
+    .section-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--primary-soft);
+        padding: 0.3rem 1rem;
+        border-radius: 100px;
+        margin-bottom: 1rem;
+    }
+    .section-badge i { font-size: 0.7rem; color: var(--primary); }
+    .section-badge span { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--primary-dark); text-transform: uppercase; }
+    .section-title {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+    }
+    .section-title span {
+        color: var(--primary);
+    }
+
+    /* ============================================
+       LAYANAN PUBLIK - BERANIMASI
+    ============================================ */
+    .service-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+    .service-card {
+        background: white;
+        border-radius: 24px;
+        padding: 1.8rem 1rem;
+        text-align: center;
+        border: 1px solid var(--border);
+        transition: var(--transition-bounce);
+        text-decoration: none;
+        display: block;
         position: relative;
         overflow: hidden;
     }
-    .chart-option::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.2);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }
-    .chart-option:hover::before {
-        width: 300px;
-        height: 300px;
-    }
-    
-    .setting-btn {
-        position: relative;
-        overflow: hidden;
-    }
-    .setting-btn::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.2);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }
-    .setting-btn:hover::before {
-        width: 400px;
-        height: 400px;
-    }
-    
-    .data-option {
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    .data-option:hover {
-        transform: translateX(5px);
-    }
-    
-    /* Quick Card */
-    .quick-card {
-        position: relative;
-        overflow: hidden;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .quick-card::after {
+    .service-card::after {
         content: '';
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #10b981, #059669);
-        transition: width 0.3s ease;
-    }
-    .quick-card:hover::after {
         width: 100%;
+        height: 4px;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
     }
-    .quick-card:hover {
-        transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15);
+    .service-card:nth-child(1)::after { background: #10b981; }
+    .service-card:nth-child(2)::after { background: #3b82f6; }
+    .service-card:nth-child(3)::after { background: #8b5cf6; }
+    .service-card:nth-child(4)::after { background: #f59e0b; }
+    .service-card:nth-child(5)::after { background: #ef4444; }
+    .service-card:hover::after { transform: scaleX(1); }
+    .service-card:hover {
+        transform: translateY(-12px);
+        box-shadow: var(--shadow-xl);
+        border-color: transparent;
     }
-    
-    /* FAQ STYLES */
-    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
-    .faq-item.active .faq-answer { max-height: 400px; transition: max-height 0.4s ease-in; }
-    .faq-item.active .faq-icon { transform: rotate(180deg); }
-    
-    /* LINE CLAMP */
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+    .service-icon {
+        width: 70px;
+        height: 70px;
+        background: var(--gray-soft);
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        transition: var(--transition-bounce);
     }
-    .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+    .service-card:nth-child(1):hover .service-icon { background: #10b981; transform: scale(1.1) rotate(5deg); }
+    .service-card:nth-child(2):hover .service-icon { background: #3b82f6; transform: scale(1.1) rotate(5deg); }
+    .service-card:nth-child(3):hover .service-icon { background: #8b5cf6; transform: scale(1.1) rotate(5deg); }
+    .service-card:nth-child(4):hover .service-icon { background: #f59e0b; transform: scale(1.1) rotate(5deg); }
+    .service-card:nth-child(5):hover .service-icon { background: #ef4444; transform: scale(1.1) rotate(5deg); }
+    .service-icon i { font-size: 2rem; color: var(--gray); transition: var(--transition); }
+    .service-card:hover .service-icon i { color: white; }
+    .service-title { font-weight: 800; font-size: 1rem; color: var(--dark); margin-bottom: 0.3rem; }
+    .service-desc { font-size: 0.7rem; color: var(--gray); }
+
+    /* ============================================
+       LAYANAN DIGITAL - LOCKED OVERLAY
+    ============================================ */
+    .digital-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        max-width: 1000px;
+        margin: 0 auto;
     }
-    
-    /* SCROLLBAR */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #10b981, #059669); border-radius: 10px; }
-    
-    [x-cloak] { display: none !important; }
-</style>
-
-{{-- ============================================= --}}
-{{-- 1. HERO SLIDER PREMIUM --}}
-{{-- ============================================= --}}
-<section class="px-[5%] mb-20">
-    <div class="slider-container group" x-data="{ slide: 0, totalSlides: 6 }" x-init="setInterval(() => slide = (slide + 1) % totalSlides, 6000)">
-        <div class="slider-wrapper" :style="'transform: translateX(-' + (slide * 100) + '%)'">
-            @php
-                $hero = [
-                    ['t' => 'Peradaban Digital Lumban Silintong', 'd' => 'Menyatukan teknologi dengan kearifan lokal Toba.', 'img' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb', 'badge' => '✨ Smart Village'],
-                    ['t' => 'UMKM Naik Kelas Menuju Global', 'd' => 'Mendorong ekonomi kreatif warga semakin kompetitif.', 'img' => 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b', 'badge' => '🚀 Ekonomi Kreatif'],
-                    ['t' => 'Harmonisasi Alam Danau Toba', 'd' => 'Menjaga kelestarian pesisir untuk generasi masa depan.', 'img' => 'https://images.unsplash.com/photo-1533105079780-92b9be482077', 'badge' => '🌿 Ekowisata'],
-                    ['t' => 'Pelayanan Publik Satu Genggaman', 'd' => 'Akses administrasi kini lebih cepat dan transparan.', 'img' => 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e', 'badge' => '📱 E-Government'],
-                    ['t' => 'Budaya Batak Yang Mendunia', 'd' => 'Melestarikan adat istiadat di tengah modernisasi.', 'img' => 'https://images.unsplash.com/photo-1501785888041-af3ef285b470', 'badge' => '🎭 Kearifan Lokal'],
-                    ['t' => 'Lumban Silintong Excellence', 'd' => 'Bersama membangun desa cerdas (Smart Village).', 'img' => 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e', 'badge' => '🏆 Smart Village'],
-                ];
-            @endphp
-            @foreach($hero as $h)
-            <div class="slide">
-                <img src="{{ $h['img'] }}?auto=format&fit=crop&q=80&w=2070" class="absolute inset-0 w-full h-full object-cover brightness-[0.6]">
-                <div class="slide-content">
-                    <span class="inline-block px-5 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white text-xs font-bold rounded-full mb-5 tracking-wide shadow-lg animate-pulse">{{ $h['badge'] }}</span>
-                    <h2 class="text-5xl md:text-7xl font-serif italic mb-5 leading-tight">{{ $h['t'] }}</h2>
-                    <p class="text-lg md:text-2xl font-light italic opacity-95 max-w-2xl">{{ $h['d'] }}</p>
-                    <div class="mt-10 flex flex-wrap gap-4">
-                        <a href="#layanan-publik" class="btn-premium">✨ Layanan Publik</a>
-                        <a href="#berita" class="btn-outline-premium">📖 Pelajari →</a>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-        <div class="absolute bottom-8 right-12 flex gap-2 z-10">
-            @foreach($hero as $index => $h)
-                <div @click="slide = {{ $index }}" class="w-10 h-1.5 rounded-full cursor-pointer transition-all duration-500" :class="slide === {{ $index }} ? 'bg-emerald-400 w-16' : 'bg-white/40 hover:bg-white/70'"></div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-{{-- ============================================= --}}
-{{-- 2. WELCOME SECTION DENGAN STATISTIK PREMIUM --}}
-{{-- ============================================= --}}
-<section class="px-[5%] py-16 bg-gradient-to-br from-emerald-50 via-white to-emerald-50/30 rounded-[60px] mx-[5%] mb-20 shadow-sm">
-    <div class="text-center max-w-3xl mx-auto mb-14">
-        <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">✨ Selamat Datang</span>
-        <h2 class="text-5xl md:text-6xl font-serif italic text-emerald-900 mt-5">Desa Lumban Silintong</h2>
-        <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mt-6 rounded-full"></div>
-        <p class="text-gray-600 mt-6 leading-relaxed text-lg">Desa digital yang mengintegrasikan teknologi modern dengan kearifan lokal Batak Toba. Kami hadir untuk memberikan pelayanan terbaik bagi seluruh warga.</p>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div class="stat-card-premium text-center p-6 bg-white rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-emerald-100 group">
-            <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-all duration-300 group-hover:shadow-emerald-500/30">
-                <i class="fa-solid fa-users text-white text-2xl"></i>
-            </div>
-            <p class="text-3xl font-bold text-emerald-700 counter">{{ $stat_penduduk }}</p>
-            <p class="text-xs text-gray-500 uppercase tracking-wider mt-1 font-semibold">Total Penduduk</p>
-        </div>
-        <div class="stat-card-premium text-center p-6 bg-white rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-blue-100 group">
-            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-all duration-300 group-hover:shadow-blue-500/30">
-                <i class="fa-solid fa-house-user text-white text-2xl"></i>
-            </div>
-            <p class="text-3xl font-bold text-blue-700 counter">{{ $stat_kk }}</p>
-            <p class="text-xs text-gray-500 uppercase tracking-wider mt-1 font-semibold">Kepala Keluarga</p>
-        </div>
-        <div class="stat-card-premium text-center p-6 bg-white rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-amber-100 group">
-            <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-all duration-300 group-hover:shadow-amber-500/30">
-                <i class="fa-solid fa-store text-white text-2xl"></i>
-            </div>
-            <p class="text-3xl font-bold text-amber-700 counter">{{ $stat_umkm_count }}</p>
-            <p class="text-xs text-gray-500 uppercase tracking-wider mt-1 font-semibold">UMKM Aktif</p>
-        </div>
-        <div class="stat-card-premium text-center p-6 bg-white rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-purple-100 group">
-            <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-all duration-300 group-hover:shadow-purple-500/30">
-                <i class="fa-solid fa-map text-white text-2xl"></i>
-            </div>
-            <p class="text-3xl font-bold text-purple-700">{{ $stat_luas }}</p>
-            <p class="text-xs text-gray-500 uppercase tracking-wider mt-1 font-semibold">Luas Wilayah (Ha)</p>
-        </div>
-    </div>
-</section>
-
-{{-- ============================================= --}}
-{{-- 3. STATISTIK DENGAN DIAGRAM PREMIUM --}}
-{{-- ============================================= --}}
-<section class="px-[5%] py-16 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 rounded-[60px] mx-[5%] mb-20 shadow-xl">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div>
-            <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block shadow-sm">📊 Data Statistik</span>
-            <h2 class="text-4xl md:text-5xl font-serif italic text-emerald-900 mt-4">Visualisasi Data Penduduk</h2>
-            <p class="text-gray-500 text-sm mt-2">Data realtime dari database desa</p>
-        </div>
-        
-        {{-- Tombol Setting Premium --}}
-        <div class="w-full md:w-auto" x-data="{ 
-            settingOpen: false, 
-            chartType: 'bar', 
-            dataType: 'penduduk'
-        }">
-            <button @click="settingOpen = !settingOpen" class="setting-btn group flex items-center justify-center gap-2 px-4 py-2.5 md:px-6 md:py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:shadow-xl transition-all duration-300 hover:scale-105 text-sm md:text-base w-full md:w-auto">
-                <i class="fa-solid fa-sliders-h text-xs md:text-sm group-hover:rotate-90 transition-transform duration-500"></i>
-                <span class="font-semibold">Pengaturan Diagram</span>
-                <i class="fa-solid fa-chevron-down text-xs transition-all duration-300" :class="settingOpen ? 'rotate-180' : ''"></i>
-            </button>
-            
-            <div x-show="settingOpen" @click.away="settingOpen = false" x-cloak 
-                x-transition:enter="transition ease-out duration-200"
-                x-transition:enter-start="opacity-0 scale-95"
-                x-transition:enter-end="opacity-100 scale-100"
-                x-transition:leave="transition ease-in duration-150"
-                x-transition:leave-start="opacity-100 scale-100"
-                x-transition:leave-end="opacity-0 scale-95"
-                class="mt-3 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden z-50 w-full md:w-[480px]">
-                
-                <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 md:px-5 py-3 flex items-center justify-between">
-                    <div>
-                        <h3 class="font-bold text-white text-sm md:text-base"><i class="fa-solid fa-chart-simple mr-2"></i> Customize Chart</h3>
-                        <p class="text-[9px] md:text-[10px] text-emerald-100">Sesuaikan tampilan diagram sesuai kebutuhan</p>
-                    </div>
-                    <button @click="settingOpen = false" class="text-white/80 hover:text-white transition-transform hover:rotate-90 duration-300">
-                        <i class="fa-solid fa-times text-lg"></i>
-                    </button>
-                </div>
-                
-                <div class="p-4 md:p-5">
-                    <div class="mb-5 md:mb-6">
-                        <label class="block text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-chart-line text-emerald-500"></i> Jenis Diagram
-                        </label>
-                        <div class="grid grid-cols-2 gap-2 md:gap-3">
-                            <button @click="chartType = 'bar'; updateChart(chartType, dataType); settingOpen = false" class="chart-option group px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300" :class="chartType === 'bar' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:scale-105'">
-                                <i class="fa-solid fa-chart-bar mr-1 md:mr-2"></i> Bar Chart
-                                <div x-show="chartType === 'bar'" class="w-full h-0.5 bg-white/50 mt-1 rounded-full animate-pulse"></div>
-                            </button>
-                            <button @click="chartType = 'line'; updateChart(chartType, dataType); settingOpen = false" class="chart-option group px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300" :class="chartType === 'line' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:scale-105'">
-                                <i class="fa-solid fa-chart-line mr-1 md:mr-2"></i> Line Chart
-                                <div x-show="chartType === 'line'" class="w-full h-0.5 bg-white/50 mt-1 rounded-full animate-pulse"></div>
-                            </button>
-                            <button @click="chartType = 'pie'; updateChart(chartType, dataType); settingOpen = false" class="chart-option group px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300" :class="chartType === 'pie' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:scale-105'">
-                                <i class="fa-solid fa-chart-pie mr-1 md:mr-2"></i> Pie Chart
-                                <div x-show="chartType === 'pie'" class="w-full h-0.5 bg-white/50 mt-1 rounded-full animate-pulse"></div>
-                            </button>
-                            <button @click="chartType = 'doughnut'; updateChart(chartType, dataType); settingOpen = false" class="chart-option group px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300" :class="chartType === 'doughnut' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:scale-105'">
-                                <i class="fa-solid fa-chart-simple mr-1 md:mr-2"></i> Donut Chart
-                                <div x-show="chartType === 'doughnut'" class="w-full h-0.5 bg-white/50 mt-1 rounded-full animate-pulse"></div>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-database text-emerald-500"></i> Kategori Data
-                        </label>
-                        <div class="space-y-2">
-                            <button @click="dataType = 'penduduk'; updateChart(chartType, dataType); settingOpen = false" class="data-option w-full px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300 text-left flex items-center justify-between group" :class="dataType === 'penduduk' ? 'bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 border-l-4 border-emerald-500 shadow-md' : 'bg-gray-50 text-gray-600 hover:bg-emerald-50'">
-                                <span class="flex items-center gap-2 md:gap-3">
-                                    <i class="fa-solid fa-users text-base md:text-lg" :class="dataType === 'penduduk' ? 'text-emerald-500' : 'text-gray-400'"></i>
-                                    <div>
-                                        <p class="font-semibold text-xs md:text-sm">📊 Statistik Penduduk</p>
-                                        <p class="text-[8px] md:text-[10px] text-gray-400">Laki-laki, Perempuan, Kepala Keluarga</p>
-                                    </div>
-                                </span>
-                                <i x-show="dataType === 'penduduk'" class="fa-solid fa-check-circle text-emerald-500 text-sm md:text-xl animate-bounce"></i>
-                            </button>
-                            <button @click="dataType = 'umur'; updateChart(chartType, dataType); settingOpen = false" class="data-option w-full px-3 md:px-4 py-2 md:py-3 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300 text-left flex items-center justify-between group" :class="dataType === 'umur' ? 'bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 border-l-4 border-emerald-500 shadow-md' : 'bg-gray-50 text-gray-600 hover:bg-emerald-50'">
-                                <span class="flex items-center gap-2 md:gap-3">
-                                    <i class="fa-solid fa-chart-line text-base md:text-lg" :class="dataType === 'umur' ? 'text-emerald-500' : 'text-gray-400'"></i>
-                                    <div>
-                                        <p class="font-semibold text-xs md:text-sm">📈 Kelompok Umur</p>
-                                        <p class="text-[8px] md:text-[10px] text-gray-400">0-14, 15-29, 30-59, 60+ tahun</p>
-                                    </div>
-                                </span>
-                                <i x-show="dataType === 'umur'" class="fa-solid fa-check-circle text-emerald-500 text-sm md:text-xl animate-bounce"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-4 md:px-5 py-3 border-t border-gray-100">
-                    <p class="text-[9px] md:text-[10px] text-gray-400 text-center flex items-center justify-center gap-2 flex-wrap">
-                        <i class="fa-solid fa-sync-alt text-emerald-500 animate-spin-slow"></i> Data diupdate secara realtime
-                        <i class="fa-solid fa-magic text-purple-500"></i> Premium Visualization
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="chart-container bg-gradient-to-br from-white to-gray-50 rounded-2xl p-4 md:p-8 mb-6 shadow-xl border border-gray-100 relative overflow-hidden group transition-all duration-500 hover:shadow-2xl">
-        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-        <div class="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-gradient-to-br from-emerald-400/10 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
-        <div class="absolute bottom-0 left-0 w-48 md:w-64 h-48 md:h-64 bg-gradient-to-tr from-blue-400/5 to-transparent rounded-full blur-2xl"></div>
-        
-        <div id="chartLoading" class="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-10 opacity-0 invisible transition-all duration-300 rounded-2xl">
-            <div class="flex flex-col items-center gap-3">
-                <div class="w-10 h-10 md:w-12 md:h-12 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
-                <p class="text-xs md:text-sm text-emerald-600 font-semibold">Memuat diagram...</p>
-            </div>
-        </div>
-        
-        <canvas id="homeStatistikChart" width="800" height="450" style="max-height: 450px; width: 100%; position: relative; z-index: 1;"></canvas>
-    </div>
-    
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-6">
-        <div class="quick-card bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-2 md:p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-blue-200 shadow-sm group" onclick="quickChange('bar', 'penduduk')">
-            <div class="flex items-center justify-center gap-1 md:gap-2">
-                <i class="fa-solid fa-venus-mars text-blue-500 text-xs md:text-base group-hover:scale-110 transition-transform"></i>
-                <span class="text-[10px] md:text-xs font-semibold text-gray-600">Jenis Kelamin</span>
-            </div>
-            <p class="text-base md:text-lg font-bold text-blue-600">{{ number_format($penduduk_pria + $penduduk_wanita) }}</p>
-            <p class="text-[8px] md:text-[9px] text-gray-400">Total Jiwa</p>
-        </div>
-        <div class="quick-card bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-xl p-2 md:p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-emerald-200 shadow-sm group" onclick="quickChange('pie', 'penduduk')">
-            <div class="flex items-center justify-center gap-1 md:gap-2">
-                <i class="fa-solid fa-chart-pie text-emerald-500 text-xs md:text-base group-hover:scale-110 transition-transform"></i>
-                <span class="text-[10px] md:text-xs font-semibold text-gray-600">Komposisi</span>
-            </div>
-            <p class="text-base md:text-lg font-bold text-emerald-600">{{ $penduduk_pria }} : {{ $penduduk_wanita }}</p>
-            <p class="text-[8px] md:text-[9px] text-gray-400">Pria : Wanita</p>
-        </div>
-        <div class="quick-card bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl p-2 md:p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-purple-200 shadow-sm group" onclick="quickChange('bar', 'umur')">
-            <div class="flex items-center justify-center gap-1 md:gap-2">
-                <i class="fa-solid fa-calendar-week text-purple-500 text-xs md:text-base group-hover:scale-110 transition-transform"></i>
-                <span class="text-[10px] md:text-xs font-semibold text-gray-600">Produktif</span>
-            </div>
-            <p class="text-base md:text-lg font-bold text-purple-600">{{ number_format($kelompok_umur_15_29 + $kelompok_umur_30_59) }}</p>
-            <p class="text-[8px] md:text-[9px] text-gray-400">Usia Produktif</p>
-        </div>
-        <div class="quick-card bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl p-2 md:p-3 text-center hover:scale-105 transition-all duration-300 cursor-pointer border border-amber-200 shadow-sm group" onclick="quickChange('doughnut', 'umur')">
-            <div class="flex items-center justify-center gap-1 md:gap-2">
-                <i class="fa-solid fa-chart-simple text-amber-500 text-xs md:text-base group-hover:scale-110 transition-transform"></i>
-                <span class="text-[10px] md:text-xs font-semibold text-gray-600">Rasio</span>
-            </div>
-            <p class="text-base md:text-lg font-bold text-amber-600">{{ number_format(($kelompok_umur_0_14 / max($kelompok_umur_60, 1)) * 100, 1) }}%</p>
-            <p class="text-[8px] md:text-[9px] text-gray-400">Rasio Anak vs Lansia</p>
-        </div>
-    </div>
-    
-    <div class="text-center text-[10px] md:text-xs text-gray-400 mt-6 flex items-center justify-center gap-2 md:gap-4 flex-wrap">
-        <span class="flex items-center gap-1 px-2 md:px-3 py-1 bg-emerald-50 rounded-full"><i class="fa-solid fa-chart-simple text-emerald-500 text-xs"></i> Klik "Pengaturan Diagram"</span>
-        <span class="flex items-center gap-1 px-2 md:px-3 py-1 bg-blue-50 rounded-full"><i class="fa-solid fa-chart-line text-blue-500 text-xs"></i> Hover untuk detail</span>
-        <span class="flex items-center gap-1 px-2 md:px-3 py-1 bg-purple-50 rounded-full"><i class="fa-solid fa-arrow-pointer text-purple-500 text-xs"></i> Klik card untuk akses cepat</span>
-    </div>
-</section>
-
-{{-- ============================================= --}}
-{{-- 4. LAYANAN PUBLIK (Terbuka untuk semua) --}}
-{{-- ============================================= --}}
-<section id="layanan-publik" class="py-20 px-[5%] bg-gradient-to-br from-emerald-50/30 to-white rounded-[80px] mx-[5%] mb-20">
-    <div class="text-center mb-14">
-        <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">📋 AKSES MUDAH</span>
-        <h2 class="text-5xl md:text-6xl font-serif italic text-emerald-900 mt-5">Layanan Publik</h2>
-        <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mt-6 rounded-full"></div>
-        <p class="text-gray-500 mt-5 max-w-2xl mx-auto">Akses berbagai layanan informasi desa secara mudah dan cepat. Pilih menu di bawah untuk menjelajahi konten desa.</p>
-    </div>
-    
-    <div class="grid md:grid-cols-5 gap-6 max-w-6xl mx-auto">
-        <a href="{{ route('profil-desa') }}" class="service-card group relative bg-white rounded-2xl p-6 text-center shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 cursor-pointer overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-emerald-500 to-emerald-700 opacity-0 group-hover:opacity-10 transition duration-500"></div>
-            <div class="relative z-10">
-                <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition duration-300">
-                    <i class="fa-solid fa-landmark-dome text-white text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold text-emerald-800 mb-1">Profil Desa</h3>
-                <p class="text-xs text-gray-400">Sejarah & Struktur</p>
-                <div class="mt-3 flex items-center justify-center gap-1 text-emerald-500 text-xs font-semibold opacity-0 group-hover:opacity-100 transition">
-                    <span>Selengkapnya</span>
-                    <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-                </div>
-            </div>
-        </a>
-        <a href="{{ route('berita') }}" class="service-card group relative bg-white rounded-2xl p-6 text-center shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 cursor-pointer overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-700 opacity-0 group-hover:opacity-10 transition duration-500"></div>
-            <div class="relative z-10">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition duration-300">
-                    <i class="fa-solid fa-newspaper text-white text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold text-emerald-800 mb-1">Berita</h3>
-                <p class="text-xs text-gray-400">Info & Pengumuman</p>
-                <div class="mt-3 flex items-center justify-center gap-1 text-emerald-500 text-xs font-semibold opacity-0 group-hover:opacity-100 transition">
-                    <span>Selengkapnya</span>
-                    <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-                </div>
-            </div>
-        </a>
-        <a href="{{ route('galeri') }}" class="service-card group relative bg-white rounded-2xl p-6 text-center shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 cursor-pointer overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-700 opacity-0 group-hover:opacity-10 transition duration-500"></div>
-            <div class="relative z-10">
-                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition duration-300">
-                    <i class="fa-solid fa-photo-film text-white text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold text-emerald-800 mb-1">Galeri</h3>
-                <p class="text-xs text-gray-400">Dokumentasi Kegiatan</p>
-                <div class="mt-3 flex items-center justify-center gap-1 text-emerald-500 text-xs font-semibold opacity-0 group-hover:opacity-100 transition">
-                    <span>Selengkapnya</span>
-                    <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-                </div>
-            </div>
-        </a>
-        <a href="{{ route('umkm') }}" class="service-card group relative bg-white rounded-2xl p-6 text-center shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 cursor-pointer overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-amber-500 to-amber-700 opacity-0 group-hover:opacity-10 transition duration-500"></div>
-            <div class="relative z-10">
-                <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition duration-300">
-                    <i class="fa-solid fa-shop text-white text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold text-emerald-800 mb-1">UMKM</h3>
-                <p class="text-xs text-gray-400">Produk Unggulan</p>
-                <div class="mt-3 flex items-center justify-center gap-1 text-emerald-500 text-xs font-semibold opacity-0 group-hover:opacity-100 transition">
-                    <span>Selengkapnya</span>
-                    <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-                </div>
-            </div>
-        </a>
-        <a href="{{ route('kontak') }}" class="service-card group relative bg-white rounded-2xl p-6 text-center shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 cursor-pointer overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-rose-500 to-rose-700 opacity-0 group-hover:opacity-10 transition duration-500"></div>
-            <div class="relative z-10">
-                <div class="w-16 h-16 bg-gradient-to-br from-rose-500 to-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition duration-300">
-                    <i class="fa-solid fa-envelope text-white text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold text-emerald-800 mb-1">Kontak</h3>
-                <p class="text-xs text-gray-400">Hubungi Kami</p>
-                <div class="mt-3 flex items-center justify-center gap-1 text-emerald-500 text-xs font-semibold opacity-0 group-hover:opacity-100 transition">
-                    <span>Selengkapnya</span>
-                    <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-                </div>
-            </div>
-        </a>
-    </div>
-</section>
-
-{{-- ============================================= --}}
-{{-- 5. LAYANAN DIGITAL (TERKUNCI - BUTUH LOGIN) --}}
-{{-- ============================================= --}}
-<section class="py-20 px-[5%] bg-gradient-to-r from-stone-100 to-white rounded-[80px] mx-[5%] mb-20">
-    <div class="text-center mb-14">
-        <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">⚡ Akses Cepat</span>
-        <h2 class="text-5xl md:text-6xl font-serif italic text-emerald-900 mt-5">Layanan Digital Desa</h2>
-        <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mt-6 rounded-full"></div>
-        <p class="text-gray-500 mt-5 max-w-2xl mx-auto">Akses layanan administrasi secara online. <span class="text-emerald-600 font-semibold">Login terlebih dahulu</span> untuk menggunakan layanan berikut.</p>
-    </div>
-    
-    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {{-- Layanan Ajukan Surat (Terkunci) --}}
-        <div class="locked-card group relative bg-white rounded-2xl overflow-hidden shadow-xl cursor-pointer" onclick="window.location='{{ route('login') }}'">
-            <div class="absolute inset-0 bg-gradient-to-br from-emerald-500 to-emerald-600 opacity-0 group-hover:opacity-5 transition duration-500"></div>
-            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-            <div class="relative z-10 p-8">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                            <i class="fa-solid fa-file-signature text-white text-2xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-serif italic text-emerald-800 mb-2">Ajukan Surat</h3>
-                        <p class="text-gray-500 text-sm">Domisili, Usaha, Tidak Mampu, Kelahiran, Kematian, dan 12 jenis lainnya.</p>
-                        <div class="mt-5 flex items-center gap-2 text-emerald-600 text-sm font-semibold group-hover:gap-3 transition-all">
-                            <span>Ajukan Sekarang</span>
-                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition"></i>
-                        </div>
-                    </div>
-                    <div class="text-5xl text-emerald-100 group-hover:text-emerald-200 transition group-hover:scale-110 duration-300">
-                        <i class="fa-solid fa-file-contract"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-br from-black/60 to-emerald-900/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-20 locked-overlay">
-                <div class="bg-white/95 backdrop-blur-md px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 locked-content">
-                    <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center">
-                        <i class="fa-solid fa-lock text-white text-sm"></i>
-                    </div>
-                    <div>
-                        <p class="text-[10px] font-black text-emerald-600 uppercase tracking-wider">Terautentikasi</p>
-                        <p class="text-xs text-gray-500">Login untuk mengakses</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Layanan Aspirasi (Terkunci) --}}
-        <div class="locked-card group relative bg-white rounded-2xl overflow-hidden shadow-xl cursor-pointer" onclick="window.location='{{ route('login') }}'">
-            <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 opacity-0 group-hover:opacity-5 transition duration-500"></div>
-            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-            <div class="relative z-10 p-8">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                            <i class="fa-solid fa-comment-dots text-white text-2xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-serif italic text-emerald-800 mb-2">Aspirasi & Keluhan</h3>
-                        <p class="text-gray-500 text-sm">Sampaikan suara, saran, atau keluhan Anda langsung ke jajaran perangkat desa.</p>
-                        <div class="mt-5 flex items-center gap-2 text-emerald-600 text-sm font-semibold group-hover:gap-3 transition-all">
-                            <span>Sampaikan Aspirasi</span>
-                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition"></i>
-                        </div>
-                    </div>
-                    <div class="text-5xl text-blue-100 group-hover:text-blue-200 transition group-hover:scale-110 duration-300">
-                        <i class="fa-solid fa-message"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-br from-black/60 to-blue-900/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-20 locked-overlay">
-                <div class="bg-white/95 backdrop-blur-md px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 locked-content">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center">
-                        <i class="fa-solid fa-lock text-white text-sm"></i>
-                    </div>
-                    <div>
-                        <p class="text-[10px] font-black text-blue-600 uppercase tracking-wider">Terautentikasi</p>
-                        <p class="text-xs text-gray-500">Login untuk mengirim</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{{-- ============================================= --}}
-{{-- 6. PROFIL DESA PREVIEW --}}
-{{-- ============================================= --}}
-<section class="py-20 px-[5%] bg-gradient-to-br from-emerald-900/5 to-transparent rounded-[80px] mx-[5%] mb-20">
-    <div class="grid lg:grid-cols-2 gap-16 items-center">
-        <div class="relative" data-aos="fade-right">
-            <div class="grid grid-cols-2 gap-5">
-                <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500" class="rounded-3xl h-80 w-full object-cover shadow-xl border-4 border-white">
-                <div class="mt-12">
-                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500" class="rounded-3xl h-64 w-full object-cover shadow-xl border-4 border-white">
-                </div>
-            </div>
-            <div class="absolute -bottom-6 -left-6 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white p-5 rounded-2xl shadow-xl">
-                <p class="text-3xl font-bold">1920</p>
-                <p class="text-xs opacity-90">Tahun Berdiri</p>
-            </div>
-        </div>
-        <div data-aos="fade-left">
-            <span class="text-emerald-500 font-black tracking-[0.4em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">🏛️ Tentang Desa</span>
-            <h2 class="text-5xl md:text-6xl font-serif italic mb-6 leading-tight mt-5 text-emerald-900">Jejak Langkah <br> Tanah Leluhur</h2>
-            <p class="text-gray-600 leading-loose mb-8">Desa Lumban Silintong terletak di pesisir Danau Toba, Kecamatan Balige, Kabupaten Toba, Sumatera Utara. Desa ini memiliki sejarah panjang sebagai pusat kebudayaan Batak Toba yang kaya akan adat istiadat dan kearifan lokal.</p>
-            <div class="flex flex-wrap gap-3 mb-8">
-                <div class="flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl shadow-sm border border-emerald-100">
-                    <i class="fa-solid fa-landmark text-emerald-500 text-lg"></i>
-                    <span class="text-sm font-semibold text-gray-700">Budaya Batak</span>
-                </div>
-                <div class="flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl shadow-sm border border-emerald-100">
-                    <i class="fa-solid fa-cloud-arrow-up text-emerald-500 text-lg"></i>
-                    <span class="text-sm font-semibold text-gray-700">Digitalisasi</span>
-                </div>
-                <div class="flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl shadow-sm border border-emerald-100">
-                    <i class="fa-solid fa-leaf text-emerald-500 text-lg"></i>
-                    <span class="text-sm font-semibold text-gray-700">Ekowisata</span>
-                </div>
-            </div>
-            <a href="{{ route('profil-desa') }}" class="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:gap-3 transition-all duration-300 bg-emerald-50 px-6 py-3 rounded-full">
-                Pelajari Lebih Lanjut <i class="fa-solid fa-arrow-right"></i>
-            </a>
-        </div>
-    </div>
-</section>
-
-{{-- ============================================= --}}
-{{-- 7. BERITA TERKINI & PENGUMUMAN --}}
-{{-- ============================================= --}}
-<section id="berita" class="py-20 px-[5%] bg-gradient-to-br from-stone-100 to-white rounded-[80px] mx-[5%] mb-20">
-    <div class="grid lg:grid-cols-12 gap-12">
-        <div class="lg:col-span-8">
-            <div class="flex justify-between items-end mb-12 flex-wrap gap-4">
-                <div>
-                    <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">📰 Update Terkini</span>
-                    <h2 class="text-4xl md:text-5xl font-serif italic text-emerald-900 mt-4">Warta Utama</h2>
-                </div>
-                <a href="{{ route('berita') }}" class="text-[10px] font-black uppercase text-emerald-600 border-b-2 border-emerald-500 pb-2 hover:pb-1 transition-all">Semua Berita →</a>
-            </div>
-            @if(isset($beritas) && count($beritas) > 0)
-                <div class="grid md:grid-cols-2 gap-8">
-                    @foreach($beritas as $berita)
-                    <div class="news-card group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
-                        <div class="rounded-t-2xl overflow-hidden h-56 relative">
-                            <img src="{{ $berita->foto ? asset('storage/' . $berita->foto) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500' }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider text-emerald-700">{{ $berita->kategori }}</div>
-                        </div>
-                        <div class="p-5">
-                            <h4 class="text-xl font-serif italic text-emerald-800 group-hover:text-emerald-500 transition line-clamp-2">{{ $berita->judul }}</h4>
-                            <p class="text-sm text-gray-500 mt-2 leading-relaxed line-clamp-2">{{ $berita->ringkasan }}</p>
-                            <div class="mt-4 flex items-center gap-4 text-xs text-gray-400">
-                                <span><i class="fa-regular fa-calendar mr-1"></i> {{ $berita->created_at->translatedFormat('d M Y') }}</span>
-                                <span><i class="fa-regular fa-eye mr-1"></i> {{ number_format($berita->dibaca ?? rand(50,500)) }} dibaca</span>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="empty-state">
-                    <i class="fa-solid fa-newspaper text-5xl mb-6 opacity-20"></i>
-                    <h3 class="text-xl italic text-slate-400">Belum Ada Berita Terbaru</h3>
-                </div>
-            @endif
-        </div>
-        <div class="lg:col-span-4">
-            <div class="bg-white rounded-2xl p-6 shadow-md sticky top-24">
-                <h3 class="text-2xl font-serif italic mb-5 text-emerald-800 flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-emerald-500"></i> Pengumuman
-                </h3>
-                @if(isset($pengumumans) && count($pengumumans) > 0)
-                    <div class="space-y-4">
-                        @foreach($pengumumans as $p)
-                        <div class="border-l-4 border-emerald-400 pl-4 py-2 hover:bg-emerald-50/50 rounded-r-lg transition">
-                            <span class="text-[9px] font-black text-emerald-500 tracking-wider">{{ $p->created_at->translatedFormat('d M Y') }}</span>
-                            <h5 class="text-base font-bold text-gray-700 mt-1">{{ $p->judul }}</h5>
-                        </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="text-center py-10">
-                        <p class="italic text-sm text-gray-400">Tidak ada pengumuman aktif.</p>
-                    </div>
-                @endif
-            </div>
-        </div>
-    </div>
-</section>
-
-{{-- ============================================= --}}
-{{-- 8. APARATUR DESA --}}
-{{-- ============================================= --}}
-<section class="py-20 px-[5%] overflow-hidden">
-    <div class="text-center mb-14">
-        <span class="text-emerald-500 font-black tracking-[0.5em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">👥 Pelayan Masyarakat</span>
-        <h2 class="text-5xl md:text-6xl font-serif italic mt-5 text-emerald-900">Struktur Aparatur</h2>
-        <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mt-6 rounded-full"></div>
-    </div>
-    <div class="flex gap-8 overflow-x-auto pb-8 snap-x no-scrollbar justify-center">
-        @if(isset($aparaturs) && count($aparaturs) > 0)
-            @foreach($aparaturs as $a)
-            <div class="snap-center shrink-0 w-72 group">
-                <div class="rounded-2xl overflow-hidden h-[400px] mb-5 grayscale group-hover:grayscale-0 transition duration-500 shadow-xl relative">
-                    <img src="{{ $a->foto ? asset('storage/' . $a->foto) : 'https://randomuser.me/api/portraits/men/1.jpg' }}" class="w-full h-full object-cover">
-                    <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-emerald-900 to-transparent text-white opacity-0 group-hover:opacity-100 transition duration-300">
-                        <p class="text-xs italic opacity-90">"Melayani dengan integritas dan digitalisasi."</p>
-                    </div>
-                </div>
-                <h5 class="text-2xl font-serif italic text-emerald-800 text-center">{{ $a->nama }}</h5>
-                <p class="text-[10px] font-black uppercase text-emerald-500 tracking-wider mt-1 text-center">{{ $a->jabatan }}</p>
-            </div>
-            @endforeach
-        @else
-            @for($i=1; $i<=4; $i++)
-            <div class="snap-center shrink-0 w-72 opacity-50">
-                <div class="rounded-2xl bg-slate-100 h-[400px] mb-5 flex items-center justify-center text-4xl"><i class="fa-solid fa-user-tie text-gray-300"></i></div>
-                <div class="h-5 bg-slate-100 rounded-full w-3/4 mb-2 mx-auto"></div>
-                <div class="h-3 bg-slate-100 rounded-full w-1/2 mx-auto"></div>
-            </div>
-            @endfor
-        @endif
-    </div>
-</section>
-
-{{-- ============================================= --}}
-{{-- 9. UMKM PREVIEW --}}
-{{-- ============================================= --}}
-<section id="umkm" class="py-20 px-[5%] bg-gradient-to-br from-amber-50/50 to-white rounded-[80px] mx-[5%] mb-20">
-    <div class="flex justify-between items-end mb-12 flex-wrap gap-4">
-        <div>
-            <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">🛍️ Belanja Lokal</span>
-            <h2 class="text-4xl md:text-5xl font-serif italic text-emerald-900 mt-4">Pasar Digital <br> Lokal Premium</h2>
-        </div>
-        <a href="{{ route('umkm') }}" class="text-[10px] font-black uppercase text-emerald-600 border-b-2 border-emerald-500 pb-2 hover:pb-1 transition-all">Lihat Katalog →</a>
-    </div>
-    @if(isset($umkms) && count($umkms) > 0)
-        <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-            @foreach($umkms as $u)
-            <div class="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-up">
-                <div class="relative h-72 overflow-hidden">
-                    <img src="{{ $u->logo ? asset('storage/' . $u->logo) : 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=500' }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md px-4 py-2 rounded-xl shadow-md">
-                      <span class="text-lg font-black text-emerald-700">Rp {{ number_format(optional(optional($u->produk)->first())->harga ?? 0, 0, ',', '.') }}</span>
-                    </div>
-                    <div class="absolute top-4 right-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 py-1 rounded-full text-[9px] font-bold shadow-md">⭐ UMKM Unggulan</div>
-                </div>
-                <div class="p-5">
-                    <h4 class="text-xl font-serif italic text-emerald-800">{{ $u->nama_usaha }}</h4>
-                    <p class="text-[9px] font-black uppercase text-emerald-500 tracking-[0.3em] mt-2">{{ ucfirst($u->kategori) }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    @else
-        <div class="empty-state">
-            <i class="fa-solid fa-basket-shopping text-5xl mb-6 opacity-20"></i>
-            <h3 class="text-xl italic text-slate-400 uppercase tracking-widest">Etalase Masih Kosong</h3>
-        </div>
-    @endif
-</section>
-
-{{-- ============================================= --}}
-{{-- 10. GALERI KEGIATAN --}}
-{{-- ============================================= --}}
-<section id="galeri" class="py-20 px-[5%]">
-    <div class="text-center mb-14">
-        <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">📸 Momen Berharga</span>
-        <h2 class="text-5xl md:text-6xl font-serif italic text-emerald-900 mt-5">Dokumentasi Kegiatan</h2>
-        <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mt-6 rounded-full"></div>
-    </div>
-    @if(isset($galeris) && count($galeris) > 0)
-        <div class="grid md:grid-cols-4 gap-5">
-            @foreach($galeris as $g)
-                <div class="gallery-item h-72 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 hover:scale-95">
-                    <img src="{{ $g->gambar_galeri ? asset('storage/' . $g->gambar_galeri) : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300' }}" class="w-full h-full object-cover hover:scale-110 transition duration-500">
-                </div>
-            @endforeach
-        </div>
-        <div class="text-center mt-10">
-            <a href="{{ route('galeri') }}" class="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:gap-3 transition-all duration-300 bg-emerald-50 px-6 py-3 rounded-full">
-                Lihat Semua Galeri <i class="fa-solid fa-arrow-right"></i>
-            </a>
-        </div>
-    @else
-        <div class="empty-state">
-            <p class="italic">Belum ada foto kegiatan desa yang diunggah.</p>
-        </div>
-    @endif
-</section>
-
-{{-- ============================================= --}}
-{{-- 11. ASPIRASI PUBLIK (SEMUA ASPIRASI) --}}
-{{-- ============================================= --}}
-<section class="px-[5%] py-16 mb-20">
-    <div class="text-center mb-12">
-        <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">💬 Aspirasi Warga</span>
-        <h2 class="text-5xl md:text-6xl font-serif italic text-emerald-900 mt-4">Suara Warga</h2>
-        <div class="w-24 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mt-5 rounded-full"></div>
-        <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Aspirasi, saran, dan keluhan warga Desa Lumban Silintong</p>
-    </div>
-
-    <div class="max-w-5xl mx-auto">
-        @if(isset($aspirasiPublik) && $aspirasiPublik->count() > 0)
-            <div class="grid md:grid-cols-2 gap-6">
-                @foreach($aspirasiPublik as $aspirasi)
-                <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden border border-gray-100">
-                    {{-- Header Aspirasi --}}
-                    <div class="bg-gradient-to-r from-blue-50 to-white px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-start justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-md">
-                                    <i class="fa-solid fa-user text-white text-sm"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-gray-800">{{ $aspirasi->user->name ?? 'Warga' }}</p>
-                                    <p class="text-[10px] text-gray-400 flex items-center gap-1">
-                                        <i class="fa-regular fa-calendar"></i> 
-                                        {{ $aspirasi->created_at->translatedFormat('d F Y') }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="px-3 py-1 rounded-full text-[10px] font-semibold
-                                    @if($aspirasi->kategori == 'saran') bg-green-100 text-green-700
-                                    @elseif($aspirasi->kategori == 'keluhan') bg-red-100 text-red-700
-                                    @elseif($aspirasi->kategori == 'masukan') bg-blue-100 text-blue-700
-                                    @else bg-purple-100 text-purple-700 @endif">
-                                    @if($aspirasi->kategori == 'saran') 💡 Saran
-                                    @elseif($aspirasi->kategori == 'keluhan') 😞 Keluhan
-                                    @elseif($aspirasi->kategori == 'masukan') 📝 Masukan
-                                    @else ❓ Pertanyaan @endif
-                                </span>
-                                <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold
-                                    @if($aspirasi->status == 'baru') bg-yellow-100 text-yellow-700
-                                    @elseif($aspirasi->status == 'diproses') bg-blue-100 text-blue-700
-                                    @else bg-green-100 text-green-700 @endif">
-                                    @if($aspirasi->status == 'baru') 🆕 Baru
-                                    @elseif($aspirasi->status == 'diproses') ⚙️ Diproses
-                                    @else ✅ Selesai @endif
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {{-- Body Aspirasi --}}
-                    <div class="px-6 py-4">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">{{ $aspirasi->judul }}</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed line-clamp-3">
-                            {{ $aspirasi->isi_aspirasi }}
-                        </p>
-                    </div>
-                    
-                    {{-- Jawaban Admin (jika ada) --}}
-                    @if($aspirasi->respon_admin && $aspirasi->respon_admin != '')
-                    <div class="mx-6 mb-4 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border-l-4 border-emerald-500 group-hover:shadow-md transition-all duration-300">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-                                <i class="fa-solid fa-headset text-white text-xs"></i>
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="text-xs font-bold text-emerald-700">Admin Desa</span>
-                                    <span class="text-[9px] text-gray-400">{{ $aspirasi->updated_at->translatedFormat('d F Y') }}</span>
-                                </div>
-                                <p class="text-sm text-gray-700 leading-relaxed">
-                                    {{ $aspirasi->respon_admin }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    @else
-                    <div class="mx-6 mb-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border-l-4 border-gray-300">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center flex-shrink-0">
-                                <i class="fa-regular fa-hourglass-half text-white text-xs"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-xs text-gray-500">⏳ Menunggu tanggapan dari admin desa</p>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-                    
-                    {{-- Footer --}}
-                    <div class="px-6 py-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-                        <div class="flex items-center gap-2 text-xs text-gray-400">
-                            <i class="fa-regular fa-heart"></i>
-                            <span>Dukung aspirasi ini</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <a href="{{ route('login') }}" class="text-[10px] text-emerald-600 hover:text-emerald-700 transition flex items-center gap-1">
-                                <i class="fa-regular fa-comment"></i> Sampaikan Aspirasi
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-            
-            <div class="text-center mt-10">
-                <a href="{{ route('login') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm font-semibold">
-                    <i class="fa-regular fa-pen-to-square"></i>
-                    Login untuk Sampaikan Aspirasi
-                </a>
-            </div>
-        @else
-            <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
-                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                    <i class="fa-regular fa-comment-dots text-4xl text-gray-400"></i>
-                </div>
-                <h3 class="text-xl font-serif italic text-gray-400">Belum Ada Aspirasi</h3>
-                <p class="text-gray-400 mt-2">Jadilah yang pertama menyampaikan aspirasi, saran, atau keluhan Anda.</p>
-                <a href="{{ route('login') }}" class="inline-block mt-4 px-6 py-2 bg-emerald-500 text-white rounded-lg text-sm hover:bg-emerald-600 transition">
-                    Login untuk Menyampaikan Aspirasi
-                </a>
-            </div>
-        @endif
-    </div>
-</section>
-
-{{-- ============================================= --}}
-{{-- 12. PETA & FAQ (TIPS & PANDUAN) --}}
-{{-- ============================================= --}}
-<section id="peta" class="py-20 px-[5%] bg-gradient-to-br from-stone-100 to-white rounded-[80px] mx-[5%] mb-20">
-    <div class="grid lg:grid-cols-2 gap-16">
-        <div class="rounded-2xl overflow-hidden shadow-xl h-[450px] border-4 border-white">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15947.668102377317!2d99.0435942!3d2.332309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x302e04306443c683%3A0x868a8600868a86!2sLumban%20Silintong!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-        </div>
-        <div>
-            <span class="text-emerald-500 font-black tracking-[0.3em] text-[10px] uppercase bg-emerald-100 px-4 py-1.5 rounded-full inline-block">📍 Info & Bantuan</span>
-            <h2 class="text-4xl md:text-5xl font-serif italic mb-8 mt-4 text-emerald-900">Pusat Informasi</h2>
-            <div class="space-y-4" x-data="{ activeFaq: null }">
-                @php
-                    $faqs = [
-                        ['q' => 'Bagaimana cara registrasi warga?', 'a' => 'Kunjungi kantor desa dengan membawa KTP dan KK asli untuk proses verifikasi oleh admin portal.'],
-                        ['q' => 'Apakah layanan surat digital berbayar?', 'a' => 'Tidak. Seluruh layanan administrasi melalui portal ini gratis tanpa biaya sepeser pun.'],
-                        ['q' => 'Bagaimana jika lupa password portal?', 'a' => 'Silakan klik tombol "Lupa Password" atau hubungi petugas IT desa di kantor.'],
-                        ['q' => 'Apakah UMKM bisa mendaftar sendiri?', 'a' => 'Ya, pemilik UMKM dapat mendaftar melalui menu "Request Akun UMKM" setelah login sebagai masyarakat.'],
-                    ];
-                @endphp
-                @foreach($faqs as $i => $f)
-                <div class="faq-item bg-white p-5 rounded-xl border border-gray-100 cursor-pointer transition-all hover:border-emerald-200 hover:shadow-md" @click="activeFaq = activeFaq === {{ $i }} ? null : {{ $i }}">
-                    <div class="flex justify-between items-center text-emerald-800 font-semibold">
-                        <span class="flex items-center gap-2"><i class="fa-regular fa-circle-question text-emerald-500"></i> {{ $f['q'] }}</span>
-                        <i class="fa-solid text-emerald-500 transition-transform duration-300" :class="activeFaq === {{ $i }} ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-                    </div>
-                    <div x-show="activeFaq === {{ $i }}" x-collapse class="mt-3 text-sm text-gray-500 leading-relaxed pl-6 border-l-2 border-emerald-200">
-                        {{ $f['a'] }}
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-</section>
-
-{{-- ============================================= --}}
-{{-- 13. CTA BANTUAN PREMIUM --}}
-{{-- ============================================= --}}
-<section class="px-[5%] mb-20">
-    <div class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-800 rounded-3xl p-12 text-center text-white shadow-2xl relative overflow-hidden group">
-        <div class="absolute top-0 right-0 opacity-10 group-hover:scale-110 transition-transform duration-700">
-            <i class="fa-solid fa-headset text-8xl"></i>
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-        <div class="relative z-10">
-            <div class="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-5 animate-bounce">
-                <i class="fa-solid fa-headset text-3xl"></i>
-            </div>
-            <h3 class="text-3xl font-serif italic mb-3">💬 Butuh Bantuan?</h3>
-            <p class="text-emerald-100/80 mb-6 max-w-2xl mx-auto">Jika mengalami kendala dalam menggunakan layanan digital desa, silakan hubungi admin atau datang langsung ke kantor desa.</p>
-            <div class="flex gap-5 justify-center flex-wrap">
-                <a href="{{ route('kontak') }}" class="px-8 py-3.5 bg-white text-emerald-700 rounded-full font-semibold hover:bg-emerald-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 inline-flex items-center gap-2 group">
-                    <i class="fa-regular fa-envelope group-hover:scale-110 transition"></i> Hubungi Kami
-                </a>
-                <a href="#" class="px-8 py-3.5 border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 inline-flex items-center gap-2 group">
-                    <i class="fa-brands fa-whatsapp group-hover:scale-110 transition"></i> WhatsApp
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<style>
-    .empty-state {
-        border: 2px dashed #e2e8f0; border-radius: 40px; padding: 60px 30px;
-        text-align: center; background: #f8fafc;
-    }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    
-    /* Locked card overlay styles */
     .locked-card {
         position: relative;
+        background: white;
+        border-radius: 28px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: var(--transition-bounce);
+        border: 1px solid var(--border);
     }
-    .locked-card .locked-overlay {
+    .locked-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--primary);
+    }
+    .locked-card .card-content {
+        padding: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+    .locked-card .card-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        transition: var(--transition-bounce);
+    }
+    .locked-card:nth-child(1) .card-icon { background: linear-gradient(135deg, #10b981, #059669); }
+    .locked-card:nth-child(2) .card-icon { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .locked-card:hover .card-icon { transform: scale(1.1) rotate(5deg); }
+    .locked-card .card-icon i { font-size: 2rem; color: white; }
+    .locked-card h3 { font-size: 1.5rem; font-weight: 800; color: var(--dark); margin-bottom: 0.5rem; }
+    .locked-card p { color: var(--gray); font-size: 0.85rem; line-height: 1.5; }
+    .locked-card .card-arrow {
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+    .locked-overlay {
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(4px);
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(6px);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1188,250 +420,1863 @@
         transition: all 0.4s ease;
         z-index: 20;
     }
-    .locked-card:hover .locked-overlay {
-        opacity: 1;
-    }
-    .locked-card .locked-content {
+    .locked-card:hover .locked-overlay { opacity: 1; }
+    .locked-content {
+        background: white;
+        backdrop-filter: blur(12px);
+        padding: 1rem 1.8rem;
+        border-radius: 60px;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
         transform: scale(0.9);
         transition: transform 0.3s ease;
+        box-shadow: var(--shadow-lg);
     }
-    .locked-card:hover .locked-content {
-        transform: scale(1);
+    .locked-card:hover .locked-content { transform: scale(1); }
+    .locked-content i { font-size: 1.2rem; color: var(--primary); }
+    .locked-content span { font-weight: 700; font-size: 0.8rem; color: var(--dark); }
+
+    /* ============================================
+       CHART SECTION (DARI STATISTIK.BLADE.PHP)
+    ============================================ */
+    .chart-section {
+        background: var(--card);
+        border-radius: 32px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition-bounce);
+        margin: 2rem 0;
     }
+    .chart-section:hover { box-shadow: var(--shadow-xl); }
+    .chart-header {
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(135deg, rgba(16,185,129,0.02), transparent);
+    }
+    .chart-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+    .chart-title-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(16,185,129,0.2);
+    }
+    .chart-title-icon i { color: white; font-size: 1rem; }
+    .chart-title h2 { font-size: 1.3rem; font-weight: 800; color: var(--dark); }
+    .chart-subtitle { font-size: 0.75rem; color: var(--gray); margin-left: 3.25rem; }
+    .chart-type-group {
+        display: flex;
+        gap: 0.5rem;
+        background: var(--gray-soft);
+        padding: 0.25rem;
+        border-radius: 60px;
+    }
+    .chart-type-btn {
+        padding: 0.5rem 1.2rem;
+        border-radius: 40px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--gray);
+        transition: var(--transition);
+        cursor: pointer;
+        background: transparent;
+        border: none;
+    }
+    .chart-type-btn i { margin-right: 0.4rem; font-size: 0.7rem; }
+    .chart-type-btn:hover { color: var(--primary); }
+    .chart-type-btn.active {
+        background: white;
+        color: var(--primary);
+        box-shadow: var(--shadow-sm);
+    }
+    .category-group {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .category-btn {
+        padding: 0.7rem 1.5rem;
+        border-radius: 60px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        transition: var(--transition-bounce);
+        cursor: pointer;
+        border: 1.5px solid var(--border);
+        background: white;
+        color: var(--gray);
+    }
+    .category-btn i { margin-right: 0.5rem; }
+    .category-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-2px);
+    }
+    .category-btn.active {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        border-color: transparent;
+        color: white;
+        box-shadow: 0 4px 12px rgba(16,185,129,0.25);
+    }
+    .canvas-container {
+        padding: 2rem;
+        background: linear-gradient(135deg, #fafbfc, #ffffff);
+        border-radius: 24px;
+        margin: 0 1rem 1rem 1rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .canvas-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(16,185,129,0.03) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    canvas { max-height: 400px; width: 100%; position: relative; z-index: 1; }
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        padding: 1.5rem 2rem 2rem 2rem;
+        border-top: 1px solid var(--border);
+        background: var(--bg);
+    }
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        border-radius: 20px;
+        transition: var(--transition);
+    }
+    .info-item:hover {
+        background: white;
+        transform: translateY(-2px);
+    }
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .info-content p:first-child {
+        font-size: 0.6rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.2rem;
+    }
+    .info-content p:last-child { font-size: 0.65rem; color: var(--gray); }
+
+    /* ============================================
+       NEWS & GALLERY - ELEGAN & BERANIMASI
+    ============================================ */
+    .news-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.8rem;
+    }
+    .news-card {
+        background: white;
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        transition: var(--transition-bounce);
+        cursor: pointer;
+    }
+    .news-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--primary);
+    }
+    .news-card .news-img { height: 220px; overflow: hidden; }
+    .news-card .news-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+    .news-card:hover .news-img img { transform: scale(1.1); }
+    .news-card .news-content { padding: 1.5rem; }
+    .news-category {
+        display: inline-block;
+        padding: 0.2rem 0.8rem;
+        background: var(--primary-soft);
+        color: var(--primary-dark);
+        border-radius: 40px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+    }
+    .news-title {
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+    .news-card:hover .news-title { color: var(--primary); }
+    .news-date {
+        font-size: 0.7rem;
+        color: var(--gray);
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        margin-top: 0.8rem;
+    }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+    }
+    .gallery-item {
+        position: relative;
+        aspect-ratio: 1;
+        border-radius: 20px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: var(--transition-bounce);
+    }
+    .gallery-item:hover {
+        transform: scale(1.03);
+        box-shadow: var(--shadow-xl);
+    }
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.1); }
+    .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay i { color: white; font-size: 1.5rem; }
+
+    /* ============================================
+       FAQ SECTION - DROPDOWN WORKING DENGAN JAVASCRIPT
+    ============================================ */
+    .faq-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+    .faq-item {
+        background: white;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        transition: var(--transition);
+        cursor: pointer;
+    }
+    .faq-item:hover {
+        border-color: var(--primary);
+        box-shadow: var(--shadow-md);
+    }
+    .faq-question {
+        padding: 1.2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 700;
+        color: var(--dark);
+        cursor: pointer;
+    }
+    .faq-question i {
+        transition: transform 0.3s ease;
+        color: var(--primary);
+    }
+    .faq-item.active .faq-question i {
+        transform: rotate(180deg);
+    }
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0 1.2rem;
+    }
+    .faq-item.active .faq-answer {
+        max-height: 300px;
+        padding: 0 1.2rem 1.2rem 1.2rem;
+    }
+    .faq-answer p {
+        font-size: 0.85rem;
+        color: var(--gray);
+        line-height: 1.6;
+    }
+
+    /* ============================================
+   TUTORIAL SECTION PREMIUM
+   ============================================ */
+   
+.tutorial-section {
+    margin-top: 2rem;
+    background: white;
+    border-radius: 28px;
+    padding: 1.5rem;
+    border: 1px solid #eef2f6;
+    transition: all 0.3s ease;
+}
+
+.tutorial-section:hover {
+    border-color: #10b981;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+/* Header Tutorial */
+.tutorial-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eef2f6;
+    padding-bottom: 0.75rem;
+}
+
+.tutorial-header i {
+    font-size: 1.25rem;
+    color: #10b981;
+}
+
+.tutorial-header h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0;
+    color: #0f172a;
+}
+
+/* Intro Text */
+.tutorial-intro {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+}
+
+/* Special Grid (3 Card untuk Tutorial Khusus) */
+.tutorial-special-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.tutorial-special-card {
+    background: linear-gradient(135deg, #f8fafc, #ffffff);
+    border-radius: 16px;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid #eef2f6;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.tutorial-special-card:hover {
+    transform: translateY(-4px);
+    border-color: #10b981;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.tutorial-special-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(16, 185, 129, 0.08);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.tutorial-special-card:hover .tutorial-special-icon {
+    background: #10b981;
+}
+
+.tutorial-special-card:hover .tutorial-special-icon i {
+    color: white;
+}
+
+.tutorial-special-icon i {
+    font-size: 1.2rem;
+    color: #10b981;
+    transition: all 0.3s ease;
+}
+
+.tutorial-special-title {
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+    color: #0f172a;
+}
+
+.tutorial-special-desc {
+    font-size: 0.65rem;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+/* General Grid (8 Point Tutorial) */
+.tutorial-general-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin: 1.25rem 0;
+}
+
+.tutorial-general-item {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.6rem;
+    border-radius: 14px;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.tutorial-general-item:hover {
+    background: rgba(16, 185, 129, 0.08);
+    transform: translateX(4px);
+}
+
+.tutorial-num {
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.65rem;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.tutorial-general-item:hover .tutorial-num {
+    transform: scale(1.1);
+}
+
+.tutorial-general-text h4 {
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+    color: #0f172a;
+}
+
+.tutorial-general-text p {
+    font-size: 0.6rem;
+    color: #64748b;
+    line-height: 1.3;
+}
+
+/* Footer Tutorial */
+.tutorial-footer {
+    margin-top: 1rem;
+    padding: 0.7rem 1rem;
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    transition: all 0.3s ease;
+}
+
+.tutorial-footer:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16,185,129,0.15);
+}
+
+.tutorial-footer i {
+    color: #10b981;
+    font-size: 0.85rem;
+}
+
+.tutorial-footer span {
+    font-size: 0.7rem;
+    color: #059669;
+    line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .tutorial-special-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .tutorial-general-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .tutorial-section {
+        padding: 1rem;
+    }
+    
+    .tutorial-special-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tutorial-general-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tutorial-header h3 {
+        font-size: 0.85rem;
+    }
+    
+    .tutorial-header i {
+        font-size: 1.1rem;
+    }
+    
+    .tutorial-special-title {
+        font-size: 0.75rem;
+    }
+    
+    .tutorial-special-desc {
+        font-size: 0.6rem;
+    }
+    
+    .tutorial-general-text h4 {
+        font-size: 0.65rem;
+    }
+    
+    .tutorial-general-text p {
+        font-size: 0.55rem;
+    }
+    
+    .tutorial-footer span {
+        font-size: 0.65rem;
+    }
+}
+
+    /* ============================================
+       CTA BANNER & FOOTER
+    ============================================ */
+    .cta-banner {
+        background: linear-gradient(135deg, #064e3b, #0f2b22);
+        border-radius: 32px;
+        padding: 3rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        margin: 2rem 0;
+        transition: var(--transition-bounce);
+    }
+    .cta-banner:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-2xl);
+    }
+    .cta-banner::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 70%);
+        animation: rotateBg 20s linear infinite;
+    }
+    @keyframes rotateBg {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    .btn-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.9rem 2rem;
+        background: white;
+        color: var(--primary-dark);
+        border-radius: 60px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: var(--transition-bounce);
+        margin-top: 1rem;
+    }
+    .btn-cta:hover {
+        transform: translateY(-3px);
+        gap: 1rem;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        background: var(--primary);
+        color: white;
+    }
+    .footer-premium {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        border-radius: 32px;
+        margin-top: 3rem;
+        padding: 2rem 2rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .footer-premium::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(16,185,129,0.05) 0%, transparent 70%);
+        animation: pulseSlow 8s ease-in-out infinite;
+    }
+    @keyframes pulseSlow {
+        0%, 100% { opacity: 0.3; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.1); }
+    }
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+    .footer-brand h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.5rem;
+    }
+    .footer-brand p {
+        color: rgba(255,255,255,0.6);
+        font-size: 0.8rem;
+        max-width: 250px;
+        line-height: 1.5;
+    }
+    .footer-links { display: flex; gap: 3rem; flex-wrap: wrap; }
+    .footer-links-column h4 {
+        color: white;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: 0.05em;
+    }
+    .footer-links-column a {
+        display: block;
+        color: rgba(255,255,255,0.5);
+        text-decoration: none;
+        font-size: 0.75rem;
+        margin-bottom: 0.5rem;
+        transition: var(--transition);
+    }
+    .footer-links-column a:hover {
+        color: var(--primary);
+        transform: translateX(5px);
+    }
+    .footer-social { display: flex; gap: 1rem; }
+    .footer-social a {
+        width: 36px;
+        height: 36px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        transition: var(--transition-bounce);
+    }
+    .footer-social a:hover {
+        background: var(--primary);
+        transform: translateY(-5px) rotate(10deg);
+    }
+    .footer-bottom {
+        text-align: center;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        color: rgba(255,255,255,0.4);
+        font-size: 0.7rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .service-grid { grid-template-columns: repeat(3, 1fr); }
+        .news-grid { grid-template-columns: 1fr; }
+        .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        .faq-grid { grid-template-columns: 1fr; }
+        .digital-grid { grid-template-columns: 1fr; }
+        .tutorial-special-grid { grid-template-columns: 1fr; }
+        .tutorial-general-grid { grid-template-columns: repeat(2, 1fr); }
+        .info-grid { grid-template-columns: repeat(2, 1fr); }
+        .hero-content { padding: 1rem; text-align: center; }
+        .hero-buttons { justify-content: center; }
+        .footer-content { flex-direction: column; text-align: center; }
+        .footer-links { justify-content: center; }
+        .footer-social { justify-content: center; }
+    }
+    @media (max-width: 768px) {
+        .container-premium { padding: 1rem; }
+        .stats-grid { grid-template-columns: 1fr; }
+        .service-grid { grid-template-columns: 1fr; }
+        .gallery-grid { grid-template-columns: 1fr; }
+        .tutorial-general-grid { grid-template-columns: 1fr; }
+        .info-grid { grid-template-columns: 1fr; }
+        .chart-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        .category-group { flex-wrap: wrap; justify-content: center; }
+        .canvas-container { padding: 1rem; margin: 0.5rem; }
+    }
+
+    /* ============================================
+   HERO SECTION PREMIUM (Dari Profil Desa)
+   ============================================ */
+   
+/* Hero Container */
+.hero-profil-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 5rem 1.5rem;
+}
+
+/* Background Ornaments */
+.hero-ornaments {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-ornament-1 {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    width: 24rem;
+    height: 24rem;
+    background: #10b981;
+    border-radius: 50%;
+    filter: blur(120px);
+    animation: floatOrnament 8s ease-in-out infinite;
+}
+
+.hero-ornament-2 {
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    width: 20rem;
+    height: 20rem;
+    background: #c5a358;
+    border-radius: 50%;
+    filter: blur(100px);
+    animation: floatOrnament 10s ease-in-out infinite reverse;
+}
+
+@keyframes floatOrnament {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(20px, -20px) scale(1.05); }
+}
+
+/* Grid Layout */
+.hero-grid {
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Left Column */
+.hero-left {
+    padding: 1rem;
+}
+
+/* Badge Profil */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 60px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    margin-bottom: 2rem;
+}
+
+.hero-badge-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+    75% { 
+        opacity: 0.5; 
+        transform: scale(1.2); 
+    }
+}
+
+.hero-badge-text {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #059669;
+    margin: 0;
+}
+
+/* Title */
+.hero-title {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    line-height: 0.85;
+    margin-bottom: 2rem;
+    letter-spacing: -0.03em;
+    color: #121a17;
+}
+
+.hero-title-italic {
+    font-style: italic;
+    font-weight: 500;
+    color: #121a17;
+}
+
+.hero-title-gradient {
+    background: linear-gradient(135deg, #062c1f 0%, #10b981 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Description */
+.hero-description {
+    max-width: 500px;
+}
+
+.hero-description-text {
+    font-size: 1rem;
+    color: #64748b;
+    font-weight: 400;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+/* Right Column */
+.hero-right {
+    position: relative;
+}
+
+/* Image Container */
+.hero-image-container {
+    position: relative;
+    border-radius: 60px;
+    overflow: hidden;
+    transform: rotate(3deg);
+    transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.hero-image-container:hover {
+    transform: rotate(0deg);
+}
+
+.hero-image {
+    aspect-ratio: 3 / 4;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s ease;
+}
+
+.hero-image-container:hover .hero-image {
+    transform: scale(1.05);
+}
+
+/* Quote Card */
+.hero-quote {
+    position: absolute;
+    bottom: -1.5rem;
+    left: -1.5rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 1.5rem 2rem;
+    border-radius: 32px;
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.hero-quote:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.2);
+}
+
+.hero-quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: #0c110f;
+    margin-bottom: 0.3rem;
+    line-height: 1.2;
+}
+
+.hero-quote-sub {
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #10b981;
+    margin: 0;
+}
+
+/* Button */
+.btn-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.8rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border-radius: 60px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-hero:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    gap: 1rem;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+}
+
+/* Text Reveal Animation */
+.text-reveal {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+/* Glass Card Effect */
+.glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(137, 125, 125, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .hero-profil-section {
+        padding: 4rem 1rem;
+        min-height: auto;
+    }
+    
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .hero-left {
+        text-align: center;
+    }
+    
+    .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .hero-badge {
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .hero-title {
+        text-align: center;
+    }
+    
+    .hero-right {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .hero-quote {
+        bottom: -1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+    }
+    
+    .hero-quote:hover {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-profil-section {
+        padding: 2rem 1rem;
+    }
+    
+    .hero-title {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        margin-bottom: 1rem;
+    }
+    
+    .hero-description-text {
+        font-size: 0.9rem;
+    }
+    
+    .hero-image-container {
+        border-radius: 40px;
+    }
+    
+    .hero-quote {
+        padding: 0.8rem 1.2rem;
+        white-space: normal;
+        text-align: center;
+        width: 90%;
+        left: 5%;
+        transform: translateX(0);
+        bottom: -0.8rem;
+    }
+    
+    .hero-quote-text {
+        font-size: 1rem;
+    }
+    
+    .hero-quote-sub {
+        font-size: 0.5rem;
+    }
+    
+    .hero-quote:hover {
+        transform: translateY(-5px);
+    }
+}
+    
 </style>
 
-{{-- Script untuk Chart.js --}}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="scroll-line"></div>
+<div class="bg-pattern"></div>
+
+<div class="container-premium">
+
+    {{-- ============================================= --}}
+    {{-- 1. HERO SLIDER PREMIUM --}}
+    {{-- ============================================= --}}
+    <section data-aos="fade-up">
+        <div class="hero-slider-container" x-data="{ slide: 0, totalSlides: 6 }" x-init="setInterval(() => slide = (slide + 1) % totalSlides, 5500)">
+            <div class="hero-slider-wrapper" :style="'transform: translateX(-' + (slide * 100) + '%)'">
+                @php
+                    $hero = [
+                        ['t' => 'Peradaban Digital', 'd' => 'Menyatukan teknologi dengan kearifan lokal Batak Toba.', 'img' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb', 'badge' => 'Smart Village'],
+                        ['t' => 'UMKM Go Digital', 'd' => 'Mendorong ekonomi kreatif warga menuju pasar global.', 'img' => 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b', 'badge' => 'Ekonomi Kreatif'],
+                        ['t' => 'Danau Toba Lestari', 'd' => 'Menjaga keindahan alam untuk generasi mendatang.', 'img' => 'https://images.unsplash.com/photo-1533105079780-92b9be482077', 'badge' => 'Ekowisata'],
+                        ['t' => 'Layanan Digital', 'd' => 'Akses administrasi desa kini lebih cepat dan transparan.', 'img' => 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e', 'badge' => 'E-Government'],
+                        ['t' => 'Budaya Batak', 'd' => 'Melestarikan adat istiadat di tengah modernisasi.', 'img' => 'https://images.unsplash.com/photo-1501785888041-af3ef285b470', 'badge' => 'Kearifan Lokal'],
+                        ['t' => 'Desa Cerdas', 'd' => 'Bersama membangun desa digital yang berkelanjutan.', 'img' => 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e', 'badge' => 'Smart Village'],
+                    ];
+                @endphp
+                @foreach($hero as $h)
+                <div class="hero-slide">
+                    <img src="{{ $h['img'] }}?auto=format&fit=crop&q=80&w=2070" alt="{{ $h['t'] }}" loading="lazy">
+                    <div class="hero-content">
+                        <span class="hero-badge">{{ $h['badge'] }}</span>
+                        <h1 class="hero-title">{{ $h['t'] }}</h1>
+                        <p class="hero-subtitle">{{ $h['d'] }}</p>
+                        <div class="hero-buttons">
+                            <a href="#layanan-publik" class="btn-hero-primary">✨ Layanan Publik</a>
+                            <a href="#berita" class="btn-hero-secondary">📖 Pelajari →</a>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            <div class="slider-nav">
+                @foreach($hero as $index => $h)
+                    <div class="slider-dot" :class="slide === {{ $index }} ? 'active' : ''" @click="slide = {{ $index }}"></div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+{{-- 1. HERO SECTION (Dari Profil Desa) --}}
+<section class="hero-profil-section">
+    <div class="hero-ornaments">
+        <div class="hero-ornament-1"></div>
+        <div class="hero-ornament-2"></div>
+    </div>
+
+    <div class="hero-grid">
+        <div class="hero-left">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                <span class="hero-badge-text">Profil</span>
+            </div>
+            
+            <h1 class="hero-title" data-aos="fade-up" data-aos-delay="200">
+                Profil <br>
+                <span class="hero-title-italic">Desa</span> <br>
+                <span class="hero-title-gradient">Lumban Silintong.</span>
+            </h1>
+
+            <div class="hero-description" data-aos="fade-up" data-aos-delay="400">
+                <p class="hero-description-text">
+                    Simfoni harmoni antara kemegahan tebing vulkanik, jernihnya Danau Toba, 
+                    dan luhurnya tradisi Batak yang terjaga dalam modernitas.
+                </p>
+                <a href="{{ route('profil-desa') }}" class="btn-hero">
+                    Pelajari Lebih Lanjut <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="hero-right" data-aos="zoom-out" data-aos-delay="600">
+            <div class="hero-image-container">
+                <img src="{{ asset('images/profil/1.jpeg') }}" alt="Desa Lumban Silintong" class="hero-image">
+            </div>
+            <div class="hero-quote" data-aos="fade-up" data-aos-delay="800">
+                <p class="hero-quote-text">"Mansai Uli"</p>
+                <p class="hero-quote-sub">Keindahan yang natural, budaya yang abadi.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    {{-- ============================================= --}}
+    {{-- 2. STATISTIK DESA (SEPERTI STATISTIK.BLADE.PHP) --}}
+    {{-- ============================================= --}}
+    <section data-aos="fade-up" data-aos-delay="100">
+        <div class="stats-grid">
+            {{-- Card 1 - Total Penduduk --}}
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="stat-value counter">{{ number_format($stat_penduduk) }}</div>
+                <div class="stat-label">Total Penduduk</div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" style="width: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-light));"></div>
+                </div>
+            </div>
+
+            {{-- Card 2 - Laki-laki --}}
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb); box-shadow: 0 8px 20px rgba(59,130,246,0.2);">
+                    <i class="fa-solid fa-mars"></i>
+                </div>
+                <div class="stat-value counter">{{ number_format($penduduk_pria) }}</div>
+                <div class="stat-label">Laki-laki</div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" style="width: {{ ($penduduk_pria / max($stat_penduduk, 1)) * 100 }}%; background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div>
+                </div>
+            </div>
+
+            {{-- Card 3 - Perempuan --}}
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #ec4899, #db2777); box-shadow: 0 8px 20px rgba(236,72,153,0.2);">
+                    <i class="fa-solid fa-venus"></i>
+                </div>
+                <div class="stat-value counter">{{ number_format($penduduk_wanita) }}</div>
+                <div class="stat-label">Perempuan</div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" style="width: {{ ($penduduk_wanita / max($stat_penduduk, 1)) * 100 }}%; background: linear-gradient(90deg, #ec4899, #f472b6);"></div>
+                </div>
+            </div>
+
+            {{-- Card 4 - Kepala Keluarga --}}
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 8px 20px rgba(245,158,11,0.2);">
+                    <i class="fa-solid fa-house-user"></i>
+                </div>
+                <div class="stat-value counter">{{ number_format($stat_kk) }}</div>
+                <div class="stat-label">Kepala Keluarga</div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" style="width: {{ ($stat_kk / max($stat_penduduk, 1)) * 100 }}%; background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================= --}}
+    {{-- 3. STATISTIK PENDUDUK DENGAN DIAGRAM (SEPERTI STATISTIK.BLADE.PHP) --}}
+    {{-- ============================================= --}}
+    <section data-aos="fade-up" data-aos-delay="150">
+        <div class="chart-section">
+            <div class="chart-header">
+                <div class="flex flex-wrap justify-between items-center gap-4">
+                    <div>
+                        <div class="chart-title">
+                            <div class="chart-title-icon"><i class="fa-solid fa-chart-simple"></i></div>
+                            <h2>Visualisasi Data Penduduk</h2>
+                        </div>
+                        <p class="chart-subtitle">Pilih kategori dan jenis diagram untuk melihat detail statistik</p>
+                    </div>
+                    <div class="chart-type-group">
+                        <button onclick="changeChartType('bar', this)" class="chart-type-btn active"><i class="fa-solid fa-chart-column"></i> Bar</button>
+                        <button onclick="changeChartType('line', this)" class="chart-type-btn"><i class="fa-solid fa-chart-line"></i> Line</button>
+                        <button onclick="changeChartType('pie', this)" class="chart-type-btn"><i class="fa-solid fa-chart-pie"></i> Pie</button>
+                        <button onclick="changeChartType('doughnut', this)" class="chart-type-btn"><i class="fa-solid fa-circle-notch"></i> Donut</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 pt-4">
+                <div class="category-group">
+                    <button id="btn-penduduk" onclick="loadChartData('penduduk', this)" class="category-btn active"><i class="fa-solid fa-users"></i> Statistik Penduduk</button>
+                    <button id="btn-umur" onclick="loadChartData('umur', this)" class="category-btn"><i class="fa-solid fa-chart-line"></i> Kelompok Umur</button>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="statistikChart"></canvas>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-icon" style="background: rgba(16,185,129,0.1);"><i class="fa-solid fa-database text-emerald-600"></i></div>
+                    <div class="info-content"><p style="color: var(--primary);">DATA REALTIME</p><p>Diperbarui secara otomatis dari database</p></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon" style="background: rgba(59,130,246,0.1);"><i class="fa-solid fa-chart-simple text-blue-600"></i></div>
+                    <div class="info-content"><p style="color: #3b82f6;">INTERAKTIF</p><p>Hover untuk melihat detail lengkap data</p></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon" style="background: rgba(139,92,246,0.1);"><i class="fa-solid fa-mobile-alt text-purple-600"></i></div>
+                    <div class="info-content"><p style="color: #8b5cf6;">RESPONSIF</p><p>Tampil optimal di semua perangkat</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================= --}}
+    {{-- 4. LAYANAN PUBLIK - BERANIMASI --}}
+    {{-- ============================================= --}}
+    <section id="layanan-publik" data-aos="fade-up" data-aos-delay="200">
+        <div class="text-center mb-4">
+            <div class="section-badge d-inline-flex"><i class="fa-solid fa-star"></i><span>Akses Mudah</span></div>
+            <h2 class="section-title">Layanan <span>Publik</span></h2>
+            <p class="text-gray-500 mt-2">Akses berbagai layanan informasi desa secara mudah dan cepat</p>
+        </div>
+
+        <div class="service-grid">
+            <a href="{{ route('profil-desa') }}" class="service-card"><div class="service-icon"><i class="fa-solid fa-landmark-dome"></i></div><div class="service-title">Profil Desa</div><div class="service-desc">Sejarah & Struktur</div></a>
+            <a href="{{ route('berita') }}" class="service-card"><div class="service-icon"><i class="fa-solid fa-newspaper"></i></div><div class="service-title">Berita</div><div class="service-desc">Info & Pengumuman</div></a>
+            <a href="{{ route('galeri') }}" class="service-card"><div class="service-icon"><i class="fa-solid fa-photo-film"></i></div><div class="service-title">Galeri</div><div class="service-desc">Dokumentasi</div></a>
+            <a href="{{ route('umkm') }}" class="service-card"><div class="service-icon"><i class="fa-solid fa-shop"></i></div><div class="service-title">UMKM</div><div class="service-desc">Produk Unggulan</div></a>
+            <a href="{{ route('kontak') }}" class="service-card"><div class="service-icon"><i class="fa-solid fa-envelope"></i></div><div class="service-title">Kontak</div><div class="service-desc">Hubungi Kami</div></a>
+        </div>
+    </section>
+
+    {{-- ============================================= --}}
+    {{-- 5. LAYANAN DIGITAL (LOCKED OVERLAY) --}}
+    {{-- ============================================= --}}
+    <section data-aos="fade-up" data-aos-delay="250">
+        <div class="text-center mb-4">
+            <div class="section-badge d-inline-flex"><i class="fa-solid fa-bolt"></i><span>Akses Cepat</span></div>
+            <h2 class="section-title">Layanan <span>Digital Desa</span></h2>
+            <p class="text-gray-500 mt-2">Akses layanan administrasi online. <span class="text-primary font-semibold">Login terlebih dahulu</span> untuk menggunakan layanan berikut.</p>
+        </div>
+
+        <div class="digital-grid">
+            <div class="locked-card" onclick="window.location='{{ route('login') }}'">
+                <div class="card-content"><div class="card-icon"><i class="fa-solid fa-file-signature"></i></div><h3>Ajukan Surat</h3><p>Domisili, Usaha, Tidak Mampu, Kelahiran, Kematian, dan 12 jenis lainnya.</p><div class="card-arrow"><span>Ajukan Sekarang</span><i class="fa-solid fa-arrow-right"></i></div></div>
+                <div class="locked-overlay"><div class="locked-content"><i class="fa-solid fa-lock"></i><span>Login untuk mengakses</span></div></div>
+            </div>
+            <div class="locked-card" onclick="window.location='{{ route('login') }}'">
+                <div class="card-content"><div class="card-icon"><i class="fa-solid fa-comment-dots"></i></div><h3>Aspirasi & Keluhan</h3><p>Sampaikan suara, saran, atau keluhan Anda langsung ke jajaran perangkat desa.</p><div class="card-arrow"><span>Sampaikan Aspirasi</span><i class="fa-solid fa-arrow-right"></i></div></div>
+                <div class="locked-overlay"><div class="locked-content"><i class="fa-solid fa-lock"></i><span>Login untuk mengirim</span></div></div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================= --}}
+    {{-- 6. BERITA TERKINI - ELEGAN & BERANIMASI --}}
+    {{-- ============================================= --}}
+    <section id="berita" data-aos="fade-up" data-aos-delay="300">
+        <div class="flex justify-between items-end mb-6 flex-wrap gap-4">
+            <div><div class="section-badge d-inline-flex"><i class="fa-regular fa-newspaper"></i><span>Update Terkini</span></div><h2 class="section-title" style="font-size: 1.8rem;">📰 Berita <span>Utama</span></h2></div>
+            <a href="{{ route('berita') }}" class="text-sm text-primary hover:underline flex items-center gap-1">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        @if(isset($beritas) && count($beritas) > 0)
+        <div class="news-grid">
+            @foreach($beritas->take(4) as $berita)
+            <div class="news-card" onclick="window.location='{{ route('berita.show', $berita->id_berita ?? 1) }}'">
+                <div class="news-img"><img src="{{ $berita->foto ? asset('storage/' . $berita->foto) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500' }}" loading="lazy"></div>
+                <div class="news-content"><span class="news-category">{{ $berita->kategori ?? 'Informasi' }}</span><h4 class="news-title">{{ Str::limit($berita->judul, 50) }}</h4><div class="news-date"><i class="fa-regular fa-calendar"></i> {{ $berita->created_at->translatedFormat('d M Y') }}</div></div>
+            </div>
+            @endforeach
+        </div>
+        @else
+        <div class="text-center py-12 bg-white rounded-3xl border border-gray-100"><i class="fa-regular fa-newspaper text-5xl text-gray-300 mb-4"></i><p class="text-gray-400">Belum ada berita terbaru</p></div>
+        @endif
+    </section>
+
+    {{-- ============================================= --}}
+    {{-- 7. GALERI KEGIATAN - ELEGAN & BERANIMASI --}}
+    {{-- ============================================= --}}
+    <section id="galeri" data-aos="fade-up" data-aos-delay="350">
+        <div class="flex justify-between items-end mb-6 flex-wrap gap-4">
+            <div><div class="section-badge d-inline-flex"><i class="fa-solid fa-camera"></i><span>Momen Berharga</span></div><h2 class="section-title" style="font-size: 1.8rem;">📸 Galeri <span>Kegiatan</span></h2></div>
+            <a href="{{ route('galeri') }}" class="text-sm text-primary hover:underline flex items-center gap-1">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        @if(isset($galeris) && count($galeris) > 0)
+        <div class="gallery-grid">
+            @foreach($galeris->take(8) as $g)
+            <div class="gallery-item" onclick="window.location='{{ route('galeri') }}'">
+                <img src="{{ $g->gambar_galeri ? asset('storage/' . $g->gambar_galeri) : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300' }}" loading="lazy">
+                <div class="gallery-overlay"><i class="fa-regular fa-magnifying-glass-plus"></i></div>
+            </div>
+            @endforeach
+        </div>
+        @else
+        <div class="text-center py-12 bg-white rounded-3xl border border-gray-100"><i class="fa-regular fa-images text-5xl text-gray-300 mb-4"></i><p class="text-gray-400">Belum ada foto kegiatan</p></div>
+        @endif
+    </section>
+
+    {{-- ============================================= --}}
+    {{-- 8. PUSAT INFORMASI (FAQ DROPDOWN WORKING) --}}
+    {{-- ============================================= --}}
+    <section data-aos="fade-up" data-aos-delay="400">
+        <div class="text-center mb-4">
+            <div class="section-badge d-inline-flex"><i class="fa-regular fa-circle-question"></i><span>Info & Bantuan</span></div>
+            <h2 class="section-title">Pusat <span>Informasi</span></h2>
+            <p class="text-gray-500 mt-2">Pertanyaan yang sering diajukan seputar layanan desa</p>
+        </div>
+
+        <div class="faq-grid" id="faqContainer">
+            @php
+                $faqs = [
+                    ['q' => '📝 Bagaimana cara mengajukan surat keterangan?', 'a' => 'Login ke akun Anda, lalu pilih menu "Ajukan Surat" di Layanan Digital. Isi formulir dengan data yang benar, upload dokumen pendukung, lalu kirim. Admin akan memproses dalam 1-3 hari kerja. Surat selesai dapat diunduh di halaman Riwayat Pengajuan.'],
+                    ['q' => '💬 Bagaimana cara menyampaikan aspirasi?', 'a' => 'Login ke akun Anda, kemudian pilih menu "Aspirasi & Keluhan". Tulis judul dan isi aspirasi, pilih kategori (Saran, Keluhan, Masukan, atau Pertanyaan), lalu kirim. Aspirasi akan ditanggapi oleh admin desa maksimal 3 hari kerja.'],
+                    ['q' => '🏪 Bagaimana cara mendaftarkan UMKM?', 'a' => 'Login ke akun Anda, lalu kunjungi halaman UMKM. Klik tombol "Daftarkan Usaha", isi data lengkap usaha Anda (nama usaha, kategori, deskripsi, logo, dll). Admin akan memverifikasi dalam 2x24 jam. Setelah disetujui, UMKM Anda akan tampil di katalog.'],
+                    ['q' => '🆔 Lupa password, bagaimana cara resetnya?', 'a' => 'Klik "Lupa Password" di halaman login, masukkan alamat email yang terdaftar. Kami akan mengirimkan link reset password ke email Anda. Jika tidak menerima, periksa folder Spam atau hubungi admin desa.'],
+                    ['q' => '⏱️ Berapa lama proses pembuatan surat?', 'a' => 'Proses verifikasi dan penerbitan surat membutuhkan waktu 1-3 hari kerja setelah pengajuan masuk. Anda dapat memantau status pengajuan di menu "Riwayat Pengajuan Surat".'],
+                    ['q' => '📱 Apakah bisa mengakses portal dari HP?', 'a' => 'Ya, portal ini responsif dan dapat diakses dengan nyaman dari smartphone, tablet, maupun komputer desktop. Tampilan akan menyesuaikan dengan ukuran layar perangkat Anda.'],
+                ];
+            @endphp
+            @foreach($faqs as $i => $f)
+            <div class="faq-item" data-faq-index="{{ $i }}">
+                <div class="faq-question">
+                    <span>{{ $f['q'] }}</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>{{ $f['a'] }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </section>
+
+   {{-- TUTORIAL SECTION --}}
+<div class="tutorial-section" data-aos="fade-up" data-aos-delay="450">
+    <div class="tutorial-header">
+        <i class="fa-regular fa-circle-question"></i>
+        <h3>📖 Tutorial Layanan Digital Desa</h3>
+    </div>
+    
+    <p class="tutorial-intro">
+        Panduan lengkap menggunakan layanan digital Desa Lumban Silintong:
+    </p>
+    
+    <!-- 3 Tutorial Khusus -->
+    <div class="tutorial-special-grid">
+        <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
+            <div class="tutorial-special-icon"><i class="fa-solid fa-file-pen"></i></div>
+            <div class="tutorial-special-title">📋 Mengajukan Surat</div>
+            <div class="tutorial-special-desc">Login → Pilih "Ajukan Surat" → Isi data → Upload berkas → Kirim. Surat akan diproses 1-3 hari kerja.</div>
+        </div>
+        <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
+            <div class="tutorial-special-icon"><i class="fa-regular fa-comment-dots"></i></div>
+            <div class="tutorial-special-title">💬 Mengirim Aspirasi</div>
+            <div class="tutorial-special-desc">Login → Pilih "Aspirasi & Keluhan" → Tulis aspirasi → Pilih kategori → Kirim. Ditanggapi max 3 hari.</div>
+        </div>
+        <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
+            <div class="tutorial-special-icon"><i class="fa-solid fa-store"></i></div>
+            <div class="tutorial-special-title">🏪 Request Akun UMKM</div>
+            <div class="tutorial-special-desc">Login → Buka halaman UMKM → Klik "Daftarkan Usaha" → Isi data usaha → Tunggu verifikasi admin (2x24 jam).</div>
+        </div>
+    </div>
+
+    <!-- 8 Point General Tutorial -->
+    <div class="tutorial-general-grid">
+        <div class="tutorial-general-item">
+            <div class="tutorial-num">1</div>
+            <div class="tutorial-general-text">
+                <h4>🏠 Navigasi Utama</h4>
+                <p>Gunakan menu navbar untuk akses semua halaman.</p>
+            </div>
+        </div>
+        <div class="tutorial-general-item">
+            <div class="tutorial-num">2</div>
+            <div class="tutorial-general-text">
+                <h4>📊 Visualisasi Data</h4>
+                <p>Klik Bar/Line/Pie untuk ubah tampilan grafik.</p>
+            </div>
+        </div>
+        <div class="tutorial-general-item">
+            <div class="tutorial-num">3</div>
+            <div class="tutorial-general-text">
+                <h4>🔐 Login Terlebih Dahulu</h4>
+                <p>Untuk akses layanan surat & aspirasi.</p>
+            </div>
+        </div>
+        <div class="tutorial-general-item">
+            <div class="tutorial-num">4</div>
+            <div class="tutorial-general-text">
+                <h4>🖱️ Hover Interaktif</h4>
+                <p>Arahkan kursor ke card untuk efek animasi.</p>
+            </div>
+        </div>
+        <div class="tutorial-general-item">
+            <div class="tutorial-num">5</div>
+            <div class="tutorial-general-text">
+                <h4>📱 Responsif</h4>
+                <p>Akses dari HP, tablet, atau komputer.</p>
+            </div>
+        </div>
+        <div class="tutorial-general-item">
+            <div class="tutorial-num">6</div>
+            <div class="tutorial-general-text">
+                <h4>⏱️ Waktu Proses</h4>
+                <p>Surat: 1-3 hari, Aspirasi: max 3 hari, UMKM: 2x24 jam.</p>
+            </div>
+        </div>
+        <div class="tutorial-general-item">
+            <div class="tutorial-num">7</div>
+            <div class="tutorial-general-text">
+                <h4>📎 Lampiran Dokumen</h4>
+                <p>Upload file pendukung untuk mempercepat proses.</p>
+            </div>
+        </div>
+        <div class="tutorial-general-item">
+            <div class="tutorial-num">8</div>
+            <div class="tutorial-general-text">
+                <h4>💡 Tips Penting</h4>
+                <p>Pastikan data yang diisi sesuai dokumen asli.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tutorial-footer">
+        <i class="fa-regular fa-lightbulb"></i>
+        <span>💡 <strong>Tips Penting:</strong> Pastikan Anda sudah login terlebih dahulu sebelum menggunakan layanan pengajuan surat, aspirasi, atau pendaftaran UMKM. Data yang diisi harus sesuai dengan dokumen asli untuk menghindari penolakan.</span>
+    </div>
+</div>
+
+    {{-- ============================================= --}}
+    {{-- 10. CTA BANTUAN & FOOTER --}}
+    {{-- ============================================= --}}
+    <section data-aos="fade-up" data-aos-delay="500">
+        <div class="cta-banner"><div class="relative z-10"><div class="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce"><i class="fa-solid fa-headset text-3xl text-white"></i></div><h3 class="text-2xl font-bold text-white mb-2">💬 Butuh Bantuan?</h3><p class="text-emerald-100/80 mb-5">Jika mengalami kendala, silakan hubungi admin atau datang ke kantor desa.</p><a href="{{ route('kontak') }}" class="btn-cta">Hubungi Kami <i class="fa-solid fa-arrow-right"></i></a></div></div>
+    </section>
+
+    
+</div>
+
 <script>
-    // Data untuk diagram dari server
-    const statistikData = {
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        const scrollLine = document.querySelector(".scroll-line");
+        if (scrollLine) scrollLine.style.width = scrolled + "%";
+    });
+
+    // AOS Init
+    AOS.init({ duration: 600, once: true, offset: 50 });
+
+    // Counter Animation
+    document.querySelectorAll('.counter').forEach(counter => {
+        const value = parseInt(counter.innerText.replace(/\./g, ''));
+        let current = 0;
+        const increment = Math.ceil(value / 60);
+        const update = () => {
+            current += increment;
+            if (current < value) {
+                counter.innerText = current.toLocaleString();
+                requestAnimationFrame(update);
+            } else {
+                counter.innerText = value.toLocaleString();
+            }
+        };
+        update();
+    });
+
+    // ============================================
+    // FAQ DROPDOWN - WORKING WITH PURE JAVASCRIPT
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const questionDiv = item.querySelector('.faq-question');
+            
+            questionDiv.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // Close other open FAQs
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current FAQ
+                item.classList.toggle('active');
+            });
+        });
+        
+        console.log('FAQ dropdown initialized with', faqItems.length, 'items');
+    });
+
+    // ============================================
+    // CHART DATA & FUNCTIONS (DARI STATISTIK.BLADE.PHP)
+    // ============================================
+    Chart.defaults.font.family = "'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif";
+    Chart.defaults.font.size = 11;
+    Chart.defaults.color = '#64748b';
+
+    const chartData = {
         penduduk: {
-            labels: ['👨 Laki-laki', '👩 Perempuan', '🏠 Kepala Keluarga'],
+            labels: ['Laki-laki', 'Perempuan', 'Kepala Keluarga'],
             values: [{{ $penduduk_pria ?? 0 }}, {{ $penduduk_wanita ?? 0 }}, {{ str_replace('.', '', $stat_kk ?? '0') }}],
             colors: ['rgba(59, 130, 246, 0.85)', 'rgba(236, 72, 153, 0.85)', 'rgba(245, 158, 11, 0.85)'],
             borderColors: ['rgb(59, 130, 246)', 'rgb(236, 72, 153)', 'rgb(245, 158, 11)'],
             hoverColors: ['rgba(59, 130, 246, 1)', 'rgba(236, 72, 153, 1)', 'rgba(245, 158, 11, 1)'],
-            title: '📊 Statistik Penduduk',
-            unit: 'Jiwa'
+            title: 'Statistik Penduduk'
         },
         umur: {
-            labels: ['👶 0-14 tahun', '🧑 15-29 tahun', '👨 30-59 tahun', '👴 60+ tahun'],
+            labels: ['0-14 tahun', '15-29 tahun', '30-59 tahun', '60+ tahun'],
             values: [{{ $kelompok_umur_0_14 ?? 0 }}, {{ $kelompok_umur_15_29 ?? 0 }}, {{ $kelompok_umur_30_59 ?? 0 }}, {{ $kelompok_umur_60 ?? 0 }}],
             colors: ['rgba(16, 185, 129, 0.85)', 'rgba(59, 130, 246, 0.85)', 'rgba(245, 158, 11, 0.85)', 'rgba(139, 92, 246, 0.85)'],
             borderColors: ['rgb(16, 185, 129)', 'rgb(59, 130, 246)', 'rgb(245, 158, 11)', 'rgb(139, 92, 246)'],
             hoverColors: ['rgba(16, 185, 129, 1)', 'rgba(59, 130, 246, 1)', 'rgba(245, 158, 11, 1)', 'rgba(139, 92, 246, 1)'],
-            title: '📈 Kelompok Umur Penduduk',
-            unit: 'Jiwa'
+            title: 'Kelompok Umur Penduduk'
         }
     };
 
-    let homeChart = null;
+    let statistikChart = null;
     let currentChartType = 'bar';
-    let currentDataType = 'penduduk';
+    let currentKategori = 'penduduk';
 
-    function formatNumber(value) {
-        if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
-        if (value >= 1000) return (value / 1000).toFixed(1) + 'K';
-        return value.toString();
-    }
-
-    function showLoading() {
-        const loading = document.getElementById('chartLoading');
-        if (loading) {
-            loading.classList.remove('opacity-0', 'invisible');
-            loading.classList.add('opacity-100', 'visible');
+    function loadChartData(kategori, btnElement = null) {
+        currentKategori = kategori;
+        const data = chartData[kategori];
+        
+        if (!data || !data.labels || !data.values) {
+            console.error("Data tidak ditemukan untuk: " + kategori);
+            return;
         }
-    }
-
-    function hideLoading() {
-        const loading = document.getElementById('chartLoading');
-        if (loading) {
-            loading.classList.add('opacity-0', 'invisible');
-            loading.classList.remove('opacity-100', 'visible');
-        }
-    }
-
-    function updateChart(chartType, dataType) {
-        showLoading();
+        
+        const canvas = document.getElementById('statistikChart');
+        canvas.style.opacity = '0.5';
         
         setTimeout(() => {
-            currentChartType = chartType;
-            currentDataType = dataType;
+            if (statistikChart) statistikChart.destroy();
             
-            const data = statistikData[dataType];
-            if (!data) {
-                hideLoading();
-                return;
-            }
+            const ctx = canvas.getContext('2d');
+            const isPieType = ['pie', 'doughnut'].includes(currentChartType);
             
-            const ctx = document.getElementById('homeStatistikChart').getContext('2d');
+            let gradientFill = ctx.createLinearGradient(0, 0, 0, 400);
+            gradientFill.addColorStop(0, 'rgba(16, 185, 129, 0.3)');
+            gradientFill.addColorStop(0.5, 'rgba(16, 185, 129, 0.1)');
+            gradientFill.addColorStop(1, 'rgba(16, 185, 129, 0.02)');
             
-            if (homeChart) {
-                homeChart.destroy();
-            }
-            
-            const isPieType = ['pie', 'doughnut'].includes(chartType);
-            
-            const baseOptions = {
+            const commonOptions = {
                 responsive: true,
                 maintainAspectRatio: true,
-                animation: {
-                    duration: 1200,
-                    easing: 'easeInOutQuart',
-                    animateRotate: true,
-                    animateScale: true
-                },
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
-                },
+                interaction: { mode: 'index', intersect: false },
                 plugins: {
+                    legend: {
+                        position: isPieType ? 'bottom' : 'top',
+                        labels: { padding: 15, usePointStyle: true, pointStyle: 'circle', font: { size: 11, weight: '600' }, boxWidth: 8, boxHeight: 8 }
+                    },
                     tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                        titleColor: '#f3f4f6',
-                        bodyColor: '#d1d5db',
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#cbd5e1',
                         borderColor: '#10b981',
-                        borderWidth: 2,
-                        cornerRadius: 12,
+                        borderWidth: 1,
                         padding: 12,
-                        displayColors: true,
+                        cornerRadius: 12,
+                        titleFont: { size: 12, weight: 'bold' },
+                        bodyFont: { size: 11 },
                         callbacks: {
                             label: function(context) {
                                 let label = context.dataset.label || '';
                                 let value = context.raw;
-                                let percentage = '';
-                                if (isPieType && data.values.reduce((a, b) => a + b, 0) > 0) {
-                                    percentage = ` (${((value / data.values.reduce((a, b) => a + b, 0)) * 100).toFixed(1)}%)`;
-                                }
-                                return `${label}: ${value.toLocaleString()} ${data.unit}${percentage}`;
+                                let total = 0;
+                                if (isPieType && data.values) total = data.values.reduce((a, b) => a + b, 0);
+                                let percentage = total > 0 ? ` (${((value / total) * 100).toFixed(1)}%)` : '';
+                                return `${label}: ${value.toLocaleString()} data${percentage}`;
                             }
-                        }
-                    },
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            usePointStyle: true,
-                            boxWidth: 12,
-                            boxHeight: 12,
-                            padding: 15,
-                            font: { size: 11, weight: 'bold', family: "'Inter', sans-serif" },
-                            color: '#374151'
-                        },
-                        onClick: function(e, legendItem, legend) {
-                            const index = legendItem.index;
-                            const ci = legend.chart;
-                            const meta = ci.getDatasetMeta(0);
-                            meta.data[index].hidden = !meta.data[index].hidden;
-                            ci.update();
                         }
                     }
                 },
-                onHover: function(event, activeElements) {
-                    const canvas = document.getElementById('homeStatistikChart');
-                    canvas.style.cursor = activeElements.length ? 'pointer' : 'default';
-                }
+                onHover: function(event, activeElements) { canvas.style.cursor = activeElements.length ? 'pointer' : 'default'; }
             };
             
             if (!isPieType) {
-                baseOptions.scales = {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)',
-                            drawBorder: false,
-                            lineWidth: 1,
-                            drawTicks: false
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                return formatNumber(value);
-                            },
-                            font: { size: 11, family: "'Inter', sans-serif" },
-                            color: '#6b7280'
-                        },
-                        title: {
-                            display: true,
-                            text: `📊 Jumlah (${data.unit})`,
-                            font: { size: 11, weight: 'bold', family: "'Inter', sans-serif" },
-                            color: '#6b7280'
-                        }
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: { 
-                            font: { size: 12, weight: 'bold', family: "'Inter', sans-serif" },
-                            color: '#374151'
-                        }
-                    }
-                };
-            } else {
-                baseOptions.plugins.tooltip.callbacks.label = function(context) {
-                    const total = data.values.reduce((a, b) => a + b, 0);
-                    const percentage = ((context.raw / total) * 100).toFixed(1);
-                    return `${context.label}: ${context.raw.toLocaleString()} ${data.unit} (${percentage}%)`;
+                commonOptions.scales = {
+                    y: { beginAtZero: true, grid: { color: '#e2e8f0', drawBorder: false, lineWidth: 1 }, ticks: { padding: 8, callback: (v) => v.toLocaleString(), font: { size: 10 } }, title: { display: true, text: '📊 Jumlah Data', font: { size: 10, weight: '600' }, color: '#64748b' } },
+                    x: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' }, color: '#334155' } }
                 };
             }
             
             if (isPieType) {
-                homeChart = new Chart(ctx, {
-                    type: chartType,
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            data: data.values,
-                            backgroundColor: data.colors,
-                            borderColor: '#fff',
-                            borderWidth: 3,
-                            hoverOffset: 20,
-                            cutout: chartType === 'doughnut' ? '65%' : 0,
-                            hoverBackgroundColor: data.hoverColors
-                        }]
-                    },
-                    options: baseOptions
+                statistikChart = new Chart(ctx, {
+                    type: currentChartType,
+                    data: { labels: data.labels, datasets: [{ data: data.values, backgroundColor: data.colors, borderWidth: 3, borderColor: '#ffffff', hoverOffset: 15, cutout: currentChartType === 'doughnut' ? '65%' : 0, borderRadius: 10 }] },
+                    options: { ...commonOptions, layout: { padding: 20 } }
                 });
             } else {
-                homeChart = new Chart(ctx, {
-                    type: chartType,
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: data.title,
-                            data: data.values,
-                            backgroundColor: chartType === 'line' ? 'rgba(16, 185, 129, 0.1)' : data.colors,
-                            borderColor: chartType === 'line' ? '#10b981' : data.borderColors,
-                            borderWidth: chartType === 'line' ? 3 : 1,
-                            borderRadius: chartType === 'bar' ? 10 : 0,
-                            tension: chartType === 'line' ? 0.4 : 0,
-                            fill: chartType === 'line',
-                            pointBackgroundColor: '#10b981',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 2,
-                            pointRadius: chartType === 'line' ? 6 : 0,
-                            pointHoverRadius: chartType === 'line' ? 10 : 0,
-                            pointHoverBackgroundColor: '#059669',
-                            hoverBackgroundColor: chartType === 'bar' ? data.hoverColors : null,
-                            hoverBorderWidth: chartType === 'bar' ? 2 : 0,
-                            hoverBorderColor: chartType === 'bar' ? '#fff' : null,
-                            maxBarThickness: 80
-                        }]
-                    },
-                    options: baseOptions
+                statistikChart = new Chart(ctx, {
+                    type: currentChartType,
+                    data: { labels: data.labels, datasets: [{ label: data.title || kategori.toUpperCase(), data: data.values, backgroundColor: currentChartType === 'line' ? gradientFill : data.colors, borderColor: currentChartType === 'line' ? '#10b981' : data.borderColors || data.colors, borderWidth: currentChartType === 'line' ? 3 : 1, borderRadius: currentChartType === 'bar' ? 8 : 0, borderSkipped: false, fill: currentChartType === 'line', tension: 0.4, pointBackgroundColor: '#10b981', pointBorderColor: '#ffffff', pointBorderWidth: 2, pointRadius: currentChartType === 'line' ? 5 : 0, pointHoverRadius: 8, pointHoverBackgroundColor: '#059669', hoverBackgroundColor: currentChartType === 'bar' ? data.hoverColors || data.colors : null, maxBarThickness: 70, barPercentage: 0.7, categoryPercentage: 0.8 }] },
+                    options: commonOptions
                 });
             }
             
-            hideLoading();
-        }, 300);
+            canvas.style.opacity = '1';
+        }, 200);
+        
+        if (btnElement) {
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
     }
-    
-    function quickChange(chartType, dataType) {
-        updateChart(chartType, dataType);
+
+    function changeChartType(type, btnElement) {
+        currentChartType = type;
+        document.querySelectorAll('.chart-type-btn').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+        loadChartData(currentKategori);
     }
-    
+
+    // Load default chart
     document.addEventListener('DOMContentLoaded', function() {
-        updateChart('bar', 'penduduk');
+        const defaultBtn = document.getElementById('btn-penduduk');
+        if (defaultBtn) loadChartData('penduduk', defaultBtn);
+
+        // ============================================
+// HERO SECTION INTERACTIONS
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // 1. AOS Initialization (sudah ada di kode Anda)
+    AOS.init({ 
+        duration: 800, 
+        once: true, 
+        easing: 'ease-out-expo' 
     });
     
-    window.updateChart = updateChart;
-    window.quickChange = quickChange;
+    // 2. Scroll Progress Bar
+    window.addEventListener('scroll', function() {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        const scrollLine = document.querySelector('.scroll-line');
+        if (scrollLine) {
+            scrollLine.style.width = scrolled + '%';
+        }
+    });
+    
+    // 3. Parallax Effect untuk Gambar
+    const parallaxImages = document.querySelectorAll('.hero-image');
+    if (parallaxImages.length > 0) {
+        window.addEventListener('scroll', function() {
+            parallaxImages.forEach(img => {
+                const speed = 0.1;
+                const rect = img.parentElement.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const shift = (window.innerHeight - rect.top) * speed;
+                    img.style.transform = `translateY(${shift - 50}px) scale(1.05)`;
+                }
+            });
+        });
+    }
+    
+    // 4. Interactive Tutorial Items (jika ada di halaman)
+    const tutorialItems = document.querySelectorAll('.tutorial-item');
+    tutorialItems.forEach(item => {
+        item.addEventListener('click', function() {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+            
+            // Optional: Show toast or scroll to section
+            const title = this.querySelector('.tutorial-text h4')?.innerText || '';
+            if (title) {
+                console.log(`Tutorial clicked: ${title}`);
+            }
+        });
+    });
+    
+    // 5. Smooth Scroll untuk Anchor Links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId !== '#' && targetId !== '') {
+                const target = document.querySelector(targetId);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
+    
+    // 6. Image Container Hover Effect Enhancement
+    const imageContainers = document.querySelectorAll('.hero-image-container');
+    imageContainers.forEach(container => {
+        container.addEventListener('mouseenter', function() {
+            this.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1)';
+        });
+    });
+    
+    // 7. Quote Card Animation on Scroll
+    const quoteCard = document.querySelector('.hero-quote');
+    if (quoteCard) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        quoteCard.style.opacity = '0';
+        quoteCard.style.transform = 'translateY(20px)';
+        quoteCard.style.transition = 'all 0.6s ease';
+        observer.observe(quoteCard);
+    }
+    
+    // 8. Badge Animation Enhancement
+    const badgeDot = document.querySelector('.hero-badge-dot');
+    if (badgeDot) {
+        setInterval(() => {
+            badgeDot.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                badgeDot.style.transform = 'scale(1)';
+            }, 300);
+        }, 1500);
+    }
+    
+    // 9. GSAP Animations (Optional - jika GSAP tersedia)
+    if (typeof gsap !== 'undefined') {
+        // Hero Title Animation
+        gsap.from('.hero-title', {
+            scrollTrigger: {
+                trigger: '.hero-left',
+                start: 'top 80%',
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power3.out'
+        });
+        
+        // Hero Description Animation
+        gsap.from('.hero-description', {
+            scrollTrigger: {
+                trigger: '.hero-left',
+                start: 'top 80%',
+            },
+            y: 30,
+            opacity: 0,
+            duration: 0.6,
+            delay: 0.2,
+            ease: 'power3.out'
+        });
+        
+        // Hero Badge Animation
+        gsap.from('.hero-badge', {
+            scrollTrigger: {
+                trigger: '.hero-left',
+                start: 'top 85%',
+            },
+            y: -20,
+            opacity: 0,
+            duration: 0.5,
+            ease: 'back.out(0.5)'
+        });
+        
+        // Hero Image Animation
+        gsap.from('.hero-image-container', {
+            scrollTrigger: {
+                trigger: '.hero-right',
+                start: 'top 85%',
+            },
+            scale: 0.9,
+            opacity: 0,
+            duration: 0.7,
+            ease: 'back.out(0.5)'
+        });
+        
+        // Quote Card Animation
+        gsap.from('.hero-quote', {
+            scrollTrigger: {
+                trigger: '.hero-right',
+                start: 'top 85%',
+            },
+            y: 40,
+            opacity: 0,
+            duration: 0.6,
+            delay: 0.3,
+            ease: 'bounce.out'
+        });
+    }
+    
+    console.log('Hero Section initialized');
+});
+    });
 </script>
 @endsection

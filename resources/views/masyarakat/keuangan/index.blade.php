@@ -441,6 +441,29 @@
             </div>
             <div>
                 <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                    <i class="fa-solid fa-calendar-day mr-1"></i> Dari Tanggal
+                </label>
+                <input type="date" name="dari_tanggal" value="{{ request('dari_tanggal') }}" class="px-5 py-3 rounded-xl border border-gray-200 bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                    <i class="fa-solid fa-calendar-day mr-1"></i> Sampai Tanggal
+                </label>
+                <input type="date" name="sampai_tanggal" value="{{ request('sampai_tanggal') }}" class="px-5 py-3 rounded-xl border border-gray-200 bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                    <i class="fa-solid fa-folder mr-1"></i> Kategori
+                </label>
+                <select name="kategori" class="px-5 py-3 rounded-xl border border-gray-200 bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition outline-none">
+                    <option value="">Semua Kategori</option>
+                    @foreach($kategoris as $kategoriItem)
+                        <option value="{{ $kategoriItem->id_kategori }}" {{ request('kategori') == $kategoriItem->id_kategori ? 'selected' : '' }}>{{ $kategoriItem->nama_kategori }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                     <i class="fa-solid fa-tag mr-1"></i> Jenis
                 </label>
                 <select name="jenis" class="px-5 py-3 rounded-xl border border-gray-200 bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition outline-none">
@@ -459,6 +482,24 @@
             </div>
         </form>
     </div>
+
+    @if(request('dari_tanggal') || request('sampai_tanggal') || request('bulan') || request('tahun') || request('jenis') || request('kategori'))
+    <div class="filter-summary animate__animated animate__fadeInUp" style="animation-delay: 0.1s; display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; justify-content: center;">
+        <span class="px-4 py-2 rounded-full bg-white border border-gray-200 text-sm font-semibold text-gray-600">Filter Aktif:</span>
+        @if(request('dari_tanggal'))<span class="px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-sm text-emerald-700">Dari: {{ request('dari_tanggal') }}</span>@endif
+        @if(request('sampai_tanggal'))<span class="px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-sm text-emerald-700">Sampai: {{ request('sampai_tanggal') }}</span>@endif
+        @if(request('bulan') && request('bulan') != 'semua')<span class="px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-sm text-emerald-700">Bulan: {{ date('F', mktime(0,0,0,request('bulan'),1)) }}</span>@endif
+        @if(request('tahun'))<span class="px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-sm text-emerald-700">Tahun: {{ request('tahun') }}</span>@endif
+        @if(request('jenis') && request('jenis') != 'semua')<span class="px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-sm text-emerald-700">Jenis: {{ request('jenis') == 'pemasukan' ? 'Pemasukan' : 'Pengeluaran' }}</span>@endif
+        @if(request('kategori'))
+            @php
+                $kategoriLabel = $kategoris->firstWhere('id_kategori', request('kategori'))->nama_kategori ?? 'Kategori Tidak Ditemukan';
+            @endphp
+            <span class="px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-sm text-emerald-700">Kategori: {{ $kategoriLabel }}</span>
+        @endif
+        <a href="{{ route('masyarakat.keuangan.index') }}" class="px-4 py-2 rounded-full bg-white border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50">Reset Filter</a>
+    </div>
+    @endif
 
     {{-- ============================================ --}}
     {{-- STATISTICS CARDS PREMIUM --}}
@@ -507,7 +548,9 @@
             </div>
             <div>
                 <h3 class="font-bold text-gray-800">Grafik Keuangan</h3>
-                <p class="text-xs text-gray-400">Pemasukan vs Pengeluaran {{ $tahun }}</p>
+                <p class="text-xs text-gray-400">Pemasukan vs Pengeluaran {{ $tahun }}
+                    @if($bulan != 'semua') / {{ date('F', mktime(0,0,0,$bulan,1)) }} @endif
+                </p>
             </div>
         </div>
         <canvas id="keuanganChart" height="100" class="w-full"></canvas>
@@ -645,6 +688,7 @@
     const labels = [];
     const pemasukanData = [];
     const pengeluaranData = [];
+    const jenisFilter = @json($jenis);
     
     Object.values(grafikData).forEach(item => {
         labels.push(item.bulan.substring(0, 3));
@@ -660,43 +704,50 @@
     const pengeluaranGradient = ctx.createLinearGradient(0, 0, 0, 400);
     pengeluaranGradient.addColorStop(0, 'rgba(239, 68, 68, 0.3)');
     pengeluaranGradient.addColorStop(1, 'rgba(239, 68, 68, 0.02)');
+
+    const datasets = [];
+    
+    if (jenisFilter === 'semua' || jenisFilter === 'pemasukan') {
+        datasets.push({
+            label: 'Pemasukan',
+            data: pemasukanData,
+            borderColor: '#10b981',
+            backgroundColor: pemasukanGradient,
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3,
+            pointBackgroundColor: '#10b981',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointRadius: 5,
+            pointHoverRadius: 8,
+            pointHoverBackgroundColor: '#059669'
+        });
+    }
+    
+    if (jenisFilter === 'semua' || jenisFilter === 'pengeluaran') {
+        datasets.push({
+            label: 'Pengeluaran',
+            data: pengeluaranData,
+            borderColor: '#ef4444',
+            backgroundColor: pengeluaranGradient,
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3,
+            pointBackgroundColor: '#ef4444',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointRadius: 5,
+            pointHoverRadius: 8,
+            pointHoverBackgroundColor: '#dc2626'
+        });
+    }
     
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
-            datasets: [
-                {
-                    label: 'Pemasukan',
-                    data: pemasukanData,
-                    borderColor: '#10b981',
-                    backgroundColor: pemasukanGradient,
-                    fill: true,
-                    tension: 0.4,
-                    borderWidth: 3,
-                    pointBackgroundColor: '#10b981',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
-                    pointHoverBackgroundColor: '#059669'
-                },
-                {
-                    label: 'Pengeluaran',
-                    data: pengeluaranData,
-                    borderColor: '#ef4444',
-                    backgroundColor: pengeluaranGradient,
-                    fill: true,
-                    tension: 0.4,
-                    borderWidth: 3,
-                    pointBackgroundColor: '#ef4444',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
-                    pointHoverBackgroundColor: '#dc2626'
-                }
-            ]
+            datasets: datasets
         },
         options: {
             responsive: true,

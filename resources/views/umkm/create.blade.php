@@ -350,6 +350,18 @@
         to { opacity: 1; transform: translateX(0); }
     }
 
+    .alert-success {
+        background: #ecfdf5;
+        border-left: 3px solid #10b981;
+        color: #065f46;
+    }
+
+    .alert-info {
+        background: #eff6ff;
+        border-left: 3px solid #3b82f6;
+        color: #1d4ed8;
+    }
+
     .alert-error {
         background: #fef2f2;
         border-left: 3px solid #ef4444;
@@ -515,6 +527,34 @@
     </a>
 
     {{-- Alert Messages --}}
+    @if(session('success'))
+    <div class="alert-premium alert-success animate__animated animate__fadeInUp">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-circle-check"></i>
+            <div>
+                <span class="font-bold">Berhasil!</span>
+                <p class="text-xs mt-1">{{ session('success') }}</p>
+            </div>
+        </div>
+        <div class="alert-close" onclick="this.parentElement.remove()">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+    </div>
+    @endif
+    @if(session('info'))
+    <div class="alert-premium alert-info animate__animated animate__fadeInUp" style="background: #eff6ff; border-left-color: #3b82f6; color: #1d4ed8;">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-info-circle"></i>
+            <div>
+                <span class="font-bold">Info</span>
+                <p class="text-xs mt-1">{{ session('info') }}</p>
+            </div>
+        </div>
+        <div class="alert-close" onclick="this.parentElement.remove()">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+    </div>
+    @endif
     @if($errors->any())
     <div class="alert-premium alert-error animate__animated animate__fadeInUp">
         <div class="flex items-center gap-2">

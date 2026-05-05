@@ -156,6 +156,14 @@
                     <p class="text-xs text-gray-400">Kelola profil desa</p>
                 </div>
             </a>
+            <a href="{{ route('admin.kontak-desa.index') }}" class="side-item group">
+                <i class="fa-solid fa-address-book"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Kontak Desa</h5>
+                    <p class="text-xs text-gray-400">Kelola daftar kontak</p>
+                </div>
+            </a>
             <a href="{{ route('notifikasi.index') }}" class="side-item group">
                 <i class="fa-regular fa-bell"></i>
                 <div class="info-box">

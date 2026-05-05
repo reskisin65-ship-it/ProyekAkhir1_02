@@ -12,6 +12,7 @@ use App\Models\DataPenduduk;
 use App\Models\Role;
 use App\Models\PengajuanSurat;
 use App\Models\Aspirasi;
+use App\Models\KontakDesa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -250,7 +251,13 @@ public function umkmShow($id)
      */
     public function kontak()
     {
-        return view('pages.kontak');
+        // Ambil data kontak dari database yang aktif
+        $kontak = KontakDesa::where('is_active', true)
+                            ->orderBy('urutan', 'asc')
+                            ->orderBy('id', 'asc')
+                            ->get();
+        
+        return view('pages.kontak', compact('kontak'));
     }
 
     /**

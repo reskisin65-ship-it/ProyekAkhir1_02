@@ -11,6 +11,7 @@ use App\Http\Controllers\Masyarakat\AspirasiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\Admin\KontakDesaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 
@@ -254,4 +255,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::delete('/kategori/{id}', [App\Http\Controllers\Admin\KeuanganController::class, 'kategoriDestroy'])->name('kategori.destroy');
         Route::get('/laporan', [App\Http\Controllers\Admin\KeuanganController::class, 'laporan'])->name('laporan');
     });
-});
+
+    // ==========================================
+    // KONTAK DESA
+    // ==========================================
+    Route::resource('kontak-desa', App\Http\Controllers\Admin\KontakDesaController::class);
+    Route::get('/kontak-desa/{id}/toggle-status', [KontakDesaController::class, 'toggleStatus'])->name('kontak-desa.toggle-status');
+    
+    });
