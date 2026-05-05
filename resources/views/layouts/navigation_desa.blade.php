@@ -263,6 +263,10 @@
                                         <i class="fa-solid fa-store w-5 text-sky-500 group-hover:scale-110 transition"></i>
                                         <span class="text-gray-700 font-medium">UMKM</span>
                                     </a>
+                                    <a href="{{ route('admin.pengurus.index') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
+                                        <i class="fa-solid fa-user-tie w-5 text-sky-500 group-hover:scale-110 transition"></i>
+                                        <span class="text-gray-700 font-medium">Pengurus</span>
+                                    </a>
                                     <a href="{{ route('admin.statistik.index') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
                                         <i class="fa-solid fa-chart-simple w-5 text-sky-500 group-hover:scale-110 transition"></i>
                                         <span class="text-gray-700 font-medium">Statistik</span>
@@ -462,6 +466,10 @@
                             <i class="fa-solid fa-store w-5 group-hover:scale-110 transition"></i>
                             <span class="text-sm">UMKM</span>
                         </a>
+                        <a href="{{ route('admin.pengurus.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-user-tie w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Pengurus</span>
+                        </a>
                         <div class="h-px bg-gray-100 my-2 mx-5"></div>
                         <a href="{{ route('admin.statistik.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
                             <i class="fa-solid fa-chart-simple w-5 group-hover:scale-110 transition"></i>
@@ -474,6 +482,10 @@
                         <a href="{{ route('admin.profil-desa.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
                             <i class="fa-solid fa-building w-5 group-hover:scale-110 transition"></i>
                             <span class="text-sm">Profil Desa</span>
+                        </a>
+                        <a href="{{ route('admin.kontak-desa.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-address-book w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Kontak Desa</span>
                         </a>
                         <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
                             <i class="fa-regular fa-bell w-5 group-hover:scale-110 transition"></i>
