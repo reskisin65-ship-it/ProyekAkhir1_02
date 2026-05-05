@@ -31,11 +31,13 @@
                         <a href="{{ route('admin.statistik.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik</a>
                         <a href="{{ route('admin.keuangan.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">💰 Keuangan</a>
                         <a href="{{ route('admin.profil-desa.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">🏛️ Profil Desa</a>
+                        <a href="{{ route('admin.kontak-desa.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">📞 Kontak Desa</a>
                         
                 {{-- ============================================= --}}
                 {{-- MENU UNTUK ROLE: UMKM --}}
                 {{-- ============================================= --}}
                     @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
+                        @php $currentUmkmId = optional(Auth::user()->umkm)->id_umkm; @endphp
                         <a href="{{ route('masyarakat.dashboard') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Dashboard</a>
                         <a href="{{ route('masyarakat.surat.create') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Ajukan Surat</a>
                         <a href="{{ route('masyarakat.surat.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Riwayat Surat</a>
@@ -46,6 +48,7 @@
                         <a href="{{ route('statistik.publik') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik Desa</a>
                         <a href="{{ route('masyarakat.keuangan.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">💰 Keuangan</a>
                         <a href="{{ route('profil-desa') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">🏛️ Profil Desa</a>
+                        <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Kelola Produk</a>
                         
                 {{-- ============================================= --}}
                 {{-- MENU UNTUK ROLE: MASYARAKAT --}}
@@ -272,11 +275,16 @@
                                         <i class="fa-solid fa-building w-5 text-sky-500 group-hover:scale-110 transition"></i>
                                         <span class="text-gray-700 font-medium">Profil Desa</span>
                                     </a>
+                                    <a href="{{ route('admin.kontak-desa.index') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
+                                        <i class="fa-solid fa-address-book w-5 text-sky-500 group-hover:scale-110 transition"></i>
+                                        <span class="text-gray-700 font-medium">Kontak Desa</span>
+                                    </a>
                                     <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
                                         <i class="fa-regular fa-bell w-5 text-sky-500 group-hover:scale-110 transition"></i>
                                         <span class="text-gray-700 font-medium">Notifikasi</span>
                                     </a>
                                 @elseif(Auth::user()->role->nama_role == 'umkm')
+                                    @php $currentUmkmId = optional(Auth::user()->umkm)->id_umkm; @endphp
                                     <a href="{{ route('masyarakat.dashboard') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
                                         <i class="fa-solid fa-chart-line w-5 text-sky-500 group-hover:scale-110 transition"></i>
                                         <span class="text-gray-700 font-medium">Dashboard</span>
@@ -293,9 +301,22 @@
                                         <i class="fa-solid fa-comment-dots w-5 text-sky-500 group-hover:scale-110 transition"></i>
                                         <span class="text-gray-700 font-medium">Aspirasi Saya</span>
                                     </a>
-                                    <a href="{{ route('umkm.dashboard') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
+                                    <div class="border-t border-sky-50 my-2"></div>
+                                    <a href="{{ route('berita') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
+                                        <i class="fa-solid fa-newspaper w-5 text-sky-500 group-hover:scale-110 transition"></i>
+                                        <span class="text-gray-700 font-medium">Berita</span>
+                                    </a>
+                                    <a href="{{ route('galeri') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
+                                        <i class="fa-solid fa-photo-film w-5 text-sky-500 group-hover:scale-110 transition"></i>
+                                        <span class="text-gray-700 font-medium">Galeri</span>
+                                    </a>
+                                    <a href="{{ route('umkm') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
                                         <i class="fa-solid fa-store w-5 text-sky-500 group-hover:scale-110 transition"></i>
-                                        <span class="text-gray-700 font-medium">UMKM</span>
+                                        <span class="text-gray-700 font-medium">UMKM Lainnya</span>
+                                    </a>
+                                    <a href="{{ route('statistik.publik') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
+                                        <i class="fa-solid fa-chart-simple w-5 text-sky-500 group-hover:scale-110 transition"></i>
+                                        <span class="text-gray-700 font-medium">Statistik Desa</span>
                                     </a>
                                     <a href="{{ route('masyarakat.keuangan.index') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
                                         <i class="fa-solid fa-coins w-5 text-sky-500 group-hover:scale-110 transition"></i>
@@ -304,6 +325,10 @@
                                     <a href="{{ route('profil-desa') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
                                         <i class="fa-solid fa-landmark-dome w-5 text-sky-500 group-hover:scale-110 transition"></i>
                                         <span class="text-gray-700 font-medium">Profil Desa</span>
+                                    </a>
+                                    <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
+                                        <i class="fa-solid fa-boxes-stacked w-5 text-sky-500 group-hover:scale-110 transition"></i>
+                                        <span class="text-gray-700 font-medium">Kelola Produk</span>
                                     </a>
                                     <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
                                         <i class="fa-regular fa-bell w-5 text-sky-500 group-hover:scale-110 transition"></i>
@@ -448,6 +473,57 @@
                         </a>
                         <a href="{{ route('admin.profil-desa.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
                             <i class="fa-solid fa-building w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Profil Desa</span>
+                        </a>
+                        <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-regular fa-bell w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Notifikasi</span>
+                        </a>
+                    @elseif(Auth::user()->role->nama_role == 'umkm')
+                        @php $currentUmkmId = optional(Auth::user()->umkm)->id_umkm; @endphp
+                        <a href="{{ route('masyarakat.dashboard') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-chart-line w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Dashboard</span>
+                        </a>
+                        <a href="{{ route('masyarakat.surat.create') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-file-signature w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Ajukan Surat</span>
+                        </a>
+                        <a href="{{ route('masyarakat.surat.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Riwayat Surat</span>
+                        </a>
+                        <a href="{{ route('masyarakat.aspirasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-comment-dots w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Aspirasi Saya</span>
+                        </a>
+                        <div class="h-px bg-gray-100 my-2 mx-5"></div>
+                        <a href="{{ route('berita') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-newspaper w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Berita</span>
+                        </a>
+                        <a href="{{ route('galeri') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-photo-film w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Galeri</span>
+                        </a>
+                        <a href="{{ route('umkm') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-store w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">UMKM Lainnya</span>
+                        </a>
+                        <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-boxes-stacked w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Kelola Produk</span>
+                        </a>
+                        <a href="{{ route('statistik.publik') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-chart-simple w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Statistik Desa</span>
+                        </a>
+                        <a href="{{ route('masyarakat.keuangan.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-coins w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Keuangan</span>
+                        </a>
+                        <a href="{{ route('profil-desa') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-landmark-dome w-5 group-hover:scale-110 transition"></i>
                             <span class="text-sm">Profil Desa</span>
                         </a>
                         <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">

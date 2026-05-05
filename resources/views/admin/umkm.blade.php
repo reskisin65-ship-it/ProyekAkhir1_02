@@ -166,25 +166,37 @@
         color: #dc2626;
     }
 
+    /* ============================================
+       TABLE RESPONSIVE - SCROLL HORIZONTAL
+    ============================================ */
+    .table-responsive {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        margin: 1rem 0;
+        border-radius: 28px;
+    }
+
     .table-architecture {
         background: var(--card-bg);
         border: 1px solid var(--border-color);
         border-radius: 28px;
         overflow: hidden;
+        min-width: 1000px;
     }
 
     .umkm-node {
         display: grid;
-        grid-template-columns: 70px 1.5fr 1fr 1fr 1fr 1.2fr 1fr;
+        grid-template-columns: 70px 1.8fr 1fr 1.2fr 1.2fr 1.2fr 120px;
         align-items: center;
-        padding: 1.2rem 1.5rem;
+        padding: 1rem 1.2rem;
         border-bottom: 1px solid var(--border-color);
-        transition: all 0.4s;
+        transition: all 0.3s;
+        gap: 0.8rem;
     }
 
     .umkm-node:hover {
         background: #fafafa;
-        transform: translateX(4px);
     }
 
     .umkm-node:last-child {
@@ -193,8 +205,8 @@
 
     .table-header {
         display: grid;
-        grid-template-columns: 70px 1.5fr 1fr 1fr 1fr 1.2fr 1fr;
-        padding: 1rem 1.5rem;
+        grid-template-columns: 70px 1.8fr 1fr 1.2fr 1.2fr 1.2fr 120px;
+        padding: 1rem 1.2rem;
         background: #f8fafc;
         border-bottom: 1px solid var(--border-color);
         font-size: 0.65rem;
@@ -202,28 +214,77 @@
         text-transform: uppercase;
         letter-spacing: 0.1em;
         color: var(--text-mute);
+        gap: 0.8rem;
+    }
+
+    /* Nama Usaha - batasi panjang */
+    .nama-usaha-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        min-width: 0;
+    }
+
+    .nama-usaha-text {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .nama-usaha-text .nama-usaha {
+        font-weight: 600;
+        color: var(--text-main);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        word-break: break-word;
+        line-height: 1.3;
+    }
+
+    .nama-usaha-text .pemilik {
+        font-size: 0.7rem;
+        color: var(--text-mute);
+        margin-top: 0.15rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .umkm-avatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 14px;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
         background: linear-gradient(135deg, var(--accent-primary), #059669);
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
         font-weight: 700;
-        font-size: 1rem;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    /* Alamat - batasi panjang */
+    .alamat-cell {
+        font-size: 0.75rem;
+        color: var(--text-mute);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        word-break: break-word;
+        line-height: 1.4;
     }
 
     .category-pill {
-        padding: 0.25rem 0.8rem;
+        padding: 0.2rem 0.7rem;
         border-radius: 20px;
-        font-size: 0.65rem;
+        font-size: 0.6rem;
         font-weight: 700;
         text-transform: uppercase;
         width: fit-content;
+        white-space: nowrap;
     }
 
     .cat-kuliner { background: #fef3c7; color: #d97706; }
@@ -232,16 +293,27 @@
     .cat-jasa { background: #dbeafe; color: #2563eb; }
     .cat-default { background: #e5e7eb; color: #4b5563; }
 
+    /* Tanggal */
+    .tanggal-cell {
+        font-size: 0.7rem;
+        color: var(--text-mute);
+        white-space: nowrap;
+    }
+    .tanggal-cell .waktu {
+        font-size: 0.6rem;
+        color: #9ca3af;
+    }
+
     .status-badge {
         display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
-        padding: 0.3rem 0.8rem;
+        gap: 0.3rem;
+        padding: 0.25rem 0.7rem;
         border-radius: 20px;
         font-size: 0.65rem;
         font-weight: 700;
+        white-space: nowrap;
     }
-
     .status-pending { background: #fef3c7; color: #d97706; }
     .status-approved { background: #d1fae5; color: #059669; }
     .status-rejected { background: #fee2e2; color: #dc2626; }
@@ -249,18 +321,15 @@
     .action-deck {
         display: flex;
         gap: 0.5rem;
-        opacity: 0.7;
-        transition: all 0.3s;
-    }
-
-    .umkm-node:hover .action-deck {
-        opacity: 1;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
     }
 
     .deck-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 12px;
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -270,22 +339,36 @@
         background: white;
         cursor: pointer;
         text-decoration: none;
+        flex-shrink: 0;
     }
 
     .deck-btn:hover {
         background: var(--system-bg);
         color: white;
         border-color: var(--system-bg);
+        transform: translateY(-2px);
     }
 
     .btn-approve { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
-    .btn-approve:hover { background: #059669; }
+    .btn-approve:hover { background: #059669; transform: translateY(-2px); }
 
     .btn-reject { background: #ef4444; color: white; border-color: #ef4444; }
-    .btn-reject:hover { background: #dc2626; }
+    .btn-reject:hover { background: #dc2626; transform: translateY(-2px); }
+
+    /* Scroll Indicator */
+    .scroll-indicator {
+        display: none;
+        text-align: center;
+        margin-top: 0.75rem;
+        padding: 0.5rem;
+        font-size: 0.7rem;
+        color: var(--text-mute);
+        background: #f8fafc;
+        border-radius: 40px;
+    }
 
     .void-container {
-        padding: 5rem 0;
+        padding: 4rem 0;
         text-align: center;
         border: 2px dashed #e5e5e5;
         border-radius: 40px;
@@ -327,18 +410,20 @@
         transform: translateY(-2px);
     }
 
+    /* Responsive */
     @media (max-width: 1200px) {
         .umkm-node, .table-header {
-            grid-template-columns: 60px 1.2fr 0.9fr 0.9fr 0.9fr 1fr 0.9fr;
-            gap: 0.5rem;
+            grid-template-columns: 60px 1.8fr 0.9fr 1fr 1fr 1.2fr 110px;
+            gap: 0.6rem;
         }
     }
 
     @media (max-width: 1024px) {
         .dashboard-wrapper { padding: 1rem; }
         .stats-architecture { grid-template-columns: repeat(2, 1fr); }
-        .table-architecture { overflow-x: auto; }
-        .umkm-node, .table-header { min-width: 900px; }
+        .scroll-indicator {
+            display: block;
+        }
     }
 
     @media (max-width: 640px) {
@@ -356,6 +441,10 @@
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
+
+    .delay-1 { animation-delay: 0.05s; }
+    .delay-2 { animation-delay: 0.1s; }
+    .delay-3 { animation-delay: 0.15s; }
 </style>
 
 <div class="bg-pattern"></div>
@@ -371,7 +460,8 @@
         </div>
     </header>
 
-    <div class="stats-architecture fade-up" style="animation-delay: 0.05s">
+    {{-- STATISTIK --}}
+    <div class="stats-architecture fade-up delay-1">
         <div class="stat-node">
             <div class="stat-icon" style="background: rgba(16,185,129,0.1);">
                 <i class="fa-solid fa-store text-emerald-600 text-xl"></i>
@@ -402,7 +492,8 @@
         </div>
     </div>
 
-    <div class="filter-architecture fade-up" style="animation-delay: 0.1s">
+    {{-- FILTER --}}
+    <div class="filter-architecture fade-up delay-2">
         <a href="{{ route('admin.umkm.index', ['status' => 'all']) }}" 
            class="filter-pill {{ request('status', 'all') == 'all' ? 'active' : '' }}">
             Semua
@@ -421,8 +512,9 @@
         </a>
     </div>
 
+    {{-- ALERT --}}
     @if(session('success'))
-    <div class="alert-node alert-success fade-up" style="animation-delay: 0.15s">
+    <div class="alert-node alert-success fade-up delay-2">
         <div class="flex items-center gap-2">
             <i class="fa-solid fa-circle-check"></i>
             <span>{{ session('success') }}</span>
@@ -433,101 +525,152 @@
     </div>
     @endif
 
-    <div class="table-architecture fade-up" style="animation-delay: 0.2s">
-        <div class="table-header">
-            <div>No</div>
-            <div>Nama Usaha / Pemilik</div>
-            <div>Kategori</div>
-            <div>Alamat</div>
-            <div>Tanggal Daftar</div>
-            <div>Status</div>
-            <div>Aksi</div>
+    @if(session('error'))
+    <div class="alert-node alert-error fade-up delay-2">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span>{{ session('error') }}</span>
         </div>
+        <button onclick="this.parentElement.remove()" class="opacity-50 hover:opacity-100">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @endif
 
-        @forelse($umkms as $index => $umkm)
-        <div class="umkm-node" style="animation-delay: {{ 0.05 * $loop->index }}s">
-            <div class="text-sm text-gray-500 font-medium">{{ $umkms->firstItem() + $index }}</div>
-            
-            <div class="flex items-center gap-3">
-                <div class="umkm-avatar">
-                    <i class="fa-solid fa-store text-sm"></i>
-                </div>
-                <div>
-                    <div class="font-medium text-gray-800">{{ $umkm->nama_usaha }}</div>
-                    <div class="text-xs text-gray-400">{{ $umkm->pemilik ?? $umkm->user->name ?? '-' }}</div>
-                </div>
+    {{-- TABLE WITH HORIZONTAL SCROLL --}}
+    <div class="table-responsive fade-up delay-3">
+        <div class="table-architecture">
+            <div class="table-header">
+                <div>No</div>
+                <div>Nama Usaha / Pemilik</div>
+                <div>Kategori</div>
+                <div>Alamat</div>
+                <div>Tanggal Daftar</div>
+                <div>Status</div>
+                <div>Aksi</div>
             </div>
-            
-            <div>
-                <span class="category-pill 
-                    @if($umkm->kategori == 'kuliner') cat-kuliner
-                    @elseif($umkm->kategori == 'fashion') cat-fashion
-                    @elseif($umkm->kategori == 'kriya') cat-kriya
-                    @elseif($umkm->kategori == 'jasa') cat-jasa
-                    @else cat-default @endif">
-                    {{ ucfirst($umkm->kategori ?? 'Lainnya') }}
-                </span>
-            </div>
-            
-            <div class="text-sm text-gray-500 line-clamp-1">
-                {{ $umkm->alamat ?? '-' }}
-            </div>
-            
-            <div class="text-sm text-gray-500">
-                {{ $umkm->created_at->translatedFormat('d M Y') }}<br>
-                <span class="text-xs">{{ $umkm->created_at->format('H:i') }} WIB</span>
-            </div>
-            
-            <div>
-                <span class="status-badge status-{{ $umkm->status }}">
-                    @if($umkm->status == 'pending') <i class="fa-regular fa-clock"></i> Menunggu
-                    @elseif($umkm->status == 'approved') <i class="fa-regular fa-circle-check"></i> Disetujui
-                    @else <i class="fa-solid fa-ban"></i> Ditolak @endif
-                </span>
-            </div>
-            
-            <div class="action-deck">
-                @if($umkm->status == 'pending')
-                <form action="{{ route('admin.umkm.approve', $umkm->id_umkm) }}" method="POST" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="deck-btn btn-approve" title="Setujui">
-                        <i class="fa-regular fa-circle-check"></i>
-                    </button>
-                </form>
-                <form action="{{ route('admin.umkm.reject', $umkm->id_umkm) }}" method="POST" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="deck-btn btn-reject" title="Tolak">
-                        <i class="fa-solid fa-ban"></i>
-                    </button>
-                </form>
-                @endif
+
+            @forelse($umkms as $index => $umkm)
+            <div class="umkm-node">
+                <div class="text-sm text-gray-500 font-medium">{{ $umkms->firstItem() + $index }}</div>
                 
-                <form action="{{ route('admin.umkm.destroy', $umkm->id_umkm) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus UMKM ini?')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="deck-btn" title="Hapus">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </form>
+                <div class="nama-usaha-wrapper">
+                    <div class="umkm-avatar">
+                        <i class="fa-solid fa-store text-sm"></i>
+                    </div>
+                    <div class="nama-usaha-text">
+                        <div class="nama-usaha" title="{{ $umkm->nama_usaha }}">
+                            {{ Str::limit($umkm->nama_usaha, 35) }}
+                        </div>
+                        <div class="pemilik">
+                            {{ $umkm->pemilik ?? $umkm->user->name ?? '-' }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <span class="category-pill 
+                        @if($umkm->kategori == 'makanan' || $umkm->kategori == 'kuliner') cat-kuliner
+                        @elseif($umkm->kategori == 'fashion') cat-fashion
+                        @elseif($umkm->kategori == 'kerajinan' || $umkm->kategori == 'kriya') cat-kriya
+                        @elseif($umkm->kategori == 'jasa') cat-jasa
+                        @else cat-default @endif">
+                        {{ ucfirst($umkm->kategori ?? 'Lainnya') }}
+                    </span>
+                </div>
+                
+                <div class="alamat-cell" title="{{ $umkm->alamat_usaha ?? $umkm->alamat ?? '-' }}">
+                    {{ Str::limit($umkm->alamat_usaha ?? $umkm->alamat ?? '-', 30) }}
+                </div>
+                
+                <div class="tanggal-cell">
+                    {{ $umkm->created_at->translatedFormat('d M Y') }}<br>
+                    <span class="waktu">{{ $umkm->created_at->format('H:i') }} WIB</span>
+                </div>
+                
+                <div>
+                    <span class="status-badge status-{{ $umkm->status }}">
+                        @if($umkm->status == 'pending') <i class="fa-regular fa-clock"></i> Menunggu
+                        @elseif($umkm->status == 'approved') <i class="fa-regular fa-circle-check"></i> Disetujui
+                        @else <i class="fa-solid fa-ban"></i> Ditolak @endif
+                    </span>
+                </div>
+                
+                <div class="action-deck">
+                    @if($umkm->status == 'pending')
+                    <form action="{{ route('admin.umkm.approve', $umkm->id_umkm) }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="deck-btn btn-approve" title="Setujui" onclick="return confirm('Setujui UMKM {{ $umkm->nama_usaha }}?')">
+                            <i class="fa-regular fa-circle-check"></i>
+                        </button>
+                    </form>
+                    <form action="{{ route('admin.umkm.reject', $umkm->id_umkm) }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="deck-btn btn-reject" title="Tolak" onclick="return confirm('Tolak UMKM {{ $umkm->nama_usaha }}?')">
+                            <i class="fa-solid fa-ban"></i>
+                        </button>
+                    </form>
+                    @endif
+                    
+                    <form action="{{ route('admin.umkm.destroy', $umkm->id_umkm) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus UMKM {{ $umkm->nama_usaha }}?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="deck-btn" title="Hapus">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
-        @empty
-        <div class="void-container">
-            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fa-solid fa-store text-3xl text-gray-400"></i>
+            @empty
+            <div class="void-container">
+                <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-store text-3xl text-gray-400"></i>
+                </div>
+                <h3 class="text-xl font-medium text-gray-400">Belum Ada UMKM</h3>
+                <p class="text-gray-400 mt-2">Belum ada UMKM yang terdaftar di sistem</p>
             </div>
-            <h3 class="text-xl font-medium text-gray-400">Belum Ada UMKM</h3>
-            <p class="text-gray-400 mt-2">Belum ada UMKM yang terdaftar di sistem</p>
+            @endforelse
         </div>
-        @endforelse
     </div>
 
+    {{-- SCROLL INDICATOR (muncul di mobile) --}}
+    <div class="scroll-indicator">
+        <i class="fa-solid fa-arrows-left-right"></i> Geser ke samping untuk melihat semua kolom
+    </div>
+
+    {{-- PAGINATION --}}
     @if($umkms->hasPages())
     <div class="pagination-container">
         {{ $umkms->appends(request()->query())->links() }}
     </div>
     @endif
 </div>
+
+{{-- Script untuk scroll indicator dan auto hide alert --}}
+<script>
+    // Auto hide alert after 4 seconds
+    setTimeout(() => {
+        document.querySelectorAll('.alert-node').forEach(alert => {
+            alert.style.opacity = '0';
+            alert.style.transform = 'translateX(20px)';
+            setTimeout(() => alert.remove(), 300);
+        });
+    }, 4000);
+
+    // Detect scroll on table
+    const tableWrapper = document.querySelector('.table-responsive');
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    
+    if (tableWrapper && scrollIndicator) {
+        tableWrapper.addEventListener('scroll', function() {
+            if (this.scrollLeft > 0) {
+                scrollIndicator.style.opacity = '0.5';
+            } else {
+                scrollIndicator.style.opacity = '1';
+            }
+        });
+    }
+</script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 @endsection

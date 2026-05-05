@@ -177,12 +177,13 @@
     {{-- SIDEBAR UNTUK ROLE: UMKM --}}
     {{-- ============================================= --}}
         @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
+            @php $currentUmkmId = optional(Auth::user()->umkm)->id_umkm; @endphp
             <a href="{{ route('masyarakat.dashboard') }}" class="side-item group">
                 <i class="fa-solid fa-chart-line"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-base font-serif italic text-emerald-950 mt-1">Dashboard</h5>
-                    <p class="text-xs text-gray-400">Dashboard anda</p>
+                    <p class="text-xs text-gray-400">Aktivitas Anda</p>
                 </div>
             </a>
             <a href="{{ route('masyarakat.surat.create') }}" class="side-item group">
@@ -226,11 +227,19 @@
                 </div>
             </a>
             <a href="{{ route('umkm') }}" class="side-item group">
-                <i class="fa-solid fa-store"></i>
+                <i class="fa-solid fa-shop"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">UMKM</h5>
-                    <p class="text-xs text-gray-400">Produk unggulan desa</p>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">UMKM Lainnya</h5>
+                    <p class="text-xs text-gray-400">Lihat UMKM desa lainnya</p>
+                </div>
+            </a>
+            <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="side-item group">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu UMKM</span>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Kelola Produk</h5>
+                    <p class="text-xs text-gray-400">Kelola produk usaha Anda</p>
                 </div>
             </a>
             <a href="{{ route('statistik.publik') }}" class="side-item group">

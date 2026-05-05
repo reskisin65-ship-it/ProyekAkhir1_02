@@ -215,10 +215,7 @@ public function update(Request $request, $id)
         return redirect()->back()->with('success', 'Profil UMKM berhasil diperbarui');
     }
 
-    /**
-     * Hapus UMKM
-     */
-   /**
+/**
  * Hapus UMKM (Batalkan Pengajuan)
  */
 public function destroy($id)
@@ -242,8 +239,8 @@ public function destroy($id)
     
     $umkm->delete();
     
-    // Redirect ke halaman index UMKM
-    return redirect()->route('umkm')->with('success', 'Pengajuan UMKM berhasil dibatalkan.');
+    // Redirect ke halaman index UMKM dengan pesan sukses
+    return redirect()->route('umkm.index')->with('success', 'Pengajuan UMKM berhasil dibatalkan.');
 }
 
     /**

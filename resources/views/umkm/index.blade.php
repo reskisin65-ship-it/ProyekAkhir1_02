@@ -47,54 +47,53 @@
             </div>
         </div>
 
-        {{-- 2. Action & Filter Bar --}}
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 animate__animated animate__fadeInUp">
-            {{-- Filter --}}
-            <div class="flex p-1.5 bg-slate-200/50 backdrop-blur-md rounded-full w-full md:w-auto overflow-x-auto no-scrollbar">
-                <button class="filter-btn active whitespace-nowrap px-8 py-2.5 rounded-full text-xs font-black transition-all" data-target="all">SEMUA</button>
-                <button class="filter-btn whitespace-nowrap px-8 py-2.5 rounded-full text-xs font-black text-slate-500 transition-all" data-target="makanan">MAKANAN</button>
-                <button class="filter-btn whitespace-nowrap px-8 py-2.5 rounded-full text-xs font-black text-slate-500 transition-all" data-target="kerajinan">KERAJINAN</button>
-                <button class="filter-btn whitespace-nowrap px-8 py-2.5 rounded-full text-xs font-black text-slate-500 transition-all" data-target="fashion">FASHION</button>
-            </div>
+       {{-- 2. Action & Filter Bar --}}
+<div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 animate__animated animate__fadeInUp">
+    {{-- Filter --}}
+    <div class="flex p-1.5 bg-slate-200/50 backdrop-blur-md rounded-full w-full md:w-auto overflow-x-auto no-scrollbar">
+        <button class="filter-btn active whitespace-nowrap px-8 py-2.5 rounded-full text-xs font-black transition-all" data-target="all">SEMUA</button>
+        <button class="filter-btn whitespace-nowrap px-8 py-2.5 rounded-full text-xs font-black text-slate-500 transition-all" data-target="makanan">MAKANAN</button>
+        <button class="filter-btn whitespace-nowrap px-8 py-2.5 rounded-full text-xs font-black text-slate-500 transition-all" data-target="kerajinan">KERAJINAN</button>
+        <button class="filter-btn whitespace-nowrap px-8 py-2.5 rounded-full text-xs font-black text-slate-500 transition-all" data-target="fashion">FASHION</button>
+    </div>
 
-            {{-- Create/Manage Button --}}
-            @auth
-                @php 
-                    $myUmkm = $umkms->where('user_id', Auth::id())->first(); 
-                    if(!$myUmkm) {
-                        $myUmkm = \App\Models\Umkm::where('user_id', Auth::id())->first();
-                    }
-                @endphp
-                
-                @if(!$myUmkm)
-                    {{-- Belum punya UMKM --}}
-                    <a href="{{ route('umkm.create') }}" class="group flex items-center gap-3 px-8 py-4 bg-emerald-600 text-white rounded-full font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all">
-                        <span>DAFTARKAN USAHA</span>
-                        <i class="fa-solid fa-plus group-hover:rotate-90 transition-transform"></i>
-                    </a>
-                @elseif($myUmkm->status == 'approved')
-                    {{-- UMKM sudah disetujui --}}
-                    <a href="{{ route('umkm.show', $myUmkm->id_umkm) }}" class="group flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-full font-bold shadow-lg hover:shadow-slate-200 hover:-translate-y-1 transition-all">
-                        <span>KELOLA USAHA</span>
-                        <i class="fa-solid fa-gear group-hover:rotate-90 transition-transform"></i>
-                    </a>
-                @elseif($myUmkm->status == 'pending')
-                    {{-- UMKM masih menunggu persetujuan (KUNING) --}}
-                    <a href="{{ route('masyarakat.umkm.status') }}" class="group flex items-center gap-3 px-8 py-4 bg-amber-500 text-white rounded-full font-bold shadow-lg shadow-amber-200 hover:bg-amber-600 hover:-translate-y-1 transition-all">
-                        <span class="flex items-center gap-2">
-                            <i class="fa-regular fa-clock fa-pulse"></i>
-                            MENUNGGU PERSETUJUAN
-                        </span>
-                        <i class="fa-solid fa-chart-simple group-hover:rotate-12 transition-transform"></i>
-                    </a>
-                @elseif($myUmkm->status == 'rejected')
-                    {{-- UMKM ditolak --}}
-                    <a href="{{ route('umkm.create') }}" class="group flex items-center gap-3 px-8 py-4 bg-red-500 text-white rounded-full font-bold shadow-lg shadow-red-200 hover:bg-red-600 hover:-translate-y-1 transition-all">
-                        <span>AJUKAN ULANG</span>
-                        <i class="fa-solid fa-rotate-right group-hover:rotate-90 transition-transform"></i>
-                    </a>
-                @endif
-            @endauth
+    {{-- Create/Manage Button --}}
+    @auth
+        @php 
+            // Cari UMKM milik user yang sedang login
+            $myUmkm = \App\Models\Umkm::where('user_id', Auth::id())->first(); 
+        @endphp
+        
+        @if(!$myUmkm)
+            {{-- Belum punya UMKM --}}
+            <a href="{{ route('umkm.create') }}" class="group flex items-center gap-3 px-8 py-4 bg-emerald-600 text-white rounded-full font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all">
+                <span>DAFTARKAN USAHA</span>
+                <i class="fa-solid fa-plus group-hover:rotate-90 transition-transform"></i>
+            </a>
+        @elseif($myUmkm->status == 'approved')
+            {{-- UMKM sudah disetujui --}}
+            <a href="{{ route('umkm.show', $myUmkm->id_umkm) }}" class="group flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-full font-bold shadow-lg hover:shadow-slate-200 hover:-translate-y-1 transition-all">
+                <span>KELOLA USAHA</span>
+                <i class="fa-solid fa-gear group-hover:rotate-90 transition-transform"></i>
+            </a>
+        @elseif($myUmkm->status == 'pending')
+            {{-- UMKM masih menunggu persetujuan (KUNING) --}}
+            <a href="{{ route('masyarakat.umkm.status') }}" class="group flex items-center gap-3 px-8 py-4 bg-amber-500 text-white rounded-full font-bold shadow-lg shadow-amber-200 hover:bg-amber-600 hover:-translate-y-1 transition-all">
+                <span class="flex items-center gap-2">
+                    <i class="fa-regular fa-clock fa-pulse"></i>
+                    MENUNGGU PERSETUJUAN
+                </span>
+                <i class="fa-solid fa-chart-simple group-hover:rotate-12 transition-transform"></i>
+            </a>
+        @elseif($myUmkm->status == 'rejected')
+            {{-- UMKM ditolak - TAMPILKAN TOMBOL DAFTAR ULANG (HIJAU, BUKAN MERAH) --}}
+            <a href="{{ route('umkm.create') }}" class="group flex items-center gap-3 px-8 py-4 bg-emerald-600 text-white rounded-full font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all">
+                <span>DAFTARKAN USAHA</span>
+                <i class="fa-solid fa-plus group-hover:rotate-90 transition-transform"></i>
+            </a>
+        @endif
+    @endauth
+</div>
         </div>
 
         {{-- 3. UMKM Grid --}}
@@ -168,15 +167,16 @@
                         @endif
                     </div>
 
-                    {{-- Fitur Edit & Hapus (Hanya muncul jika pemilik dan UMKM sudah approved) --}}
+                   {{-- Fitur Edit & Hapus (Hanya muncul jika pemilik dan UMKM sudah approved) --}}
                     @if(Auth::check() && Auth::id() == $item->user_id && $item->status == 'approved')
                     <div class="mt-4 flex gap-2">
                         <a href="{{ route('umkm.edit', $item->id_umkm) }}" class="flex-1 py-3 bg-amber-50 text-amber-600 text-center rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-amber-100 transition-colors">
                             <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
                         </a>
-                        <form action="{{ route('umkm.destroy', $item->id_umkm) }}" method="POST" class="flex-1">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="w-full py-3 bg-red-50 text-red-600 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-red-100 transition-colors" onclick="return confirm('Hapus UMKM?')">
+                        <form action="{{ route('umkm.destroy', $item->id_umkm) }}" method="POST" class="flex-1" onsubmit="return confirm('Yakin ingin menghapus UMKM ini? Data akan hilang permanen.')">
+                            @csrf 
+                            @method('DELETE')
+                            <button type="submit" class="w-full py-3 bg-red-50 text-red-600 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-red-100 transition-colors">
                                 <i class="fa-solid fa-trash mr-1"></i> Hapus
                             </button>
                         </form>
@@ -379,6 +379,49 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+    /* Untuk judul UMKM di card */
+    .umkm-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        word-break: break-word;
+        white-space: normal;
+        line-height: 1.3;
+        max-height: 2.6em;
+    }
+    
+    /* Untuk judul di halaman detail */
+    .umkm-detail-title {
+        word-break: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    /* Untuk semua teks yang mungkin panjang di card */
+    .umkm-card h3,
+    .service-card h3,
+    .news-card h4,
+    .aspirasi-card h3 {
+        word-break: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    /* Membatasi jumlah baris untuk deskripsi */
+    .umkm-description {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        word-break: break-word;
+    }
+    
+    /* Tooltip untuk nama panjang (opsional) */
+    .umkm-card h3:hover {
+        cursor: help;
+        text-decoration: underline dotted;
     }
 </style>
 
