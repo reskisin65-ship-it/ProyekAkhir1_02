@@ -234,6 +234,14 @@
                     <p class="text-xs text-gray-400">Lihat UMKM desa lainnya</p>
                 </div>
             </a>
+            <a href="{{ route('kontak') }}" class="side-item group">
+                <i class="fa-solid fa-envelope"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Kontak</h5>
+                    <p class="text-xs text-gray-400">Hubungi kami</p>
+                </div>
+            </a>
             <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="side-item group">
                 <i class="fa-solid fa-boxes-stacked"></i>
                 <div class="info-box">
@@ -335,7 +343,21 @@
                     <p class="text-xs text-gray-400">Produk unggulan desa</p>
                 </div>
             </a>
-            <a href="{{ route('statistik.publik') }}" class="side-item group">
+            <a href="{{ route('kontak') }}" class="side-item group">
+                <i class="fa-solid fa-envelope"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Kontak</h5>
+                    <p class="text-xs text-gray-400">Hubungi kami</p>
+                </div>
+            </a>            <a href="{{ route('kontak') }}" class="side-item group">
+                <i class="fa-solid fa-envelope"></i>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Kontak</h5>
+                    <p class="text-xs text-gray-400">Hubungi kami</p>
+                </div>
+            </a>            <a href="{{ route('statistik.publik') }}" class="side-item group">
                 <i class="fa-solid fa-chart-simple"></i>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>

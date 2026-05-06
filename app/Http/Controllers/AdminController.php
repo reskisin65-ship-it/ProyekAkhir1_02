@@ -448,25 +448,38 @@ class AdminController extends Controller
             ->with('success', 'UMKM ditolak!');
     }
 
-    public function umkmDestroy($id)
-    {
-        $umkm = Umkm::findOrFail($id);
-        
-        if ($umkm->logo && Storage::disk('public')->exists($umkm->logo)) {
-            Storage::disk('public')->delete($umkm->logo);
-        }
-        
+    /**
+ * Hapus UMKM (Admin)
+ */
+public function umkmDestroy($id)
+{
+    $umkm = Umkm::findOrFail($id);
+    
+    // Hapus logo jika ada
+    if ($umkm->logo && Storage::disk('public')->exists($umkm->logo)) {
+        Storage::disk('public')->delete($umkm->logo);
+    }
+    
+    // Hapus bukti usaha jika ada
+    if ($umkm->bukti_usaha && Storage::disk('public')->exists($umkm->bukti_usaha)) {
+        Storage::disk('public')->delete($umkm->bukti_usaha);
+    }
+    
+    // PERBAIKAN: Cek apakah relasi produk ada sebelum melakukan foreach
+    if (method_exists($umkm, 'produk') && $umkm->produk) {
         foreach ($umkm->produk as $produk) {
             if ($produk->foto_produk && Storage::disk('public')->exists($produk->foto_produk)) {
                 Storage::disk('public')->delete($produk->foto_produk);
             }
+            $produk->delete();
         }
-        
-        $umkm->delete();
-        
-        return redirect()->route('admin.umkm.index')
-            ->with('success', 'UMKM berhasil dihapus!');
     }
+    
+    $umkm->delete();
+    
+    return redirect()->route('admin.umkm.index')
+        ->with('success', 'UMKM berhasil dihapus!');
+}
 
     // ==============================================
     // MANAJEMEN PENGAJUAN SURAT

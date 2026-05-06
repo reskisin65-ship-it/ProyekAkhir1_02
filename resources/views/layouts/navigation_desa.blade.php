@@ -48,6 +48,7 @@
                         <a href="{{ route('statistik.publik') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik Desa</a>
                         <a href="{{ route('masyarakat.keuangan.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">💰 Keuangan</a>
                         <a href="{{ route('profil-desa') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">🏛️ Profil Desa</a>
+                        <a href="{{ route('kontak') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Kontak</a>
                         <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Kelola Produk</a>
                         
                 {{-- ============================================= --}}
@@ -64,6 +65,7 @@
                         <a href="{{ route('statistik.publik') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik Desa</a>
                         <a href="{{ route('masyarakat.keuangan.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">💰 Keuangan</a>
                         <a href="{{ route('profil-desa') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">🏛️ Profil Desa</a>
+                        <a href="{{ route('kontak') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Kontak</a>
                     @endif
                 @else
                     {{-- ============================================= --}}
@@ -522,6 +524,10 @@
                             <i class="fa-solid fa-store w-5 group-hover:scale-110 transition"></i>
                             <span class="text-sm">UMKM Lainnya</span>
                         </a>
+                        <a href="{{ route('kontak') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Kontak</span>
+                        </a>
                         <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
                             <i class="fa-solid fa-boxes-stacked w-5 group-hover:scale-110 transition"></i>
                             <span class="text-sm">Kelola Produk</span>
@@ -537,6 +543,10 @@
                         <a href="{{ route('profil-desa') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
                             <i class="fa-solid fa-landmark-dome w-5 group-hover:scale-110 transition"></i>
                             <span class="text-sm">Profil Desa</span>
+                        </a>
+                        <a href="{{ route('kontak') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Kontak</span>
                         </a>
                         <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
                             <i class="fa-regular fa-bell w-5 group-hover:scale-110 transition"></i>
@@ -583,6 +593,10 @@
                         <a href="{{ route('profil-desa') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
                             <i class="fa-solid fa-landmark-dome w-5 group-hover:scale-110 transition"></i>
                             <span class="text-sm">Profil Desa</span>
+                        </a>
+                        <a href="{{ route('kontak') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
+                            <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
+                            <span class="text-sm">Kontak</span>
                         </a>
                         <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
                             <i class="fa-regular fa-bell w-5 group-hover:scale-110 transition"></i>

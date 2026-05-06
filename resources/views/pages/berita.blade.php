@@ -10,7 +10,7 @@
 
 <style>
     /* ============================================
-       DESIGN SYSTEM PREMIUM (INSPIRED BY ADMIN)
+       DESIGN SYSTEM PREMIUM
     ============================================ */
     :root {
         --system-bg: #0a0a0a;
@@ -58,7 +58,7 @@
     }
 
     /* ============================================
-       HEADER SECTION (LIKE ADMIN BERITA)
+       HEADER SECTION
     ============================================ */
     .editorial-header {
         display: flex;
@@ -93,62 +93,128 @@
     }
 
     /* ============================================
-       STATISTICS CARDS
+       STATISTICS PREMIUM CARDS
     ============================================ */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
+    .stats-premium-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
         margin-bottom: 2rem;
+        justify-content: flex-start;
     }
 
-    .stat-card {
-        background: var(--card-bg);
+    .stat-premium-card {
+        flex: 1;
+        min-width: 180px;
+        background: #ffffff;
         border: 1px solid var(--border-color);
-        border-radius: 24px;
-        padding: 1rem;
-        transition: var(--transition-bounce);
-        text-align: center;
+        border-radius: 28px;
+        padding: 1.2rem 1.5rem;
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        overflow: hidden;
     }
 
-    .stat-card:hover {
-        transform: translateY(-4px);
+    .stat-premium-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-xl);
         border-color: var(--accent-primary);
-        box-shadow: var(--shadow-lg);
     }
 
-    .stat-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 16px;
+    .card-shimmer {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: 0.5s;
+        z-index: 0;
+    }
+
+    .stat-premium-card:hover .card-shimmer {
+        left: 100%;
+    }
+
+    .card-inner {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .icon-box {
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 0.8rem;
-        transition: var(--transition-bounce);
+        font-size: 1.3rem;
+        flex-shrink: 0;
     }
 
-    .stat-card:hover .stat-icon {
-        transform: scale(1.1);
+    .icon-box.emerald { background: #ecfdf5; color: #10b981; }
+    .icon-box.blue { background: #eff6ff; color: #3b82f6; }
+    .icon-box.amber { background: #fffbeb; color: #f59e0b; }
+
+    .stat-data { flex: 1; }
+
+    .stat-value-container {
+        display: flex;
+        align-items: baseline;
+        gap: 2px;
     }
 
-    .stat-icon i { font-size: 1.3rem; }
-    .stat-value { font-size: 1.8rem; font-weight: 800; line-height: 1.2; }
-    .stat-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-mute); margin-top: 0.2rem; }
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1e293b;
+        line-height: 1.2;
+    }
+
+    .stat-name {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-mute);
+        margin-top: 0.2rem;
+    }
+
+    .card-progress-bar {
+        margin-top: 1rem;
+        height: 4px;
+        background: #f1f5f9;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 1s ease;
+    }
+
+    .progress-fill.emerald { background: #10b981; }
+    .progress-fill.blue { background: #3b82f6; }
+    .progress-fill.amber { background: #f59e0b; }
 
     /* ============================================
-       FEATURED BERITA (HERO CARD)
+       FEATURED BERITA
     ============================================ */
     .featured-section {
-        margin-bottom: 3rem;
+        margin-bottom: 2.5rem;
     }
 
     .featured-card {
         background: var(--card-bg);
         border: 1px solid var(--border-color);
-        border-radius: 32px;
+        border-radius: 28px;
         overflow: hidden;
-        transition: var(--transition-slow);
+        transition: var(--transition-bounce);
         cursor: pointer;
     }
 
@@ -165,7 +231,7 @@
     }
 
     .featured-image {
-        height: 320px;
+        height: 300px;
         overflow: hidden;
         position: relative;
     }
@@ -174,7 +240,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.8s ease;
+        transition: transform 0.6s ease;
     }
 
     .featured-card:hover .featured-image img {
@@ -189,7 +255,7 @@
 
     .featured-category {
         padding: 0.3rem 1rem;
-        background: var(--accent-primary);
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark));
         color: white;
         border-radius: 40px;
         font-size: 0.7rem;
@@ -215,7 +281,7 @@
     .featured-meta i { margin-right: 0.3rem; }
 
     .featured-content h2 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         font-weight: 700;
         margin-bottom: 1rem;
         line-height: 1.35;
@@ -253,9 +319,7 @@
         transition: var(--transition);
     }
 
-    .featured-link:hover {
-        gap: 0.8rem;
-    }
+    .featured-link:hover { gap: 0.8rem; }
 
     /* ============================================
        FILTER BUTTONS
@@ -268,7 +332,7 @@
         display: flex;
         gap: 0.5rem;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start;
     }
 
     .filter-btn {
@@ -299,10 +363,7 @@
         transition: width 0.3s;
     }
 
-    .filter-btn:hover::before {
-        width: 100%;
-    }
-
+    .filter-btn:hover::before { width: 100%; }
     .filter-btn:hover {
         border-color: var(--accent-primary);
         color: var(--accent-primary);
@@ -316,18 +377,28 @@
         box-shadow: 0 4px 12px rgba(16,185,129,0.25);
     }
 
-    .filter-btn.active::before {
-        background: white;
-    }
+    .filter-btn.active::before { background: white; }
 
     /* ============================================
-       BERITA GRID
+       BERITA GRID & SIDEBAR
     ============================================ */
+    .sidebar-grid {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 2rem;
+        margin-top: 1rem;
+    }
+
+    .sidebar-sticky {
+        position: sticky;
+        top: 2rem;
+        align-self: start;
+    }
+
     .berita-grid {
         display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: 1rem;
-        margin-bottom: 2rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
     }
 
     .berita-card {
@@ -345,7 +416,7 @@
     }
 
     .berita-image {
-        height: 200px;
+        height: 180px;
         overflow: hidden;
         position: relative;
     }
@@ -357,17 +428,14 @@
         transition: transform 0.6s ease;
     }
 
-    .berita-card:hover .berita-image img {
-        transform: scale(1.05);
-    }
+    .berita-card:hover .berita-image img { transform: scale(1.05); }
 
     .berita-category {
         position: absolute;
         top: 0.8rem;
         left: 0.8rem;
-        padding: 0.25rem 0.8rem;
-        background: rgba(0,0,0,0.7);
-        backdrop-filter: blur(4px);
+        padding: 0.2rem 0.7rem;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark));
         color: white;
         border-radius: 40px;
         font-size: 0.6rem;
@@ -375,13 +443,7 @@
         text-transform: uppercase;
     }
 
-    .berita-card:hover .berita-category {
-        background: var(--accent-primary);
-    }
-
-    .berita-content {
-        padding: 1rem;
-    }
+    .berita-content { padding: 1rem; }
 
     .berita-meta {
         display: flex;
@@ -394,7 +456,7 @@
     .berita-meta i { margin-right: 0.2rem; }
 
     .berita-title {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
         line-height: 1.4;
@@ -406,9 +468,7 @@
         transition: var(--transition);
     }
 
-    .berita-title a:hover {
-        color: var(--accent-primary);
-    }
+    .berita-title a:hover { color: var(--accent-primary); }
 
     .berita-excerpt {
         font-size: 0.7rem;
@@ -432,37 +492,57 @@
         transition: var(--transition);
     }
 
-    .berita-link:hover {
-        gap: 0.5rem;
+    .berita-link:hover { gap: 0.5rem; }
+
+    /* ============================================
+       EMPTY STATE - DIPERBAIKI
+    ============================================ */
+    .void-container {
+        grid-column: span 2;
+        text-align: center;
+        padding: 3rem 2rem;
+        background: white;
+        border: 2px dashed #e5e7eb;
+        border-radius: 32px;
+        width: 100%;
+    }
+
+    .void-icon {
+        width: 80px;
+        height: 80px;
+        background: #f1f5f9;
+        border-radius: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+    }
+
+    .void-icon i { font-size: 2.5rem; color: #94a3b8; }
+
+    /* Sidebar tidak terpengaruh empty state */
+    .berita-grid:has(.void-container) {
+        display: block;
+    }
+    
+    .berita-grid:has(.void-container) .void-container {
+        display: block;
     }
 
     /* ============================================
-       SIDEBAR - STICKY
+       TRENDING CARD PREMIUM
     ============================================ */
-    .sidebar-grid {
-        display: grid;
-        grid-template-columns: 1fr 360px;
-        gap: 2rem;
-        margin-top: 2rem;
-    }
-
-    .sidebar-sticky {
-        position: sticky;
-        top: 2rem;
-        align-self: start;
-    }
-
-    /* Trending Card - ORANGE */
-    .trending-card {
-        background: linear-gradient(135deg, var(--accent-orange), var(--accent-orange-dark));
+    .premium-trending-card {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
         border-radius: 28px;
         padding: 1.5rem;
         margin-bottom: 1.5rem;
-        transition: var(--transition-bounce);
         color: white;
+        border: 1px solid rgba(255,255,255,0.08);
+        transition: var(--transition-bounce);
     }
 
-    .trending-card:hover {
+    .premium-trending-card:hover {
         transform: translateY(-4px);
         box-shadow: var(--shadow-xl);
     }
@@ -471,37 +551,45 @@
         display: flex;
         align-items: center;
         gap: 1rem;
-        margin-bottom: 1.2rem;
+        margin-bottom: 1.5rem;
         padding-bottom: 0.8rem;
-        border-bottom: 2px solid rgba(255,255,255,0.2);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    .trending-icon {
-        width: 48px;
-        height: 48px;
-        background: rgba(255,255,255,0.2);
-        border-radius: 18px;
+    .header-icon-box {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #f59e0b, #ea580c);
+        border-radius: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 1.3rem;
     }
 
-    .trending-icon i { font-size: 1.3rem; color: white; }
+    .header-text h3 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0;
+    }
 
-    .trending-header h3 { font-size: 1.1rem; font-weight: 700; margin: 0; }
-    .trending-header p { font-size: 0.65rem; opacity: 0.8; margin: 0; }
+    .header-text p {
+        font-size: 0.7rem;
+        color: #94a3b8;
+        margin: 0;
+    }
 
     .trending-list {
         display: flex;
         flex-direction: column;
-        gap: 0.8rem;
+        gap: 0.5rem;
     }
 
     .trending-item {
         display: flex;
         align-items: center;
-        gap: 0.8rem;
-        padding: 0.6rem;
+        gap: 1rem;
+        padding: 0.8rem;
         border-radius: 18px;
         text-decoration: none;
         transition: var(--transition);
@@ -509,117 +597,21 @@
     }
 
     .trending-item:hover {
-        background: rgba(255,255,255,0.15);
+        background: rgba(255,255,255,0.08);
         transform: translateX(5px);
     }
 
-    .trending-number {
-        width: 36px;
-        height: 36px;
-        background: rgba(255,255,255,0.2);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        font-size: 0.9rem;
+    .item-number-box .number-outline {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(255,255,255,0.3);
     }
 
-    .trending-info h4 {
+    .trending-info { flex: 1; }
+
+    .item-title {
         font-size: 0.85rem;
-        font-weight: 600;
-        margin-bottom: 0.2rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .trending-info span {
-        font-size: 0.65rem;
-        opacity: 0.7;
-    }
-
-    /* Latest Card - GREEN */
-    .latest-card {
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark));
-        border-radius: 28px;
-        padding: 1.5rem;
-        transition: var(--transition-bounce);
-        color: white;
-    }
-
-    .latest-card:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-xl);
-    }
-
-    .latest-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1.2rem;
-        padding-bottom: 0.8rem;
-        border-bottom: 2px solid rgba(255,255,255,0.2);
-    }
-
-    .latest-icon {
-        width: 48px;
-        height: 48px;
-        background: rgba(255,255,255,0.2);
-        border-radius: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .latest-icon i { font-size: 1.3rem; color: white; }
-
-    .latest-header h3 { font-size: 1.1rem; font-weight: 700; margin: 0; }
-    .latest-header p { font-size: 0.65rem; opacity: 0.8; margin: 0; }
-
-    .latest-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-    }
-
-    .latest-item {
-        display: flex;
-        gap: 0.8rem;
-        padding: 0.6rem;
-        border-radius: 18px;
-        text-decoration: none;
-        transition: var(--transition);
-        color: white;
-    }
-
-    .latest-item:hover {
-        background: rgba(255,255,255,0.15);
-        transform: translateX(5px);
-    }
-
-    .latest-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 14px;
-        overflow: hidden;
-        flex-shrink: 0;
-    }
-
-    .latest-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.4s;
-    }
-
-    .latest-item:hover .latest-img img {
-        transform: scale(1.05);
-    }
-
-    .latest-info h4 {
-        font-size: 0.8rem;
         font-weight: 600;
         margin-bottom: 0.2rem;
         display: -webkit-box;
@@ -628,10 +620,166 @@
         overflow: hidden;
     }
 
-    .latest-info span {
-        font-size: 0.6rem;
-        opacity: 0.7;
+    .item-meta {
+        display: flex;
+        gap: 0.8rem;
+        font-size: 0.65rem;
+        color: #94a3b8;
     }
+
+    .arrow-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: var(--transition);
+    }
+
+    .trending-item:hover .arrow-circle {
+        opacity: 1;
+        background: #f59e0b;
+        border-color: #f59e0b;
+    }
+
+    /* ============================================
+       LATEST CARD PREMIUM
+    ============================================ */
+    .elegant-latest-card {
+        background: white;
+        border-radius: 28px;
+        padding: 1.5rem;
+        border: 1px solid var(--border-color);
+        transition: var(--transition-bounce);
+    }
+
+    .elegant-latest-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--accent-primary);
+    }
+
+    .latest-header-premium {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .icon-circle-glow {
+        width: 50px;
+        height: 50px;
+        background: #ecfdf5;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: #10b981;
+    }
+
+    .header-titles .top-label {
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: #94a3b8;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .header-titles h3 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0;
+        color: #1e293b;
+    }
+
+    .feed-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem;
+        border-radius: 18px;
+        text-decoration: none;
+        transition: var(--transition);
+        margin-bottom: 0.5rem;
+    }
+
+    .feed-item:hover {
+        background: #f8fafc;
+        transform: translateX(5px);
+    }
+
+    .thumb-wrapper {
+        width: 60px;
+        height: 60px;
+        border-radius: 14px;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: #f1f5f9;
+        position: relative;
+    }
+
+    .thumb-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .feed-info { flex: 1; }
+
+    .feed-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.2rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .feed-meta {
+        font-size: 0.6rem;
+        color: #94a3b8;
+    }
+
+    .hover-indicator {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #cbd5e1;
+        transition: var(--transition);
+    }
+
+    .feed-item:hover .hover-indicator {
+        color: #10b981;
+        transform: translateX(3px);
+    }
+
+    .card-action-area {
+        margin-top: 1.2rem;
+        text-align: center;
+        padding-top: 0.8rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .btn-modern-link {
+        text-decoration: none;
+        color: #64748b;
+        font-size: 0.75rem;
+        font-weight: 700;
+        transition: var(--transition);
+    }
+
+    .btn-modern-link:hover { color: #10b981; }
 
     /* ============================================
        PAGINATION
@@ -650,7 +798,7 @@
 
     .pagination .page-link {
         padding: 0.5rem 1rem;
-        border-radius: 14px;
+        border-radius: 12px;
         background: white;
         color: #64748b;
         font-size: 0.8rem;
@@ -676,10 +824,10 @@
        TUTORIAL SECTION
     ============================================ */
     .tutorial-section {
-        margin-top: 3rem;
+        margin-top: 2.5rem;
         background: white;
         border-radius: 28px;
-        padding: 1.8rem;
+        padding: 1.5rem;
         border: 1px solid var(--border-color);
         transition: var(--transition);
     }
@@ -723,7 +871,7 @@
     }
 
     .tutorial-item:hover {
-        background: rgba(16,185,129,0.08);
+        background: rgba(16,185,129,0.06);
         transform: translateX(3px);
     }
 
@@ -761,17 +909,13 @@
     /* ============================================
        RESPONSIVE
     ============================================ */
-    @media (max-width: 1200px) {
-        .berita-grid { grid-template-columns: repeat(2, 1fr); }
-        .sidebar-grid { grid-template-columns: 1fr; }
-        .sidebar-sticky { position: static; }
-    }
-
     @media (max-width: 1024px) {
         .dashboard-wrapper { padding: 1rem; }
-        .featured-inner { grid-template-columns: 1fr; }
-        .featured-image { height: 250px; }
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .sidebar-grid { grid-template-columns: 1fr; }
+        .sidebar-sticky { position: static; }
+        .berita-grid { grid-template-columns: repeat(2, 1fr); }
+        .stats-premium-grid { flex-direction: column; }
+        .stat-premium-card { min-width: auto; }
         .tutorial-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
@@ -779,12 +923,12 @@
         .editorial-header { flex-direction: column; align-items: flex-start; }
         .brand-title { font-size: 2.8rem; }
         .berita-grid { grid-template-columns: 1fr; }
-        .stats-grid { grid-template-columns: 1fr; }
+        .featured-inner { grid-template-columns: 1fr; }
+        .featured-image { height: 200px; }
         .tutorial-grid { grid-template-columns: 1fr; }
         .filter-group { justify-content: center; }
     }
 
-    /* Animations */
     @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
@@ -802,586 +946,69 @@
     .delay-3 { animation-delay: 0.15s; }
     .delay-4 { animation-delay: 0.2s; }
     .delay-5 { animation-delay: 0.25s; }
-
-    :root {
-    --trending-bg: #0f172a; /* Slate 900 */
-    --accent-orange: #f59e0b; /* Amber 500 */
-    --glass-white: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.08);
-}
-
-.premium-trending-card {
-    position: relative;
-    background: var(--trending-bg);
-    border-radius: 32px;
-    padding: 2.5rem 1.5rem 1.5rem;
-    overflow: hidden;
-    color: white;
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-/* Glow Effect in Background */
-.trending-bg-glow {
-    position: absolute;
-    top: -100px;
-    right: -100px;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
-    z-index: 0;
-}
-
-/* Header Styling */
-.trending-header {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    margin-bottom: 2.5rem;
-    padding: 0 0.5rem;
-}
-
-.header-icon-box {
-    position: relative;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, var(--accent-orange), #ea580c);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
-}
-
-.pulse-ring {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 2px solid var(--accent-orange);
-    border-radius: 16px;
-    animation: pulseIcon 2s infinite;
-}
-
-.header-text h3 {
-    font-size: 1.4rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin: 0;
-}
-
-.header-text p {
-    font-size: 0.85rem;
-    color: #94a3b8;
-    margin: 0;
-}
-
-/* List Item Styling */
-.trending-list {
-    position: relative;
-    z-index: 1;
-}
-
-.trending-item {
-    display: flex;
-    align-items: center;
-    padding: 1.25rem 1rem;
-    border-radius: 20px;
-    text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-bottom: 0.5rem;
-    border: 1px solid transparent;
-}
-
-.trending-item:hover {
-    background: var(--glass-white);
-    border-color: var(--glass-border);
-    transform: translateX(8px);
-}
-
-.item-number-box {
-    margin-right: 1.25rem;
-}
-
-.number-outline {
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255,255,255,0.2);
-    font-family: 'Inter', sans-serif;
-    transition: all 0.4s;
-}
-
-.trending-item:hover .number-outline {
-    -webkit-text-stroke: 1px var(--accent-orange);
-    color: var(--accent-orange);
-    opacity: 0.8;
-}
-
-.trending-info {
-    flex: 1;
-}
-
-.item-title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #e2e8f0;
-    margin-bottom: 0.4rem;
-    line-height: 1.4;
-    transition: color 0.3s;
-}
-
-.trending-item:hover .item-title {
-    color: white;
-}
-
-.item-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.75rem;
-    color: #64748b;
-}
-
-.meta-view i { color: var(--accent-orange); margin-right: 4px; }
-
-/* Arrow Action */
-.arrow-circle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid var(--glass-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    color: #64748b;
-    transition: all 0.4s;
-    opacity: 0;
-    transform: translateX(-10px);
-}
-
-.trending-item:hover .arrow-circle {
-    opacity: 1;
-    transform: translateX(0);
-    background: var(--accent-orange);
-    color: white;
-    border-color: var(--accent-orange);
-}
-
-.trending-footer {
-    margin-top: 1.5rem;
-    text-align: center;
-}
-
-.view-all-link {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #94a3b8;
-    text-decoration: none;
-    transition: color 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.view-all-link:hover { color: var(--accent-orange); }
-
-/* Animations */
-@keyframes pulseIcon {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(1.4); opacity: 0; }
-}
-
-.elegant-latest-card {
-    position: relative;
-    background: #ffffff;
-    border-radius: 35px;
-    padding: 2.5rem;
-    overflow: hidden;
-    border: 1px solid #f1f5f9;
-    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.04);
-    transition: all 0.4s ease;
-}
-
-/* Background Decoration */
-.mesh-gradient {
-    position: absolute;
-    top: -20%;
-    left: -20%;
-    width: 140%;
-    height: 140%;
-    background-image: 
-        radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.05) 0, transparent 50%), 
-        radial-gradient(at 100% 100%, rgba(5, 150, 105, 0.03) 0, transparent 50%);
-    z-index: 0;
-    pointer-events: none;
-}
-
-.card-content { position: relative; z-index: 1; }
-
-/* Header */
-.latest-header-premium {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    margin-bottom: 2.5rem;
-}
-
-.icon-circle-glow {
-    width: 54px;
-    height: 54px;
-    background: #ecfdf5;
-    color: #10b981;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.1);
-}
-
-.top-label {
-    display: block;
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: #94a3b8;
-    margin-bottom: 2px;
-}
-
-.header-titles h3 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #1e293b;
-    margin: 0;
-}
-
-/* List Feed */
-.feed-item {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    border-radius: 22px;
-    text-decoration: none;
-    margin-bottom: 0.75rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: rgba(255, 255, 255, 0.5);
-}
-
-.feed-item:hover {
-    background: #ffffff;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.05);
-    transform: scale(1.02);
-}
-
-/* Thumbnails */
-.thumb-wrapper {
-    position: relative;
-    width: 85px;
-    height: 85px;
-    border-radius: 18px;
-    overflow: hidden;
-    flex-shrink: 0;
-    margin-right: 1.25rem;
-}
-
-.thumb-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-}
-
-.feed-item:hover img { transform: scale(1.15); }
-
-.placeholder-img {
-    width: 100%;
-    height: 100%;
-    background: #f8fafc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-}
-
-.time-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(6, 78, 59, 0.8);
-    backdrop-filter: blur(4px);
-    color: white;
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-align: center;
-    padding: 4px 0;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-}
-
-.feed-item:hover .time-overlay { transform: translateY(0); }
-
-/* Info */
-.feed-info { flex: 1; }
-
-.feed-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #334155;
-    margin-bottom: 0.5rem;
-    line-height: 1.4;
-    transition: color 0.3s;
-}
-
-.feed-item:hover .feed-title { color: #059669; }
-
-.feed-meta {
-    display: flex;
-    font-size: 0.75rem;
-    color: #94a3b8;
-    font-weight: 500;
-}
-
-.meta-date i { margin-right: 5px; color: #10b981; }
-
-/* Indicator */
-.hover-indicator {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #cbd5e1;
-    transition: all 0.3s;
-}
-
-.feed-item:hover .hover-indicator {
-    color: #10b981;
-    transform: translateX(5px);
-}
-
-/* Footer Action */
-.card-action-area {
-    margin-top: 2rem;
-    text-align: center;
-}
-
-.btn-modern-link {
-    display: inline-block;
-    text-decoration: none;
-    color: #64748b;
-    font-size: 0.85rem;
-    font-weight: 700;
-    position: relative;
-    padding-bottom: 8px;
-    transition: color 0.3s;
-}
-
-.link-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40%;
-    height: 2px;
-    background: #10b981;
-    transition: width 0.3s ease;
-}
-
-.btn-modern-link:hover { color: #1e293b; }
-.btn-modern-link:hover .link-line { width: 100%; }
-
-.stats-premium-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding: 1rem 0;
-}
-
-.stat-premium-card {
-    position: relative;
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    border-radius: 30px;
-    padding: 1rem;
-    overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-}
-
-.stat-premium-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
-    border-color: rgba(0, 0, 0, 0.08);
-}
-
-/* Shimmer Effect */
-.card-shimmer {
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.6),
-        transparent
-    );
-    transition: 0.5s;
-    z-index: 1;
-}
-
-.stat-premium-card:hover .card-shimmer {
-    left: 100%;
-    transition: 0.8s;
-}
-
-.card-inner {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    position: relative;
-    z-index: 2;
-}
-
-/* Icon Aesthetics */
-.icon-box {
-    position: relative;
-    width: 65px;
-    height: 65px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    transition: all 0.4s ease;
-}
-
-.icon-aura {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    opacity: 0.15;
-    transition: 0.4s;
-}
-
-.stat-premium-card:hover .icon-box {
-    transform: scale(1.1) rotate(-5deg);
-}
-
-.emerald { color: #10b981; background: #ecfdf5; }
-.blue { color: #3b82f6; background: #eff6ff; }
-.amber { color: #f59e0b; background: #fffbeb; }
-
-/* Typography */
-.stat-value-container {
-    display: flex;
-    align-items: baseline;
-    gap: 2px;
-}
-
-.stat-prefix {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #94a3b8;
-}
-
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #1e293b;
-    margin: 0;
-    letter-spacing: -1px;
-}
-
-.stat-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #64748b;
-    margin-top: 4px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Progress Bar at Bottom */
-.card-progress-bar {
-    margin-top: 1.5rem;
-    height: 6px;
-    background: #f1f5f9;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    border-radius: 10px;
-    transition: width 1.5s ease-in-out;
-}
-
-.progress-fill.emerald { background: #10b981; }
-.progress-fill.blue { background: #3b82f6; }
-.progress-fill.amber { background: #f59e0b; }
-
-/* Perbaikan untuk semua teks agar tidak overflow */
-.berita-title a,
-.berita-excerpt,
-.featured-excerpt,
-.featured-content h2 a,
-.trending-info h4,
-.feed-title,
-.item-title,
-.node-title {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    white-space: normal;
-}
-
-/* Perbaikan untuk card */
-.berita-card,
-.featured-card,
-.premium-trending-card,
-.elegant-latest-card {
-    overflow-x: hidden;
-}
-
-/* Perbaikan untuk konten */
-.berita-content,
-.featured-content,
-.trending-info,
-.feed-info {
-    overflow: hidden;
-}
-
-/* Untuk excerpt (ringkasan) */
-.berita-excerpt,
-.featured-excerpt {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+    .delay-6 { animation-delay: 0.3s; }
 </style>
 
 <div class="bg-pattern"></div>
 
 <div class="dashboard-wrapper">
     
-    {{-- Header (Seperti Admin Berita) --}}
-    <header class="editorial-header">
-        <div class="animate__animated animate__fadeInLeft">
-            <h1 class="brand-title font-display">Berita<br><span class="text-white" style="-webkit-text-stroke: 1.5px #000;">Desa</span>.</h1>
+    {{-- HEADER --}}
+    <header class="editorial-header fade-up">
+        <div>
+            <h1 class="brand-title font-display">Berita<br><span>Desa</span>.</h1>
             <p class="brand-subtitle">
                 Informasi terkini dan pengumuman resmi dari Desa Lumban Silintong. 
             </p>
         </div>
+    </header>
 
-    {{-- Featured Berita (Jika Ada) --}}
+    {{-- STATISTIK PREMIUM --}}
+    <div class="stats-premium-grid fade-up delay-1">
+        <div class="stat-premium-card">
+            <div class="card-shimmer"></div>
+            <div class="card-inner">
+                <div class="icon-box emerald"><i class="fa-regular fa-newspaper"></i></div>
+                <div class="stat-data">
+                    <div class="stat-value-container">
+                        <h2 class="stat-number" data-target="{{ $beritas->total() }}">0</h2>
+                    </div>
+                    <p class="stat-name">Jumlah Berita</p>
+                </div>
+            </div>
+            <div class="card-progress-bar"><div class="progress-fill emerald" style="width: 70%"></div></div>
+        </div>
+
+        <div class="stat-premium-card">
+            <div class="card-shimmer"></div>
+            <div class="card-inner">
+                <div class="icon-box blue"><i class="fa-regular fa-eye"></i></div>
+                <div class="stat-data">
+                    <div class="stat-value-container">
+                        <h2 class="stat-number" data-target="{{ $beritas->sum('dibaca') }}">0</h2>
+                    </div>
+                    <p class="stat-name">Total Interaksi</p>
+                </div>
+            </div>
+            <div class="card-progress-bar"><div class="progress-fill blue" style="width: 85%"></div></div>
+        </div>
+
+        <div class="stat-premium-card">
+            <div class="card-shimmer"></div>
+            <div class="card-inner">
+                <div class="icon-box amber"><i class="fa-regular fa-calendar-check"></i></div>
+                <div class="stat-data">
+                    <div class="stat-value-container">
+                        <h2 class="stat-number" data-target="{{ $beritas->where('kategori', 'kegiatan')->count() }}">0</h2>
+                    </div>
+                    <p class="stat-name">Total Kegiatan</p>
+                </div>
+            </div>
+            <div class="card-progress-bar"><div class="progress-fill amber" style="width: 60%"></div></div>
+        </div>
+    </div>
+
+    {{-- FEATURED BERITA --}}
     @if(isset($beritaUtama) && $beritaUtama)
     <div class="featured-section fade-up delay-2">
         <div class="featured-card">
@@ -1408,71 +1035,7 @@
     </div>
     @endif
 
-    
-   <div class="stats-premium-grid fade-up delay-1">
-    {{-- Card 1: Berita --}}
-    <div class="stat-premium-card">
-        <div class="card-shimmer"></div>
-        <div class="card-inner">
-            <div class="icon-box emerald">
-                <i class="fa-regular fa-newspaper"></i>
-                <div class="icon-aura"></div>
-            </div>
-            <div class="stat-data">
-                <div class="stat-value-container">
-                    <span class="stat-prefix">+</span>
-                    <h2 class="stat-number" data-target="{{ $beritas->total() }}">0</h2>
-                </div>
-                <p class="stat-name">Jumlah Berita</p>
-            </div>
-        </div>
-        <div class="card-progress-bar">
-            <div class="progress-fill emerald" style="width: 70%"></div>
-        </div>
-    </div>
-
-    {{-- Card 2: Pembaca --}}
-    <div class="stat-premium-card">
-        <div class="card-shimmer"></div>
-        <div class="card-inner">
-            <div class="icon-box blue">
-                <i class="fa-regular fa-eye"></i>
-                <div class="icon-aura"></div>
-            </div>
-            <div class="stat-data">
-                <div class="stat-value-container">
-                    <h2 class="stat-number" data-target="{{ $beritas->sum('dibaca') }}">0</h2>
-                </div>
-                <p class="stat-name">Total Interaksi</p>
-            </div>
-        </div>
-        <div class="card-progress-bar">
-            <div class="progress-fill blue" style="width: 85%"></div>
-        </div>
-    </div>
-
-    {{-- Card 3: Kegiatan --}}
-    <div class="stat-premium-card">
-        <div class="card-shimmer"></div>
-        <div class="card-inner">
-            <div class="icon-box amber">
-                <i class="fa-regular fa-calendar-check"></i>
-                <div class="icon-aura"></div>
-            </div>
-            <div class="stat-data">
-                <div class="stat-value-container">
-                    <h2 class="stat-number" data-target="{{ $beritas->where('kategori', 'kegiatan')->count() }}">0</h2>
-                </div>
-                <p class="stat-name">Total Kegiatan</p>
-            </div>
-        </div>
-        <div class="card-progress-bar">
-            <div class="progress-fill amber" style="width: 60%"></div>
-        </div>
-    </div>
-</div>
-
-    {{-- Filter Buttons --}}
+    {{-- FILTER BUTTONS --}}
     <div class="filter-container fade-up delay-3">
         <div class="filter-group">
             <button class="filter-btn active" data-filter="all">Semua</button>
@@ -1482,7 +1045,7 @@
         </div>
     </div>
 
-    {{-- Main Content + Sidebar --}}
+    {{-- MAIN CONTENT + SIDEBAR --}}
     <div class="sidebar-grid">
         
         {{-- LEFT: Berita Grid --}}
@@ -1507,18 +1070,18 @@
                     </div>
                 </div>
                 @empty
-                <div class="void-container" style="grid-column: span 3;">
-                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fa-regular fa-newspaper text-3xl text-gray-400"></i>
+                <div class="void-container">
+                    <div class="void-icon">
+                        <i class="fa-regular fa-newspaper"></i>
                     </div>
-                    <h3 class="text-xl font-medium text-gray-400">Belum Ada Berita</h3>
-                    <p class="text-gray-400 mt-2">Belum ada berita yang dipublikasikan.</p>
+                    <h3 class="text-lg font-semibold text-gray-400">Belum Ada Berita</h3>
+                    <p class="text-sm text-gray-400 mt-1">Belum ada berita yang dipublikasikan.</p>
                 </div>
                 @endforelse
             </div>
 
             {{-- Pagination --}}
-            @if($beritas->hasPages())
+            @if($beritas->hasPages() && $beritas->total() > 0)
             <div class="pagination-container">
                 {{ $beritas->appends(request()->query())->links() }}
             </div>
@@ -1528,116 +1091,91 @@
         {{-- RIGHT: Sidebar Sticky --}}
         <div class="sidebar-sticky fade-right delay-5">
             
+            {{-- TRENDING CARD --}}
             <div class="premium-trending-card">
-    {{-- Decorative Background Glow --}}
-    <div class="trending-bg-glow"></div>
+                <div class="trending-header">
+                    <div class="header-icon-box">
+                        <i class="fa-solid fa-fire-flame-curved"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3>Artikel Terpopuler</h3>
+                        <p>Informasi paling banyak disorot</p>
+                    </div>
+                </div>
 
-    <div class="trending-header">
-        <div class="header-icon-box">
-            <i class="fa-solid fa-fire-flame-curved"></i>
-            <span class="pulse-ring"></span>
-        </div>
-        <div class="header-text">
-            <h3>Artikel Terpopuler</h3>
-            <p>Informasi paling banyak disorot </p>
-        </div>
-    </div>
-
-    <div class="trending-list">
-    @php 
-        $trending = $beritas->sortByDesc('dibaca')->take(5)->values();
-    @endphp
-    @foreach($trending as $index => $item)
-    <a href="{{ route('berita.show', $item->slug) }}" class="trending-item group">
-        <div class="item-number-box">
-            <span class="number-outline">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
-        </div>
-        
-        <div class="trending-info">
-            <h4 class="item-title">{{ Str::limit($item->judul, 45) }}</h4>
-            <div class="item-meta">
-                <span class="meta-view">
-                    <i class="fa-regular fa-eye"></i> {{ number_format($item->dibaca) }}
-                </span>
-                <span class="meta-separator">•</span>
-                <span class="meta-category">{{ $item->kategori }}</span>
-            </div>
-        </div>
-
-        <div class="item-action">
-            <div class="arrow-circle">
-                <i class="fa-solid fa-arrow-right-long"></i>
-            </div>
-        </div>
-    </a>
-    @endforeach
-</div>
-
-    <div class="trending-footer">
-        <a href="#" class="view-all-link">Lihat Semua Artikel <i class="fa-solid fa-arrow-right"></i></a>
-    </div>
-</div>
-
-           <div class="elegant-latest-card">
-    {{-- Decorative Mesh Gradient Background --}}
-    <div class="mesh-gradient"></div>
-
-    <div class="card-content">
-        <div class="latest-header-premium">
-            <div class="icon-circle-glow">
-                <i class="fa-regular fa-clock"></i>
-            </div>
-            <div class="header-titles">
-                <span class="top-label">BERITA TERKINI</span>
-                <h3>Update <span class="text-emerald-500">Desa</span></h3>
-            </div>
-        </div>
-
-        <div class="latest-feed">
-            @php $latest = $beritas->sortByDesc('created_at')->take(5); @endphp
-            @foreach($latest as $item)
-            <a href="{{ route('berita.show', $item->slug) }}" class="feed-item group">
-                <div class="thumb-wrapper">
-                    @if($item->gambar)
-                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
-                    @else
-                        <div class="placeholder-img">
-                            <i class="fa-solid fa-leaf text-emerald-200"></i>
+                <div class="trending-list">
+                @php 
+                    $trending = $beritas->sortByDesc('dibaca')->take(5)->values();
+                @endphp
+                @foreach($trending as $index => $item)
+                <a href="{{ route('berita.show', $item->slug) }}" class="trending-item">
+                    <div class="item-number-box">
+                        <span class="number-outline">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                    </div>
+                    <div class="trending-info">
+                        <h4 class="item-title">{{ Str::limit($item->judul, 45) }}</h4>
+                        <div class="item-meta">
+                            <span><i class="fa-regular fa-eye"></i> {{ number_format($item->dibaca) }}</span>
+                            <span>•</span>
+                            <span>{{ $item->kategori }}</span>
                         </div>
-                    @endif
-                    <div class="time-overlay">
-                        {{ $item->created_at->diffForHumans() }}
+                    </div>
+                    <div class="arrow-circle">
+                        <i class="fa-solid fa-arrow-right-long"></i>
+                    </div>
+                </a>
+                @endforeach
+                </div>
+            </div>
+
+            {{-- LATEST CARD --}}
+            <div class="elegant-latest-card">
+                <div class="latest-header-premium">
+                    <div class="icon-circle-glow">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <div class="header-titles">
+                        <span class="top-label">BERITA TERKINI</span>
+                        <h3>Update <span class="text-emerald-500">Desa</span></h3>
                     </div>
                 </div>
 
-                <div class="feed-info">
-                    <h4 class="feed-title">{{ Str::limit($item->judul, 42) }}</h4>
-                    <div class="feed-meta">
-                        <span class="meta-date">
-                            <i class="fa-regular fa-calendar-check"></i> {{ $item->created_at->translatedFormat('d M Y') }}
-                        </span>
-                    </div>
+                <div class="latest-feed">
+                    @php $latest = $beritas->sortByDesc('created_at')->take(5); @endphp
+                    @foreach($latest as $item)
+                    <a href="{{ route('berita.show', $item->slug) }}" class="feed-item">
+                        <div class="thumb-wrapper">
+                            @if($item->gambar)
+                                <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                            @else
+                                <div class="flex items-center justify-center h-full">
+                                    <i class="fa-regular fa-image text-gray-300 text-xl"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="feed-info">
+                            <h4 class="feed-title">{{ Str::limit($item->judul, 42) }}</h4>
+                            <div class="feed-meta">
+                                <i class="fa-regular fa-calendar"></i> {{ $item->created_at->translatedFormat('d M Y') }}
+                            </div>
+                        </div>
+                        <div class="hover-indicator">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </a>
+                    @endforeach
                 </div>
 
-                <div class="hover-indicator">
-                    <i class="fa-solid fa-chevron-right"></i>
+                <div class="card-action-area">
+                    <a href="{{ route('berita') }}" class="btn-modern-link">
+                        Lihat Seluruh Berita <i class="fa-solid fa-arrow-right"></i>
+                    </a>
                 </div>
-            </a>
-            @endforeach
-        </div>
-
-        <div class="card-action-area">
-            <a href="#" class="btn-modern-link">
-                Lihat Seluruh Berita <i class="fa-solid fa-arrow-right"></i>
-                <div class="link-line"></div>
-            </a>
-        </div>
-    </div>
-</div>
+            </div>
         </div>
     </div>
 
-    {{-- Tutorial Section --}}
+    {{-- TUTORIAL SECTION --}}
     <div class="tutorial-section fade-up delay-6">
         <div class="tutorial-header">
             <i class="fa-regular fa-circle-question"></i>
@@ -1695,7 +1233,7 @@
             document.querySelectorAll('.berita-card').forEach(card => {
                 if (filter === 'all' || card.dataset.kategori === filter) {
                     card.style.display = 'block';
-                    setTimeout(() => { card.style.opacity = '1'; }, 10);
+                    card.style.opacity = '1';
                 } else {
                     card.style.display = 'none';
                 }
@@ -1703,23 +1241,30 @@
         });
     });
 
+    // Counter Animation
     document.addEventListener("DOMContentLoaded", () => {
-    const counters = document.querySelectorAll('.stat-number');
-    
-    const animateCounter = (el) => {
-        const target = +el.getAttribute('data-target');
-        const count = +el.innerText;
-        const increment = target / 50; // Kecepatan animasi
+        const counters = document.querySelectorAll('.stat-number');
+        
+        const animateCounter = (el) => {
+            const target = parseInt(el.getAttribute('data-target'));
+            if (isNaN(target)) return;
+            
+            let current = 0;
+            const increment = target / 50;
+            
+            const update = () => {
+                current += increment;
+                if (current < target) {
+                    el.innerText = Math.floor(current).toLocaleString();
+                    requestAnimationFrame(update);
+                } else {
+                    el.innerText = target.toLocaleString();
+                }
+            };
+            update();
+        };
 
-        if (count < target) {
-            el.innerText = Math.ceil(count + increment);
-            setTimeout(() => animateCounter(el), 20);
-        } else {
-            el.innerText = target.toLocaleString();
-        }
-    };
-
-    counters.forEach(counter => animateCounter(counter));
-});
+        counters.forEach(counter => animateCounter(counter));
+    });
 </script>
 @endsection
