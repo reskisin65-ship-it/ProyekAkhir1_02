@@ -1,7 +1,7 @@
 {{-- resources/views/notifikasi/index.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Notification Center')
+@section('title', 'Pusat Notifikasi')
 
 @section('content')
 <style>
@@ -209,30 +209,60 @@
     }
     
     function bacaSemua() {
-        if(confirm('Tandai semua sebagai dibaca?')) {
+        const ask = window.__confirmDialog
+            ? window.__confirmDialog({
+                title: 'Konfirmasi',
+                message: 'Tandai semua notifikasi sebagai dibaca?',
+                confirmText: 'Ya, Tandai',
+                cancelText: 'Batal'
+            })
+            : Promise.resolve(confirm('Tandai semua notifikasi sebagai dibaca?'));
+
+        ask.then((ok) => {
+            if (!ok) return;
             fetch('{{ route("notifikasi.baca-semua") }}', {
                 method: 'POST',
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
             }).then(() => location.reload());
-        }
+        });
     }
     
     function hapusNotif(id) {
-        if(confirm('Hapus notifikasi ini?')) {
+        const ask = window.__confirmDialog
+            ? window.__confirmDialog({
+                title: 'Konfirmasi Hapus',
+                message: 'Anda yakin mau hapus notifikasi ini?',
+                confirmText: 'Ya, Hapus',
+                cancelText: 'Batal'
+            })
+            : Promise.resolve(confirm('Anda yakin mau hapus notifikasi ini?'));
+
+        ask.then((ok) => {
+            if (!ok) return;
             fetch('/notifikasi/' + id, {
                 method: 'DELETE',
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
             }).then(() => location.reload());
-        }
+        });
     }
 
     function hapusSemua() {
-        if(confirm('Bersihkan semua notifikasi?')) {
+        const ask = window.__confirmDialog
+            ? window.__confirmDialog({
+                title: 'Konfirmasi Hapus',
+                message: 'Anda yakin mau hapus semua notifikasi?',
+                confirmText: 'Ya, Hapus Semua',
+                cancelText: 'Batal'
+            })
+            : Promise.resolve(confirm('Anda yakin mau hapus semua notifikasi?'));
+
+        ask.then((ok) => {
+            if (!ok) return;
             fetch('{{ route("notifikasi.hapus-semua") }}', {
                 method: 'DELETE',
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
             }).then(() => location.reload());
-        }
+        });
     }
 </script>
 @endsection

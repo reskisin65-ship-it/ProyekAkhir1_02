@@ -1,7 +1,7 @@
 {{-- resources/views/masyarakat/surat/show.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Detail Pengajuan - Premium Interface')
+@section('title', 'Detail Pengajuan - Lumban Silintong')
 
 @section('content')
 <!-- Fonts & Library -->

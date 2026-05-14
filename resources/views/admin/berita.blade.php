@@ -1,7 +1,7 @@
 {{-- resources/views/admin/berita.blade.php --}}
 @extends('layouts.admin')
 
-@section('title', 'System Intelligence — Newsroom')
+@section('title', 'Kelola Berita - Lumban Silintong')
 
 @section('content')
 <!-- Core Asset Architecture -->
@@ -348,7 +348,7 @@
                 
                 <form action="{{ route('admin.berita.destroy', $item->id_berita) }}" method="POST" class="inline">
                     @csrf @method('DELETE')
-                    <button type="submit" onclick="return confirm('Terminate this content node?')" class="deck-btn hover:!bg-red-600" title="Purge Node">
+                    <button type="submit"  class="deck-btn hover:!bg-red-600" title="Purge Node">
                         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                     </button>
                 </form>

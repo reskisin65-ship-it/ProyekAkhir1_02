@@ -6,6 +6,8 @@
 @section('content')
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&family=Instrument+Sans:ital,wght@0,400;0,700;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
     :root {
@@ -166,9 +168,6 @@
         color: #dc2626;
     }
 
-    /* ============================================
-       TABLE RESPONSIVE - SCROLL HORIZONTAL
-    ============================================ */
     .table-responsive {
         overflow-x: auto;
         overflow-y: hidden;
@@ -217,7 +216,6 @@
         gap: 0.8rem;
     }
 
-    /* Nama Usaha - batasi panjang */
     .nama-usaha-wrapper {
         display: flex;
         align-items: center;
@@ -265,7 +263,6 @@
         flex-shrink: 0;
     }
 
-    /* Alamat - batasi panjang */
     .alamat-cell {
         font-size: 0.75rem;
         color: var(--text-mute);
@@ -293,7 +290,6 @@
     .cat-jasa { background: #dbeafe; color: #2563eb; }
     .cat-default { background: #e5e7eb; color: #4b5563; }
 
-    /* Tanggal */
     .tanggal-cell {
         font-size: 0.7rem;
         color: var(--text-mute);
@@ -349,13 +345,6 @@
         transform: translateY(-2px);
     }
 
-    .btn-approve { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
-    .btn-approve:hover { background: #059669; transform: translateY(-2px); }
-
-    .btn-reject { background: #ef4444; color: white; border-color: #ef4444; }
-    .btn-reject:hover { background: #dc2626; transform: translateY(-2px); }
-
-    /* Scroll Indicator */
     .scroll-indicator {
         display: none;
         text-align: center;
@@ -410,7 +399,6 @@
         transform: translateY(-2px);
     }
 
-    /* Responsive */
     @media (max-width: 1200px) {
         .umkm-node, .table-header {
             grid-template-columns: 60px 1.8fr 0.9fr 1fr 1fr 1.2fr 110px;
@@ -421,9 +409,7 @@
     @media (max-width: 1024px) {
         .dashboard-wrapper { padding: 1rem; }
         .stats-architecture { grid-template-columns: repeat(2, 1fr); }
-        .scroll-indicator {
-            display: block;
-        }
+        .scroll-indicator { display: block; }
     }
 
     @media (max-width: 640px) {
@@ -463,30 +449,22 @@
     {{-- STATISTIK --}}
     <div class="stats-architecture fade-up delay-1">
         <div class="stat-node">
-            <div class="stat-icon" style="background: rgba(16,185,129,0.1);">
-                <i class="fa-solid fa-store text-emerald-600 text-xl"></i>
-            </div>
+            <div class="stat-icon" style="background: rgba(16,185,129,0.1);"><i class="fa-solid fa-store text-emerald-600 text-xl"></i></div>
             <div class="stat-value">{{ $statistik['total'] ?? $umkms->total() }}</div>
             <div class="stat-label">Total UMKM</div>
         </div>
         <div class="stat-node">
-            <div class="stat-icon" style="background: rgba(245,158,11,0.1);">
-                <i class="fa-regular fa-clock text-yellow-600 text-xl"></i>
-            </div>
+            <div class="stat-icon" style="background: rgba(245,158,11,0.1);"><i class="fa-regular fa-clock text-yellow-600 text-xl"></i></div>
             <div class="stat-value">{{ $statistik['pending'] ?? $umkms->where('status', 'pending')->count() }}</div>
             <div class="stat-label">Menunggu</div>
         </div>
         <div class="stat-node">
-            <div class="stat-icon" style="background: rgba(16,185,129,0.1);">
-                <i class="fa-regular fa-circle-check text-emerald-600 text-xl"></i>
-            </div>
+            <div class="stat-icon" style="background: rgba(16,185,129,0.1);"><i class="fa-regular fa-circle-check text-emerald-600 text-xl"></i></div>
             <div class="stat-value">{{ $statistik['approved'] ?? $umkms->where('status', 'approved')->count() }}</div>
             <div class="stat-label">Disetujui</div>
         </div>
         <div class="stat-node">
-            <div class="stat-icon" style="background: rgba(239,68,68,0.1);">
-                <i class="fa-solid fa-ban text-red-500 text-xl"></i>
-            </div>
+            <div class="stat-icon" style="background: rgba(239,68,68,0.1);"><i class="fa-solid fa-ban text-red-500 text-xl"></i></div>
             <div class="stat-value">{{ $statistik['rejected'] ?? $umkms->where('status', 'rejected')->count() }}</div>
             <div class="stat-label">Ditolak</div>
         </div>
@@ -494,46 +472,24 @@
 
     {{-- FILTER --}}
     <div class="filter-architecture fade-up delay-2">
-        <a href="{{ route('admin.umkm.index', ['status' => 'all']) }}" 
-           class="filter-pill {{ request('status', 'all') == 'all' ? 'active' : '' }}">
-            Semua
-        </a>
-        <a href="{{ route('admin.umkm.index', ['status' => 'pending']) }}" 
-           class="filter-pill {{ request('status') == 'pending' ? 'active' : '' }}">
-            Menunggu
-        </a>
-        <a href="{{ route('admin.umkm.index', ['status' => 'approved']) }}" 
-           class="filter-pill {{ request('status') == 'approved' ? 'active' : '' }}">
-            Disetujui
-        </a>
-        <a href="{{ route('admin.umkm.index', ['status' => 'rejected']) }}" 
-           class="filter-pill {{ request('status') == 'rejected' ? 'active' : '' }}">
-            Ditolak
-        </a>
+        <a href="{{ route('admin.umkm.index', ['status' => 'all']) }}" class="filter-pill {{ request('status', 'all') == 'all' ? 'active' : '' }}">Semua</a>
+        <a href="{{ route('admin.umkm.index', ['status' => 'pending']) }}" class="filter-pill {{ request('status') == 'pending' ? 'active' : '' }}">Menunggu</a>
+        <a href="{{ route('admin.umkm.index', ['status' => 'approved']) }}" class="filter-pill {{ request('status') == 'approved' ? 'active' : '' }}">Disetujui</a>
+        <a href="{{ route('admin.umkm.index', ['status' => 'rejected']) }}" class="filter-pill {{ request('status') == 'rejected' ? 'active' : '' }}">Ditolak</a>
     </div>
 
     {{-- ALERT --}}
     @if(session('success'))
     <div class="alert-node alert-success fade-up delay-2">
-        <div class="flex items-center gap-2">
-            <i class="fa-solid fa-circle-check"></i>
-            <span>{{ session('success') }}</span>
-        </div>
-        <button onclick="this.parentElement.remove()" class="opacity-50 hover:opacity-100">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
+        <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check"></i><span>{{ session('success') }}</span></div>
+        <button onclick="this.parentElement.remove()" class="opacity-50 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
     </div>
     @endif
 
     @if(session('error'))
     <div class="alert-node alert-error fade-up delay-2">
-        <div class="flex items-center gap-2">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <span>{{ session('error') }}</span>
-        </div>
-        <button onclick="this.parentElement.remove()" class="opacity-50 hover:opacity-100">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
+        <div class="flex items-center gap-2"><i class="fa-solid fa-circle-exclamation"></i><span>{{ session('error') }}</span></div>
+        <button onclick="this.parentElement.remove()" class="opacity-50 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
     </div>
     @endif
 
@@ -551,20 +507,14 @@
             </div>
 
             @forelse($umkms as $index => $umkm)
-            <div class="umkm-node">
+            <div class="umkm-node" data-id="{{ $umkm->id_umkm }}" data-nama="{{ $umkm->nama_usaha }}">
                 <div class="text-sm text-gray-500 font-medium">{{ $umkms->firstItem() + $index }}</div>
                 
                 <div class="nama-usaha-wrapper">
-                    <div class="umkm-avatar">
-                        <i class="fa-solid fa-store text-sm"></i>
-                    </div>
+                    <div class="umkm-avatar"><i class="fa-solid fa-store text-sm"></i></div>
                     <div class="nama-usaha-text">
-                        <div class="nama-usaha" title="{{ $umkm->nama_usaha }}">
-                            {{ Str::limit($umkm->nama_usaha, 35) }}
-                        </div>
-                        <div class="pemilik">
-                            {{ $umkm->pemilik ?? $umkm->user->name ?? '-' }}
-                        </div>
+                        <div class="nama-usaha" title="{{ $umkm->nama_usaha }}">{{ Str::limit($umkm->nama_usaha, 35) }}</div>
+                        <div class="pemilik">{{ $umkm->pemilik ?? $umkm->user->name ?? '-' }}</div>
                     </div>
                 </div>
                 
@@ -598,26 +548,36 @@
                 
                 <div class="action-deck">
                     @if($umkm->status == 'pending')
-                    <form action="{{ route('admin.umkm.approve', $umkm->id_umkm) }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="deck-btn btn-approve" title="Setujui" onclick="return confirm('Setujui UMKM {{ $umkm->nama_usaha }}?')">
-                            <i class="fa-regular fa-circle-check"></i>
-                        </button>
-                    </form>
-                    <form action="{{ route('admin.umkm.reject', $umkm->id_umkm) }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="deck-btn btn-reject" title="Tolak" onclick="return confirm('Tolak UMKM {{ $umkm->nama_usaha }}?')">
-                            <i class="fa-solid fa-ban"></i>
-                        </button>
-                    </form>
+                    {{-- Tombol Approve dengan Modal --}}
+                    <button type="button" class="deck-btn btn-approve approve-btn" data-id="{{ $umkm->id_umkm }}" data-nama="{{ $umkm->nama_usaha }}" title="Setujui">
+                        <i class="fa-regular fa-circle-check"></i>
+                    </button>
+                    
+                    {{-- Tombol Reject dengan Modal --}}
+                    <button type="button" class="deck-btn btn-reject reject-btn" data-id="{{ $umkm->id_umkm }}" data-nama="{{ $umkm->nama_usaha }}" title="Tolak">
+                        <i class="fa-solid fa-ban"></i>
+                    </button>
                     @endif
                     
-                    <form action="{{ route('admin.umkm.destroy', $umkm->id_umkm) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus UMKM {{ $umkm->nama_usaha }}?')">
+                    {{-- Tombol Hapus dengan Modal --}}
+                    <button type="button" class="deck-btn delete-btn" data-id="{{ $umkm->id_umkm }}" data-nama="{{ $umkm->nama_usaha }}" title="Hapus">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    
+                    {{-- Form Approve Tersembunyi --}}
+                    <form id="approve-form-{{ $umkm->id_umkm }}" action="{{ route('admin.umkm.approve', $umkm->id_umkm) }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                    
+                    {{-- Form Reject Tersembunyi --}}
+                    <form id="reject-form-{{ $umkm->id_umkm }}" action="{{ route('admin.umkm.reject', $umkm->id_umkm) }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                    
+                    {{-- Form Delete Tersembunyi --}}
+                    <form id="delete-form-{{ $umkm->id_umkm }}" action="{{ route('admin.umkm.destroy', $umkm->id_umkm) }}" method="POST" style="display: none;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="deck-btn" title="Hapus">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
                     </form>
                 </div>
             </div>
@@ -633,7 +593,7 @@
         </div>
     </div>
 
-    {{-- SCROLL INDICATOR (muncul di mobile) --}}
+    {{-- SCROLL INDICATOR --}}
     <div class="scroll-indicator">
         <i class="fa-solid fa-arrows-left-right"></i> Geser ke samping untuk melihat semua kolom
     </div>
@@ -646,31 +606,200 @@
     @endif
 </div>
 
-{{-- Script untuk scroll indicator dan auto hide alert --}}
+{{-- SCRIPT SWEETALERT UNTUK KONFIRMASI APPROVE, REJECT, DELETE --}}
 <script>
-    // Auto hide alert after 4 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // ============================================
+    // KONFIRMASI APPROVE UMKM
+    // ============================================
+    document.querySelectorAll('.approve-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.dataset.id;
+            const nama = this.dataset.nama;
+            
+            Swal.fire({
+                title: '<span class="text-emerald-600">Setujui UMKM?</span>',
+                html: `
+                    <div class="text-left">
+                        <div class="mb-4 p-4 bg-emerald-50 rounded-xl">
+                            <p class="text-sm text-gray-600 mb-2">Anda akan menyetujui UMKM:</p>
+                            <p class="font-bold text-gray-800 text-lg">🏪 ${nama}</p>
+                        </div>
+                        <p class="text-sm text-gray-500">UMKM yang disetujui akan langsung aktif dan dapat dikelola oleh pemiliknya.</p>
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fa-regular fa-circle-check mr-2"></i> Ya, Setujui',
+                cancelButtonText: '<i class="fa-solid fa-times mr-2"></i> Batal',
+                reverseButtons: true,
+                customClass: {
+                    popup: 'rounded-2xl',
+                    confirmButton: 'bg-emerald-500 hover:bg-emerald-600 px-6 py-2.5 rounded-xl text-white font-semibold transition-all',
+                    cancelButton: 'px-6 py-2.5 rounded-xl border border-gray-300 hover:bg-gray-50 transition-all',
+                    title: 'text-2xl font-bold'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Memproses...',
+                        html: 'Sedang menyetujui UMKM...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    document.getElementById(`approve-form-${id}`).submit();
+                }
+            });
+        });
+    });
+    
+    // ============================================
+    // KONFIRMASI REJECT UMKM
+    // ============================================
+    document.querySelectorAll('.reject-btn').forEach(button => {
+        button.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const id = this.dataset.id;
+            const nama = this.dataset.nama;
+            
+            // Modal dengan input alasan penolakan
+            const { value: alasan } = await Swal.fire({
+                title: '<span class="text-red-600">Tolak UMKM?</span>',
+                html: `
+                    <div class="text-left">
+                        <div class="mb-4 p-4 bg-red-50 rounded-xl">
+                            <p class="text-sm text-gray-600 mb-2">Anda akan menolak UMKM:</p>
+                            <p class="font-bold text-gray-800 text-lg">🏪 ${nama}</p>
+                        </div>
+                        <div class="mb-2">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Alasan Penolakan</label>
+                            <textarea id="alasan-penolakan" class="swal2-textarea w-full p-3 border border-gray-300 rounded-xl focus:border-red-500 focus:ring focus:ring-red-200 transition" 
+                                      placeholder="Masukkan alasan penolakan UMKM..." rows="3"></textarea>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-2">Alasan akan dikirimkan sebagai notifikasi ke pemilik UMKM.</p>
+                    </div>
+                `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fa-solid fa-ban mr-2"></i> Ya, Tolak',
+                cancelButtonText: '<i class="fa-solid fa-times mr-2"></i> Batal',
+                reverseButtons: true,
+                preConfirm: () => {
+                    const alasanText = document.getElementById('alasan-penolakan').value;
+                    if (!alasanText.trim()) {
+                        Swal.showValidationMessage('Alasan penolakan harus diisi!');
+                        return false;
+                    }
+                    return alasanText;
+                },
+                customClass: {
+                    popup: 'rounded-2xl',
+                    confirmButton: 'bg-red-500 hover:bg-red-600 px-6 py-2.5 rounded-xl text-white font-semibold transition-all',
+                    cancelButton: 'px-6 py-2.5 rounded-xl border border-gray-300 hover:bg-gray-50 transition-all',
+                    title: 'text-2xl font-bold'
+                }
+            });
+            
+            if (alasan) {
+                Swal.fire({
+                    title: 'Memproses...',
+                    html: 'Sedang menolak UMKM...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                // Kirim dengan alasan via form atau ajax
+                const form = document.getElementById(`reject-form-${id}`);
+                const inputAlasan = document.createElement('input');
+                inputAlasan.type = 'hidden';
+                inputAlasan.name = 'alasan';
+                inputAlasan.value = alasan;
+                form.appendChild(inputAlasan);
+                form.submit();
+            }
+        });
+    });
+    
+    // ============================================
+    // KONFIRMASI HAPUS UMKM
+    // ============================================
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.dataset.id;
+            const nama = this.dataset.nama;
+            
+            Swal.fire({
+                title: '<span class="text-red-600">Hapus UMKM?</span>',
+                html: `
+                    <div class="text-left">
+                        <div class="mb-4 p-4 bg-red-50 rounded-xl">
+                            <p class="text-sm text-gray-600 mb-2">Anda akan menghapus UMKM:</p>
+                            <p class="font-bold text-gray-800 text-lg">🏪 ${nama}</p>
+                        </div>
+                        <div class="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-500">
+                            <p class="text-xs text-amber-700"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Peringatan: Data yang dihapus tidak dapat dikembalikan!</p>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-3">Semua data produk dan informasi UMKM akan ikut terhapus.</p>
+                    </div>
+                `,
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fa-solid fa-trash mr-2"></i> Ya, Hapus!',
+                cancelButtonText: '<i class="fa-solid fa-times mr-2"></i> Batal',
+                reverseButtons: true,
+                customClass: {
+                    popup: 'rounded-2xl',
+                    confirmButton: 'bg-red-500 hover:bg-red-600 px-6 py-2.5 rounded-xl text-white font-semibold transition-all',
+                    cancelButton: 'px-6 py-2.5 rounded-xl border border-gray-300 hover:bg-gray-50 transition-all',
+                    title: 'text-2xl font-bold'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Menghapus...',
+                        html: 'Sedang menghapus UMKM...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    document.getElementById(`delete-form-${id}`).submit();
+                }
+            });
+        });
+    });
+    
+    // Auto hide alert after 3 seconds
     setTimeout(() => {
         document.querySelectorAll('.alert-node').forEach(alert => {
             alert.style.opacity = '0';
             alert.style.transform = 'translateX(20px)';
             setTimeout(() => alert.remove(), 300);
         });
-    }, 4000);
-
+    }, 3000);
+    
     // Detect scroll on table
     const tableWrapper = document.querySelector('.table-responsive');
     const scrollIndicator = document.querySelector('.scroll-indicator');
     
     if (tableWrapper && scrollIndicator) {
         tableWrapper.addEventListener('scroll', function() {
-            if (this.scrollLeft > 0) {
-                scrollIndicator.style.opacity = '0.5';
-            } else {
-                scrollIndicator.style.opacity = '1';
-            }
+            scrollIndicator.style.opacity = this.scrollLeft > 0 ? '0.5' : '1';
         });
     }
+});
 </script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 @endsection

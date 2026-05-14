@@ -1,7 +1,7 @@
 {{-- resources/views/admin/berita-create.blade.php --}}
 @extends('layouts.admin')
 
-@section('title', 'Editor Berita | Pro Panel')
+@section('title', 'Editor Berita | Panel Admin')
 
 @section('content')
 <!-- Google Fonts: Inter & Plus Jakarta Sans -->

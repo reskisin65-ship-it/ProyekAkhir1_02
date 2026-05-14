@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Merchant Panel | Silintong UMKM</title>
+    <title>Panel UMKM | Silintong UMKM</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -117,5 +117,158 @@
             </main>
         </div>
     </div>
+    {{-- Confirm Dialog (Global) --}}
+    <div id="confirm-dialog" class="fixed inset-0 z-[9999] hidden" aria-hidden="true">
+        <div id="confirm-backdrop" class="absolute inset-0 bg-slate-950/55 backdrop-blur-md opacity-0 transition-opacity duration-200"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 sm:p-8">
+            <div id="confirm-panel" class="w-full max-w-md opacity-0 scale-[0.98] translate-y-2 transition-all duration-200">
+                <div class="relative overflow-hidden rounded-[28px] border border-white/30 bg-white/85 shadow-[0_30px_80px_-20px_rgba(2,6,23,0.5)]">
+                    <div class="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-emerald-400/20 blur-3xl"></div>
+                    <div class="absolute -bottom-24 -left-24 h-56 w-56 rounded-full bg-amber-400/20 blur-3xl"></div>
+
+                    <div class="relative p-7 sm:p-8">
+                        <div class="flex items-start gap-4">
+                            <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-rose-600 to-orange-500 text-white shadow-lg shadow-rose-500/20 flex items-center justify-center">
+                                <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h3 id="confirm-title" class="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+                                    Konfirmasi
+                                </h3>
+                                <p id="confirm-message" class="mt-1.5 text-sm sm:text-[15px] leading-relaxed text-slate-600">
+                                    Anda yakin mau hapus?
+                                </p>
+                            </div>
+                            <button type="button" id="confirm-close" class="group -mr-1 -mt-1 h-10 w-10 rounded-2xl border border-slate-200/70 bg-white/70 hover:bg-white transition flex items-center justify-center">
+                                <i class="fa-solid fa-xmark text-slate-500 group-hover:text-slate-900 transition"></i>
+                            </button>
+                        </div>
+
+                        <div class="mt-7 flex flex-col-reverse sm:flex-row gap-3 sm:justify-end">
+                            <button type="button" id="confirm-cancel"
+                                    class="w-full sm:w-auto px-5 py-3 rounded-2xl font-extrabold text-[12px] uppercase tracking-[0.18em]
+                                           border border-slate-200 bg-white/70 text-slate-700
+                                           hover:bg-slate-50 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
+                                Batal
+                            </button>
+                            <button type="button" id="confirm-ok"
+                                    class="w-full sm:w-auto px-5 py-3 rounded-2xl font-extrabold text-[12px] uppercase tracking-[0.18em]
+                                           bg-gradient-to-r from-rose-600 to-orange-500 text-white shadow-lg shadow-rose-500/20
+                                           hover:shadow-xl hover:shadow-rose-500/30 hover:-translate-y-0.5 transition-all duration-300">
+                                Ya, Hapus
+                            </button>
+                        </div>
+
+                        <div class="mt-5 text-[11px] text-slate-400">
+                            Tindakan ini tidak bisa dibatalkan.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @media (prefers-reduced-motion: reduce) {
+            #confirm-backdrop, #confirm-panel { transition: none !important; }
+        }
+    </style>
+
+    <script>
+        (function () {
+            const dialog = document.getElementById('confirm-dialog');
+            const backdrop = document.getElementById('confirm-backdrop');
+            const panel = document.getElementById('confirm-panel');
+            const titleEl = document.getElementById('confirm-title');
+            const messageEl = document.getElementById('confirm-message');
+            const okBtn = document.getElementById('confirm-ok');
+            const cancelBtn = document.getElementById('confirm-cancel');
+            const closeBtn = document.getElementById('confirm-close');
+
+            let resolver = null;
+            let isOpen = false;
+
+            function openDialog({ title, message, confirmText, cancelText }) {
+                if (!dialog || !backdrop || !panel) return Promise.resolve(window.confirm(message || 'Anda yakin?'));
+
+                titleEl.textContent = title || 'Konfirmasi';
+                messageEl.textContent = message || 'Anda yakin?';
+                okBtn.textContent = confirmText || 'Ya, Hapus';
+                cancelBtn.textContent = cancelText || 'Batal';
+
+                dialog.classList.remove('hidden');
+                dialog.setAttribute('aria-hidden', 'false');
+                isOpen = true;
+
+                requestAnimationFrame(() => {
+                    backdrop.classList.remove('opacity-0');
+                    backdrop.classList.add('opacity-100');
+                    panel.classList.remove('opacity-0', 'scale-[0.98]', 'translate-y-2');
+                    panel.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+                });
+
+                const previouslyFocused = document.activeElement;
+                okBtn.focus();
+
+                return new Promise(resolve => {
+                    resolver = (value) => {
+                        resolve(!!value);
+                        resolver = null;
+                        isOpen = false;
+
+                        backdrop.classList.remove('opacity-100');
+                        backdrop.classList.add('opacity-0');
+                        panel.classList.remove('opacity-100', 'scale-100', 'translate-y-0');
+                        panel.classList.add('opacity-0', 'scale-[0.98]', 'translate-y-2');
+
+                        setTimeout(() => {
+                            dialog.classList.add('hidden');
+                            dialog.setAttribute('aria-hidden', 'true');
+                            if (previouslyFocused && previouslyFocused.focus) previouslyFocused.focus();
+                        }, 210);
+                    };
+                });
+            }
+
+            function close(value) {
+                if (resolver) resolver(value);
+            }
+
+            function isDeleteForm(form) {
+                const methodInput = form.querySelector('input[name="_method"]');
+                return (methodInput && String(methodInput.value).toUpperCase() === 'DELETE')
+                    || form.getAttribute('data-confirm-delete') === 'true';
+            }
+
+            window.__confirmDialog = openDialog;
+
+            if (dialog) {
+                okBtn.addEventListener('click', () => close(true));
+                cancelBtn.addEventListener('click', () => close(false));
+                closeBtn.addEventListener('click', () => close(false));
+                backdrop.addEventListener('click', () => close(false));
+                document.addEventListener('keydown', (e) => {
+                    if (!isOpen) return;
+                    if (e.key === 'Escape') close(false);
+                    if (e.key === 'Enter') close(true);
+                });
+            }
+
+            document.addEventListener('submit', async function (e) {
+                const form = e.target;
+                if (!(form instanceof HTMLFormElement)) return;
+                if (!isDeleteForm(form)) return;
+
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                const message = form.getAttribute('data-confirm-message') || 'Anda yakin mau hapus?';
+                const ok = await openDialog({ title: 'Konfirmasi Hapus', message, confirmText: 'Ya, Hapus', cancelText: 'Batal' });
+                if (!ok) return;
+
+                form.submit();
+            }, true);
+        })();
+    </script>
 </body>
 </html>
