@@ -11,6 +11,8 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
         .nav-active { background-color: #064e3b !important; color: #ffffff !important; box-shadow: 0 15px 25px -5px rgba(6, 78, 59, 0.2); }
         * { transition: all 0.3s ease; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="antialiased">
@@ -22,71 +24,71 @@
                 <h1 class="text-xl font-black tracking-tighter text-emerald-950 uppercase">UMKM<span class="text-emerald-500">Center</span></h1>
             </div>
 
-            <nav class="flex-1 px-6 space-y-4 mt-6">
+            <nav class="flex-1 px-6 space-y-2 mt-4 overflow-y-auto no-scrollbar">
                 @php $currentUmkmId = optional(Auth::user()->umkm)->id_umkm; @endphp
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] px-4 mb-4">Merchant Menu</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] px-4 mb-2">Merchant Menu</p>
                 
-                <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-boxes-stacked text-2xl"></i>
+                <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-boxes-stacked text-xl"></i>
                     <span>Kelola Produk</span>
                 </a>
 
-                <div class="h-px bg-slate-200 my-4"></div>
+                <div class="h-px bg-slate-200 my-2"></div>
 
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] px-4 mb-4 mt-6">Fitur Lainnya</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] px-4 mb-2 mt-4">Fitur Lainnya</p>
 
-                <a href="{{ route('masyarakat.dashboard') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-chart-line text-2xl"></i>
+                <a href="{{ route('masyarakat.dashboard') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-chart-line text-xl"></i>
                     <span>Dashboard</span>
                 </a>
 
-                <a href="{{ route('masyarakat.surat.create') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-file-signature text-2xl"></i>
+                <a href="{{ route('masyarakat.surat.create') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-file-signature text-xl"></i>
                     <span>Ajukan Surat</span>
                 </a>
 
-                <a href="{{ route('masyarakat.surat.index') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-envelope text-2xl"></i>
+                <a href="{{ route('masyarakat.surat.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-envelope text-xl"></i>
                     <span>Riwayat Surat</span>
                 </a>
 
-                <a href="{{ route('masyarakat.aspirasi.index') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-comment-dots text-2xl"></i>
+                <a href="{{ route('masyarakat.aspirasi.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-comment-dots text-xl"></i>
                     <span>Aspirasi Saya</span>
                 </a>
 
-                <a href="{{ route('berita') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-newspaper text-2xl"></i>
+                <a href="{{ route('berita') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-newspaper text-xl"></i>
                     <span>Berita</span>
                 </a>
 
-                <a href="{{ route('galeri') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-photo-film text-2xl"></i>
+                <a href="{{ route('galeri') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-photo-film text-xl"></i>
                     <span>Galeri</span>
                 </a>
 
-                <a href="{{ route('umkm') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-shop text-2xl"></i>
+                <a href="{{ route('umkm') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-shop text-xl"></i>
                     <span>UMKM Lainnya</span>
                 </a>
 
-                <a href="{{ route('statistik.publik') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-chart-simple text-2xl"></i>
+                <a href="{{ route('statistik.publik') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-chart-simple text-xl"></i>
                     <span>Statistik Desa</span>
                 </a>
 
-                <a href="{{ route('masyarakat.keuangan.index') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-coins text-2xl"></i>
+                <a href="{{ route('masyarakat.keuangan.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-coins text-xl"></i>
                     <span>Keuangan Desa</span>
                 </a>
 
-                <a href="{{ route('profil-desa') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-solid fa-landmark-dome text-2xl"></i>
+                <a href="{{ route('profil-desa') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-solid fa-landmark-dome text-xl"></i>
                     <span>Profil Desa</span>
                 </a>
 
-                <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-5 px-6 py-5 rounded-[2rem] text-slate-500 font-bold text-lg hover:bg-slate-50">
-                    <i class="fa-regular fa-bell text-2xl"></i>
+                <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
+                    <i class="fa-regular fa-bell text-xl"></i>
                     <span>Notifikasi</span>
                 </a>
             </nav>

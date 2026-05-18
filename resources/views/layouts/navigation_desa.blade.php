@@ -1,5 +1,5 @@
 {{-- resources/views/layouts/navigation_desa.blade.php --}}
-<nav class="nav-top" :class="{ 'nav-scrolled': scrolled }" x-data="{ mobileMenuOpen: false }">
+<nav class="nav-top" :class="{ 'nav-scrolled': scrolled }" x-data="{}">
     <div class="w-full flex justify-between items-center">
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="flex items-center gap-3 group">
@@ -12,8 +12,8 @@
         </a>
 
         {{-- Desktop Menu --}}
-        <div class="hidden lg:flex items-center gap-8">
-            <div class="flex gap-4 text-sm font-medium">
+        <div class="hidden lg:flex items-center gap-6">
+            <div class="flex items-center gap-2 text-sm font-semibold">
                 
                 {{-- ============================================= --}}
                 {{-- MENU UNTUK ROLE: ADMIN --}}
@@ -21,17 +21,89 @@
                 @auth
                     @if(Auth::user()->role && Auth::user()->role->nama_role == 'admin')
                         <a href="{{ route('admin.dashboard') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Dashboard</a>
-                        <a href="{{ route('admin.pengajuan-surat.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Pengajuan Surat</a>
-                        <a href="{{ route('admin.penduduk.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Data Penduduk</a>
-                        <a href="{{ route('admin.berita.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Berita</a>
-                        <a href="{{ route('admin.galeri.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Galeri</a>
-                        <a href="{{ route('admin.aspirasi.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Aspirasi</a>
-                        <a href="{{ route('admin.umkm.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">UMKM</a>
-                        <a href="{{ route('admin.pengurus.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Pengurus</a>
-                        <a href="{{ route('admin.statistik.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik</a>
-                        <a href="{{ route('admin.keuangan.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">💰 Keuangan</a>
-                        <a href="{{ route('admin.profil-desa.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">🏛️ Profil Desa</a>
-                        <a href="{{ route('admin.kontak-desa.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">📞 Kontak Desa</a>
+                        
+                        {{-- Dropdown Kependudukan --}}
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50 flex items-center gap-1.5">
+                                <span>Kependudukan</span>
+                                <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                            </button>
+                            <div x-show="open" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                 class="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 py-1.5 z-[2000]"
+                                 style="display: none;">
+                                <a href="{{ route('admin.penduduk.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Data Penduduk</a>
+                                <a href="{{ route('admin.pengurus.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Pengurus Desa</a>
+                            </div>
+                        </div>
+
+                        {{-- Dropdown Layanan --}}
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50 flex items-center gap-1.5">
+                                <span>Layanan</span>
+                                <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                            </button>
+                            <div x-show="open" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                 class="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 py-1.5 z-[2000]"
+                                 style="display: none;">
+                                <a href="{{ route('admin.pengajuan-surat.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Pengajuan Surat</a>
+                                <a href="{{ route('admin.aspirasi.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Aspirasi Warga</a>
+                            </div>
+                        </div>
+
+                        {{-- Dropdown Informasi --}}
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50 flex items-center gap-1.5">
+                                <span>Informasi</span>
+                                <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                            </button>
+                            <div x-show="open" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                 class="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 py-1.5 z-[2000]"
+                                 style="display: none;">
+                                <a href="{{ route('admin.berita.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Berita Desa</a>
+                                <a href="{{ route('admin.galeri.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Galeri Kegiatan</a>
+                                <a href="{{ route('admin.profil-desa.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">🏛️ Profil Desa</a>
+                                <a href="{{ route('admin.kontak-desa.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">📞 Kontak Desa</a>
+                            </div>
+                        </div>
+
+                        {{-- Dropdown Ekonomi & Data --}}
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50 flex items-center gap-1.5">
+                                <span>Ekonomi & Data</span>
+                                <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                            </button>
+                            <div x-show="open" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                 class="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 py-1.5 z-[2000]"
+                                 style="display: none;">
+                                <a href="{{ route('admin.umkm.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Kelola UMKM</a>
+                                <a href="{{ route('admin.statistik.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Statistik Desa</a>
+                                <a href="{{ route('admin.keuangan.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">💰 Keuangan Desa</a>
+                            </div>
+                        </div>
                         
                 {{-- ============================================= --}}
                 {{-- MENU UNTUK ROLE: UMKM --}}
@@ -39,33 +111,143 @@
                     @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
                         @php $currentUmkmId = optional(Auth::user()->umkm)->id_umkm; @endphp
                         <a href="{{ route('masyarakat.dashboard') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Dashboard</a>
-                        <a href="{{ route('masyarakat.surat.create') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Ajukan Surat</a>
-                        <a href="{{ route('masyarakat.surat.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Riwayat Surat</a>
+                        
+                        {{-- Dropdown Layanan Surat --}}
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50 flex items-center gap-1.5">
+                                <span>Layanan Surat</span>
+                                <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                            </button>
+                            <div x-show="open" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                 class="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 py-1.5 z-[2000]"
+                                 style="display: none;">
+                                <a href="{{ route('masyarakat.surat.create') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Ajukan Surat</a>
+                                <a href="{{ route('masyarakat.surat.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Riwayat Surat</a>
+                            </div>
+                        </div>
+
+                        {{-- Dropdown Informasi --}}
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50 flex items-center gap-1.5">
+                                <span>Informasi</span>
+                                <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                            </button>
+                            <div x-show="open" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                 class="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 py-1.5 z-[2000]"
+                                 style="display: none;">
+                                <a href="{{ route('berita') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Berita Desa</a>
+                                <a href="{{ route('galeri') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Galeri Kegiatan</a>
+                                <a href="{{ route('profil-desa') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">🏛️ Profil Desa</a>
+                                <a href="{{ route('kontak') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Hubungi Kami</a>
+                            </div>
+                        </div>
+
+                        {{-- Dropdown UMKM & Keuangan --}}
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50 flex items-center gap-1.5">
+                                <span>UMKM & Keuangan</span>
+                                <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                            </button>
+                            <div x-show="open" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                 class="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 py-1.5 z-[2000]"
+                                 style="display: none;">
+                                <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Kelola Produk</a>
+                                <a href="{{ route('umkm') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">UMKM Lainnya</a>
+                                <a href="{{ route('statistik.publik') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Statistik Desa</a>
+                                <a href="{{ route('masyarakat.keuangan.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">💰 Keuangan Desa</a>
+                            </div>
+                        </div>
+
                         <a href="{{ route('masyarakat.aspirasi.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Aspirasi Saya</a>
-                        <a href="{{ route('berita') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Berita</a>
-                        <a href="{{ route('galeri') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Galeri</a>
-                        <a href="{{ route('umkm') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">UMKM</a>
-                        <a href="{{ route('statistik.publik') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik Desa</a>
-                        <a href="{{ route('masyarakat.keuangan.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">💰 Keuangan</a>
-                        <a href="{{ route('profil-desa') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">🏛️ Profil Desa</a>
-                        <a href="{{ route('kontak') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Kontak</a>
-                        <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Kelola Produk</a>
                         
                 {{-- ============================================= --}}
                 {{-- MENU UNTUK ROLE: MASYARAKAT --}}
                 {{-- ============================================= --}}
                     @else
                         <a href="{{ route('masyarakat.dashboard') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Dashboard</a>
-                        <a href="{{ route('masyarakat.surat.create') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Ajukan Surat</a>
-                        <a href="{{ route('masyarakat.surat.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Riwayat Surat</a>
+                        
+                        {{-- Dropdown Layanan Surat --}}
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50 flex items-center gap-1.5">
+                                <span>Layanan Surat</span>
+                                <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                            </button>
+                            <div x-show="open" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                 class="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 py-1.5 z-[2000]"
+                                 style="display: none;">
+                                <a href="{{ route('masyarakat.surat.create') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Ajukan Surat</a>
+                                <a href="{{ route('masyarakat.surat.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Riwayat Surat</a>
+                            </div>
+                        </div>
+
+                        {{-- Dropdown Informasi --}}
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50 flex items-center gap-1.5">
+                                <span>Informasi</span>
+                                <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                            </button>
+                            <div x-show="open" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                 class="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 py-1.5 z-[2000]"
+                                 style="display: none;">
+                                <a href="{{ route('berita') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Berita Desa</a>
+                                <a href="{{ route('galeri') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Galeri Kegiatan</a>
+                                <a href="{{ route('profil-desa') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">🏛️ Profil Desa</a>
+                                <a href="{{ route('kontak') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Hubungi Kami</a>
+                            </div>
+                        </div>
+
+                        {{-- Dropdown Ekonomi & Statistik --}}
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50 flex items-center gap-1.5">
+                                <span>Ekonomi & Statistik</span>
+                                <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                            </button>
+                            <div x-show="open" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                 class="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 py-1.5 z-[2000]"
+                                 style="display: none;">
+                                <a href="{{ route('umkm') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Pasar UMKM</a>
+                                <a href="{{ route('statistik.publik') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">Statistik Desa</a>
+                                <a href="{{ route('masyarakat.keuangan.index') }}" class="block px-4 py-2.5 text-sm text-emerald-950/80 hover:text-emerald-600 hover:bg-emerald-50 transition font-medium">💰 Keuangan Desa</a>
+                            </div>
+                        </div>
+
                         <a href="{{ route('masyarakat.aspirasi.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Aspirasi Saya</a>
-                        <a href="{{ route('berita') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Berita</a>
-                        <a href="{{ route('galeri') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Galeri</a>
-                        <a href="{{ route('umkm') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">UMKM</a>
-                        <a href="{{ route('statistik.publik') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik Desa</a>
-                        <a href="{{ route('masyarakat.keuangan.index') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">💰 Keuangan</a>
-                        <a href="{{ route('profil-desa') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">🏛️ Profil Desa</a>
-                        <a href="{{ route('kontak') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Kontak</a>
                     @endif
                 @else
                     {{-- ============================================= --}}
@@ -80,6 +262,7 @@
                     <a href="{{ route('statistik.publik') }}" class="text-emerald-950/70 hover:text-emerald-600 transition px-3 py-2 rounded-lg hover:bg-emerald-50">Statistik Desa</a>
                 @endauth
             </div>
+        </div>
             
             {{-- Tombol Auth & Notifikasi --}}
             <div class="flex gap-3">
@@ -207,7 +390,7 @@
                         <div x-show="userMenu" 
                             @click.away="userMenu = false" 
                             x-cloak 
-                            class="absolute top-full right-0 mt-3 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden z-50"
+                            class="absolute top-full right-0 mt-3 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden z-50 max-h-[85vh] flex flex-col"
                             x-transition:enter="transition-all duration-300 ease-out"
                             x-transition:enter-start="opacity-0 -translate-y-5 scale-95"
                             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
@@ -216,7 +399,7 @@
                             x-transition:leave-end="opacity-0 -translate-y-5 scale-95">
                             
                             {{-- Header Profil --}}
-                            <div class="bg-gradient-to-r from-sky-500 via-sky-400 to-blue-500 px-5 py-5 text-white">
+                            <div class="bg-gradient-to-r from-sky-500 via-sky-400 to-blue-500 px-5 py-5 text-white flex-shrink-0">
                                 <div class="flex items-center gap-4">
                                     <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-2xl font-bold backdrop-blur-sm shadow-inner">
                                         {{ substr(Auth::user()->name, 0, 1) }}
@@ -235,7 +418,7 @@
                             </div>
                             
                             {{-- Menu Items --}}
-                            <div class="py-2">
+                            <div class="py-2 overflow-y-auto max-h-[45vh] no-scrollbar flex-1">
                                 @if(Auth::user()->role->nama_role == 'admin')
                                     <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-sky-50 transition-all duration-200 group">
                                         <i class="fa-solid fa-chart-line w-5 text-sky-500 group-hover:scale-110 transition"></i>
@@ -388,298 +571,57 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{ route('register') }}" class="px-4 py-2 rounded-full bg-emerald-500 text-white text-sm font-medium hover:bg-emerald-600 transition shadow-md">
+                    <a href="{{ route('register') }}" class="btn-nav-register px-4 py-2 rounded-full text-white text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 shadow-md">
                         <i class="fa-regular fa-user-plus mr-1"></i> Daftar
                     </a>
-                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-full border-2 border-emerald-500 text-emerald-600 text-sm font-medium hover:bg-emerald-50 transition">
+                    <a href="{{ route('login') }}" class="btn-nav-login px-4 py-2 rounded-full border-2 text-sm font-semibold transition-all duration-300 flex items-center gap-1.5">
                         <i class="fa-solid fa-sign-in-alt mr-1"></i> Masuk
                     </a>
                 @endauth
             </div>
         </div>
 
-        {{-- Mobile Menu Button --}}
-        <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
-            <i class="fa-solid text-emerald-700" :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'"></i>
-        </button>
     </div>
-
-    {{-- Mobile Menu Dropdown - Simpel Minimalis Estetik --}}
-<div x-show="mobileMenuOpen" 
-     x-collapse 
-     class="lg:hidden absolute top-full left-0 right-0 mt-3 mx-4 overflow-hidden z-50"
-     x-transition:enter="transition-all duration-300 ease-out"
-     x-transition:enter-start="opacity-0 -translate-y-4"
-     x-transition:enter-end="opacity-100 translate-y-0"
-     x-transition:leave="transition-all duration-200 ease-in"
-     x-transition:leave-start="opacity-100 translate-y-0"
-     x-transition:leave-end="opacity-0 -translate-y-4">
-    
-    <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-        
-        <div class="max-h-[70vh] overflow-y-auto">
-            
-            @auth
-                {{-- Header Profil --}}
-                <div class="px-5 pt-5 pb-4 border-b border-gray-100">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold shadow-md">
-                            {{ substr(Auth::user()->name, 0, 1) }}
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-800">{{ Auth::user()->name }}</p>
-                            <p class="text-xs text-gray-400">
-                                @if(Auth::user()->role->nama_role == 'admin') Administrator
-                                @elseif(Auth::user()->role->nama_role == 'umkm') Pelaku UMKM
-                                @else Warga Desa @endif
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                {{-- Menu Items --}}
-                <div class="py-2">
-                    @if(Auth::user()->role->nama_role == 'admin')
-                        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-chart-line w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Dashboard</span>
-                        </a>
-                        <a href="{{ route('admin.pengajuan-surat.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Pengajuan Surat</span>
-                        </a>
-                        <a href="{{ route('admin.penduduk.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-users w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Data Penduduk</span>
-                        </a>
-                        <a href="{{ route('admin.berita.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-newspaper w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Berita</span>
-                        </a>
-                        <a href="{{ route('admin.galeri.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-photo-film w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Galeri</span>
-                        </a>
-                        <a href="{{ route('admin.aspirasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-comment-dots w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Aspirasi</span>
-                        </a>
-                        <a href="{{ route('admin.umkm.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-store w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">UMKM</span>
-                        </a>
-                        <a href="{{ route('admin.pengurus.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-user-tie w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Pengurus</span>
-                        </a>
-                        <div class="h-px bg-gray-100 my-2 mx-5"></div>
-                        <a href="{{ route('admin.statistik.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-chart-simple w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Statistik</span>
-                        </a>
-                        <a href="{{ route('admin.keuangan.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-coins w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Keuangan</span>
-                        </a>
-                        <a href="{{ route('admin.profil-desa.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-building w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Profil Desa</span>
-                        </a>
-                        <a href="{{ route('admin.kontak-desa.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-address-book w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Kontak Desa</span>
-                        </a>
-                        <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-regular fa-bell w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Notifikasi</span>
-                        </a>
-                    @elseif(Auth::user()->role->nama_role == 'umkm')
-                        @php $currentUmkmId = optional(Auth::user()->umkm)->id_umkm; @endphp
-                        <a href="{{ route('masyarakat.dashboard') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-chart-line w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Dashboard</span>
-                        </a>
-                        <a href="{{ route('masyarakat.surat.create') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-file-signature w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Ajukan Surat</span>
-                        </a>
-                        <a href="{{ route('masyarakat.surat.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Riwayat Surat</span>
-                        </a>
-                        <a href="{{ route('masyarakat.aspirasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-comment-dots w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Aspirasi Saya</span>
-                        </a>
-                        <div class="h-px bg-gray-100 my-2 mx-5"></div>
-                        <a href="{{ route('berita') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-newspaper w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Berita</span>
-                        </a>
-                        <a href="{{ route('galeri') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-photo-film w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Galeri</span>
-                        </a>
-                        <a href="{{ route('umkm') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-store w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">UMKM Lainnya</span>
-                        </a>
-                        <a href="{{ route('kontak') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Kontak</span>
-                        </a>
-                        <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-boxes-stacked w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Kelola Produk</span>
-                        </a>
-                        <a href="{{ route('statistik.publik') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-chart-simple w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Statistik Desa</span>
-                        </a>
-                        <a href="{{ route('masyarakat.keuangan.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-coins w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Keuangan</span>
-                        </a>
-                        <a href="{{ route('profil-desa') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-landmark-dome w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Profil Desa</span>
-                        </a>
-                        <a href="{{ route('kontak') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Kontak</span>
-                        </a>
-                        <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-regular fa-bell w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Notifikasi</span>
-                        </a>
-                    @else
-                        <a href="{{ route('masyarakat.dashboard') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-chart-line w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Dashboard</span>
-                        </a>
-                        <a href="{{ route('masyarakat.surat.create') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-file-signature w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Ajukan Surat</span>
-                        </a>
-                        <a href="{{ route('masyarakat.surat.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Riwayat Surat</span>
-                        </a>
-                        <a href="{{ route('masyarakat.aspirasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-comment-dots w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Aspirasi Saya</span>
-                        </a>
-                        <div class="h-px bg-gray-100 my-2 mx-5"></div>
-                        <a href="{{ route('berita') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-newspaper w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Berita</span>
-                        </a>
-                        <a href="{{ route('galeri') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-photo-film w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Galeri</span>
-                        </a>
-                        <a href="{{ route('umkm') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-store w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">UMKM</span>
-                        </a>
-                        <a href="{{ route('statistik.publik') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-chart-simple w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Statistik Desa</span>
-                        </a>
-                        <a href="{{ route('masyarakat.keuangan.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-coins w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Keuangan</span>
-                        </a>
-                        <a href="{{ route('profil-desa') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-landmark-dome w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Profil Desa</span>
-                        </a>
-                        <a href="{{ route('kontak') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Kontak</span>
-                        </a>
-                        <a href="{{ route('notifikasi.index') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                            <i class="fa-regular fa-bell w-5 group-hover:scale-110 transition"></i>
-                            <span class="text-sm">Notifikasi</span>
-                        </a>
-                    @endif
-                </div>
-                
-                {{-- Logout Button --}}
-                <div class="p-4 border-t border-gray-100">
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-all duration-200">
-                            <i class="fa-solid fa-sign-out-alt"></i>
-                            <span>Logout</span>
-                        </button>
-                    </form>
-                </div>
-                
-            @else
-                {{-- Guest Menu --}}
-                <div class="p-5 text-center border-b border-gray-100">
-                    <i class="fa-regular fa-user text-3xl text-gray-300 mb-2 block"></i>
-                    <p class="text-gray-600 text-sm">Selamat Datang</p>
-                    <p class="text-gray-400 text-xs mt-1">Silakan login untuk mengakses layanan</p>
-                </div>
-                
-                <div class="py-2">
-                    <a href="{{ route('home') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                        <i class="fa-solid fa-house w-5 group-hover:scale-110 transition"></i>
-                        <span class="text-sm">Beranda</span>
-                    </a>
-                    <a href="{{ route('profil-desa') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                        <i class="fa-solid fa-landmark-dome w-5 group-hover:scale-110 transition"></i>
-                        <span class="text-sm">Profil Desa</span>
-                    </a>
-                    <a href="{{ route('berita') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                        <i class="fa-solid fa-newspaper w-5 group-hover:scale-110 transition"></i>
-                        <span class="text-sm">Berita</span>
-                    </a>
-                    <a href="{{ route('galeri') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                        <i class="fa-solid fa-photo-film w-5 group-hover:scale-110 transition"></i>
-                        <span class="text-sm">Galeri</span>
-                    </a>
-                    <a href="{{ route('umkm') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                        <i class="fa-solid fa-store w-5 group-hover:scale-110 transition"></i>
-                        <span class="text-sm">UMKM</span>
-                    </a>
-                    <a href="{{ route('kontak') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                        <i class="fa-solid fa-envelope w-5 group-hover:scale-110 transition"></i>
-                        <span class="text-sm">Kontak</span>
-                    </a>
-                    <a href="{{ route('statistik.publik') }}" class="flex items-center gap-3 px-5 py-3 text-gray-600 hover:bg-gray-50 hover:text-emerald-600 transition-all duration-200 group">
-                        <i class="fa-solid fa-chart-simple w-5 group-hover:scale-110 transition"></i>
-                        <span class="text-sm">Statistik Desa</span>
-                    </a>
-                </div>
-                
-                <div class="p-4 border-t border-gray-100 flex gap-3">
-                    <a href="{{ route('register') }}" class="flex-1 text-center px-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-medium transition-all duration-200">
-                        Daftar
-                    </a>
-                    <a href="{{ route('login') }}" class="flex-1 text-center px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-medium transition-all duration-200">
-                        Login
-                    </a>
-                </div>
-            @endauth
-        </div>
-    </div>
-</div>
 </nav>
 
 <style>
     .nav-top {
         position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-        width: 80%; max-width: 4200px; height: 80px;
+        width: 90%; max-width: 1400px; height: 80px;
         background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(25px);
         border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 50px;
         z-index: 1000; display: flex; align-items: center; padding: 0 40px;
         transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .nav-scrolled { top: 10px; width: 85%; height: 70px; background: rgba(255, 255, 255, 0.98); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+    .nav-scrolled { top: 10px; width: 95%; height: 70px; background: rgba(255, 255, 255, 0.98); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+    
+    @media (min-width: 1025px) {
+        .nav-top {
+            left: 120px;
+            right: 30px;
+            width: auto;
+            transform: none;
+            max-width: none;
+        }
+        .nav-scrolled {
+            top: 10px;
+            left: 120px;
+            right: 30px;
+            width: auto;
+        }
+    }
+    
     [x-cloak] { display: none !important; }
+    
+    /* Hide scrollbar utility */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
     /* Custom Scrollbar untuk Mobile Menu */
     .custom-scroll::-webkit-scrollbar {
         width: 3px;
@@ -691,5 +633,93 @@
     .custom-scroll::-webkit-scrollbar-thumb {
         background: #cbd5e1;
         border-radius: 10px;
+    }
+    
+    /* Premium Hover Animation for Desktop Navbar Dropdowns */
+    .nav-top a.group {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    }
+    .nav-top a.group:hover {
+        transform: translateX(4px) scale(1.015);
+        box-shadow: 0 4px 12px rgba(6, 78, 59, 0.04);
+        background-color: rgba(16, 185, 129, 0.05) !important; /* Soft emerald overlay */
+    }
+    
+    /* Main Navbar Category Triggers Hover */
+    .nav-top button.group {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    }
+    .nav-top button.group:hover {
+        color: #10b981 !important; /* Soft green */
+        transform: translateY(-1px);
+    }
+    
+    /* User Profile Dropdown Links Hover */
+    div[x-show="userMenu"] a.group {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    }
+    div[x-show="userMenu"] a.group:hover {
+        background: rgba(56, 189, 248, 0.08) !important; /* sky-100 soft */
+        color: #0284c7 !important; /* sky-600 */
+        padding-left: 24px !important; /* Smooth right slide! */
+    }
+    div[x-show="userMenu"] a.group:hover i {
+        color: #0284c7 !important;
+        transform: scale(1.15) rotate(5deg) !important;
+    }
+    
+    /* Active Link State for Navbar */
+    .nav-top a.active, .nav-top button.active {
+        color: #059669 !important; /* emerald-600 */
+        background-color: rgba(16, 185, 129, 0.08) !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Premium Hover for Register (Daftar) Button */
+    .btn-nav-register {
+        background: linear-gradient(135deg, #10b981, #059669);
+        border: 1px solid rgba(255,255,255,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-nav-register::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+        transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-nav-register:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3) !important;
+        background: linear-gradient(135deg, #34d399, #10b981);
+    }
+    .btn-nav-register:hover::before {
+        left: 100%;
+    }
+    .btn-nav-register:hover i {
+        transform: scale(1.15) rotate(-10deg);
+        transition: 0.3s;
+    }
+    
+    /* Premium Hover for Login (Masuk) Button */
+    .btn-nav-login {
+        border-color: #10b981 !important;
+        color: #10b981 !important;
+        background: transparent;
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-nav-login:hover {
+        color: #fff !important;
+        border-color: #10b981 !important;
+        background: #10b981 !important;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2) !important;
+    }
+    .btn-nav-login:hover i {
+        transform: scale(1.15) translateX(2px);
+        transition: 0.3s;
     }
 </style>

@@ -393,10 +393,10 @@
         
         {{-- Logout untuk semua role yang login --}}
         <div class="w-full h-px bg-white/20 my-2"></div>
-        <a href="{{ route('logout') }}" class="side-item group" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <a href="{{ route('logout') }}" class="side-item side-logout group" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="fa-solid fa-sign-out-alt"></i>
             <div class="info-box">
-                <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                <span class="text-[9px] font-black uppercase text-red-500 tracking-wider">Aksi</span>
                 <h5 class="text-base font-serif italic text-emerald-950 mt-1">Logout</h5>
                 <p class="text-xs text-gray-400">Keluar dari portal</p>
             </div>
@@ -408,60 +408,82 @@
 </aside>
 
 {{-- Mobile Bottom Navigation --}}
-<div class="mobile-nav">
-    @auth
-        @if(Auth::user()->role && Auth::user()->role->nama_role == 'admin')
-            <a href="{{ route('admin.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
-            <a href="{{ route('admin.pengajuan-surat.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-envelope"></i></a>
-            <a href="{{ route('admin.penduduk.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-users"></i></a>
-            <a href="{{ route('admin.statistik.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
-            <a href="{{ route('admin.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
-            <a href="{{ route('admin.profil-desa.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-building"></i></a>
-            <a href="{{ route('notifikasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-regular fa-bell"></i></a>
-        @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
-            <a href="{{ route('masyarakat.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
-            <a href="{{ route('masyarakat.surat.create') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-file-signature"></i></a>
-            <a href="{{ route('masyarakat.surat.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-envelope"></i></a>
-            <a href="{{ route('masyarakat.aspirasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-comment-dots"></i></a>
-            <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
-            <a href="{{ route('galeri') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-photo-film"></i></a>
-            <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
-            <a href="{{ route('masyarakat.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
-            <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-landmark-dome"></i></a>
-            <a href="{{ route('notifikasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-regular fa-bell"></i></a>
+<div class="mobile-nav flex items-center justify-between gap-3 px-4 py-1">
+    <!-- Inner Scrollable Container for Links -->
+    <div class="flex-1 flex items-center justify-around gap-2 overflow-x-auto no-scrollbar py-2">
+        @auth
+            @if(Auth::user()->role && Auth::user()->role->nama_role == 'admin')
+                <a href="{{ route('admin.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-chart-line"></i></a>
+                <a href="{{ route('admin.pengajuan-surat.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-envelope"></i></a>
+                <a href="{{ route('admin.penduduk.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-users"></i></a>
+                <a href="{{ route('admin.berita.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-newspaper"></i></a>
+                <a href="{{ route('admin.galeri.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-photo-film"></i></a>
+                <a href="{{ route('admin.aspirasi.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-comment-dots"></i></a>
+                <a href="{{ route('admin.umkm.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-store"></i></a>
+                <a href="{{ route('admin.pengurus.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-user-tie"></i></a>
+                <a href="{{ route('admin.statistik.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-chart-simple"></i></a>
+                <a href="{{ route('admin.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-coins"></i></a>
+                <a href="{{ route('admin.profil-desa.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-landmark-dome"></i></a>
+                <a href="{{ route('admin.kontak-desa.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-phone"></i></a>
+                <a href="{{ route('notifikasi.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-regular fa-bell"></i></a>
+            @elseif(Auth::user()->role && Auth::user()->role->nama_role == 'umkm')
+                @php $currentUmkmId = optional(Auth::user()->umkm)->id_umkm; @endphp
+                <a href="{{ route('masyarakat.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-chart-line"></i></a>
+                <a href="{{ route('masyarakat.surat.create') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-file-signature"></i></a>
+                <a href="{{ route('masyarakat.surat.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-envelope"></i></a>
+                <a href="{{ route('masyarakat.aspirasi.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-comment-dots"></i></a>
+                <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-newspaper"></i></a>
+                <a href="{{ route('galeri') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-photo-film"></i></a>
+                <a href="{{ route('umkm') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-store"></i></a>
+                <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-chart-simple"></i></a>
+                <a href="{{ route('masyarakat.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-coins"></i></a>
+                <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-landmark-dome"></i></a>
+                <a href="{{ route('kontak') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-phone"></i></a>
+                <a href="{{ $currentUmkmId ? route('umkm.show', $currentUmkmId) : route('umkm') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-boxes-stacked"></i></a>
+                <a href="{{ route('notifikasi.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-regular fa-bell"></i></a>
+            @else
+                <a href="{{ route('masyarakat.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-chart-line"></i></a>
+                <a href="{{ route('masyarakat.surat.create') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-file-signature"></i></a>
+                <a href="{{ route('masyarakat.surat.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-envelope"></i></a>
+                <a href="{{ route('masyarakat.aspirasi.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-comment-dots"></i></a>
+                <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-newspaper"></i></a>
+                <a href="{{ route('galeri') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-photo-film"></i></a>
+                <a href="{{ route('umkm') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-store"></i></a>
+                <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-chart-simple"></i></a>
+                <a href="{{ route('masyarakat.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-coins"></i></a>
+                <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-landmark-dome"></i></a>
+                <a href="{{ route('kontak') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-phone"></i></a>
+                <a href="{{ route('notifikasi.index') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-regular fa-bell"></i></a>
+            @endif
         @else
-            <a href="{{ route('masyarakat.dashboard') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-line"></i></a>
-            <a href="{{ route('masyarakat.surat.create') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-file-signature"></i></a>
-            <a href="{{ route('masyarakat.surat.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-envelope"></i></a>
-            <a href="{{ route('masyarakat.aspirasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-comment-dots"></i></a>
-            <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
-            <a href="{{ route('galeri') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-photo-film"></i></a>
-            <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
-            <a href="{{ route('masyarakat.keuangan.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-coins"></i></a>
-            <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-landmark-dome"></i></a>
-            <a href="{{ route('notifikasi.index') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-regular fa-bell"></i></a>
-        @endif
-    @else
-        <a href="{{ route('home') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-house"></i></a>
-        <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-landmark-dome"></i></a>
-        <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-newspaper"></i></a>
-        <a href="{{ route('galeri') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-photo-film"></i></a>
-        <a href="{{ route('umkm') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-store"></i></a>
-        <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-xl transition"><i class="fa-solid fa-chart-simple"></i></a>
-    @endauth
+            <a href="{{ route('home') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-house"></i></a>
+            <a href="{{ route('profil-desa') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-landmark-dome"></i></a>
+            <a href="{{ route('berita') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-newspaper"></i></a>
+            <a href="{{ route('galeri') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-photo-film"></i></a>
+            <a href="{{ route('umkm') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-store"></i></a>
+            <a href="{{ route('statistik.publik') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-chart-simple"></i></a>
+            <a href="{{ route('kontak') }}" class="text-white/60 hover:text-emerald-400 text-lg transition flex-shrink-0"><i class="fa-solid fa-phone"></i></a>
+        @endauth
+    </div>
     
-    @auth
-        <form action="{{ route('logout') }}" method="POST" class="inline">
-            @csrf
-            <button type="submit" class="w-10 h-10 bg-red-500 rounded-xl flex items-center justify-center text-white shadow-lg">
-                <i class="fa-solid fa-sign-out-alt"></i>
-            </button>
-        </form>
-    @else
-        <a href="{{ route('login') }}" class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white shadow-lg">
-            <i class="fa-solid fa-user"></i>
-        </a>
-    @endauth
+    <!-- Divider -->
+    <div class="w-px h-8 bg-white/20 flex-shrink-0 mx-1"></div>
+
+    <!-- Login/Logout CTA -->
+    <div class="flex-shrink-0 flex items-center justify-center">
+        @auth
+            <form action="{{ route('logout') }}" method="POST" class="inline">
+                @csrf
+                <button type="submit" class="w-9 h-9 bg-red-500/80 hover:bg-red-500 rounded-xl flex items-center justify-center text-white shadow-lg transition">
+                    <i class="fa-solid fa-sign-out-alt text-sm"></i>
+                </button>
+            </form>
+        @else
+            <a href="{{ route('login') }}" class="w-9 h-9 bg-emerald-500 hover:bg-emerald-600 rounded-xl flex items-center justify-center text-white shadow-lg transition">
+                <i class="fa-solid fa-user text-sm"></i>
+            </a>
+        @endauth
+    </div>
 </div>
 
 <style>
@@ -473,16 +495,19 @@
         width: 65px;  /* DIPERKECIL dari 80px menjadi 65px */
         background: linear-gradient(135deg, #064e3b, #022c22);
         backdrop-filter: blur(20px);
-        border-radius: 40px; /* DIPERKECIL */
+        border-radius: 35px; /* DIPERKECIL */
         z-index: 1100;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 12px; /* DIPERKECIL dari 18px menjadi 12px */
+        gap: 12px; /* Kembalikan ke gap 12px agar pas di layar besar */
         padding: 20px 0; /* DIPERKECIL */
         box-shadow: 0 25px 50px rgba(6, 78, 59, 0.3);
         border: 1px solid rgba(255,255,255,0.12);
+        height: auto;
+        max-height: calc(100vh - 60px);
+        overflow: visible; /* Sangat penting agar info-box tidak terpotong! */
     }
     
     .side-item {
@@ -495,40 +520,58 @@
         border-radius: 20px; /* DIPERKECIL */
         color: rgba(255,255,255,0.45);
         font-size: 18px; /* DIPERKECIL dari 22px menjadi 18px */
-        transition: 0.3s;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Ultra smooth spring transition */
         cursor: pointer;
+        flex-shrink: 0;
     }
     
-    .side-item:hover, .side-item.active {
-        color: #fff;
-        background: rgba(255,255,255,0.12);
-        transform: translateY(-2px);
+    .side-item:hover {
+        color: #34d399 !important; /* Soft spring green */
+        background: rgba(255,255,255,0.18);
+        transform: translateY(-3px) scale(1.1) rotate(5deg); /* Premium bounce zoom + tilt! */
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15);
     }
     
     .side-item.active {
-        color: #10b981;
+        color: #064e3b;
         background: #fff;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
+        transform: scale(1.05);
+    }
+    
+    /* Special Hover for Logout */
+    .side-item.side-logout:hover {
+        color: #ef4444 !important; /* Premium Crimson Red */
+        background: rgba(239, 68, 68, 0.15) !important;
+        transform: translateY(-3px) scale(1.1) rotate(-5deg) !important; /* Opposite tilt! */
+        box-shadow: 0 8px 20px rgba(239, 68, 68, 0.2) !important;
     }
     
     .info-box {
         position: absolute;
-        left: 70px; /* DIPERKECIL */
-        background: white;
-        padding: 12px 20px; /* DIPERKECIL */
+        left: 75px;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(15px);
+        padding: 12px 20px;
         border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        box-shadow: 0 20px 40px rgba(6, 78, 59, 0.12);
         opacity: 0;
         visibility: hidden;
-        transform: translateX(-15px);
-        transition: 0.3s;
-        min-width: 220px; /* DIPERKECIL */
-        border: 1px solid rgba(0,0,0,0.04);
+        transform: translateX(-20px) scale(0.9);
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Dynamic bounce in! */
+        min-width: 220px;
+        border: 1px solid rgba(16, 185, 129, 0.15);
         z-index: 1200;
+        pointer-events: none;
+    }
+    
+    .side-item.side-logout .info-box {
+        border-color: rgba(239, 68, 68, 0.15) !important;
+        box-shadow: 0 20px 40px rgba(239, 68, 68, 0.12) !important;
     }
     
     .info-box h5 {
-        font-size: 14px; /* UKURAN TEKS DIKECILKAN */
+        font-size: 14px;
         margin-top: 4px;
     }
     
@@ -538,12 +581,55 @@
     
     .info-box span {
         font-size: 8px;
+        transition: color 0.3s;
     }
     
     .side-item:hover .info-box {
         opacity: 1;
         visibility: visible;
-        transform: translateX(0);
+        transform: translateX(0) scale(1);
+    }
+    
+    .side-item.side-logout:hover .info-box {
+        border-color: rgba(239, 68, 68, 0.3) !important;
+        box-shadow: 0 20px 40px rgba(239, 68, 68, 0.25) !important;
+    }
+
+    /* Scaling Responsif Berdasarkan Tinggi Layar agar Tidak Melebihi Viewport */
+    @media (max-height: 850px) {
+        .magic-sidebar {
+            gap: 8px;
+            padding: 15px 0;
+        }
+        .side-item {
+            width: 38px;
+            height: 38px;
+            font-size: 16px;
+            border-radius: 16px;
+        }
+        .info-box {
+            left: 60px;
+            padding: 10px 16px;
+            min-width: 200px;
+        }
+    }
+
+    @media (max-height: 700px) {
+        .magic-sidebar {
+            gap: 6px;
+            padding: 10px 0;
+        }
+        .side-item {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+            border-radius: 12px;
+        }
+        .info-box {
+            left: 50px;
+            padding: 8px 12px;
+            min-width: 180px;
+        }
     }
     
     .mobile-nav {
@@ -565,6 +651,15 @@
     
     .mobile-nav a {
         font-size: 18px; /* DIPERKECIL */
+    }
+    
+    /* Hide scrollbar utility */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
     
     @media (max-width: 1024px) {
