@@ -253,9 +253,24 @@
     </style>
 </head>
 
-<body x-data="{ scrolled: false, slide: 0, totalSlides: 6, faq: null, tahun: new Date().getFullYear() }" 
-      @scroll.window="scrolled = (window.pageYOffset > 50)" 
+<body x-data="{ scrolled: false, scrollProgress: 0, slide: 0, totalSlides: 6, faq: null, tahun: new Date().getFullYear() }" 
+      @scroll.window="scrolled = (window.pageYOffset > 50); scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;" 
       x-init="setInterval(() => slide = (slide + 1) % totalSlides, 7000)">
+
+    {{-- Progress Bar Dinamis berdasarkan Role --}}
+    @php
+        $progressColor = 'linear-gradient(to right, #10b981, #34d399)'; // Masyarakat / Guest (Emerald)
+        if(auth()->check()) {
+            if(auth()->user()->isAdmin()) {
+                $progressColor = 'linear-gradient(to right, #3b82f6, #60a5fa)'; // Admin (Blue)
+            } elseif(auth()->user()->isUmkm()) {
+                $progressColor = 'linear-gradient(to right, #f59e0b, #fbbf24)'; // UMKM (Amber)
+            }
+        }
+    @endphp
+    <div class="fixed top-0 left-0 h-[4px] z-[11000] transition-all duration-150 ease-out shadow-[0_0_12px_rgba(0,0,0,0.3)]" 
+         :style="`width: ${scrollProgress}%; background: {{ $progressColor }};`">
+    </div>
 
     @include('layouts.navigation_desa')
     @include('layouts.navigation_magic_sidebar')
@@ -487,5 +502,133 @@
         })();
     </script>
     @stack('scripts')
+    <!-- Premium Logout Dialog -->
+    <div id="logout-premium-dialog" class="fixed inset-0 z-[10000] hidden" aria-hidden="true">
+        <div id="logout-backdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-xl opacity-0 transition-opacity duration-500 ease-out"></div>
+        
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div id="logout-panel" class="w-full max-w-sm opacity-0 scale-90 translate-y-8 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
+                <div class="relative overflow-hidden rounded-[32px] bg-white/90 backdrop-blur-2xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] border border-white/50 text-center p-8">
+                    <!-- Abstract glowing orbs -->
+                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-rose-500/20 blur-[40px] rounded-full pointer-events-none"></div>
+                    <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-emerald-500/20 blur-[40px] rounded-full pointer-events-none"></div>
+
+                    <!-- Icon Container -->
+                    <div class="relative mx-auto w-20 h-20 bg-gradient-to-tr from-rose-500 to-red-400 rounded-3xl flex items-center justify-center shadow-xl shadow-rose-500/30 mb-6 rotate-3 transform hover:rotate-0 transition-transform duration-300">
+                        <i class="fa-solid fa-arrow-right-from-bracket text-white text-3xl translate-x-0.5"></i>
+                        <div class="absolute inset-0 rounded-3xl border-2 border-white/40 animate-ping opacity-20" style="animation-duration: 3s;"></div>
+                    </div>
+
+                    <h3 class="text-2xl font-black text-slate-800 tracking-tight font-serif italic mb-2">Akhiri Sesi?</h3>
+                    <p class="text-slate-500 text-[13px] mb-8 px-2 leading-relaxed font-medium">
+                        Apakah Anda yakin ingin keluar dari aplikasi? Anda harus login kembali untuk mengakses fitur.
+                    </p>
+
+                    <div class="flex flex-col gap-3 relative z-10">
+                        <button type="button" id="logout-btn-confirm"
+                                class="w-full py-3.5 rounded-2xl font-black text-[13px] uppercase tracking-widest
+                                       bg-gradient-to-r from-rose-600 to-red-500 text-white shadow-lg shadow-rose-500/25
+                                       hover:shadow-rose-500/40 hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
+                            <span class="relative z-10 flex items-center justify-center gap-2">
+                                <span>Ya, Keluar</span>
+                            </span>
+                            <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                        </button>
+                        
+                        <button type="button" id="logout-btn-cancel"
+                                class="w-full py-3.5 rounded-2xl font-bold text-[13px] uppercase tracking-widest
+                                       bg-slate-100/80 text-slate-500 hover:bg-slate-200 hover:text-slate-700
+                                       transition-all duration-300">
+                            Batal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const dialog = document.getElementById('logout-premium-dialog');
+            if (!dialog) return;
+            const backdrop = document.getElementById('logout-backdrop');
+            const panel = document.getElementById('logout-panel');
+            const confirmBtn = document.getElementById('logout-btn-confirm');
+            const cancelBtn = document.getElementById('logout-btn-cancel');
+
+            let resolver = null;
+            let isOpen = false;
+
+            function openLogoutDialog() {
+                dialog.classList.remove('hidden');
+                dialog.setAttribute('aria-hidden', 'false');
+                isOpen = true;
+
+                // Trigger reflow
+                void dialog.offsetWidth;
+
+                backdrop.classList.remove('opacity-0');
+                backdrop.classList.add('opacity-100');
+                
+                panel.classList.remove('opacity-0', 'scale-90', 'translate-y-8');
+                panel.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+
+                confirmBtn.focus();
+
+                return new Promise(resolve => {
+                    resolver = (value) => {
+                        resolve(!!value);
+                        resolver = null;
+                        isOpen = false;
+
+                        backdrop.classList.remove('opacity-100');
+                        backdrop.classList.add('opacity-0');
+                        
+                        panel.classList.remove('opacity-100', 'scale-100', 'translate-y-0');
+                        panel.classList.add('opacity-0', 'scale-90', 'translate-y-8');
+
+                        setTimeout(() => {
+                            dialog.classList.add('hidden');
+                            dialog.setAttribute('aria-hidden', 'true');
+                        }, 500); 
+                    };
+                });
+            }
+
+            function close(value) {
+                if (resolver) resolver(value);
+            }
+
+            confirmBtn.addEventListener('click', () => close(true));
+            cancelBtn.addEventListener('click', () => close(false));
+            backdrop.addEventListener('click', () => close(false));
+            document.addEventListener('keydown', (e) => {
+                if (!isOpen) return;
+                if (e.key === 'Escape') close(false);
+                if (e.key === 'Enter') close(true);
+            });
+
+            window.__openLogoutDialog = openLogoutDialog;
+        })();
+        
+        // Intercept logout forms
+        document.addEventListener('submit', async function (e) {
+            const form = e.target;
+            if (!(form instanceof HTMLFormElement)) return;
+            
+            const actionUrl = form.getAttribute('action') || '';
+            if (!actionUrl.includes('logout')) return;
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            if (window.__openLogoutDialog) {
+                const ok = await window.__openLogoutDialog();
+                if (ok) form.submit();
+            } else {
+                form.submit();
+            }
+        }, true);
+    </script>
 </body>
 </html>

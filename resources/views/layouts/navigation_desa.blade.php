@@ -2,14 +2,13 @@
 <nav class="nav-top" :class="{ 'nav-scrolled': scrolled }" x-data="{}">
     <div class="w-full flex justify-between items-center">
         {{-- Logo --}}
-        <a href="{{ route('home') }}" class="flex items-center gap-3 group">
             <div class="w-12 h-12 bg-emerald-950 rounded-2xl flex items-center justify-center text-white shadow-lg rotate-3 group-hover:rotate-0 transition-all duration-500">
                 <span class="text-xl font-black">LS</span>
             </div>
             <div class="hidden md:block">
                 <span class="text-xl font-serif italic text-emerald-950 leading-tight">Lumban Silintong</span>
             </div>
-        </a>
+
 
         {{-- Desktop Menu --}}
         <div class="hidden lg:flex items-center gap-6">
