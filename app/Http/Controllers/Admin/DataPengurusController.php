@@ -54,6 +54,7 @@ class DataPengurusController extends Controller
             'nama_pengurus' => 'required|max:100',
             'jabatan' => 'required|max:50',
             'kategori_jabatan' => 'required',
+            'urutan_dalam_kategori' => 'nullable|integer|min:1',
             'nip' => 'nullable|max:50',
             'tugas' => 'nullable',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
@@ -70,10 +71,19 @@ class DataPengurusController extends Controller
             $data['foto'] = $path;
         }
         
-        // Hitung urutan_dalam_kategori otomatis
+        // Tentukan posisi dalam kategori
+        $requestedPosition = $request->input('urutan_dalam_kategori');
         $maxUrutan = DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
                                  ->max('urutan_dalam_kategori');
-        $data['urutan_dalam_kategori'] = $maxUrutan + 1;
+        $position = $this->normalizeRequestedPosition($requestedPosition, $maxUrutan);
+
+        if ($position <= $maxUrutan) {
+            DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
+                        ->where('urutan_dalam_kategori', '>=', $position)
+                        ->increment('urutan_dalam_kategori');
+        }
+
+        $data['urutan_dalam_kategori'] = $position;
         
         DataPengurus::create($data);
         
@@ -102,6 +112,7 @@ class DataPengurusController extends Controller
             'nama_pengurus' => 'required|max:100',
             'jabatan' => 'required|max:50',
             'kategori_jabatan' => 'required',
+            'urutan_dalam_kategori' => 'nullable|integer|min:1',
             'nip' => 'nullable|max:50',
             'tugas' => 'nullable',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
@@ -120,13 +131,37 @@ class DataPengurusController extends Controller
             $path = $request->file('foto')->store('pengurus', 'public');
             $data['foto'] = $path;
         }
-        
-        // Jika kategori berubah, reset urutan
+
+        $requestedPosition = $request->input('urutan_dalam_kategori');
+        $maxUrutan = DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
+                                 ->max('urutan_dalam_kategori');
+        $targetPosition = $this->normalizeRequestedPosition($requestedPosition, $maxUrutan, $pengurus->urutan_dalam_kategori);
+
         if ($pengurus->kategori_jabatan != $request->kategori_jabatan) {
-            $maxUrutan = DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
-                                     ->max('urutan_dalam_kategori');
-            $data['urutan_dalam_kategori'] = $maxUrutan + 1;
+            DataPengurus::where('kategori_jabatan', $pengurus->kategori_jabatan)
+                        ->where('urutan_dalam_kategori', '>', $pengurus->urutan_dalam_kategori)
+                        ->decrement('urutan_dalam_kategori');
+
+            if ($targetPosition <= $maxUrutan) {
+                DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
+                            ->where('urutan_dalam_kategori', '>=', $targetPosition)
+                            ->increment('urutan_dalam_kategori');
+            }
+        } else {
+            if ($targetPosition < $pengurus->urutan_dalam_kategori) {
+                DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
+                            ->where('urutan_dalam_kategori', '>=', $targetPosition)
+                            ->where('urutan_dalam_kategori', '<', $pengurus->urutan_dalam_kategori)
+                            ->increment('urutan_dalam_kategori');
+            } elseif ($targetPosition > $pengurus->urutan_dalam_kategori) {
+                DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
+                            ->where('urutan_dalam_kategori', '<=', $targetPosition)
+                            ->where('urutan_dalam_kategori', '>', $pengurus->urutan_dalam_kategori)
+                            ->decrement('urutan_dalam_kategori');
+            }
         }
+
+        $data['urutan_dalam_kategori'] = $targetPosition;
         
         $pengurus->update($data);
         
@@ -147,6 +182,22 @@ class DataPengurusController extends Controller
         
         return redirect()->route('admin.pengurus.index')
                          ->with('success', 'Pengurus berhasil dihapus');
+    }
+
+    private function normalizeRequestedPosition($requestedPosition, $maxUrutan, $currentPosition = null)
+    {
+        if (!$requestedPosition || intval($requestedPosition) < 1) {
+            if ($currentPosition !== null) {
+                return $currentPosition;
+            }
+
+            return $maxUrutan + 1;
+        }
+
+        $requestedPosition = intval($requestedPosition);
+        $maxAllowed = $maxUrutan + ($currentPosition === null || $requestedPosition > $currentPosition ? 1 : 0);
+
+        return min($requestedPosition, max($maxAllowed, 1));
     }
     
     /**

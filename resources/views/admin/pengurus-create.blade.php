@@ -512,6 +512,19 @@
                         @endforeach
                     </div>
                 </div>
+
+                {{-- Posisi dalam Kategori --}}
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-sort-numeric-up"></i> Posisi dalam Kategori
+                    </label>
+                    <input type="number" name="urutan_dalam_kategori" value="{{ old('urutan_dalam_kategori') }}"
+                           class="form-control" min="1" placeholder="Masukkan angka posisi, 1 = paling atas">
+                    <div class="info-text">
+                        <i class="fa-regular fa-message"></i>
+                        Biarkan kosong untuk menempatkan pengurus di posisi terakhir dalam kategori.
+                    </div>
+                </div>
                 
                 {{-- Jabatan Spesifik --}}
                 <div class="form-group">
