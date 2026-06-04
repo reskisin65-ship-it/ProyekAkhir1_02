@@ -393,15 +393,15 @@
         
         {{-- Logout untuk semua role yang login --}}
         <div class="w-full h-px bg-white/20 my-2"></div>
-        <a href="{{ route('logout') }}" class="side-item side-logout group" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <button type="button" class="side-item side-logout group" onclick="if(window.__openLogoutDialog){window.__openLogoutDialog().then(ok=>{if(ok)document.getElementById('sidebar-logout-form').submit();})}else{document.getElementById('sidebar-logout-form').submit();}">
             <i class="fa-solid fa-sign-out-alt"></i>
             <div class="info-box">
                 <span class="text-[9px] font-black uppercase text-red-500 tracking-wider">Aksi</span>
                 <h5 class="text-base font-serif italic text-emerald-950 mt-1">Logout</h5>
                 <p class="text-xs text-gray-400">Keluar dari portal</p>
             </div>
-        </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+        </button>
+        <form id="sidebar-logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
             @csrf
         </form>
     @endauth
@@ -472,12 +472,12 @@
     <!-- Login/Logout CTA -->
     <div class="flex-shrink-0 flex items-center justify-center">
         @auth
-            <form action="{{ route('logout') }}" method="POST" class="inline">
-                @csrf
-                <button type="submit" class="w-9 h-9 bg-red-500/80 hover:bg-red-500 rounded-xl flex items-center justify-center text-white shadow-lg transition">
-                    <i class="fa-solid fa-sign-out-alt text-sm"></i>
-                </button>
-            </form>
+            <form id="mobile-logout-form" action="{{ route('logout') }}" method="POST" class="hidden">@csrf</form>
+            <button type="button"
+                    onclick="if(window.__openLogoutDialog){window.__openLogoutDialog().then(ok=>{if(ok)document.getElementById('mobile-logout-form').submit();})}else{document.getElementById('mobile-logout-form').submit();}"
+                    class="w-9 h-9 bg-red-500/80 hover:bg-red-500 rounded-xl flex items-center justify-center text-white shadow-lg transition">
+                <i class="fa-solid fa-sign-out-alt text-sm"></i>
+            </button>
         @else
             <a href="{{ route('login') }}" class="w-9 h-9 bg-emerald-500 hover:bg-emerald-600 rounded-xl flex items-center justify-center text-white shadow-lg transition">
                 <i class="fa-solid fa-user text-sm"></i>
