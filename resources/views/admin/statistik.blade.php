@@ -438,7 +438,7 @@
                     <p class="text-purple-100 text-xs">Total Aspirasi</p>
                     <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['total_aspirasi'] ?? 0) }}</p>
                     <div class="mt-2 flex items-center gap-1 text-[9px] text-purple-100">
-                        <i class="fa-regular fa-message"></i> Suara warga
+                        <i class="fa-regular fa-comment-dots"></i> Suara warga
                     </div>
                 </div>
                 

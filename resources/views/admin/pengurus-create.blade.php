@@ -521,7 +521,7 @@
                     <input type="number" name="urutan_dalam_kategori" value="{{ old('urutan_dalam_kategori') }}"
                            class="form-control" min="1" placeholder="Masukkan angka posisi, 1 = paling atas">
                     <div class="info-text">
-                        <i class="fa-regular fa-message"></i>
+                        <i class="fa-regular fa-comment-dots"></i>
                         Biarkan kosong untuk menempatkan pengurus di posisi terakhir dalam kategori.
                     </div>
                 </div>
@@ -534,7 +534,7 @@
                     <input type="text" name="jabatan" value="{{ old('jabatan') }}" required
                            class="form-control" placeholder="Contoh: Kepala Desa, Sekretaris Desa, Kasi Pemerintahan">
                     <div class="info-text">
-                        <i class="fa-regular fa-message"></i>
+                        <i class="fa-regular fa-comment-dots"></i>
                         Nama jabatan yang akan ditampilkan (bisa lebih spesifik dari kategori)
                     </div>
                 </div>

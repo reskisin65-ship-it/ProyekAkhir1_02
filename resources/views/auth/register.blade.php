@@ -116,12 +116,26 @@
 
             <form method="POST" action="{{ route('register') }}" class="space-y-4">
                 @csrf
+
+                @if($errors->any())
+                    <div class="mb-4 p-4 rounded-3xl bg-red-50 border border-red-100 text-red-700 text-sm">
+                        <strong class="font-semibold">Terjadi kesalahan:</strong>
+                        <ul class="mt-2 list-disc list-inside space-y-1">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 
                 <div class="group">
                     <label class="text-[11px] font-bold text-emerald-800 uppercase tracking-widest ml-1 mb-2 block">Nama Sesuai KTP</label>
                     <div class="relative">
                         <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-emerald-800/30 group-focus-within:text-emerald-600 transition-colors"></i>
                         <input type="text" name="name" class="input-nature w-full pl-12 pr-4 py-3.5 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" placeholder="Contoh: Michael Manurung" value="{{ old('name') }}">
+                    @error('name')
+                        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                     </div>
                 </div>
 
@@ -130,6 +144,9 @@
                     <div class="relative">
                         <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-emerald-800/30 group-focus-within:text-emerald-600 transition-colors"></i>
                         <input type="email" name="email" class="input-nature w-full pl-12 pr-4 py-3.5 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" placeholder="email@desa.com" value="{{ old('email') }}">
+                    @error('email')
+                        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                     </div>
                 </div>
 
@@ -138,6 +155,9 @@
                     <div class="relative">
                         <i class="fa-brands fa-whatsapp absolute left-4 top-1/2 -translate-y-1/2 text-emerald-800/30 group-focus-within:text-emerald-600 transition-colors"></i>
                         <input type="tel" name="nomor_telepon" class="input-nature w-full pl-12 pr-4 py-3.5 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" placeholder="0812xxxx" value="{{ old('nomor_telepon') }}">
+                    @error('nomor_telepon')
+                        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                     </div>
                 </div>
 
@@ -145,10 +165,16 @@
                     <div class="group">
                         <label class="text-[11px] font-bold text-emerald-800 uppercase tracking-widest ml-1 mb-2 block">Password</label>
                         <input type="password" name="password" class="input-nature w-full px-4 py-3.5 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" placeholder="••••••••">
+                        @error('password')
+                            <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="group">
                         <label class="text-[11px] font-bold text-emerald-800 uppercase tracking-widest ml-1 mb-2 block">Konfirmasi</label>
                         <input type="password" name="password_confirmation" class="input-nature w-full px-4 py-3.5 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" placeholder="••••••••">
+                        @error('password_confirmation')
+                            <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 

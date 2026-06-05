@@ -361,7 +361,7 @@
         </div>
         <div class="related-grid">
             @foreach($rekomendasi as $item)
-            <a href="{{ route('galeri.show', $item->id) }}" class="related-card">
+            <a href="{{ route('galeri.show', $item->id_galeri) }}" class="related-card">
                 <div class="related-img">
                     <img src="{{ asset('storage/' . $item->gambar_galeri) }}" alt="{{ $item->judul_galeri }}">
                 </div>

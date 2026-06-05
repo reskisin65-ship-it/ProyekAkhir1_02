@@ -534,7 +534,7 @@ h1, h2, h3, h4, p, span, div {
 
                     <div class="animate-slide-up-delay" style="animation-delay: 0.2s">
                         <div class="info-label mb-2">
-                            <i class="fa-solid fa-message"></i> Isi Aspirasi
+                            <i class="fa-solid fa-comment-dots"></i> Isi Aspirasi
                         </div>
                         <div class="aspirasi-content">
                             <i class="fa-solid fa-quote-left text-blue-400 text-sm mr-1"></i>
@@ -547,7 +547,7 @@ h1, h2, h3, h4, p, span, div {
                     <div class="response-card animate-slide-up-late">
                         <div class="flex items-center gap-3 mb-3">
                             <div class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md">
-                                <i class="fa-solid fa-reply-all text-sm"></i>
+                                <i class="fa-solid fa-reply text-sm"></i>
                             </div>
                             <h3 class="font-bold text-emerald-700">Tanggapan Perangkat Desa</h3>
                         </div>

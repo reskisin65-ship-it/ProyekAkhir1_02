@@ -75,7 +75,7 @@ class DataPengurusController extends Controller
         $requestedPosition = $request->input('urutan_dalam_kategori');
         $maxUrutan = DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
                                  ->max('urutan_dalam_kategori');
-        $position = $this->normalizeRequestedPosition($requestedPosition, $maxUrutan);
+        $position = $this->normalizeRequestedPosition($requestedPosition, $maxUrutan, null, true);
 
         if ($position <= $maxUrutan) {
             DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
@@ -85,7 +85,8 @@ class DataPengurusController extends Controller
 
         $data['urutan_dalam_kategori'] = $position;
         
-        DataPengurus::create($data);
+        $pengurus = DataPengurus::create($data);
+        $this->reindexCategoryPositions($request->kategori_jabatan);
         
         return redirect()->route('admin.pengurus.index')
                          ->with('success', 'Pengurus berhasil ditambahkan');
@@ -133,30 +134,39 @@ class DataPengurusController extends Controller
         }
 
         $requestedPosition = $request->input('urutan_dalam_kategori');
-        $maxUrutan = DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
-                                 ->max('urutan_dalam_kategori');
-        $targetPosition = $this->normalizeRequestedPosition($requestedPosition, $maxUrutan, $pengurus->urutan_dalam_kategori);
+        $oldCategory = $pengurus->kategori_jabatan;
+        $currentPosition = $pengurus->urutan_dalam_kategori;
+        $newCategory = $request->kategori_jabatan;
+        $categoryChanged = $oldCategory !== $newCategory;
 
-        if ($pengurus->kategori_jabatan != $request->kategori_jabatan) {
-            DataPengurus::where('kategori_jabatan', $pengurus->kategori_jabatan)
-                        ->where('urutan_dalam_kategori', '>', $pengurus->urutan_dalam_kategori)
+        if ($categoryChanged) {
+            DataPengurus::where('kategori_jabatan', $oldCategory)
+                        ->where('urutan_dalam_kategori', '>', $currentPosition)
                         ->decrement('urutan_dalam_kategori');
 
+            $maxUrutan = DataPengurus::where('kategori_jabatan', $newCategory)
+                                     ->max('urutan_dalam_kategori');
+            $targetPosition = $this->normalizeRequestedPosition($requestedPosition, $maxUrutan, null, true);
+
             if ($targetPosition <= $maxUrutan) {
-                DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
+                DataPengurus::where('kategori_jabatan', $newCategory)
                             ->where('urutan_dalam_kategori', '>=', $targetPosition)
                             ->increment('urutan_dalam_kategori');
             }
         } else {
-            if ($targetPosition < $pengurus->urutan_dalam_kategori) {
-                DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
+            $maxUrutan = DataPengurus::where('kategori_jabatan', $newCategory)
+                                     ->max('urutan_dalam_kategori');
+            $targetPosition = $this->normalizeRequestedPosition($requestedPosition, $maxUrutan, $currentPosition, false);
+
+            if ($targetPosition < $currentPosition) {
+                DataPengurus::where('kategori_jabatan', $newCategory)
                             ->where('urutan_dalam_kategori', '>=', $targetPosition)
-                            ->where('urutan_dalam_kategori', '<', $pengurus->urutan_dalam_kategori)
+                            ->where('urutan_dalam_kategori', '<', $currentPosition)
                             ->increment('urutan_dalam_kategori');
-            } elseif ($targetPosition > $pengurus->urutan_dalam_kategori) {
-                DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
+            } elseif ($targetPosition > $currentPosition) {
+                DataPengurus::where('kategori_jabatan', $newCategory)
                             ->where('urutan_dalam_kategori', '<=', $targetPosition)
-                            ->where('urutan_dalam_kategori', '>', $pengurus->urutan_dalam_kategori)
+                            ->where('urutan_dalam_kategori', '>', $currentPosition)
                             ->decrement('urutan_dalam_kategori');
             }
         }
@@ -164,6 +174,10 @@ class DataPengurusController extends Controller
         $data['urutan_dalam_kategori'] = $targetPosition;
         
         $pengurus->update($data);
+        $this->reindexCategoryPositions($newCategory);
+        if ($categoryChanged) {
+            $this->reindexCategoryPositions($oldCategory);
+        }
         
         return redirect()->route('admin.pengurus.index')
                          ->with('success', 'Pengurus berhasil diperbarui');
@@ -184,11 +198,11 @@ class DataPengurusController extends Controller
                          ->with('success', 'Pengurus berhasil dihapus');
     }
 
-    private function normalizeRequestedPosition($requestedPosition, $maxUrutan, $currentPosition = null)
+    private function normalizeRequestedPosition($requestedPosition, $maxUrutan, $currentPosition = null, $isNewCategory = false)
     {
         if (!$requestedPosition || intval($requestedPosition) < 1) {
             if ($currentPosition !== null) {
-                return $currentPosition;
+                return min($currentPosition, $maxUrutan + 1);
             }
 
             return $maxUrutan + 1;
@@ -197,7 +211,23 @@ class DataPengurusController extends Controller
         $requestedPosition = intval($requestedPosition);
         $maxAllowed = $maxUrutan + ($currentPosition === null || $requestedPosition > $currentPosition ? 1 : 0);
 
+        if ($isNewCategory) {
+            return min($requestedPosition, max($maxUrutan + 1, 1));
+        }
+
         return min($requestedPosition, max($maxAllowed, 1));
+    }
+
+    private function reindexCategoryPositions($kategori)
+    {
+        $items = DataPengurus::where('kategori_jabatan', $kategori)
+                             ->orderBy('urutan_dalam_kategori')
+                             ->orderBy('id_pengurus')
+                             ->get();
+
+        foreach ($items as $index => $item) {
+            $item->update(['urutan_dalam_kategori' => $index + 1]);
+        }
     }
     
     /**

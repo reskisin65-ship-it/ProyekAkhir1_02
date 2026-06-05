@@ -758,7 +758,7 @@
     {{-- ============================================ --}}
     <div class="stats-grid animate__animated animate__fadeInUp" style="animation-delay: 0.05s">
         <div class="stat-card">
-            <div class="stat-icon"><i class="fa-regular fa-message"></i></div>
+            <div class="stat-icon"><i class="fa-regular fa-comment-dots"></i></div>
             <div class="stat-value" id="total-count">{{ $aspirasi->total() }}</div>
             <div class="stat-label">Total Aspirasi</div>
         </div>
@@ -794,7 +794,7 @@
                 <i class="fa-regular fa-face-frown"></i> Keluhan
             </button>
             <button class="filter-btn" data-filter="masukan">
-                <i class="fa-regular fa-message"></i> Masukan
+                <i class="fa-regular fa-comment-dots"></i> Masukan
             </button>
             <button class="filter-btn" data-filter="pertanyaan">
                 <i class="fa-regular fa-circle-question"></i> Pertanyaan

@@ -673,7 +673,7 @@
                         <label class="kategori-option">
                             <input type="radio" name="kategori" value="masukan" {{ old('kategori') == 'masukan' ? 'checked' : '' }}>
                             <div class="kategori-card">
-                                <i class="fa-regular fa-message kategori-icon" style="color: #3b82f6;"></i>
+                                <i class="fa-regular fa-comment-dots kategori-icon" style="color: #3b82f6;"></i>
                                 <div class="kategori-title">📝 Masukan</div>
                                 <div class="kategori-desc">Saran konstruktif</div>
                             </div>
@@ -697,7 +697,7 @@
 
                 {{-- Isi Aspirasi --}}
                 <div class="form-group">
-                    <label class="form-label"><i class="fa-solid fa-message"></i> Isi Aspirasi <span class="required">*</span></label>
+                    <label class="form-label"><i class="fa-solid fa-comment-dots"></i> Isi Aspirasi <span class="required">*</span></label>
                     <textarea name="isi" rows="6" required class="input-premium" placeholder="Tulis aspirasi, saran, atau keluhan Anda secara detail dan jelas...">{{ old('isi') }}</textarea>
                     <div class="text-xs text-gray-400 mt-2 flex items-center gap-1">
                         <i class="fa-regular fa-info-circle"></i> Minimal 10 karakter, semakin detail semakin baik

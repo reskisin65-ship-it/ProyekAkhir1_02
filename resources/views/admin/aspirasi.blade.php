@@ -613,7 +613,7 @@
             @csrf
             <div class="mb-4">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    <i class="fa-regular fa-message text-emerald-500 mr-1"></i> Aspirasi:
+                    <i class="fa-regular fa-comment-dots text-emerald-500 mr-1"></i> Aspirasi:
                 </label>
                 <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
                     <p class="text-gray-700 text-sm" id="aspirasiJudul"></p>
@@ -622,7 +622,7 @@
             
             <div class="mb-5">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    <i class="fa-regular fa-reply-all text-emerald-500 mr-1"></i> Respon / Tanggapan:
+                    <i class="fa-solid fa-reply text-emerald-500 mr-1"></i> Respon / Tanggapan:
                 </label>
                 <textarea name="respon" rows="5" required
                           class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition resize-none"

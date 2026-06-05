@@ -26,15 +26,15 @@ class CheckRole
             return $next($request);
         }
         
-        // Jika role tidak cocok, redirect ke halaman yang sesuai (BUKAN ROUTE YANG SAMA)
+        // Jika role tidak cocok, redirect ke dashboard yang sesuai
         if ($user->role->nama_role === 'admin') {
-            return redirect('/admin/dashboard');
+            return redirect()->route('admin.dashboard');
         }
-        
+
         if ($user->role->nama_role === 'umkm') {
-            return redirect('/');
+            return redirect()->route('umkm.dashboard');
         }
-        
-        return redirect('/');
+
+        return redirect()->route('masyarakat.dashboard');
     }
 }

@@ -1739,7 +1739,7 @@
         @if(isset($beritas) && count($beritas) > 0)
         <div class="news-grid">
             @foreach($beritas->take(4) as $berita)
-            <div class="news-card" onclick="window.location='{{ route('berita.show', $berita->id_berita ?? 1) }}'">
+            <div class="news-card" onclick="window.location='{{ route('berita.show', $berita->slug) }}'">
                 <div class="news-img"><img src="{{ $berita->foto ? asset('storage/' . $berita->foto) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500' }}" loading="lazy"></div>
                 <div class="news-content"><span class="news-category">{{ $berita->kategori ?? 'Informasi' }}</span><h4 class="news-title">{{ Str::limit($berita->judul, 50) }}</h4><div class="news-date"><i class="fa-regular fa-calendar"></i> {{ $berita->created_at->translatedFormat('d M Y') }}</div></div>
             </div>

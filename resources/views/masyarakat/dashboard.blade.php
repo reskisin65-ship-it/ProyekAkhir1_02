@@ -580,7 +580,7 @@
                             </div>
                         </div>
                         <div class="text-5xl text-blue-100 group-hover:text-blue-200 transition group-hover:scale-110 duration-300">
-                            <i class="fa-solid fa-message"></i>
+                            <i class="fa-solid fa-comment-dots"></i>
                         </div>
                     </div>
                 </div>

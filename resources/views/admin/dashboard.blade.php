@@ -645,7 +645,7 @@
                 </div>
             </div>
             <div class="stat-card" onclick="window.location.href='{{ route('admin.aspirasi.index') }}'">
-                <div class="stat-icon" style="background: rgba(139,92,246,0.1); color: var(--purple);"><i class="fa-solid fa-message"></i></div>
+                <div class="stat-icon" style="background: rgba(139,92,246,0.1); color: var(--purple);"><i class="fa-solid fa-comment-dots"></i></div>
                 <div class="stat-info">
                     <h3>{{ number_format($totalAspirasi ?? 0) }}</h3>
                     <p>Aspirasi Warga</p>
@@ -748,7 +748,7 @@
                 <!-- Aspirasi -->
                 <div class="content-card">
                     <div class="card-header">
-                        <h3><i class="fa-solid fa-message" style="color: var(--purple);"></i> Aspirasi Terbaru</h3>
+                        <h3><i class="fa-solid fa-comment-dots" style="color: var(--purple);"></i> Aspirasi Terbaru</h3>
                         <a href="{{ route('admin.aspirasi.index') }}">Lihat Semua →</a>
                     </div>
                     <div class="card-body">
