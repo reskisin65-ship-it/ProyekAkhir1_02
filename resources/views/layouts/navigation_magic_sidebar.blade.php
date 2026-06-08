@@ -1059,12 +1059,12 @@
        ========================================== */
     .mobile-nav {
         position: fixed;
-        bottom: 16px;
+        bottom: 14px;
         left: 50%;
         transform: translateX(-50%);
         width: 92%;
-        max-width: 500px;
-        height: 80px;
+        max-width: min(500px, calc(100vw - 16px));
+        height: 76px;
         background: #064e3b;
         border-radius: 28px;
         z-index: 1100;
@@ -1189,6 +1189,7 @@
     }
 })();
 </script>
+
 
 
 

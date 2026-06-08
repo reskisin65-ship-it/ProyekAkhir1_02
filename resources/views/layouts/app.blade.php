@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
@@ -24,7 +24,7 @@
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background: #fafaf8; 
             color: var(--emerald-950); 
-            overflow-x: hidden;
+            overflow-x: hidden; min-height: 100dvh;
         }
         .font-serif { font-family: 'Playfair Display', serif; }
 
@@ -157,9 +157,9 @@
         @media (max-width: 1024px) {
             .magic-sidebar { display: none; }
             .mobile-nav { display: flex; }
-            .main-container { margin-left: 0 !important; padding-top: 110px !important; }
+            .main-container { margin-left: 0 !important; padding-top: 88px !important; }
         }
-        .main-container { margin-left: 120px; padding-top: 120px; transition: 0.3s; }
+        .main-container { margin-left: 120px; padding-top: 100px; transition: 0.3s; }
 
         /* Hero Slider */
         .slider-container { border-radius: 60px; overflow: hidden; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
@@ -338,7 +338,7 @@
                     Mewujudkan masa depan desa digital yang harmonis dengan keindahan alam Toba.
                 </p>
                 <p class="text-white/25 text-[10px] tracking-wider">
-                    © <span x-text="tahun"></span> DESA LUMBAN SILINTONG
+                    Â© <span x-text="tahun"></span> DESA LUMBAN SILINTONG
                 </p>
             </div>
         </div>
@@ -632,3 +632,4 @@
     </script>
 </body>
 </html>
+

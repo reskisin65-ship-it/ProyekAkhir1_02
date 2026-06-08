@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
@@ -116,11 +116,11 @@
             }
         }
 
-        .main-container { margin-left: 120px; padding-top: 120px; transition: 0.3s; min-height: 80vh; }
+        .main-container { margin-left: 120px; padding-top: 100px; transition: 0.3s; min-height: 80vh; }
 
         @media (max-width: 1024px) {
             .magic-sidebar { display: none; }
-            .main-container { margin-left: 0 !important; padding-top: 110px !important; }
+            .main-container { margin-left: 0 !important; padding-top: 88px !important; }
         }
 
         /* ============================================ */
@@ -322,7 +322,7 @@
                     <a href="#" class="hover:text-white transition">Privacy Policy</a>
                 </div>
                 <p class="text-[8px] text-white/20 tracking-[0.3em] uppercase">
-                    © <span x-text="tahun"></span> DESA LUMBAN SILINTONG
+                    Â© <span x-text="tahun"></span> DESA LUMBAN SILINTONG
                 </p>
             </div>
         </div>
@@ -616,3 +616,4 @@
     </script>
 </body>
 </html>
+
