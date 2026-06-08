@@ -531,7 +531,7 @@
     {{-- Back Button --}}
     <div class="header-section">
         <a href="{{ route('masyarakat.aspirasi.index') }}" class="back-link animate__animated animate__fadeInUp">
-            <i class="fa-solid fa-arrow-left"></i> Kembali ke Aspirasi Saya
+            <i class="fa-solid fa-arrow-left"></i> Kembali ke Aspirasi Publik
         </a>
         
         <h1 class="header-title animate__animated animate__fadeInUp" style="animation-delay: 0.05s">
@@ -617,7 +617,7 @@
                     <label class="form-label"><i class="fa-solid fa-comment-dots"></i> Isi Aspirasi <span class="required">*</span></label>
                     <textarea name="isi" rows="6" required class="input-premium" placeholder="Tulis aspirasi, saran, atau keluhan Anda secara detail...">{{ old('isi', $aspirasi->isi_aspirasi) }}</textarea>
                     <div class="text-xs text-gray-400 mt-2 flex items-center gap-1">
-                        <i class="fa-regular fa-info-circle"></i> Minimal 10 karakter, semakin detail semakin baik
+                        <i class="fa-solid fa-circle-info"></i> Minimal 10 karakter, semakin detail semakin baik
                     </div>
                 </div>
 
@@ -673,14 +673,14 @@
             </div>
         </div>
         <div class="info-card">
-            <div class="info-icon"><i class="fa-regular fa-shield-alt"></i></div>
+            <div class="info-icon"><i class="fa-solid fa-shield-halved"></i></div>
             <div class="info-content">
                 <h4>Identitas Terjaga</h4>
                 <p>Data Anda aman</p>
             </div>
         </div>
         <div class="info-card">
-            <div class="info-icon"><i class="fa-regular fa-chart-line"></i></div>
+            <div class="info-icon"><i class="fa-solid fa-chart-line"></i></div>
             <div class="info-content">
                 <h4>Pantau Status</h4>
                 <p>Lihat perkembangan</p>

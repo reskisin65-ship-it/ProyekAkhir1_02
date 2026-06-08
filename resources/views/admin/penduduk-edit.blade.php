@@ -405,7 +405,16 @@
                         <i class="fa-solid fa-church"></i> Agama
                         <span class="required-star">*</span>
                     </label>
-                    <input type="text" name="agama" value="{{ old('agama', $penduduk->agama) }}" required class="input-glass" placeholder="Islam, Kristen, Hindu, Budha, dll">
+                    <select name="agama" required class="input-glass">
+                        <option value="">Pilih Agama</option>
+                        <option value="Islam" {{ old('agama', $penduduk->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                        <option value="Kristen" {{ old('agama', $penduduk->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                        <option value="Katolik" {{ old('agama', $penduduk->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                        <option value="Hindu" {{ old('agama', $penduduk->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                        <option value="Buddha" {{ old('agama', $penduduk->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                        <option value="Konghucu" {{ old('agama', $penduduk->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                        <option value="Lainnya" {{ old('agama', $penduduk->agama) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                    </select>
                 </div>
 
                 <!-- Pendidikan -->
@@ -452,15 +461,6 @@
                         <option value="Anak" {{ $penduduk->status_keluarga == 'Anak' ? 'selected' : '' }}>Anak</option>
                         <option value="Lainnya" {{ $penduduk->status_keluarga == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                     </select>
-                </div>
-
-                <!-- RT/RW -->
-                <div class="form-field">
-                    <label class="form-label">
-                        <i class="fa-solid fa-house"></i> RT/RW
-                        <span class="required-star">*</span>
-                    </label>
-                    <input type="text" name="rt_rw" value="{{ old('rt_rw', $penduduk->rt_rw) }}" required class="input-glass" placeholder="Contoh: 001/002">
                 </div>
 
                 <!-- Kelurahan/Desa -->

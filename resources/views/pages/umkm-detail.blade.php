@@ -522,7 +522,7 @@
         {{-- Right: Info --}}
         <div class="info-section">
             <div class="category-badge">
-                <i class="fa-regular fa-tag"></i>
+                <i class="fa-solid fa-tag"></i>
                 @if($umkm->kategori == 'makanan') 🍔 Kuliner
                 @elseif($umkm->kategori == 'kerajinan') 🎨 Kerajinan
                 @elseif($umkm->kategori == 'fashion') 👕 Fashion
@@ -598,7 +598,7 @@
                     @endif
                     <div class="product-footer">
                         <span class="product-price">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
-                        <span class="product-stock"><i class="fa-regular fa-box"></i> Stok: {{ $item->stok ?? 'Tersedia' }}</span>
+                        <span class="product-stock"><i class="fa-solid fa-box"></i> Stok: {{ $item->stok ?? 'Tersedia' }}</span>
                     </div>
                 </div>
             </div>
@@ -607,7 +607,7 @@
     </div>
     @else
     <div class="products-section fade-up delay-2" style="text-align: center; padding: 2rem;">
-        <i class="fa-regular fa-box-open" style="font-size: 3rem; color: var(--gray-light);"></i>
+        <i class="fa-solid fa-box-open" style="font-size: 3rem; color: var(--gray-light);"></i>
         <h3 style="margin-top: 0.5rem; color: var(--gray);">Belum Ada Produk</h3>
         <p style="color: var(--gray-light); font-size: 0.8rem;">Belum ada produk yang ditambahkan untuk UMKM ini.</p>
     </div>

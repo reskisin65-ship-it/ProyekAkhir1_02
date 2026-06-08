@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -706,26 +707,29 @@ public function umkmDestroy($id)
 
     public function pendudukStore(Request $request)
     {
+        $tanggalLahirMaks = Carbon::now()->subYears(17)->format('Y-m-d');
+
         $request->validate([
             'nik' => 'required|size:16|unique:data_penduduk,nik',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required|date',
+            'tanggal_lahir' => 'required|date|before_or_equal:' . $tanggalLahirMaks,
             'agama' => 'required',
             'pendidikan' => 'required',
             'pekerjaan' => 'required',
             'status_perkawinan' => 'required',
             'alamat' => 'required',
-            'rt_rw' => 'required',
             'kelurahan_desa' => 'required',
             'kecamatan' => 'required',
             'kabupaten_kota' => 'required',
             'provinsi' => 'required',
             'status_keluarga' => 'required',
+        ], [
+            'tanggal_lahir.before_or_equal' => 'Tanggal lahir harus 17 tahun atau lebih.',
         ]);
 
-        DataPenduduk::create($request->all());
+        DataPenduduk::create(array_merge($request->all(), ['rt_rw' => '']));
 
         return redirect()->route('admin.penduduk.index')
             ->with('success', 'Data penduduk berhasil ditambahkan!');
@@ -746,26 +750,29 @@ public function umkmDestroy($id)
     {
         $penduduk = DataPenduduk::findOrFail($id);
         
+        $tanggalLahirMaks = Carbon::now()->subYears(17)->format('Y-m-d');
+
         $request->validate([
             'nik' => 'required|size:16|unique:data_penduduk,nik,' . $id . ',id_penduduk',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required|date',
+            'tanggal_lahir' => 'required|date|before_or_equal:' . $tanggalLahirMaks,
             'agama' => 'required',
             'pendidikan' => 'required',
             'pekerjaan' => 'required',
             'status_perkawinan' => 'required',
             'alamat' => 'required',
-            'rt_rw' => 'required',
             'kelurahan_desa' => 'required',
             'kecamatan' => 'required',
             'kabupaten_kota' => 'required',
             'provinsi' => 'required',
             'status_keluarga' => 'required',
+        ], [
+            'tanggal_lahir.before_or_equal' => 'Tanggal lahir harus 17 tahun atau lebih.',
         ]);
 
-        $penduduk->update($request->all());
+        $penduduk->update($request->except('rt_rw'));
 
         return redirect()->route('admin.penduduk.index')
             ->with('success', 'Data penduduk berhasil diperbarui!');

@@ -538,11 +538,11 @@
 </div>
 
 {{-- 8. FOOTER --}}
-<footer class="bg-[#0a1f18] pt-16 pb-10 px-6 text-white">
+<footer class="bg-[#0a1f18] pt-10 pb-8 px-6 md:pt-16 md:pb-10 text-white">
     <div class="max-w-7xl mx-auto text-center">
-        <h2 class="text-2xl md:text-3xl font-serif italic mb-10">Membangun Masa Depan <br>Tanpa Melupakan <span class="text-emerald-400">Akar.</span></h2>
+        <h2 class="text-xl md:text-3xl font-serif italic mb-6 md:mb-10 leading-relaxed">Membangun Masa Depan <br>Tanpa Melupakan <span class="text-emerald-400">Akar.</span></h2>
         
-        <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="pt-6 md:pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em]">© 2026 Pemerintah Desa Lumban Silintong.</p>
             
         </div>

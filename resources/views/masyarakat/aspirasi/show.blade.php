@@ -428,7 +428,7 @@ h1, h2, h3, h4, p, span, div {
         <div class="back-icon">
             <i class="fa-solid fa-arrow-left"></i>
         </div>
-        <span>Kembali ke Aspirasi Saya</span>
+        <span>Kembali ke Aspirasi Publik</span>
     </a>
 
     {{-- Main Glass Card --}}
@@ -465,7 +465,7 @@ h1, h2, h3, h4, p, span, div {
                 <div class="md:col-span-5 space-y-4">
                     <div class="glass-item p-5 animate-slide-up-delay">
                         <div class="info-label">
-                            <i class="fa-regular fa-tag"></i> Kategori Laporan
+                            <i class="fa-solid fa-tag"></i> Kategori Laporan
                         </div>
                         <div class="flex items-center gap-3 mt-2">
                             <div class="text-2xl">
@@ -496,9 +496,9 @@ h1, h2, h3, h4, p, span, div {
                                 <span class="text-xs text-slate-500">Waktu</span>
                                 <span class="text-xs font-semibold text-slate-800">{{ $aspirasi->created_at->format('H:i') }} WIB</span>
                             </div>
-                            <div class="flex justify-between items-center">
+                            <div class="flex justify-between items-center pb-2 border-b border-slate-100">
                                 <span class="text-xs text-slate-500">Pelapor</span>
-                                <span class="text-xs font-semibold text-slate-800">{{ Auth::user()->name }}</span>
+                                <span class="text-xs font-semibold text-slate-800">{{ $aspirasi->user->name ?? 'Warga' }}</span>
                             </div>
                         </div>
                     </div>
@@ -568,7 +568,7 @@ h1, h2, h3, h4, p, span, div {
                             <h3 class="font-bold text-blue-700">Sedang Diproses</h3>
                         </div>
                         <p class="text-blue-700 leading-relaxed">
-                            Aspirasi Anda sedang diproses oleh admin desa. Mohon tunggu tanggapan dalam 1-3 hari kerja.
+                            {{ $aspirasi->user_id === Auth::id() ? 'Aspirasi Anda' : 'Aspirasi ini' }} sedang diproses oleh admin desa. Mohon tunggu tanggapan dalam 1-3 hari kerja.
                         </p>
                     </div>
                     @elseif($aspirasi->status == 'baru')
@@ -580,7 +580,7 @@ h1, h2, h3, h4, p, span, div {
                             <h3 class="font-bold text-amber-700">Menunggu Respons</h3>
                         </div>
                         <p class="text-amber-700 leading-relaxed">
-                            Aspirasi Anda telah terkirim dan akan segera ditanggapi oleh admin desa.
+                            {{ $aspirasi->user_id === Auth::id() ? 'Aspirasi Anda' : 'Aspirasi ini' }} telah terkirim dan akan segera ditanggapi oleh admin desa.
                         </p>
                     </div>
                     @endif
@@ -589,7 +589,7 @@ h1, h2, h3, h4, p, span, div {
 
             {{-- Action Buttons --}}
             <div class="action-buttons animate-slide-up-late">
-                @if($aspirasi->status == 'baru')
+                @if($aspirasi->user_id === Auth::id() && $aspirasi->status == 'baru')
                 <form action="{{ route('masyarakat.aspirasi.destroy', $aspirasi->id_aspirasi) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan aspirasi ini?')" style="display: inline;">
                     @csrf
                     @method('DELETE')
@@ -616,7 +616,7 @@ h1, h2, h3, h4, p, span, div {
         </div>
         
         <p class="tutorial-intro">
-            Halaman <strong>Detail Aspirasi</strong> menampilkan informasi lengkap tentang aspirasi yang Anda kirimkan, 
+            Halaman <strong>Detail Aspirasi</strong> menampilkan informasi lengkap tentang aspirasi yang dikirimkan, 
             termasuk status, isi aspirasi, dan tanggapan dari admin desa.
         </p>
         
@@ -632,14 +632,14 @@ h1, h2, h3, h4, p, span, div {
                 <div class="tutorial-num">2</div>
                 <div class="tutorial-text">
                     <h4>📎 Lampiran Dokumen</h4>
-                    <p>Jika ada lampiran, klik untuk melihat file pendukung aspirasi Anda.</p>
+                    <p>Jika ada lampiran, klik untuk melihat file pendukung aspirasi.</p>
                 </div>
             </div>
             <div class="tutorial-item">
                 <div class="tutorial-num">3</div>
                 <div class="tutorial-text">
                     <h4>💬 Tanggapan Admin</h4>
-                    <p>Baca tanggapan atau respon dari perangkat desa terhadap aspirasi Anda.</p>
+                    <p>Baca tanggapan atau respon dari perangkat desa terhadap aspirasi.</p>
                 </div>
             </div>
             <div class="tutorial-item">
@@ -667,7 +667,7 @@ h1, h2, h3, h4, p, span, div {
         
         <div class="tutorial-footer">
             <i class="fa-regular fa-clock"></i>
-            <span>⏱️ <strong>Perlu diingat:</strong> Edit hanya dapat dilakukan jika status aspirasi masih <strong>"Baru/Menunggu"</strong>.</span>
+            <span>⏱️ <strong>Perlu diingat:</strong> Edit atau pembatalan hanya dapat dilakukan oleh pemilik aspirasi jika status masih <strong>"Baru/Menunggu"</strong>.</span>
         </div>
     </div>
 </div>

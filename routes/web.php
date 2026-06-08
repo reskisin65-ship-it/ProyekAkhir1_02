@@ -15,7 +15,6 @@ use App\Http\Controllers\Admin\KontakDesaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes - Desa Lumban Silintong
@@ -62,7 +61,6 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 // ROUTES YANG MEMERLUKAN LOGIN (SEMUA ROLE)
 // ==============================================
 
-
 // UMKM CRUD
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -82,10 +80,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/umkm/status', [UmkmController::class, 'status'])->name('umkm.status.admin');
     Route::get('/umkm/status', [UmkmController::class, 'status'])->name('umkm.status');
     
-    
-    // ==============================================
     // NOTIFIKASI
-    // ==============================================
     Route::get('/notifikasi', [NotifikasiController::class, 'index'])->name('notifikasi.index');
     Route::get('/notifikasi/ambil', [NotifikasiController::class, 'ambil'])->name('notifikasi.ambil');
     Route::post('/notifikasi/baca', [NotifikasiController::class, 'baca'])->name('notifikasi.baca');
@@ -93,8 +88,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/notifikasi/{id}', [NotifikasiController::class, 'hapus'])->name('notifikasi.hapus');
     Route::delete('/notifikasi/hapus-semua', [NotifikasiController::class, 'hapusSemua'])->name('notifikasi.hapus-semua');
 });
-Route::get('/umkm/{id}', [UmkmController::class, 'show'])->name('umkm.show');
 
+Route::get('/umkm/{id}', [UmkmController::class, 'show'])->name('umkm.show');
 
 // ==============================================
 // ROUTES UNTUK MASYARAKAT & UMKM (SEMUA USER LOGIN)
@@ -122,9 +117,11 @@ Route::middleware(['auth'])->prefix('masyarakat')->name('masyarakat.')->group(fu
     Route::put('/aspirasi/{id}', [AspirasiController::class, 'update'])->name('aspirasi.update');
     Route::delete('/aspirasi/{id}', [AspirasiController::class, 'destroy'])->name('aspirasi.destroy');
     
-    // PROFIL
+    // PROFIL (TAMBAHKAN ROUTE INI)
     Route::get('/profil', [DashboardController::class, 'profil'])->name('profil');
     Route::put('/profil', [DashboardController::class, 'updateProfil'])->name('profil.update');
+    Route::put('/profil/password', [DashboardController::class, 'updatePassword'])->name('profil.password');
+    Route::post('/profil/foto', [DashboardController::class, 'updateFoto'])->name('profil.foto');
     
     // UMKM
     Route::get('/umkm/create', [UmkmController::class, 'createForm'])->name('umkm.create');
@@ -212,23 +209,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/profil-desa/edit', [App\Http\Controllers\Admin\ProfilDesaController::class, 'edit'])->name('profil-desa.edit');
     Route::put('/profil-desa', [App\Http\Controllers\Admin\ProfilDesaController::class, 'update'])->name('profil-desa.update');
     
-    // ==============================================
-    // DATA PENGURUS (APARATUR DESA) - LENGKAP DENGAN KATEGORI
-    // ==============================================
+    // DATA PENGURUS
     Route::prefix('pengurus')->name('pengurus.')->group(function () {
-        // Resource routes (index, create, store, edit, update, destroy)
         Route::get('/', [App\Http\Controllers\Admin\DataPengurusController::class, 'index'])->name('index');
         Route::get('/create', [App\Http\Controllers\Admin\DataPengurusController::class, 'create'])->name('create');
         Route::post('/', [App\Http\Controllers\Admin\DataPengurusController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [App\Http\Controllers\Admin\DataPengurusController::class, 'edit'])->name('edit');
         Route::put('/{id}', [App\Http\Controllers\Admin\DataPengurusController::class, 'update'])->name('update');
         Route::delete('/{id}', [App\Http\Controllers\Admin\DataPengurusController::class, 'destroy'])->name('destroy');
-        
-        // Custom routes untuk pengurus
         Route::post('/update-urutan', [App\Http\Controllers\Admin\DataPengurusController::class, 'updateUrutan'])->name('update-urutan');
         Route::post('/sync-levels', [App\Http\Controllers\Admin\DataPengurusController::class, 'syncLevels'])->name('sync-levels');
-        
-        // Routes untuk kelola kategori pengurus
         Route::get('/kategori', [App\Http\Controllers\Admin\DataPengurusController::class, 'showKategori'])->name('kategori');
         Route::post('/kategori', [App\Http\Controllers\Admin\DataPengurusController::class, 'storeKategori'])->name('kategori.store');
         Route::delete('/kategori/{key}', [App\Http\Controllers\Admin\DataPengurusController::class, 'destroyKategori'])->name('kategori.destroy');
@@ -256,10 +246,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::get('/laporan', [App\Http\Controllers\Admin\KeuanganController::class, 'laporan'])->name('laporan');
     });
 
-    // ==========================================
     // KONTAK DESA
-    // ==========================================
     Route::resource('kontak-desa', App\Http\Controllers\Admin\KontakDesaController::class);
     Route::get('/kontak-desa/{id}/toggle-status', [KontakDesaController::class, 'toggleStatus'])->name('kontak-desa.toggle-status');
-    
-    });
+});

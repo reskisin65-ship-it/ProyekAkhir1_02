@@ -865,8 +865,9 @@
     .magic-sidebar {
         position: fixed;
         left: 30px;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 30px;
+        bottom: 30px;
+        transform: none;
         width: 65px;
         background: linear-gradient(135deg, #064e3b, #022c22);
         backdrop-filter: blur(20px);
@@ -875,15 +876,22 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 12px;
         padding: 20px 0;
         box-shadow: 0 25px 50px rgba(6, 78, 59, 0.3);
         border: 1px solid rgba(255,255,255,0.12);
         height: auto;
         max-height: calc(100vh - 60px);
-        overflow: visible;
+        overflow-y: auto;
+        overflow-x: visible;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
         transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.4s;
+    }
+
+    .magic-sidebar::-webkit-scrollbar {
+        display: none;
     }
 
     /* ---- EXPANDED STATE ---- */
@@ -983,43 +991,57 @@
         transform: translateX(3px) !important;
     }
 
-    /* ---- INFO BOX (tooltip hover - collapsed mode) ---- */
+    /* ---- INFO BOX: hidden in DOM, cloned via JS to body as fixed tooltip ---- */
     .info-box {
-        position: absolute;
-        left: 75px;
-        background: rgba(255, 255, 255, 0.96);
+        display: none !important;
+    }
+
+    /* ---- FLOATING TOOLTIP (injected by JS into <body>) ---- */
+    #sidebar-floating-tooltip {
+        position: fixed;
+        background: rgba(255, 255, 255, 0.97);
         backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
         padding: 12px 20px;
         border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(6, 78, 59, 0.12);
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(0);
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 20px 40px rgba(6, 78, 59, 0.15);
         min-width: 220px;
-        border: 1px solid rgba(16, 185, 129, 0.15);
-        z-index: 1200;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        z-index: 9999;
         pointer-events: none;
+        opacity: 0;
+        transform: translateX(-8px);
+        transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
     }
-
-    .side-item.side-logout .info-box {
-        border-color: rgba(239, 68, 68, 0.15) !important;
-        box-shadow: 0 20px 40px rgba(239, 68, 68, 0.12) !important;
-    }
-
-    .info-box h5 { font-size: 14px; margin-top: 4px; }
-    .info-box p { font-size: 10px; }
-    .info-box span { font-size: 8px; transition: color 0.3s; }
-
-    .side-item:hover .info-box {
+    #sidebar-floating-tooltip.visible {
         opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
+        transform: translateX(0);
     }
-
-    .side-item.side-logout:hover .info-box {
-        border-color: rgba(239, 68, 68, 0.3) !important;
-        box-shadow: 0 20px 40px rgba(239, 68, 68, 0.25) !important;
+    #sidebar-floating-tooltip.logout-style {
+        border-color: rgba(239, 68, 68, 0.25);
+        box-shadow: 0 20px 40px rgba(239, 68, 68, 0.15);
+    }
+    #sidebar-floating-tooltip .tt-label {
+        font-size: 8px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #10b981;
+    }
+    #sidebar-floating-tooltip.logout-style .tt-label {
+        color: #ef4444;
+    }
+    #sidebar-floating-tooltip .tt-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #064e3b;
+        margin-top: 4px;
+        font-style: italic;
+    }
+    #sidebar-floating-tooltip .tt-desc {
+        font-size: 10px;
+        color: #9ca3af;
+        margin-top: 2px;
     }
 
     /* Arrow toggle button styles */
@@ -1186,6 +1208,86 @@
         document.addEventListener('DOMContentLoaded', applySidebar);
     } else {
         applySidebar();
+    }
+})();
+</script>
+
+<script>
+/* ── Floating sidebar tooltip (position: fixed, bypasses overflow clip) ── */
+(function () {
+    // Create the shared tooltip element once
+    var tooltip = document.createElement('div');
+    tooltip.id = 'sidebar-floating-tooltip';
+    tooltip.innerHTML =
+        '<div class="tt-label"></div>' +
+        '<div class="tt-title"></div>' +
+        '<div class="tt-desc"></div>';
+    document.body.appendChild(tooltip);
+
+    var hideTimer = null;
+
+    function showTooltip(item) {
+        var sidebar = document.getElementById('magic-sidebar');
+        // Don't show tooltip when sidebar is expanded
+        if (sidebar && sidebar.classList.contains('expanded')) return;
+
+        var infoBox = item.querySelector('.info-box');
+        if (!infoBox) return;
+
+        // Read content from the hidden .info-box
+        var labelEl = infoBox.querySelector('span');
+        var titleEl = infoBox.querySelector('h5');
+        var descEl  = infoBox.querySelector('p');
+
+        tooltip.querySelector('.tt-label').textContent = labelEl ? labelEl.textContent : '';
+        tooltip.querySelector('.tt-title').textContent = titleEl ? titleEl.textContent : '';
+        tooltip.querySelector('.tt-desc').textContent  = descEl  ? descEl.textContent  : '';
+
+        // Logout style
+        if (item.classList.contains('side-logout')) {
+            tooltip.classList.add('logout-style');
+        } else {
+            tooltip.classList.remove('logout-style');
+        }
+
+        // Position: vertically centered on the item, to its right
+        var rect = item.getBoundingClientRect();
+        var sidebarRect = sidebar ? sidebar.getBoundingClientRect() : { right: rect.right };
+        var leftPos = sidebarRect.right + 12;
+        var topPos  = rect.top + (rect.height / 2);
+
+        tooltip.style.left = leftPos + 'px';
+        tooltip.style.top  = topPos + 'px';
+        tooltip.style.transform = 'translateX(-8px) translateY(-50%)';
+
+        // Show
+        clearTimeout(hideTimer);
+        tooltip.classList.add('visible');
+        tooltip.style.transform = 'translateX(0) translateY(-50%)';
+    }
+
+    function hideTooltip() {
+        tooltip.classList.remove('visible');
+        tooltip.style.transform = 'translateX(-8px) translateY(-50%)';
+    }
+
+    function bindItems() {
+        var items = document.querySelectorAll('.magic-sidebar .side-item');
+        items.forEach(function (item) {
+            item.addEventListener('mouseenter', function () {
+                clearTimeout(hideTimer);
+                showTooltip(item);
+            });
+            item.addEventListener('mouseleave', function () {
+                hideTimer = setTimeout(hideTooltip, 80);
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindItems);
+    } else {
+        bindItems();
     }
 })();
 </script>

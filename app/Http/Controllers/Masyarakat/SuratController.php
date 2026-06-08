@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PengajuanSurat;
 use App\Models\Notifikasi;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -58,21 +59,27 @@ class SuratController extends Controller
 
     public function create()
     {
-        return view('masyarakat.surat.create');
+        $user = Auth::user();
+        $dataPenduduk = $user->dataPenduduk;
+        return view('masyarakat.surat.create', compact('user', 'dataPenduduk'));
     }
 
     public function store(Request $request)
     {
+        $tanggalLahirMaks = Carbon::now()->subYears(17)->format('Y-m-d');
+
         $request->validate([
             'jenis_surat' => 'required',
             'nama_lengkap' => 'required|min:3',
             'nik' => 'required|size:16',
             'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required|date',
+            'tanggal_lahir' => 'required|date|before_or_equal:' . $tanggalLahirMaks,
             'nomor_telepon' => 'required|max:15',
             'keperluan' => 'required|min:5',
             'keterangan' => 'nullable',
             'berkas_pendukung' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ], [
+            'tanggal_lahir.before_or_equal' => 'Tanggal lahir harus 17 tahun atau lebih.',
         ]);
 
         $filePath = null;
@@ -151,16 +158,20 @@ class SuratController extends Controller
             ->where('status', 'menunggu')
             ->findOrFail($id);
         
+        $tanggalLahirMaks = Carbon::now()->subYears(17)->format('Y-m-d');
+
         $request->validate([
             'jenis_surat' => 'required',
             'nama_lengkap' => 'required|min:3',
             'nik' => 'required|size:16',
             'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required|date',
+            'tanggal_lahir' => 'required|date|before_or_equal:' . $tanggalLahirMaks,
             'nomor_telepon' => 'required|max:15',
             'keperluan' => 'required|min:5',
             'keterangan' => 'nullable',
             'berkas_pendukung' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ], [
+            'tanggal_lahir.before_or_equal' => 'Tanggal lahir harus 17 tahun atau lebih.',
         ]);
 
         $filePath = $pengajuan->berkas_pendukung;

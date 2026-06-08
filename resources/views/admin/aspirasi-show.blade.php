@@ -256,7 +256,7 @@
     <div class="detail-card fade-up" style="animation-delay: 0.1s">
         <div class="card-header">
             <h1>
-                <i class="fa-regular fa-message mr-2"></i> 
+                <i class="fa-solid fa-message mr-2"></i> 
                 Detail Aspirasi
             </h1>
             <p class="text-white/60 text-sm mt-1">ID: #{{ $aspirasi->id_aspirasi }}</p>
@@ -326,7 +326,7 @@
                 
                 <div class="info-item full-width">
                     <div class="info-label">
-                        <i class="fa-regular fa-heading"></i> Judul
+                        <i class="fa-solid fa-heading"></i> Judul
                     </div>
                     <div class="info-value">
                         {{ $aspirasi->judul }}
@@ -337,7 +337,7 @@
             <!-- Aspirasi Content -->
             <div class="aspirasi-content">
                 <div class="info-label mb-2">
-                    <i class="fa-regular fa-message"></i> Isi Aspirasi
+                    <i class="fa-solid fa-message"></i> Isi Aspirasi
                 </div>
                 <p>{{ $aspirasi->isi_aspirasi }}</p>
             </div>
@@ -346,7 +346,7 @@
             @if($aspirasi->respon_admin)
             <div class="response-section">
                 <div class="response-label">
-                    <i class="fa-regular fa-reply-all"></i> Respon Admin
+                    <i class="fa-solid fa-reply-all"></i> Respon Admin
                 </div>
                 <p>{{ $aspirasi->respon_admin }}</p>
                 <div class="text-right text-xs text-emerald-600 mt-2">
@@ -360,7 +360,7 @@
                 @if($aspirasi->status != 'selesai')
                 <button onclick="openResponModal({{ $aspirasi->id_aspirasi }}, '{{ addslashes($aspirasi->judul) }}')" 
                         class="btn-primary">
-                    <i class="fa-regular fa-reply"></i> Beri Respon
+                    <i class="fa-solid fa-reply"></i> Beri Respon
                 </button>
                 @endif
                 
@@ -390,7 +390,7 @@
         <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4">
             <div class="flex items-center justify-between">
                 <h3 class="text-xl font-bold text-white">
-                    <i class="fa-regular fa-reply mr-2"></i> Beri Respon
+                    <i class="fa-solid fa-reply mr-2"></i> Beri Respon
                 </h3>
                 <button onclick="closeResponModal()" class="text-white/80 hover:text-white">
                     <i class="fa-solid fa-times text-xl"></i>
@@ -402,7 +402,7 @@
             @csrf
             <div class="mb-4">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    <i class="fa-regular fa-message text-emerald-500 mr-1"></i> Aspirasi:
+                    <i class="fa-solid fa-message text-emerald-500 mr-1"></i> Aspirasi:
                 </label>
                 <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
                     <p class="text-gray-700 text-sm" id="aspirasiJudul"></p>
@@ -411,7 +411,7 @@
             
             <div class="mb-5">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    <i class="fa-regular fa-reply-all text-emerald-500 mr-1"></i> Respon / Tanggapan:
+                    <i class="fa-solid fa-reply-all text-emerald-500 mr-1"></i> Respon / Tanggapan:
                 </label>
                 <textarea name="respon" rows="5" required
                           class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition resize-none"

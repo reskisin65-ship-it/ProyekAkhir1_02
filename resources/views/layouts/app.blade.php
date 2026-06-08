@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
@@ -76,7 +76,13 @@
             border: 1px solid rgba(255,255,255,0.12);
             height: auto;
             max-height: calc(100vh - 60px);
-            overflow: visible;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .magic-sidebar::-webkit-scrollbar {
+            display: none;
         }
         .side-item {
             position: relative; width: 44px; height: 44px; display: flex;
@@ -282,40 +288,40 @@
     {{-- ============================================= --}}
     {{-- FOOTER - GAMBAR CERAH, TEKS BESAR PUTIH/HIJAU --}}
     {{-- ============================================= --}}
-    <footer class="footer-cerah text-white pt-16 pb-10 px-[6%]">
+    <footer class="footer-cerah text-white pt-10 pb-28 px-6 md:pt-16 md:pb-10 md:px-[6%]">
         <div class="max-w-7xl mx-auto relative z-10">
-            <div class="flex flex-col md:flex-row justify-between gap-10 mb-10">
+            <div class="flex flex-col md:flex-row justify-between gap-6 md:gap-10 mb-6 md:mb-10">
                 
                 {{-- Left Section - Silintong --}}
                 <div class="md:w-2/5">
-                    <h1 class="text-6xl md:text-7xl font-serif italic text-emerald-400 tracking-wide mb-3 leading-tight">Silintong</h1>
-                    <p class="text-white/60 text-base italic mt-2 leading-relaxed max-w-sm">
+                    <h1 class="text-4xl md:text-7xl font-serif italic text-emerald-400 tracking-wide mb-2 md:mb-3 leading-tight">Silintong</h1>
+                    <p class="text-white/60 text-sm md:text-base italic mt-1 md:mt-2 leading-relaxed max-w-sm">
                         Pusat Digitalisasi Peradaban Desa<br>Pesisir Danau Toba.
                     </p>
                 </div>
 
                 {{-- Middle Section - Navigasi & Layanan --}}
                 <div class="md:w-2/5">
-                    <div class="grid grid-cols-2 gap-10">
+                    <div class="grid grid-cols-2 gap-6 md:gap-10">
                         <div>
-                            <h5 class="footer-heading">NAVIGASI</h5>
-                            <ul class="space-y-3">
-                                <li><a href="{{ route('home') }}" class="footer-link-cerah">Beranda</a></li>
-                                <li><a href="{{ route('profil-desa') }}" class="footer-link-cerah">Profil Desa</a></li>
-                                <li><a href="{{ route('berita') }}" class="footer-link-cerah">Berita</a></li>
-                                <li><a href="{{ route('galeri') }}" class="footer-link-cerah">Galeri</a></li>
-                                <li><a href="{{ route('umkm') }}" class="footer-link-cerah">UMKM</a></li>
-                                <li><a href="{{ route('kontak') }}" class="footer-link-cerah">Kontak</a></li>
+                            <h5 class="footer-heading mb-3">NAVIGASI</h5>
+                            <ul class="space-y-2 md:space-y-3">
+                                <li><a href="{{ route('home') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Beranda</a></li>
+                                <li><a href="{{ route('profil-desa') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Profil Desa</a></li>
+                                <li><a href="{{ route('berita') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Berita</a></li>
+                                <li><a href="{{ route('galeri') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Galeri</a></li>
+                                <li><a href="{{ route('umkm') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">UMKM</a></li>
+                                <li><a href="{{ route('kontak') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Kontak</a></li>
                             </ul>
                         </div>
                         <div>
-                            <h5 class="footer-heading">LAYANAN</h5>
-                            <ul class="space-y-3">
-                                <li><a href="{{ route('masyarakat.surat.create') }}" class="footer-link-cerah">Layanan Surat</a></li>
-                                <li><a href="{{ route('masyarakat.aspirasi.create') }}" class="footer-link-cerah">Aspirasi & Pengaduan</a></li>
-                                <li><a href="#" class="footer-link-cerah">UMKM Lokal</a></li>
-                                <li><a href="#" class="footer-link-cerah">Galeri Desa</a></li>
-                                <li><a href="#" class="footer-link-cerah">Informasi Publik</a></li>
+                            <h5 class="footer-heading mb-3">LAYANAN</h5>
+                            <ul class="space-y-2 md:space-y-3">
+                                <li><a href="{{ route('masyarakat.surat.create') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Layanan Surat</a></li>
+                                <li><a href="{{ route('masyarakat.aspirasi.create') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Aspirasi & Pengaduan</a></li>
+                                <li><a href="#" class="footer-link-cerah text-sm md:text-[0.95rem]">UMKM Lokal</a></li>
+                                <li><a href="#" class="footer-link-cerah text-sm md:text-[0.95rem]">Galeri Desa</a></li>
+                                <li><a href="#" class="footer-link-cerah text-sm md:text-[0.95rem]">Informasi Publik</a></li>
                             </ul>
                         </div>
                     </div>
@@ -323,7 +329,7 @@
 
                 {{-- Right Section - Lokasi --}}
                 <div class="md:w-1/5">
-                    <h5 class="footer-heading">KANTOR</h5>
+                    <h5 class="footer-heading mb-3">KANTOR</h5>
                     <p class="text-white/60 text-sm leading-relaxed">
                         Kabupaten Toba,<br>
                         Sumatera Utara,<br>
@@ -333,12 +339,12 @@
             </div>
 
             {{-- Bottom Tagline --}}
-            <div class="border-t border-white/15 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-white/40 text-sm italic tracking-wide">
+            <div class="border-t border-white/15 pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4">
+                <p class="text-white/40 text-xs md:text-sm italic tracking-wide text-center md:text-left">
                     Mewujudkan masa depan desa digital yang harmonis dengan keindahan alam Toba.
                 </p>
-                <p class="text-white/25 text-[10px] tracking-wider">
-                    Â© <span x-text="tahun"></span> DESA LUMBAN SILINTONG
+                <p class="text-white/25 text-[9px] md:text-[10px] tracking-wider text-center md:text-right">
+                    © <span x-text="tahun"></span> DESA LUMBAN SILINTONG
                 </p>
             </div>
         </div>

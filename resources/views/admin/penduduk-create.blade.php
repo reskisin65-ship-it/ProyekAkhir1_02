@@ -479,19 +479,10 @@
                         <option value="Kepala Keluarga" {{ old('status_keluarga') == 'Kepala Keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
                         <option value="Istri" {{ old('status_keluarga') == 'Istri' ? 'selected' : '' }}>Istri</option>
                         <option value="Anak" {{ old('status_keluarga') == 'Anak' ? 'selected' : '' }}>Anak</option>
+                        <option value="Anggota Keluarga" {{ old('status_keluarga') == 'Anggota Keluarga' ? 'selected' : '' }}>Anggota Keluarga</option>
                         <option value="Lainnya" {{ old('status_keluarga') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                     </select>
                     @error('status_keluarga') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
-                </div>
-
-                <!-- RT/RW -->
-                <div class="form-field">
-                    <label class="form-label">
-                        <i class="fa-solid fa-house"></i> RT/RW
-                        <span class="required-star">*</span>
-                    </label>
-                    <input type="text" name="rt_rw" value="{{ old('rt_rw') }}" required class="input-glass" placeholder="Contoh: 001/002">
-                    @error('rt_rw') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>
 
                 <!-- Kelurahan/Desa -->

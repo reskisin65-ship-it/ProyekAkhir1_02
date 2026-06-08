@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         :root {
             --forest-deep: #064e3b;
@@ -86,7 +87,12 @@
         ::-webkit-scrollbar-thumb { background: #064e3b; border-radius: 10px; }
     </style>
 </head>
-<body class="font-['Plus_Jakarta_Sans'] min-h-screen flex items-center justify-center p-6">
+<body class="font-['Plus_Jakarta_Sans'] min-h-screen flex items-center justify-center py-12 px-6">
+
+    <!-- Floating Back Button -->
+    <a href="{{ route('home') }}" class="fixed top-6 left-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-white/90 backdrop-blur-md border border-emerald-100 hover:border-emerald-500 hover:text-emerald-600 text-emerald-800 transition-all duration-300 shadow-lg hover:-translate-x-1 group" title="Kembali ke Beranda">
+        <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-0.5"></i>
+    </a>
 
     <div class="max-w-4xl w-full grid md:grid-cols-2 bg-white/40 backdrop-blur-md rounded-[3rem] overflow-hidden shadow-2xl animate__animated animate__fadeIn">
         
@@ -161,17 +167,27 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" x-data="{ showPw: false, showConfirmPw: false }">
                     <div class="group">
                         <label class="text-[11px] font-bold text-emerald-800 uppercase tracking-widest ml-1 mb-2 block">Password</label>
-                        <input type="password" name="password" class="input-nature w-full px-4 py-3.5 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" placeholder="••••••••">
+                        <div class="relative">
+                            <input :type="showPw ? 'text' : 'password'" name="password" class="input-nature w-full pl-4 pr-10 py-3.5 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" placeholder="••••••••">
+                            <button type="button" @click="showPw = !showPw" class="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-800/40 hover:text-emerald-600 transition-colors focus:outline-none">
+                                <i :class="showPw ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+                            </button>
+                        </div>
                         @error('password')
                             <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="group">
                         <label class="text-[11px] font-bold text-emerald-800 uppercase tracking-widest ml-1 mb-2 block">Konfirmasi</label>
-                        <input type="password" name="password_confirmation" class="input-nature w-full px-4 py-3.5 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" placeholder="••••••••">
+                        <div class="relative">
+                            <input :type="showConfirmPw ? 'text' : 'password'" name="password_confirmation" class="input-nature w-full pl-4 pr-10 py-3.5 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" placeholder="••••••••">
+                            <button type="button" @click="showConfirmPw = !showConfirmPw" class="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-800/40 hover:text-emerald-600 transition-colors focus:outline-none">
+                                <i :class="showConfirmPw ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+                            </button>
+                        </div>
                         @error('password_confirmation')
                             <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
                         @enderror

@@ -15,11 +15,15 @@ class AspirasiController extends Controller
 {
     public function index()
     {
-        $aspirasi = Aspirasi::where('user_id', Auth::id())
+        $aspirasi = Aspirasi::with('user')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         
-        return view('masyarakat.aspirasi.index', compact('aspirasi'));
+        $menungguCount = Aspirasi::where('status', 'baru')->count();
+        $diprosesCount = Aspirasi::where('status', 'diproses')->count();
+        $selesaiCount = Aspirasi::where('status', 'selesai')->count();
+        
+        return view('masyarakat.aspirasi.index', compact('aspirasi', 'menungguCount', 'diprosesCount', 'selesaiCount'));
     }
 
     public function create()
@@ -73,9 +77,8 @@ class AspirasiController extends Controller
 
     public function show($id)
     {
-        $aspirasi = Aspirasi::where('user_id', Auth::id())
-            ->where('id_aspirasi', $id)
-            ->firstOrFail();
+        $aspirasi = Aspirasi::with('user')
+            ->findOrFail($id);
         
         return view('masyarakat.aspirasi.show', compact('aspirasi'));
     }

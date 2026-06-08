@@ -734,82 +734,93 @@
    ============================================ */
    
 .tutorial-section {
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     background: white;
     border-radius: 28px;
-    padding: 1.5rem;
+    padding: 2rem;
     border: 1px solid #eef2f6;
     transition: all 0.3s ease;
 }
 
 .tutorial-section:hover {
     border-color: #10b981;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    box-shadow: 0 6px 26px rgba(0,0,0,0.07);
 }
 
 /* Header Tutorial */
 .tutorial-header {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
     margin-bottom: 1rem;
     border-bottom: 1px solid #eef2f6;
-    padding-bottom: 0.75rem;
+    padding-bottom: 1rem;
 }
 
 .tutorial-header i {
-    font-size: 1.25rem;
+    font-size: 1.6rem;
     color: #10b981;
+    min-width: 2rem;
+    text-align: center;
 }
 
 .tutorial-header h3 {
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: 1.45rem;
+    font-weight: 800;
     margin: 0;
     color: #0f172a;
+    line-height: 1.1;
 }
 
 /* Intro Text */
 .tutorial-intro {
-    font-size: 0.75rem;
-    color: #64748b;
-    margin-bottom: 1.25rem;
-    line-height: 1.5;
+    font-size: 1rem;
+    color: #475569;
+    margin-bottom: 1.75rem;
+    line-height: 1.7;
+    max-width: 780px;
 }
 
-/* Special Grid (3 Card untuk Tutorial Khusus) */
+.tutorial-content-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
 .tutorial-special-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
 }
 
 .tutorial-special-card {
     background: linear-gradient(135deg, #f8fafc, #ffffff);
-    border-radius: 16px;
-    padding: 1rem;
-    text-align: center;
+    border-radius: 24px;
+    padding: 1.4rem;
+    text-align: left;
     border: 1px solid #eef2f6;
     transition: all 0.3s ease;
     cursor: pointer;
+    min-height: 230px;
+    display: flex;
+    flex-direction: column;
 }
 
 .tutorial-special-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     border-color: #10b981;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
 }
 
 .tutorial-special-icon {
-    width: 44px;
-    height: 44px;
-    background: rgba(16, 185, 129, 0.08);
-    border-radius: 14px;
+    width: 56px;
+    height: 56px;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 0.75rem;
+    margin-bottom: 1rem;
     transition: all 0.3s ease;
 }
 
@@ -822,107 +833,134 @@
 }
 
 .tutorial-special-icon i {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: #10b981;
     transition: all 0.3s ease;
 }
 
 .tutorial-special-title {
-    font-weight: 700;
-    font-size: 0.8rem;
-    margin-bottom: 0.25rem;
+    font-weight: 800;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
     color: #0f172a;
 }
 
 .tutorial-special-desc {
-    font-size: 0.65rem;
-    color: #64748b;
-    line-height: 1.4;
+    font-size: 0.95rem;
+    color: #475569;
+    line-height: 1.7;
+    flex-grow: 1;
 }
 
-/* General Grid (8 Point Tutorial) */
+.tutorial-general-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tutorial-general-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0;
+    color: #0f172a;
+}
+
 .tutorial-general-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
-    margin: 1.25rem 0;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 0;
 }
 
 .tutorial-general-item {
     display: flex;
-    gap: 0.6rem;
-    padding: 0.6rem;
-    border-radius: 14px;
+    gap: 0.85rem;
+    padding: 1rem 1.1rem;
+    border-radius: 18px;
     background: #f8fafc;
     transition: all 0.3s ease;
-    cursor: pointer;
+    align-items: flex-start;
 }
 
 .tutorial-general-item:hover {
-    background: rgba(16, 185, 129, 0.08);
-    transform: translateX(4px);
+    background: rgba(16, 185, 129, 0.12);
+    transform: translateX(3px);
 }
 
 .tutorial-num {
-    width: 26px;
-    height: 26px;
+    width: 34px;
+    height: 34px;
     background: linear-gradient(135deg, #10b981, #059669);
     color: white;
-    border-radius: 10px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 0.65rem;
+    font-weight: 800;
+    font-size: 0.85rem;
     flex-shrink: 0;
     transition: transform 0.3s ease;
 }
 
 .tutorial-general-item:hover .tutorial-num {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .tutorial-general-text h4 {
-    font-size: 0.7rem;
+    font-size: 0.95rem;
     font-weight: 700;
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.35rem;
     color: #0f172a;
 }
 
 .tutorial-general-text p {
-    font-size: 0.6rem;
-    color: #64748b;
-    line-height: 1.3;
+    font-size: 0.85rem;
+    color: #475569;
+    line-height: 1.6;
+    margin: 0;
 }
 
 /* Footer Tutorial */
 .tutorial-footer {
-    margin-top: 1rem;
-    padding: 0.7rem 1rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
     background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-    border-radius: 14px;
+    border-radius: 18px;
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.8rem;
     flex-wrap: wrap;
     transition: all 0.3s ease;
 }
 
 .tutorial-footer:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(16,185,129,0.15);
+    box-shadow: 0 6px 18px rgba(16,185,129,0.15);
 }
 
 .tutorial-footer i {
     color: #10b981;
-    font-size: 0.85rem;
+    font-size: 1rem;
 }
 
 .tutorial-footer span {
-    font-size: 0.7rem;
-    color: #059669;
-    line-height: 1.4;
+    font-size: 0.9rem;
+    color: #0f5f34;
+    line-height: 1.6;
 }
+
+@media (max-width: 1024px) {
+    .tutorial-special-grid { grid-template-columns: 1fr; }
+    .tutorial-general-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .tutorial-section { padding: 1.5rem; }
+    .tutorial-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    .tutorial-intro { font-size: 0.95rem; }
+    .tutorial-special-card { min-height: auto; }
+}
+
 
 /* Responsive */
 @media (max-width: 1024px) {
@@ -1732,7 +1770,7 @@
     {{-- ============================================= --}}
     <section id="berita" data-aos="fade-up" data-aos-delay="300">
         <div class="flex justify-between items-end mb-6 flex-wrap gap-4">
-            <div><div class="section-badge d-inline-flex"><i class="fa-regular fa-newspaper"></i><span>Update Terkini</span></div><h2 class="section-title" style="font-size: 1.8rem;">📰 Berita <span>Utama</span></h2></div>
+            <div><div class="section-badge d-inline-flex"><i class="fa-solid fa-newspaper"></i><span>Update Terkini</span></div><h2 class="section-title" style="font-size: 1.8rem;">📰 Berita <span>Utama</span></h2></div>
             <a href="{{ route('berita') }}" class="text-sm text-primary hover:underline flex items-center gap-1">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
         </div>
 
@@ -1741,12 +1779,12 @@
             @foreach($beritas->take(4) as $berita)
             <div class="news-card" onclick="window.location='{{ route('berita.show', $berita->slug) }}'">
                 <div class="news-img"><img src="{{ $berita->foto ? asset('storage/' . $berita->foto) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500' }}" loading="lazy"></div>
-                <div class="news-content"><span class="news-category">{{ $berita->kategori ?? 'Informasi' }}</span><h4 class="news-title">{{ Str::limit($berita->judul, 50) }}</h4><div class="news-date"><i class="fa-regular fa-calendar"></i> {{ $berita->created_at->translatedFormat('d M Y') }}</div></div>
+                <div class="news-content"><span class="news-category">{{ $berita->kategori ?? 'Informasi' }}</span><h4 class="news-title">{{ Str::limit($berita->judul, 50) }}</h4><div class="news-date"><i class="fa-solid fa-calendar"></i> {{ $berita->created_at->translatedFormat('d M Y') }}</div></div>
             </div>
             @endforeach
         </div>
         @else
-        <div class="text-center py-12 bg-white rounded-3xl border border-gray-100"><i class="fa-regular fa-newspaper text-5xl text-gray-300 mb-4"></i><p class="text-gray-400">Belum ada berita terbaru</p></div>
+        <div class="text-center py-12 bg-white rounded-3xl border border-gray-100"><i class="fa-solid fa-newspaper text-5xl text-gray-300 mb-4"></i><p class="text-gray-400">Belum ada berita terbaru</p></div>
         @endif
     </section>
 
@@ -1764,12 +1802,12 @@
             @foreach($galeris->take(8) as $g)
             <div class="gallery-item" onclick="window.location='{{ route('galeri') }}'">
                 <img src="{{ $g->gambar_galeri ? asset('storage/' . $g->gambar_galeri) : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300' }}" loading="lazy">
-                <div class="gallery-overlay"><i class="fa-regular fa-magnifying-glass-plus"></i></div>
+                <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
             </div>
             @endforeach
         </div>
         @else
-        <div class="text-center py-12 bg-white rounded-3xl border border-gray-100"><i class="fa-regular fa-images text-5xl text-gray-300 mb-4"></i><p class="text-gray-400">Belum ada foto kegiatan</p></div>
+        <div class="text-center py-12 bg-white rounded-3xl border border-gray-100"><i class="fa-solid fa-images text-5xl text-gray-300 mb-4"></i><p class="text-gray-400">Belum ada foto kegiatan</p></div>
         @endif
     </section>
 
@@ -1778,7 +1816,7 @@
     {{-- ============================================= --}}
     <section data-aos="fade-up" data-aos-delay="400">
         <div class="text-center mb-4">
-            <div class="section-badge d-inline-flex"><i class="fa-regular fa-circle-question"></i><span>Info & Bantuan</span></div>
+            <div class="section-badge d-inline-flex"><i class="fa-solid fa-circle-question"></i><span>Info & Bantuan</span></div>
             <h2 class="section-title">Pusat <span>Informasi</span></h2>
             <p class="text-gray-500 mt-2">Pertanyaan yang sering diajukan seputar layanan desa</p>
         </div>
@@ -1789,7 +1827,7 @@
                     ['q' => '📝 Bagaimana cara mengajukan surat keterangan?', 'a' => 'Login ke akun Anda, lalu pilih menu "Ajukan Surat" di Layanan Digital. Isi formulir dengan data yang benar, upload dokumen pendukung, lalu kirim. Admin akan memproses dalam 1-3 hari kerja. Surat selesai dapat diunduh di halaman Riwayat Pengajuan.'],
                     ['q' => '💬 Bagaimana cara menyampaikan aspirasi?', 'a' => 'Login ke akun Anda, kemudian pilih menu "Aspirasi & Keluhan". Tulis judul dan isi aspirasi, pilih kategori (Saran, Keluhan, Masukan, atau Pertanyaan), lalu kirim. Aspirasi akan ditanggapi oleh admin desa maksimal 3 hari kerja.'],
                     ['q' => '🏪 Bagaimana cara mendaftarkan UMKM?', 'a' => 'Login ke akun Anda, lalu kunjungi halaman UMKM. Klik tombol "Daftarkan Usaha", isi data lengkap usaha Anda (nama usaha, kategori, deskripsi, logo, dll). Admin akan memverifikasi dalam 2x24 jam. Setelah disetujui, UMKM Anda akan tampil di katalog.'],
-                    ['q' => '🆔 Lupa password, bagaimana cara resetnya?', 'a' => 'Klik "Lupa Password" di halaman login, masukkan alamat email yang terdaftar. Kami akan mengirimkan link reset password ke email Anda. Jika tidak menerima, periksa folder Spam atau hubungi admin desa.'],
+                    ['q' => '🆔 Merasa password kurang aman??, bagaimana cara mengubahnya?', 'a' => 'Klik "profil saya" di bagian dropdown navbar, masukkan password yang sebelumnya, lalu masukkan password baru anda, dan password otomatis akan berubah.'],
                     ['q' => '⏱️ Berapa lama proses pembuatan surat?', 'a' => 'Proses verifikasi dan penerbitan surat membutuhkan waktu 1-3 hari kerja setelah pengajuan masuk. Anda dapat memantau status pengajuan di menu "Riwayat Pengajuan Surat".'],
                     ['q' => '📱 Apakah bisa mengakses portal dari HP?', 'a' => 'Ya, portal ini responsif dan dapat diakses dengan nyaman dari smartphone, tablet, maupun komputer desktop. Tampilan akan menyesuaikan dengan ukuran layar perangkat Anda.'],
                 ];
@@ -1811,96 +1849,101 @@
    {{-- TUTORIAL SECTION --}}
 <div class="tutorial-section" data-aos="fade-up" data-aos-delay="450">
     <div class="tutorial-header">
-        <i class="fa-regular fa-circle-question"></i>
+        <i class="fa-solid fa-circle-question"></i>
         <h3>📖 Tutorial Layanan Digital Desa</h3>
     </div>
-    
-    <p class="tutorial-intro">
-        Panduan lengkap menggunakan layanan digital Desa Lumban Silintong:
-    </p>
-    
-    <!-- 3 Tutorial Khusus -->
-    <div class="tutorial-special-grid">
-        <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
-            <div class="tutorial-special-icon"><i class="fa-solid fa-file-pen"></i></div>
-            <div class="tutorial-special-title">📋 Mengajukan Surat</div>
-            <div class="tutorial-special-desc">Login → Pilih "Ajukan Surat" → Isi data → Upload berkas → Kirim. Surat akan diproses 1-3 hari kerja.</div>
-        </div>
-        <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
-            <div class="tutorial-special-icon"><i class="fa-regular fa-comment-dots"></i></div>
-            <div class="tutorial-special-title">💬 Mengirim Aspirasi</div>
-            <div class="tutorial-special-desc">Login → Pilih "Aspirasi & Keluhan" → Tulis aspirasi → Pilih kategori → Kirim. Ditanggapi max 3 hari.</div>
-        </div>
-        <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
-            <div class="tutorial-special-icon"><i class="fa-solid fa-store"></i></div>
-            <div class="tutorial-special-title">🏪 Request Akun UMKM</div>
-            <div class="tutorial-special-desc">Login → Buka halaman UMKM → Klik "Daftarkan Usaha" → Isi data usaha → Tunggu verifikasi admin (2x24 jam).</div>
-        </div>
-    </div>
 
-    <!-- 8 Point General Tutorial -->
-    <div class="tutorial-general-grid">
-        <div class="tutorial-general-item">
-            <div class="tutorial-num">1</div>
-            <div class="tutorial-general-text">
-                <h4>🏠 Navigasi Utama</h4>
-                <p>Gunakan menu navbar untuk akses semua halaman.</p>
+    <p class="tutorial-intro">
+        Panduan lengkap menggunakan layanan digital Desa Lumban Silintong. Ikuti langkah berikut untuk pengalaman yang lebih cepat dan jelas.
+    </p>
+
+    <div class="tutorial-content-grid">
+        <!-- 3 Tutorial Khusus -->
+        <div class="tutorial-special-grid">
+            <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
+                <div class="tutorial-special-icon"><i class="fa-solid fa-file-pen"></i></div>
+                <div class="tutorial-special-title">📋 Mengajukan Surat</div>
+                <div class="tutorial-special-desc">Login, pilih menu Ajukan Surat, isi data lengkap, upload dokumen, lalu kirim. Proses selesai dalam 1–3 hari kerja.</div>
+            </div>
+            <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
+                <div class="tutorial-special-icon"><i class="fa-solid fa-comment-dots"></i></div>
+                <div class="tutorial-special-title">💬 Mengirim Aspirasi</div>
+                <div class="tutorial-special-desc">Login kemudian pilih Aspirasi & Keluhan. Tulis pesan, pilih kategori, dan kirim. Aspirasi ditanggapi maksimal 3 hari kerja.</div>
+            </div>
+            <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
+                <div class="tutorial-special-icon"><i class="fa-solid fa-store"></i></div>
+                <div class="tutorial-special-title">🏪 Request Akun UMKM</div>
+                <div class="tutorial-special-desc">Login, buka halaman UMKM, klik Daftarkan Usaha, isi data usaha lengkap, dan tunggu verifikasi admin dalam 2x24 jam.</div>
             </div>
         </div>
-        <div class="tutorial-general-item">
-            <div class="tutorial-num">2</div>
-            <div class="tutorial-general-text">
-                <h4>📊 Visualisasi Data</h4>
-                <p>Klik Bar/Line/Pie untuk ubah tampilan grafik.</p>
-            </div>
-        </div>
-        <div class="tutorial-general-item">
-            <div class="tutorial-num">3</div>
-            <div class="tutorial-general-text">
-                <h4>🔐 Login Terlebih Dahulu</h4>
-                <p>Untuk akses layanan surat & aspirasi.</p>
-            </div>
-        </div>
-        <div class="tutorial-general-item">
-            <div class="tutorial-num">4</div>
-            <div class="tutorial-general-text">
-                <h4>🖱️ Hover Interaktif</h4>
-                <p>Arahkan kursor ke card untuk efek animasi.</p>
-            </div>
-        </div>
-        <div class="tutorial-general-item">
-            <div class="tutorial-num">5</div>
-            <div class="tutorial-general-text">
-                <h4>📱 Responsif</h4>
-                <p>Akses dari HP, tablet, atau komputer.</p>
-            </div>
-        </div>
-        <div class="tutorial-general-item">
-            <div class="tutorial-num">6</div>
-            <div class="tutorial-general-text">
-                <h4>⏱️ Waktu Proses</h4>
-                <p>Surat: 1-3 hari, Aspirasi: max 3 hari, UMKM: 2x24 jam.</p>
-            </div>
-        </div>
-        <div class="tutorial-general-item">
-            <div class="tutorial-num">7</div>
-            <div class="tutorial-general-text">
-                <h4>📎 Lampiran Dokumen</h4>
-                <p>Upload file pendukung untuk mempercepat proses.</p>
-            </div>
-        </div>
-        <div class="tutorial-general-item">
-            <div class="tutorial-num">8</div>
-            <div class="tutorial-general-text">
-                <h4>💡 Tips Penting</h4>
-                <p>Pastikan data yang diisi sesuai dokumen asli.</p>
+
+        <!-- 8 Point General Tutorial -->
+        <div class="tutorial-general-wrapper">
+            <h4 class="tutorial-general-title">Langkah Cepat dan Penting</h4>
+            <div class="tutorial-general-grid">
+                <div class="tutorial-general-item">
+                    <div class="tutorial-num">1</div>
+                    <div class="tutorial-general-text">
+                        <h4>🏠 Navigasi Utama</h4>
+                        <p>Gunakan menu navbar untuk mengakses semua halaman layanan.</p>
+                    </div>
+                </div>
+                <div class="tutorial-general-item">
+                    <div class="tutorial-num">2</div>
+                    <div class="tutorial-general-text">
+                        <h4>📊 Visualisasi Data</h4>
+                        <p>Pilih Bar, Line, atau Pie untuk mengubah tampilan grafik dengan mudah.</p>
+                    </div>
+                </div>
+                <div class="tutorial-general-item">
+                    <div class="tutorial-num">3</div>
+                    <div class="tutorial-general-text">
+                        <h4>🔐 Login Terlebih Dahulu</h4>
+                        <p>Login diperlukan untuk mengajukan surat, aspirasi, dan pendaftaran UMKM.</p>
+                    </div>
+                </div>
+                <div class="tutorial-general-item">
+                    <div class="tutorial-num">4</div>
+                    <div class="tutorial-general-text">
+                        <h4>🖱️ Hover Interaktif</h4>
+                        <p>Arahkan kursor pada kartu untuk melihat efek animasi dan informasi tambahan.</p>
+                    </div>
+                </div>
+                <div class="tutorial-general-item">
+                    <div class="tutorial-num">5</div>
+                    <div class="tutorial-general-text">
+                        <h4>📱 Responsif</h4>
+                        <p>Portal dapat diakses dengan baik dari smartphone, tablet, maupun desktop.</p>
+                    </div>
+                </div>
+                <div class="tutorial-general-item">
+                    <div class="tutorial-num">6</div>
+                    <div class="tutorial-general-text">
+                        <h4>⏱️ Waktu Proses</h4>
+                        <p>Surat 1-3 hari, aspirasi max 3 hari, UMKM 2x24 jam setelah verifikasi.</p>
+                    </div>
+                </div>
+                <div class="tutorial-general-item">
+                    <div class="tutorial-num">7</div>
+                    <div class="tutorial-general-text">
+                        <h4>📎 Lampiran Dokumen</h4>
+                        <p>Upload berkas pendukung agar permohonan diproses lebih cepat dan tepat.</p>
+                    </div>
+                </div>
+                <div class="tutorial-general-item">
+                    <div class="tutorial-num">8</div>
+                    <div class="tutorial-general-text">
+                        <h4>💡 Tips Penting</h4>
+                        <p>Pastikan data yang diisi sesuai dokumen asli untuk menghindari penolakan.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     
     <div class="tutorial-footer">
-        <i class="fa-regular fa-lightbulb"></i>
-        <span>💡 <strong>Tips Penting:</strong> Pastikan Anda sudah login terlebih dahulu sebelum menggunakan layanan pengajuan surat, aspirasi, atau pendaftaran UMKM. Data yang diisi harus sesuai dengan dokumen asli untuk menghindari penolakan.</span>
+        <i class="fa-solid fa-lightbulb"></i>
+        <span>💡 <strong>Tips Penting:</strong> Pastikan Anda sudah login terlebih dahulu sebelum menggunakan layanan pengajuan surat, aspirasi, atau pendaftaran UMKM. Data yang diisi harus sesuai dokumen asli untuk menghindari penolakan.</span>
     </div>
 </div>
 

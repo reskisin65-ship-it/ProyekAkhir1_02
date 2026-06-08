@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
@@ -70,14 +70,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             gap: 12px;
             padding: 20px 0;
             box-shadow: 0 25px 50px rgba(6, 78, 59, 0.3);
             border: 1px solid rgba(255,255,255,0.12);
             height: auto;
             max-height: calc(100vh - 60px);
-            overflow: visible;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .magic-sidebar::-webkit-scrollbar {
+            display: none;
         }
         .side-item {
             position: relative; width: 44px; height: 44px; display: flex;
@@ -88,6 +94,24 @@
         }
         .side-item:hover, .side-item.active { color: #fff; background: rgba(255,255,255,0.12); transform: translateY(-2px); }
         .side-item.active { color: #10b981; background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .info-box {
+            position: absolute; left: 75px; background: white; padding: 12px 20px;
+            border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            opacity: 0; visibility: hidden; transform: translateX(-15px); transition: 0.3s;
+            min-width: 220px; border: 1px solid rgba(0,0,0,0.04);
+            z-index: 1200;
+        }
+        .info-box h5 {
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        .info-box p {
+            font-size: 10px;
+        }
+        .info-box span {
+            font-size: 8px;
+        }
+        .side-item:hover .info-box { opacity: 1; visibility: visible; transform: translateX(0); }
 
         /* Scaling Responsif Berdasarkan Tinggi Layar */
         @media (max-height: 850px) {
@@ -133,8 +157,14 @@
             position: relative;
             overflow: hidden;
             color: #f3f4f6;
-            padding: 50px 6% 30px 6%;
+            padding: 40px 6% 110px 6%;
             margin-top: 60px;
+        }
+
+        @media (min-width: 1025px) {
+            .footer-modern {
+                padding: 50px 6% 35px 6%;
+            }
         }
 
         /* Efek Motif Garis Kontur */
@@ -251,10 +281,10 @@
         <div class="max-w-7xl mx-auto relative z-10">
             
             {{-- Header Logo & CTA Admin --}}
-            <div class="footer-logo-center" data-aos="fade-up">
+            <div class="footer-logo-center mb-6 md:mb-10" data-aos="fade-up">
                 <div class="abstract-star"></div>
-                <h2 class="text-4xl md:text-5xl font-serif italic text-white mb-2">Admin Panel</h2>
-                <p class="text-emerald-400/80 tracking-widest text-[10px] uppercase font-bold mb-6">Kelola Data & Informasi Desa</p>
+                <h2 class="text-3xl md:text-5xl font-serif italic text-white mb-2">Admin Panel</h2>
+                <p class="text-emerald-400/80 tracking-widest text-[10px] uppercase font-bold mb-4 md:mb-6">Kelola Data & Informasi Desa</p>
                 
                 <div class="flex flex-wrap justify-center gap-3">
                     <a href="{{ route('admin.pengajuan-surat.index') }}" class="btn-footer-pill">
@@ -267,7 +297,7 @@
             </div>
 
             {{-- Grid Footer Admin --}}
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 border-t border-white/10 pt-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 border-t border-white/10 pt-8 md:pt-10">
                 
                 <div class="space-y-3">
                     <h5 class="footer-heading-modern">Kantor Desa</h5>
@@ -303,9 +333,7 @@
                 <div class="md:text-right">
                     <h5 class="footer-heading-modern">Ikuti Kami</h5>
                     <div class="flex md:justify-end gap-5 text-lg">
-                        <a href="#" class="text-white/40 hover:text-emerald-400 transition"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="text-white/40 hover:text-emerald-400 transition"><i class="fa-brands fa-facebook"></i></a>
-                        <a href="#" class="text-white/40 hover:text-emerald-400 transition"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/officiallumbansilintong?igsh=MXc0aHBjMXFtMmZkdw==" class="text-white/40 hover:text-emerald-400 transition"><i class="fa-brands fa-instagram"></i></a>
                     </div>
                     <div class="mt-6">
                         <span class="inline-block px-3 py-1.5 border border-emerald-500/30 rounded-full text-[8px] text-emerald-400 font-bold uppercase tracking-tighter">

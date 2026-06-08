@@ -341,28 +341,28 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label"><i class="fa-regular fa-user"></i> Nama Lengkap <span class="required">*</span></label>
-                        <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap', Auth::user()->name ?? '') }}" class="form-control" required>
+                        <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap', $dataPenduduk?->nama_lengkap ?? Auth::user()->name ?? '') }}" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label"><i class="fa-regular fa-id-card"></i> NIK <span class="required">*</span></label>
-                        <input type="text" name="nik" value="{{ old('nik') }}" class="form-control" maxlength="16" required>
+                        <input type="text" name="nik" value="{{ old('nik', $dataPenduduk?->nik ?? '') }}" class="form-control" maxlength="16" required>
                         <p class="text-xs text-gray-400 mt-1">16 digit angka (sesuai KTP)</p>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label"><i class="fa-regular fa-location-dot"></i> Tempat Lahir <span class="required">*</span></label>
-                        <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir') }}" class="form-control" required>
+                        <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir', $dataPenduduk?->tempat_lahir ?? '') }}" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label"><i class="fa-regular fa-calendar"></i> Tanggal Lahir <span class="required">*</span></label>
-                        <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" class="form-control" required>
+                        <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir', optional($dataPenduduk?->tanggal_lahir)->format('Y-m-d') ?? '') }}" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label"><i class="fa-regular fa-phone"></i> Nomor Telepon <span class="required">*</span></label>
-                        <input type="tel" name="nomor_telepon" value="{{ old('nomor_telepon', Auth::user()->nomor_telepon ?? '') }}" class="form-control" required>
+                        <input type="tel" name="nomor_telepon" value="{{ old('nomor_telepon', $user->nomor_telepon ?? '') }}" class="form-control" required>
                     </div>
                 </div>
                 

@@ -555,7 +555,7 @@
             @if($a->status != 'selesai')
             <button onclick="openResponModal({{ $a->id_aspirasi }}, '{{ addslashes($a->judul) }}')" 
                     class="deck-btn btn-respon" title="Beri Respon">
-                <i class="fa-regular fa-reply"></i>
+                <i class="fa-solid fa-reply"></i>
             </button>
             @endif
             
@@ -601,7 +601,7 @@
         <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4">
             <div class="flex items-center justify-between">
                 <h3 class="text-xl font-bold text-white">
-                    <i class="fa-regular fa-reply mr-2"></i> Beri Respon
+                    <i class="fa-solid fa-reply mr-2"></i> Beri Respon
                 </h3>
                 <button onclick="closeResponModal()" class="text-white/80 hover:text-white">
                     <i class="fa-solid fa-times text-xl"></i>

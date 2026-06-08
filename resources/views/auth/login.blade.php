@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
             /* Latar belakang alam: perpaduan hutan dan danau */
@@ -62,9 +63,12 @@
         }
     </style>
 </head>
-<body class="font-['Plus_Jakarta_Sans'] min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+<body class="font-['Plus_Jakarta_Sans'] min-h-screen flex items-center justify-center py-12 px-6 relative">
 
-   
+    <!-- Floating Back Button -->
+    <a href="{{ route('home') }}" class="fixed top-6 left-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-white/90 backdrop-blur-md border border-emerald-100 hover:border-emerald-500 hover:text-emerald-600 text-emerald-800 transition-all duration-300 shadow-lg hover:-translate-x-1 group" title="Kembali ke Beranda">
+        <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-0.5"></i>
+    </a>
 
     <div class="max-w-4xl w-full grid md:grid-cols-2 glass-nature rounded-[3rem] overflow-hidden shadow-2xl animate__animated animate__zoomIn">
         
@@ -109,15 +113,18 @@
                     </div>
                 </div>
 
-                <div class="group">
+                <div class="group" x-data="{ showPassword: false }">
                     <label class="block text-[11px] font-bold text-emerald-800 uppercase tracking-widest ml-1 mb-2">Kata Sandi</label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-800/20 group-focus-within:text-emerald-600 transition-colors">
                             <i class="fa-solid fa-lock"></i>
                         </span>
-                        <input type="password" name="password" 
-                            class="input-nature w-full pl-12 pr-4 py-4 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" 
+                        <input :type="showPassword ? 'text' : 'password'" name="password" 
+                            class="input-nature w-full pl-12 pr-12 py-4 rounded-2xl border border-emerald-100 focus:outline-none focus:border-emerald-500 text-sm" 
                             placeholder="••••••••" required>
+                        <button type="button" @click="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-800/40 hover:text-emerald-600 transition-colors focus:outline-none">
+                            <i :class="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -126,7 +133,6 @@
                         <input type="checkbox" name="remember" class="w-4 h-4 rounded border-emerald-200 text-emerald-600 focus:ring-emerald-500">
                         <span class="text-xs text-emerald-800/60 group-hover:text-emerald-800 transition-colors">Ingat Saya</span>
                     </label>
-                    <a href="#" class="text-xs text-emerald-700 font-bold hover:underline">Lupa Password?</a>
                 </div>
 
                 <button type="submit" class="btn-nature w-full py-4 text-white rounded-2xl font-bold uppercase tracking-[0.2em] text-xs shadow-xl flex items-center justify-center gap-3">

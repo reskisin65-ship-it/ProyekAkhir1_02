@@ -608,7 +608,7 @@
                 <p class="hero-subtitle">Setiap suara, saran, dan keluhan Anda adalah bahan bakar untuk kemajuan desa Lumban Silintong.</p>
                 <div class="hero-stats">
                     <div class="hero-stat"><i class="fa-regular fa-clock"></i> <span>Ditanggapi maksimal 3 hari kerja</span></div>
-                    <div class="hero-stat"><i class="fa-regular fa-lock"></i> <span>Identitas Anda aman</span></div>
+                    <div class="hero-stat"><i class="fa-solid fa-lock"></i> <span>Identitas Anda aman</span></div>
                 </div>
             </div>
             <div class="hero-icon">
@@ -621,7 +621,7 @@
     {{-- BACK BUTTON --}}
     {{-- ============================================ --}}
     <a href="{{ route('masyarakat.aspirasi.index') }}" class="back-link animate__animated animate__fadeInUp" style="animation-delay: 0.05s">
-        <i class="fa-solid fa-arrow-left"></i> Kembali ke Aspirasi Saya
+        <i class="fa-solid fa-arrow-left"></i> Kembali ke Aspirasi Publik
     </a>
 
     {{-- ============================================ --}}
@@ -700,7 +700,7 @@
                     <label class="form-label"><i class="fa-solid fa-comment-dots"></i> Isi Aspirasi <span class="required">*</span></label>
                     <textarea name="isi" rows="6" required class="input-premium" placeholder="Tulis aspirasi, saran, atau keluhan Anda secara detail dan jelas...">{{ old('isi') }}</textarea>
                     <div class="text-xs text-gray-400 mt-2 flex items-center gap-1">
-                        <i class="fa-regular fa-info-circle"></i> Minimal 10 karakter, semakin detail semakin baik
+                        <i class="fa-solid fa-circle-info"></i> Minimal 10 karakter, semakin detail semakin baik
                     </div>
                 </div>
 
@@ -796,7 +796,7 @@
                 <div class="tutorial-num">4</div>
                 <div class="tutorial-text">
                     <h4>Kirim & Pantau</h4>
-                    <p>Klik "Kirim Aspirasi" dan pantau statusnya di halaman Aspirasi Saya.</p>
+                    <p>Klik "Kirim Aspirasi" dan pantau statusnya di halaman Aspirasi Publik.</p>
                 </div>
             </div>
             <div class="tutorial-item">

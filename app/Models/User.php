@@ -15,7 +15,7 @@ class User extends Authenticatable
     protected $table = 'users';
     
     protected $fillable = [
-        'id_role', 'name', 'email', 'password', 'nomor_telepon', 'foto_profil'
+        'id_role', 'name', 'email', 'password', 'nomor_telepon', 'alamat', 'foto_profil'
     ];
 
     protected $hidden = [
@@ -54,6 +54,12 @@ class User extends Authenticatable
     public function dataPengurus()
     {
         return $this->hasOne(DataPengurus::class, 'user_id', 'user_id');
+    }
+
+    // Relasi ke Data Penduduk
+    public function dataPenduduk()
+    {
+        return $this->hasOne(DataPenduduk::class, 'user_id', 'user_id');
     }
     
     // Relasi ke Berita

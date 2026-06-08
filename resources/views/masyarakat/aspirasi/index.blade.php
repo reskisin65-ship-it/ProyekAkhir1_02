@@ -1,7 +1,7 @@
 {{-- resources/views/masyarakat/aspirasi/index.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Aspirasi Saya - Lumban Silintong')
+@section('title', 'Aspirasi Publik - Lumban Silintong')
 
 @section('content')
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -741,10 +741,10 @@
         </div>
         <h1 class="header-title">
             Aspirasi<br>
-            <span>Saya</span>
+            <span>Publik</span>
         </h1>
         <p class="header-subtitle">
-            Lihat dan pantau semua aspirasi, saran, keluhan, atau pertanyaan yang telah Anda kirimkan ke Desa Lumban Silintong.
+            Lihat semua aspirasi yang masuk dari warga Desa Lumban Silintong, termasuk saran, keluhan, dan masukan publik.
         </p>
         <div class="mt-4">
             <a href="{{ route('masyarakat.aspirasi.create') }}" class="btn-premium">
@@ -764,17 +764,17 @@
         </div>
         <div class="stat-card">
             <div class="stat-icon"><i class="fa-regular fa-clock"></i></div>
-            <div class="stat-value" id="menunggu-count">{{ $aspirasi->where('status', 'baru')->count() }}</div>
+            <div class="stat-value" id="menunggu-count">{{ $menungguCount }}</div>
             <div class="stat-label">Menunggu</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
-            <div class="stat-value" id="diproses-count">{{ $aspirasi->where('status', 'diproses')->count() }}</div>
+            <div class="stat-value" id="diproses-count">{{ $diprosesCount }}</div>
             <div class="stat-label">Diproses</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon"><i class="fa-regular fa-circle-check"></i></div>
-            <div class="stat-value" id="selesai-count">{{ $aspirasi->where('status', 'selesai')->count() }}</div>
+            <div class="stat-value" id="selesai-count">{{ $selesaiCount }}</div>
             <div class="stat-label">Selesai</div>
         </div>
     </div>
@@ -832,7 +832,7 @@
                         <i class="fa-regular fa-user"></i>
                     </div>
                     <div>
-                        <div class="user-name">{{ Auth::user()->name }}</div>
+                        <div class="user-name">{{ $item->user->name ?? 'Warga' }}</div>
                         <div class="user-date">
                             <i class="fa-regular fa-calendar"></i>
                             {{ $item->created_at->translatedFormat('d M Y, H:i') }}
@@ -882,7 +882,7 @@
                     <i class="fa-solid fa-spinner fa-spin"></i>
                     <span>Status Proses</span>
                 </div>
-                <p class="response-text">Aspirasi Anda sedang diproses oleh admin desa. Mohon tunggu tanggapan dalam 1-3 hari kerja.</p>
+                <p class="response-text">{{ $item->user_id === Auth::id() ? 'Aspirasi Anda' : 'Aspirasi ini' }} sedang diproses oleh admin desa. Mohon tunggu tanggapan dalam 1-3 hari kerja.</p>
             </div>
             @elseif($item->status == 'baru')
             <div class="pending-card">
@@ -890,7 +890,7 @@
                     <i class="fa-regular fa-bell"></i>
                     <span>Menunggu Tanggapan</span>
                 </div>
-                <p class="response-text">Aspirasi Anda telah terkirim dan akan segera ditanggapi oleh admin desa.</p>
+                <p class="response-text">{{ $item->user_id === Auth::id() ? 'Aspirasi Anda' : 'Aspirasi ini' }} telah terkirim dan akan segera ditanggapi oleh admin desa.</p>
             </div>
             @endif
 
@@ -900,7 +900,7 @@
                     <i class="fa-regular fa-heart"></i> Terima kasih atas aspirasinya
                 </div>
                 <div class="action-buttons">
-                    @if($item->status == 'baru')
+                    @if($item->user_id === Auth::id() && $item->status == 'baru')
                     <a href="{{ route('masyarakat.aspirasi.edit', $item->id_aspirasi) }}" class="action-btn btn-edit" title="Edit">
                         <i class="fa-solid fa-pen"></i>
                     </a>
@@ -951,8 +951,7 @@
         </div>
         
         <p class="tutorial-intro">
-            Halaman <strong>Aspirasi Saya</strong> menampilkan semua aspirasi, saran, keluhan, atau pertanyaan yang pernah Anda kirimkan. 
-            Anda dapat memantau status dan tanggapan dari admin desa di sini.
+            Halaman <strong>Aspirasi Publik</strong> menampilkan semua aspirasi warga, saran, keluhan, atau pertanyaan yang telah dikirimkan ke desa.
         </p>
         
         <div class="tutorial-grid">
