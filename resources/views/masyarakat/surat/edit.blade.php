@@ -598,7 +598,7 @@
                     <!-- Jenis Surat -->
                     <div class="input-group">
                         <label class="input-label"><i class="fa-regular fa-file-alt"></i> Jenis Dokumen <span class="required">*</span></label>
-                        <select name="jenis_surat" class="glass-input" required>
+                        <select id="jenisSuratSelect" name="jenis_surat" class="glass-input" required>
                             <option value="Surat Keterangan Domisili" {{ $pengajuan->jenis_surat == 'Surat Keterangan Domisili' ? 'selected' : '' }}>📄 Surat Keterangan Domisili</option>
                             <option value="Surat Keterangan Usaha" {{ $pengajuan->jenis_surat == 'Surat Keterangan Usaha' ? 'selected' : '' }}>🏪 Surat Keterangan Usaha</option>
                             <option value="Surat Keterangan Tidak Mampu" {{ $pengajuan->jenis_surat == 'Surat Keterangan Tidak Mampu' ? 'selected' : '' }}>📑 Surat Keterangan Tidak Mampu</option>
@@ -682,6 +682,10 @@
                                     <i class="fa-solid fa-circle-xmark"></i>
                                 </button>
                             </div>
+                        </div>
+                        <div id="pendukungHelpText" class="support-card mt-3">
+                            <div class="support-card-title">Dokumen pendukung yang disarankan</div>
+                            <div id="pendukungHelpContent" class="support-card-content">Pilih jenis surat di atas untuk melihat contoh dokumen pendukung yang disarankan.</div>
                         </div>
                     </div>
                 </div>
@@ -779,6 +783,32 @@
             ease: "power4.out",
             delay: 0.2
         });
+
+        const jenisSuratSelect = document.getElementById('jenisSuratSelect');
+        const pendukungHelpContent = document.getElementById('pendukungHelpContent');
+
+        const bantuanDokumen = {
+            'Surat Keterangan Domisili': '<ul><li>Scan KTP</li><li>Scan KK</li><li>Surat keterangan RT/RW jika tersedia</li></ul><p>Dokumen ini membantu admin memverifikasi alamat dan data Anda.</p>',
+            'Surat Keterangan Usaha': '<ul><li>Scan KTP</li><li>Scan KK</li><li>Bukti usaha seperti surat keterangan usaha, SKU, atau foto tempat usaha</li></ul><p>Upload bukti usaha untuk mempercepat verifikasi.</p>',
+            'Surat Keterangan Tidak Mampu': '<ul><li>Scan KTP</li><li>Scan KK</li><li>Surat keterangan tidak mampu dari ketua RT/RW</li></ul><p>Dokumen ini menjelaskan kondisi ekonomi dan mendukung permohonan Anda.</p>',
+            'Surat Keterangan Kelahiran': '<ul><li>Scan KTP orang tua</li><li>Surat keterangan lahir dari rumah sakit/bidan</li><li>Scan KK jika diperlukan</li></ul><p>Upload dokumen kelahiran untuk mempercepat proses penerbitan surat.</p>',
+            'Surat Keterangan Kematian': '<ul><li>Scan KTP ahli waris</li><li>Surat keterangan kematian dari rumah sakit/kelurahan</li><li>Scan KK jika tersedia</li></ul><p>Dokumen ini membantu admin memproses data kematian dengan cepat.</p>',
+            'Surat Pengantar SKCK': '<ul><li>Scan KTP</li><li>Scan KK</li><li>Pas foto</li><li>Surat keterangan domisili atau dokumen tambahan sesuai permintaan kepolisian</li></ul><p>Dokumen ini mendukung persyaratan kepolisian untuk penerbitan SKCK.</p>'
+        };
+
+        function updatePendukungText() {
+            const jenisSurat = jenisSuratSelect?.value;
+            if (jenisSurat && bantuanDokumen[jenisSurat] && pendukungHelpContent) {
+                pendukungHelpContent.innerHTML = bantuanDokumen[jenisSurat];
+            } else if (pendukungHelpContent) {
+                pendukungHelpContent.innerHTML = '<p>Pilih jenis surat di atas untuk melihat contoh dokumen pendukung yang disarankan.</p><p class="mt-1">File pendukung bersifat opsional, namun lebih cepat jika sudah tersedia.</p>';
+            }
+        }
+
+        if (jenisSuratSelect && pendukungHelpContent) {
+            jenisSuratSelect.addEventListener('change', updatePendukungText);
+            updatePendukungText();
+        }
     });
 
     // Premium File Upload Logic
@@ -865,5 +895,33 @@
         });
     }
 </script>
+
+<style>
+    .support-card {
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 16px;
+        padding: 1rem;
+        color: #334155;
+    }
+    .support-card-title {
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: #0f172a;
+    }
+    .support-card-content ul {
+        margin: 0.5rem 0 0 1rem;
+        padding: 0;
+        color: #475569;
+    }
+    .support-card-content li {
+        margin-bottom: 0.35rem;
+    }
+    .support-card-content p {
+        margin: 0.75rem 0 0;
+        color: #475569;
+        font-size: 0.85rem;
+    }
+</style>
 
 @endsection

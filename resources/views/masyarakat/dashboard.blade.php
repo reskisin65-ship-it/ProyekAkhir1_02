@@ -819,7 +819,7 @@
                             <span class="inline-block px-4 py-1 mb-2 text-[10px] font-black tracking-[0.3em] text-emerald-600 uppercase bg-emerald-100/50 rounded-full">
                                 📰 Terkini
                             </span>
-                            <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Berita & Artikel</h2>
+                            <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Berita & Pengumuman</h2>
                             <p class="text-slate-400 text-sm mt-1">Informasi terbaru dari Desa Lumban Silintong</p>
                         </div>
                         <a href="{{ route('berita') }}" class="group flex items-center gap-2 text-emerald-600 text-sm font-black hover:gap-3 transition-all">
@@ -1038,7 +1038,7 @@
                             <span class="inline-block px-4 py-1 mb-2 text-[10px] font-black tracking-[0.3em] text-emerald-600 uppercase bg-emerald-100/50 rounded-full">
                                 📸 Dokumentasi
                             </span>
-                            <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Galeri Kegiatan</h2>
+                            <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Galeri</h2>
                             <p class="text-slate-400 text-sm mt-1">Dokumentasi momen berharga desa</p>
                         </div>
                         <a href="{{ route('galeri') }}" class="group flex items-center gap-2 text-emerald-600 text-sm font-black hover:gap-3 transition-all">

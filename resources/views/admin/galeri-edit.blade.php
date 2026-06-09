@@ -542,6 +542,19 @@
                 @enderror
             </div>
 
+            <!-- Deskripsi Opsional -->
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fa-regular fa-note-sticky"></i> Deskripsi Foto (Opsional)
+                </label>
+                <textarea name="deskripsi" class="input-glass h-28" placeholder="Tuliskan detail gambar, konteks, lokasi, atau latar belakang acara...">{{ old('deskripsi', $galeri->deskripsi) }}</textarea>
+                @error('deskripsi')
+                    <div class="error-message">
+                        <i class="fa-solid fa-circle-exclamation text-xs"></i> {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
             <!-- Foto Upload -->
             <div class="form-group">
                 <label class="form-label">

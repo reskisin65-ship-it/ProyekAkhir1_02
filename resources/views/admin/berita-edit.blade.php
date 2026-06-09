@@ -1,10 +1,10 @@
 {{-- resources/views/admin/berita-edit.blade.php --}}
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Ubah Berita | Panel Admin')
 
 @section('content')
-<div class="min-h-screen bg-[#f8fafc] py-12 px-4 sm:px-6 lg:px-8 font-sans">
+<div class="news-edit-shell min-h-screen bg-[#f8fafc] py-8 px-4 sm:px-6 lg:px-8 font-sans pb-32 lg:pb-12">
     <div class="max-w-5xl mx-auto">
         
         {{-- Breadcrumb Navigation --}}
@@ -55,7 +55,7 @@
         @endif
 
         {{-- Main Form Card (Glassmorphism Effect) --}}
-        <div class="relative group">
+        <div class="relative group news-edit-card">
             {{-- Decorative glow behind card --}}
             <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-2xl blur opacity-15 group-hover:opacity-25 transition duration-1000 group-hover:duration-200"></div>
             
@@ -118,25 +118,24 @@
                         </div>
 
                         {{-- Foto Upload Section --}}
-                        <div class="bg-gray-50/50 p-6 rounded-2xl border border-dashed border-gray-200" x-data="imagePreview()">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="bg-gray-50/50 p-4 sm:p-6 rounded-2xl border border-dashed border-gray-200" x-data="imagePreview()">
+                            <div class="flex flex-col gap-6">
                                 <div>
                                     <h3 class="text-base font-bold text-gray-800 mb-2">Media Utama</h3>
-                                    <p class="text-sm text-gray-500 mb-6">Unggah foto berkualitas tinggi (JPG, PNG, atau WebP) maksimal 2MB untuk hasil terbaik.</p>
+                                    <p class="text-sm text-gray-500 mb-4">Unggah foto berkualitas tinggi (JPG, PNG, atau WebP) maksimal 2MB untuk hasil terbaik.</p>
                                     
                                     <div class="relative">
                                         <input type="file" name="foto" @change="previewImage" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
                                         <div class="flex items-center justify-center w-full px-6 py-4 bg-indigo-50 text-indigo-700 rounded-xl border border-indigo-200 hover:bg-indigo-100 transition-colors group/upload">
-                                            <svg class="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                            <svg class="w-5 h-5 mr-3 group-hover/upload:scale-110 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                                             <span class="font-bold">Ganti Foto Baru</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="relative">
+                                <div class="w-full">
                                     <p class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-tighter">Preview Media</p>
                                     <div class="aspect-video w-full relative rounded-xl overflow-hidden bg-white shadow-inner border border-gray-100 group/image">
-                                        {{-- Current Image / New Preview --}}
                                         <template x-if="imageUrl">
                                             <img :src="imageUrl" class="w-full h-full object-cover animate-fade-in-down">
                                         </template>
@@ -151,9 +150,8 @@
                                             @endif
                                         </template>
                                         
-                                        {{-- Overlay indicator --}}
                                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/image:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                                            <span class="text-white text-xs font-bold uppercase">Klik "Ganti Foto" untuk Mengganti</span>
+                                            <span class="text-white text-xs font-bold uppercase text-center px-4">Klik "Ganti Foto" untuk Mengganti</span>
                                         </div>
                                     </div>
                                 </div>
@@ -162,7 +160,7 @@
                     </div>
 
                     {{-- Form Footer --}}
-                    <div class="px-8 py-6 bg-gray-50/80 flex flex-col sm:flex-row justify-end items-center gap-4">
+                    <div class="px-6 sm:px-8 py-5 sm:py-6 bg-gray-50/80 flex flex-col sm:flex-row justify-end items-stretch sm:items-center gap-3">
                         <a href="{{ route('admin.berita.index') }}" 
                            class="w-full sm:w-auto px-8 py-3.5 text-sm font-bold text-gray-500 hover:text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-100 transition-all duration-300 flex items-center justify-center">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -170,7 +168,7 @@
                         </a>
                         <button type="submit" 
                                 class="w-full sm:w-auto px-10 py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
                             Simpan Perubahan
                         </button>
                     </div>
@@ -209,6 +207,15 @@
     .animate-shake {
         animation: shake 0.4s ease-in-out 0s 2;
     }
+
+    .news-edit-shell {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .news-edit-card {
+        min-width: 0;
+    }
     
     /* Scrollbar Styling */
     textarea::-webkit-scrollbar {
@@ -223,6 +230,79 @@
     }
     textarea::-webkit-scrollbar-thumb:hover {
         background: #cbd5e1;
+    }
+
+    @media (max-width: 1024px) {
+        .news-edit-card .grid.grid-cols-1.md\:grid-cols-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .news-edit-card .grid.grid-cols-1.lg\:grid-cols-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .news-edit-shell {
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+        }
+
+        .news-edit-shell nav ol {
+            flex-wrap: wrap;
+            gap: 0.35rem 0.5rem;
+        }
+
+        .news-edit-shell h1 {
+            font-size: 2rem;
+            line-height: 1.1;
+        }
+
+        .news-edit-shell p.text-lg {
+            font-size: 1rem;
+        }
+
+        .news-edit-card > div:first-child {
+            padding: 1.25rem;
+        }
+
+        .news-edit-card .p-8,
+        .news-edit-card .sm\:p-10 {
+            padding: 1rem;
+        }
+
+        .news-edit-card .px-8,
+        .news-edit-card .py-6 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .news-edit-card .flex.justify-between.items-center {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .news-edit-card .grid.grid-cols-1.md\:grid-cols-2 {
+            gap: 1rem;
+        }
+
+        .news-edit-card a,
+        .news-edit-card button {
+            width: 100%;
+        }
+
+        .news-edit-card .flex.flex-col.sm\:flex-row {
+            align-items: stretch;
+        }
+
+        .news-edit-card .aspect-video {
+            min-height: 220px;
+        }
+
+        .news-edit-card textarea {
+            min-height: 240px;
+        }
     }
 </style>
 

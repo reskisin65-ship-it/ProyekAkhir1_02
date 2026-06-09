@@ -810,7 +810,7 @@
                                 <div class="pengurus-avatar">{{ substr($item->nama_pengurus, 0, 1) }}</div>
                                 <div class="pengurus-info">
                                     <h4 class="line-clamp-1">{{ $item->nama_pengurus }}</h4>
-                                    <p>{{ $item->jabatan }}</p>
+                                    <p>{{ $item->nama_kategori }}</p>
                                 </div>
                             </div>
                             @endforeach

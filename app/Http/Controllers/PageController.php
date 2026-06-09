@@ -35,8 +35,8 @@ class PageController extends Controller
             ->limit(3)
             ->get();
         
-        // Pengurus Desa (Aparatur)
-        $aparaturs = DataPengurus::orderBy('id_pengurus')->get();
+        // Pengurus Desa (Aparatur) - urut berdasarkan posisi global
+        $aparaturs = DataPengurus::urutHierarki()->get();
         
         // Galeri (limit 8)
         $galeris = Galeri::orderBy('created_at', 'desc')->limit(8)->get();
@@ -93,7 +93,8 @@ class PageController extends Controller
     public function profilDesa()
     {
         $profil = ProfilDesa::first();
-        $aparaturs = DataPengurus::orderBy('id_pengurus')->get();
+        // Urutkan berdasarkan posisi global (urutan_dalam_kategori ascending)
+        $aparaturs = DataPengurus::urutHierarki()->get();
         
         $stat_penduduk = DataPenduduk::count();
         $stat_penduduk = $stat_penduduk > 0 ? number_format($stat_penduduk) : '0';
@@ -214,13 +215,22 @@ class PageController extends Controller
             // Gunakan id_galeri, bukan id
             $galeri = Galeri::where('id_galeri', $id)->firstOrFail();
             
+            // Galeri sebelumnya/dan selanjutnya untuk navigasi slide
+            $prevGaleri = Galeri::where('id_galeri', '<', $galeri->id_galeri)
+                ->orderBy('id_galeri', 'desc')
+                ->first();
+            
+            $nextGaleri = Galeri::where('id_galeri', '>', $galeri->id_galeri)
+                ->orderBy('id_galeri', 'asc')
+                ->first();
+            
             // Rekomendasi galeri lain - gunakan id_galeri juga
             $rekomendasi = Galeri::where('id_galeri', '!=', $id)
                 ->orderBy('created_at', 'desc')
                 ->limit(4)
                 ->get();
             
-            return view('pages.galeri-detail', compact('galeri', 'rekomendasi'));
+            return view('pages.galeri-detail', compact('galeri', 'prevGaleri', 'nextGaleri', 'rekomendasi'));
         }
     /**
  * Halaman UMKM Publik

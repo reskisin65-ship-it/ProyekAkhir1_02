@@ -1789,11 +1789,11 @@
     </section>
 
     {{-- ============================================= --}}
-    {{-- 7. GALERI KEGIATAN - ELEGAN & BERANIMASI --}}
+    {{-- 7. GALERI  - ELEGAN & BERANIMASI --}}
     {{-- ============================================= --}}
     <section id="galeri" data-aos="fade-up" data-aos-delay="350">
         <div class="flex justify-between items-end mb-6 flex-wrap gap-4">
-            <div><div class="section-badge d-inline-flex"><i class="fa-solid fa-camera"></i><span>Momen Berharga</span></div><h2 class="section-title" style="font-size: 1.8rem;">📸 Galeri <span>Kegiatan</span></h2></div>
+            <div><div class="section-badge d-inline-flex"><i class="fa-solid fa-camera"></i><span>Momen Berharga</span></div><h2 class="section-title" style="font-size: 1.8rem;">📸 Galeri </h2></div>
             <a href="{{ route('galeri') }}" class="text-sm text-primary hover:underline flex items-center gap-1">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
         </div>
 

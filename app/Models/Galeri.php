@@ -11,7 +11,7 @@ class Galeri extends Model
     protected $primaryKey = 'id_galeri';
     
     protected $fillable = [
-        'judul_galeri', 'gambar_galeri', 'kategori'
+        'judul_galeri', 'gambar_galeri', 'kategori', 'deskripsi'
     ];
     
     // Optional: tambahkan accessor untuk mendapatkan URL foto

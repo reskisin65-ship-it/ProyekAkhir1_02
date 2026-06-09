@@ -27,6 +27,13 @@
     .font-serif { font-family: 'Cormorant Garamond', serif; }
     .font-space { font-family: 'Space Grotesk', sans-serif; }
 
+    /* Cegah teks meluap dari card */
+    .bg-white p, .glass-card p {
+        overflow-wrap: break-word;
+        word-break: break-word;
+        overflow: hidden;
+    }
+
     /* --- Luxury Elements --- */
     .glass-card {
         background: rgba(255, 255, 255, 0.8);
@@ -244,12 +251,12 @@
 
             <div data-aos="fade-left">
                 @if(isset($profil) && $profil && $profil->sejarah)
-                    <p class="text-gray-600 leading-relaxed text-lg">{{ $profil->sejarah }}</p>
+                    <p class="text-gray-600 leading-relaxed text-base break-words overflow-hidden">{{ $profil->sejarah }}</p>
                 @else
-                    <p class="text-gray-600 leading-relaxed text-lg first-letter:text-6xl first-letter:font-serif first-letter:mr-3 first-letter:float-left first-letter:text-emerald-700">
+                    <p class="text-gray-600 leading-relaxed text-base first-letter:text-6xl first-letter:font-serif first-letter:mr-3 first-letter:float-left first-letter:text-emerald-700">
                         Lumban Silintong berdiri sebagai gerbang budaya di pesisir Danau Toba. Nama yang diambil dari kedalaman makna spiritual, mencerminkan kejernihan hati penduduknya seperti air danau yang menghidupi mereka.
                     </p>
-                    <p class="text-gray-600 leading-relaxed text-lg mt-4">
+                    <p class="text-gray-600 leading-relaxed text-base mt-4">
                         Sejak masa kolonial hingga era transformasi digital, desa ini konsisten menjaga keseimbangan antara pembangunan infrastruktur dengan pelestarian situs-situs sejarah marga yang sakral.
                     </p>
                 @endif
@@ -268,136 +275,481 @@
 
         <div class="grid lg:grid-cols-2 gap-10">
             @if(isset($profil) && $profil && $profil->visi)
-            <div class="bg-white rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-right">
-                <div class="w-20 h-20 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6">
+            <div class="bg-white rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col" data-aos="fade-right">
+                <div class="w-20 h-20 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 flex-shrink-0">
                     <i class="fa-solid fa-eye text-emerald-600 text-2xl"></i>
                 </div>
-                <h3 class="text-3xl font-serif mb-4 text-emerald-800">Visi</h3>
-                <p class="text-gray-600 leading-relaxed text-lg italic">"{{ $profil->visi }}"</p>
+                <h3 class="text-3xl font-serif mb-4 text-emerald-800 flex-shrink-0">Visi</h3>
+                <p class="text-gray-600 leading-relaxed text-base italic break-words overflow-hidden">"{{ $profil->visi }}"</p>
             </div>
             @endif
 
             @if(isset($profil) && $profil && $profil->misi)
-            <div class="bg-white rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2" data-aos="fade-left">
-                <div class="w-20 h-20 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6">
+            <div class="bg-white rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col" data-aos="fade-left">
+                <div class="w-20 h-20 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 flex-shrink-0">
                     <i class="fa-solid fa-flag-checkered text-emerald-600 text-2xl"></i>
                 </div>
-                <h3 class="text-3xl font-serif mb-4 text-emerald-800">Misi</h3>
-                <p class="text-gray-600 leading-relaxed text-lg">{{ $profil->misi }}</p>
+                <h3 class="text-3xl font-serif mb-4 text-emerald-800 flex-shrink-0">Misi</h3>
+                <p class="text-gray-600 leading-relaxed text-base break-words overflow-hidden">{{ $profil->misi }}</p>
             </div>
             @endif
         </div>
     </div>
 </section>
 
-{{-- 5. APARATUR DESA - MINIMALIST PREMIUM STYLE --}}
+{{-- 5. APARATUR DESA - ORG CHART STRUCTURE --}}
 <style>
-    /* Card Container */
-    .aparatur-item {
+    /* ---- Org Chart Layout ---- */
+    .org-section { position: relative; }
+
+    .org-row {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-bottom: 2.5rem;
         position: relative;
-        transition: all 0.5s ease;
     }
 
-    /* Square-ish Image with Soft Curves */
+    .org-row:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        bottom: -2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 2.5rem;
+        background: linear-gradient(to bottom, #10b981, #d1fae5);
+    }
+
+    .org-row.multi-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -2.5rem);
+        width: 2px;
+        height: 2.5rem;
+        background: linear-gradient(to bottom, #d1fae5, #10b981);
+    }
+
+    .aparatur-item {
+        position: relative;
+        transition: all 0.4s ease;
+        width: 180px;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .aparatur-item { width: 140px; }
+        .org-row { gap: 1rem; }
+    }
+    @media (max-width: 480px) {
+        .aparatur-item { width: 120px; }
+        .org-row { gap: 0.75rem; }
+    }
+
     .aparatur-image-container {
         position: relative;
         aspect-ratio: 4 / 5;
-        border-radius: 24px; /* Tidak terlalu bulat, tidak runcing */
+        border-radius: 20px;
         overflow: hidden;
-        background: #f8f8f8;
+        background: #f1f5f9;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        transition: all 0.4s ease;
+    }
+
+    .aparatur-item:hover .aparatur-image-container {
+        box-shadow: 0 8px 28px rgba(16,185,129,0.25);
+        transform: translateY(-6px);
     }
 
     .aparatur-image-container img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.6s ease;
     }
 
-    /* Hover State: Image Zoom */
-    .aparatur-item:hover img {
-        transform: scale(1.08);
-    }
+    .aparatur-item:hover img { transform: scale(1.06); }
 
-    /* Simple Overlay: Nama & Jabatan muncul saat hover */
+    /* Overlay hint klik */
     .aparatur-overlay {
         position: absolute;
         inset: 0;
-        background: rgba(6, 44, 31, 0.85); /* Hijau gelap transparan */
+        background: rgba(6, 44, 31, 0.82);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         opacity: 0;
-        transition: opacity 0.4s ease;
-        padding: 20px;
+        transition: opacity 0.3s ease;
+        padding: 12px;
         text-align: center;
     }
 
-    .aparatur-item:hover .aparatur-overlay {
-        opacity: 1;
-    }
+    .aparatur-item:hover .aparatur-overlay { opacity: 1; }
 
-    /* Text Animation inside Overlay */
     .hover-content {
-        transform: translateY(10px);
-        transition: transform 0.4s ease;
+        transform: translateY(8px);
+        transition: transform 0.3s ease;
     }
 
-    .aparatur-item:hover .hover-content {
-        transform: translateY(0);
+    .aparatur-item:hover .hover-content { transform: translateY(0); }
+
+    .bottom-info { padding-top: 0.9rem; text-align: center; }
+
+    .pos-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        background: #10b981;
+        color: white;
+        border-radius: 50%;
+        font-size: 0.6rem;
+        font-weight: 800;
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 10;
+        box-shadow: 0 2px 6px rgba(16,185,129,0.4);
     }
 
-    /* Detail Jabatan di Bawah (Always Visible) */
-    .bottom-info {
-        padding-top: 1.5rem;
+    /* ---- MODAL ---- */
+    .aparatur-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.65);
+        backdrop-filter: blur(6px);
+        z-index: 9000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .aparatur-modal-backdrop.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .aparatur-modal {
+        background: white;
+        border-radius: 32px;
+        overflow: hidden;
+        max-width: 520px;
+        width: 100%;
+        box-shadow: 0 32px 80px rgba(0,0,0,0.25);
+        transform: scale(0.88) translateY(20px);
+        transition: transform 0.35s cubic-bezier(0.34, 1.3, 0.64, 1);
+        position: relative;
+    }
+
+    .aparatur-modal-backdrop.active .aparatur-modal {
+        transform: scale(1) translateY(0);
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 36px;
+        height: 36px;
+        background: rgba(255,255,255,0.9);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        color: #374151;
+        z-index: 10;
+        transition: all 0.2s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .modal-close:hover {
+        background: #ef4444;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .modal-img-wrap {
+        position: relative;
+        aspect-ratio: 4/3;
+        overflow: hidden;
+        background: #f1f5f9;
+    }
+
+    .modal-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+    }
+
+    .modal-img-gradient {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(to top, rgba(6,44,31,0.7), transparent);
+    }
+
+    .modal-img-name {
+        position: absolute;
+        bottom: 20px;
+        left: 24px;
+        right: 60px;
+    }
+
+    .modal-body {
+        padding: 1.5rem 1.75rem 2rem;
+    }
+
+    .modal-jabatan-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #ecfdf5;
+        color: #059669;
+        border-radius: 100px;
+        padding: 0.3rem 1rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 1rem;
+    }
+
+    .modal-detail-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .modal-detail-row:last-child { border-bottom: none; }
+
+    .modal-detail-icon {
+        width: 32px;
+        height: 32px;
+        background: #f0fdf4;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #10b981;
+        font-size: 0.75rem;
+    }
+
+    .modal-detail-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #94a3b8;
+        margin-bottom: 0.15rem;
+    }
+
+    .modal-detail-value {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #0f172a;
+        line-height: 1.5;
+    }
+
+    .modal-posisi-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        background: #10b981;
+        color: white;
+        border-radius: 100px;
+        padding: 0.2rem 0.75rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        margin-left: 0.4rem;
     }
 </style>
 
+{{-- MODAL --}}
+<div class="aparatur-modal-backdrop" id="aparaturModal" onclick="closeAparaturModal(event)">
+    <div class="aparatur-modal" id="aparaturModalContent">
+        <button class="modal-close" onclick="closeAparaturModalDirect()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        {{-- Foto besar --}}
+        <div class="modal-img-wrap">
+            <img id="modalFoto" src="" alt="">
+            <div class="modal-img-gradient"></div>
+            <div class="modal-img-name">
+                <p id="modalNama" class="text-white font-bold text-xl leading-tight"></p>
+                <p id="modalKategoriImg" class="text-emerald-300 text-xs font-bold uppercase tracking-widest mt-1"></p>
+            </div>
+        </div>
+
+        {{-- Detail --}}
+        <div class="modal-body">
+            <div style="display:flex; align-items:center; flex-wrap:wrap; gap:0.3rem; margin-bottom:1.2rem;">
+                <span class="modal-jabatan-badge">
+                    <i id="modalIcon" class="fa-solid fa-user"></i>
+                    <span id="modalKategori"></span>
+                </span>
+                <span class="modal-posisi-chip">
+                    <i class="fa-solid fa-sort-numeric-up"></i>
+                    Posisi <span id="modalPosisi"></span>
+                </span>
+            </div>
+
+            <div id="modalNipRow" class="modal-detail-row">
+                <div class="modal-detail-icon"><i class="fa-regular fa-id-card"></i></div>
+                <div>
+                    <div class="modal-detail-label">NIP</div>
+                    <div class="modal-detail-value" id="modalNip"></div>
+                </div>
+            </div>
+
+            <div id="modalTugasRow" class="modal-detail-row">
+                <div class="modal-detail-icon"><i class="fa-solid fa-list-check"></i></div>
+                <div>
+                    <div class="modal-detail-label">Tugas & Tanggung Jawab</div>
+                    <div class="modal-detail-value" id="modalTugas" style="font-weight:400; color:#374151; font-size:0.8rem;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <section class="py-24 px-6 bg-white">
-    <div class="max-w-6xl mx-auto">
-        {{-- Header Simpel --}}
+    <div class="max-w-5xl mx-auto">
+        {{-- Header --}}
         <div class="mb-16 border-l-4 border-emerald-500 pl-6">
             <h2 class="text-4xl font-serif text-gray-900 leading-none">Aparatur <span class="italic text-gray-500">Desa</span></h2>
             <p class="text-gray-400 text-sm mt-2 font-light tracking-wide uppercase">Pemerintah Lumban Silintong</p>
         </div>
 
-        {{-- Grid --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-            @forelse($aparaturs ?? [] as $index => $a)
-            <div class="aparatur-item group" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
-                
-                {{-- Foto & Hover Content --}}
-                <div class="aparatur-image-container">
-                    <img src="{{ $a->foto ? asset('storage/'.$a->foto) : 'https://ui-avatars.com/api/?name='.urlencode($a->nama).'&background=10b981&color=fff&size=600' }}" 
-                         alt="{{ $a->nama }}">
-                    
-                    {{-- Reveal Nama lalu Jabatan saat Hover --}}
-                    <div class="aparatur-overlay">
-                        <div class="hover-content">
-                            <h3 class="text-white text-xl font-bold mb-1">{{ $a->nama }}</h3>
-                            <p class="text-emerald-400 text-[10px] font-black uppercase tracking-[0.2em]">{{ $a->jabatan }}</p>
+        @if(isset($aparaturs) && $aparaturs->count() > 0)
+        @php
+            $grouped = $aparaturs->groupBy('urutan_dalam_kategori')->sortKeys();
+        @endphp
+
+        <div class="org-section">
+            @foreach($grouped as $posisi => $anggota)
+            @php $isFirst = $loop->first; $isMulti = $anggota->count() > 1; @endphp
+            <div class="org-row {{ $isMulti ? 'multi-item' : '' }} {{ !$isFirst ? 'has-parent' : '' }}"
+                 data-aos="fade-up" data-aos-delay="{{ $loop->index * 80 }}">
+                @foreach($anggota as $a)
+                @php
+                    $fotoUrl = $a->foto
+                        ? asset('storage/'.$a->foto)
+                        : 'https://ui-avatars.com/api/?name='.urlencode($a->nama_pengurus).'&background=10b981&color=fff&size=400';
+                @endphp
+                <div class="aparatur-item group"
+                     onclick="openAparaturModal({
+                         foto: '{{ $fotoUrl }}',
+                         nama: '{{ addslashes($a->nama_pengurus) }}',
+                         kategori: '{{ addslashes($a->nama_kategori) }}',
+                         icon: '{{ $a->icon_kategori }}',
+                         nip: '{{ addslashes($a->nip ?? '') }}',
+                         tugas: '{{ addslashes($a->tugas ?? '') }}',
+                         posisi: {{ $posisi }}
+                     })">
+
+                    <div class="pos-badge">{{ $posisi }}</div>
+
+                    <div class="aparatur-image-container">
+                        <img src="{{ $fotoUrl }}" alt="{{ $a->nama_pengurus }}">
+                        <div class="aparatur-overlay">
+                            <div class="hover-content">
+                                <i class="fa-solid fa-expand text-white/80 text-xl mb-2"></i>
+                                <p class="text-white text-xs font-semibold">Klik untuk detail</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {{-- Info Simpel di Bawah --}}
-                <div class="bottom-info">
-                    <p class="text-gray-900 font-bold tracking-tight text-lg mb-0.5">{{ $a->jabatan }}</p>
-                    <p class="text-gray-400 text-xs font-light">
-                        {{ $index == 0 ? 'Pimpinan eksekutif wilayah.' : 'Staf administrasi & pelayanan.' }}
-                    </p>
+                    <div class="bottom-info">
+                        <p class="text-gray-900 font-bold text-sm leading-tight mb-0.5">{{ $a->nama_pengurus }}</p>
+                        <p class="text-emerald-600 text-[10px] font-semibold uppercase tracking-wider">{{ $a->nama_kategori }}</p>
+                    </div>
                 </div>
+                @endforeach
             </div>
-            @empty
-                {{-- Empty state simplified --}}
-                <div class="col-span-full py-10 text-center text-gray-300 italic border-2 border-dashed border-gray-100 rounded-3xl">
-                    Data aparatur belum tersedia.
-                </div>
-            @endforelse
+            @endforeach
         </div>
+
+        @else
+        <div class="py-10 text-center text-gray-300 italic border-2 border-dashed border-gray-100 rounded-3xl">
+            Data aparatur belum tersedia.
+        </div>
+        @endif
     </div>
 </section>
+
+<script>
+function openAparaturModal(data) {
+    const modal = document.getElementById('aparaturModal');
+
+    document.getElementById('modalFoto').src          = data.foto;
+    document.getElementById('modalNama').textContent  = data.nama;
+    document.getElementById('modalKategoriImg').textContent = data.kategori;
+    document.getElementById('modalKategori').textContent    = data.kategori;
+    document.getElementById('modalPosisi').textContent      = data.posisi;
+
+    const iconEl = document.getElementById('modalIcon');
+    iconEl.className = 'fa-solid ' + (data.icon || 'fa-user');
+
+    // NIP
+    const nipRow = document.getElementById('modalNipRow');
+    if (data.nip && data.nip.trim() !== '') {
+        document.getElementById('modalNip').textContent = data.nip;
+        nipRow.style.display = 'flex';
+    } else {
+        nipRow.style.display = 'none';
+    }
+
+    // Tugas
+    const tugasRow = document.getElementById('modalTugasRow');
+    if (data.tugas && data.tugas.trim() !== '') {
+        document.getElementById('modalTugas').textContent = data.tugas;
+        tugasRow.style.display = 'flex';
+    } else {
+        tugasRow.style.display = 'none';
+    }
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAparaturModal(e) {
+    if (e.target === document.getElementById('aparaturModal')) {
+        closeAparaturModalDirect();
+    }
+}
+
+function closeAparaturModalDirect() {
+    document.getElementById('aparaturModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Tutup dengan ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAparaturModalDirect();
+});
+</script>
 
 {{-- 6. WILAYAH & PETA --}}
 <section class="py-24 px-6 bg-emerald-50/30">

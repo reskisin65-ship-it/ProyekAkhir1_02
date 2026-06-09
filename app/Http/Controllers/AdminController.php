@@ -270,6 +270,7 @@ class AdminController extends Controller
             'judul' => 'required|min:3',
             'kategori' => 'required',
             'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'deskripsi' => 'nullable|string|max:2000',
         ]);
 
         $gambarPath = $request->file('foto')->store('galeri', 'public');
@@ -278,6 +279,7 @@ class AdminController extends Controller
             'judul_galeri' => $request->judul,
             'gambar_galeri' => $gambarPath,
             'kategori' => $request->kategori,
+            'deskripsi' => $request->deskripsi,
         ]);
 
         return redirect()->route('admin.galeri.index')
@@ -309,6 +311,7 @@ class AdminController extends Controller
         $data = [
             'judul_galeri' => $request->judul,
             'kategori' => $request->kategori,
+            'deskripsi' => $request->deskripsi,
         ];
 
         if ($request->hasFile('foto')) {

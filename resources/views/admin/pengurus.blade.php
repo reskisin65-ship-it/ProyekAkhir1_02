@@ -618,6 +618,13 @@
     </div>
     @endif
 
+    @if(session('info'))
+    <div class="alert alert-success animate-up delay-1" style="background:#eff6ff;border-color:#3b82f6;color:#1d4ed8;">
+        <div class="flex items-center gap-2"><i class="fa-solid fa-circle-info"></i><span>{{ session('info') }}</span></div>
+        <div class="alert-close" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    @endif
+
     @if(session('error'))
     <div class="alert alert-error animate-up delay-1">
         <div class="flex items-center gap-2"><i class="fa-solid fa-circle-exclamation"></i><span>{{ session('error') }}</span></div>
@@ -632,9 +639,8 @@
                 <thead>
                     <tr>
                         <th>Personel</th>
-                        <th>Kategori</th>
                         <th>Jabatan</th>
-                        <th>Hierarki</th>
+                        <th>Posisi</th>
                         <th style="text-align: right">Aksi</th>
                     </tr>
                 </thead>
@@ -667,18 +673,15 @@
                                 @else badge-custom @endif">
                                 <i class="fa-solid {{ $item->icon_kategori }}"></i> {{ $item->nama_kategori }}
                             </span>
-                        </td>
-                        <td>
-                            <div class="jabatan-text">{{ $item->jabatan }}</div>
                             @if($item->tugas)
-                            <div class="tugas-text">{{ Str::limit($item->tugas, 55) }}</div>
+                            <div class="tugas-text" style="margin-top:0.3rem;">{{ Str::limit($item->tugas, 55) }}</div>
                             @endif
                         </td>
                         <td>
-                            <div class="level-rank">Urutan #{{ $item->urutan_dalam_kategori }}</div>
+                            <div class="level-rank">Posisi #{{ $item->urutan_dalam_kategori }}</div>
                             <div class="level-bars">
                                 @php
-                                    $activeBars = 6 - min($item->level_kategori ?? 99, 5);
+                                    $activeBars = 6 - min($item->level ?? 99, 5);
                                     if ($activeBars < 1) $activeBars = 1;
                                     if ($activeBars > 5) $activeBars = 5;
                                 @endphp

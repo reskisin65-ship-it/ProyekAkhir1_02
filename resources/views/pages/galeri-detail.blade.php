@@ -107,10 +107,76 @@
         width: 100%;
         object-fit: cover;
         transition: transform 0.5s;
+        display: block;
     }
 
     .featured-image:hover img {
         transform: scale(1.02);
+    }
+
+    .gallery-image-wrapper {
+        position: relative;
+        margin-bottom: 2rem;
+        touch-action: pan-y;
+    }
+
+    .gallery-nav-buttons {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        transform: translateY(-50%);
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .slide-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.85rem 1rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 700;
+        transition: var(--transition);
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        pointer-events: auto;
+        backdrop-filter: blur(10px);
+    }
+
+    .slide-button:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-1px);
+    }
+
+    .slide-button.disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    .slide-button i {
+        font-size: 1rem;
+    }
+
+    .slide-hint {
+        margin-top: 1rem;
+        background: #ffffff;
+        color: var(--gray);
+        padding: 0.9rem 1rem;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        font-size: 0.92rem;
+        text-align: center;
+        box-shadow: var(--shadow-md);
     }
 
     /* Description */
@@ -139,6 +205,9 @@
         font-size: 0.9rem;
         line-height: 1.7;
         color: var(--gray);
+        overflow-wrap: break-word;
+        word-break: break-word;
+        white-space: pre-line;
     }
 
     /* Related Section */
@@ -336,8 +405,40 @@
     </div>
 
     {{-- Featured Image --}}
-    <div class="featured-image fade-up delay-2">
-        <img src="{{ asset('storage/' . $galeri->gambar_galeri) }}" alt="{{ $galeri->judul_galeri }}">
+    <div class="gallery-image-wrapper fade-up delay-2" id="gallerySwipeWrapper">
+        <div class="featured-image">
+            <img src="{{ asset('storage/' . $galeri->gambar_galeri) }}" alt="{{ $galeri->judul_galeri }}">
+        </div>
+
+        <div class="gallery-nav-buttons">
+            @if($prevGaleri)
+                <a href="{{ route('galeri.show', $prevGaleri->id_galeri) }}" class="slide-button slide-prev" aria-label="Foto sebelumnya">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    Sebelumnya
+                </a>
+            @else
+                <span class="slide-button disabled slide-prev" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    Sebelumnya
+                </span>
+            @endif
+
+            @if($nextGaleri)
+                <a href="{{ route('galeri.show', $nextGaleri->id_galeri) }}" class="slide-button slide-next" aria-label="Foto berikutnya">
+                    Berikutnya
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            @else
+                <span class="slide-button disabled slide-next" aria-hidden="true">
+                    Berikutnya
+                    <i class="fa-solid fa-chevron-right"></i>
+                </span>
+            @endif
+        </div>
+    </div>
+
+    <div class="slide-hint fade-up delay-2">
+        Geser layar kiri / kanan atau tekan panah untuk melihat galeri selanjutnya dan sebelumnya.
     </div>
 
     {{-- Description --}}
@@ -417,4 +518,58 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var wrapper = document.getElementById('gallerySwipeWrapper');
+        if (!wrapper) {
+            return;
+        }
+
+        var startX = 0;
+        var isSwiping = false;
+
+        wrapper.addEventListener('touchstart', function (event) {
+            if (event.touches.length !== 1) {
+                return;
+            }
+            startX = event.touches[0].clientX;
+            isSwiping = true;
+        }, { passive: true });
+
+        wrapper.addEventListener('touchmove', function (event) {
+            if (!isSwiping || event.touches.length !== 1) {
+                return;
+            }
+            var currentX = event.touches[0].clientX;
+            if (Math.abs(currentX - startX) > 10) {
+                isSwiping = true;
+            }
+        }, { passive: true });
+
+        wrapper.addEventListener('touchend', function (event) {
+            if (!isSwiping) {
+                return;
+            }
+
+            var endX = event.changedTouches && event.changedTouches[0] ? event.changedTouches[0].clientX : startX;
+            var delta = endX - startX;
+            var threshold = 60;
+
+            if (delta > threshold) {
+                var prevLink = wrapper.querySelector('.slide-prev:not(.disabled)');
+                if (prevLink && prevLink.href) {
+                    window.location.href = prevLink.href;
+                }
+            } else if (delta < -threshold) {
+                var nextLink = wrapper.querySelector('.slide-next:not(.disabled)');
+                if (nextLink && nextLink.href) {
+                    window.location.href = nextLink.href;
+                }
+            }
+
+            isSwiping = false;
+        });
+    });
+</script>
 @endsection

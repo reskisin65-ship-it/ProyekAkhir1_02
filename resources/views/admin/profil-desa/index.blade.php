@@ -635,7 +635,7 @@
                 </div>
             </div>
             <div style="font-weight: 600; font-size: 0.85rem;">{{ $a->nama_pengurus ?? $a->nama }}</div>
-            <div><span class="jabatan-badge">{{ $a->jabatan }}</span></div>
+            <div><span class="jabatan-badge">{{ $a->nama_kategori }}</span></div>
             <div>
                 <div class="action-deck" style="justify-content: center;">
                     <a href="{{ route('admin.pengurus.edit', $a->id_pengurus) }}" class="deck-btn btn-edit" title="Edit">

@@ -17,8 +17,12 @@ class NotifikasiController extends Controller
         $notifikasi = Notifikasi::where('user_id', Auth::user()->user_id)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
-        
-        return view('notifikasi.index', compact('notifikasi'));
+
+        // Tentukan layout berdasarkan role
+        $isAdmin = Auth::user()->role && Auth::user()->role->nama_role === 'admin';
+        $layout  = $isAdmin ? 'layouts.admin' : 'layouts.app';
+
+        return view('notifikasi.index', compact('notifikasi', 'layout'));
     }
 
     public function ambil()

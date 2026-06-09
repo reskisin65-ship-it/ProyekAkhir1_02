@@ -23,6 +23,22 @@
         <div class="flex items-center gap-2">
 
             @auth
+                @php
+                    $unreadNotifications = Auth::user()->notifikasiBelumDibaca()->count();
+                @endphp
+
+                {{-- ---- NOTIFICATION BELL ---- --}}
+                <a href="{{ route('notifikasi.index') }}"
+                   class="relative inline-flex items-center justify-center w-11 h-11 rounded-full bg-[#101828] text-white hover:bg-gray-900 transition-all duration-300 border border-gray-800"
+                   aria-label="Notifikasi">
+                    <i class="fa-regular fa-bell text-lg"></i>
+                    @if($unreadNotifications > 0)
+                        <span class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-[10px] font-bold text-white shadow-lg translate-x-1 -translate-y-1">
+                            {{ $unreadNotifications > 99 ? '99+' : $unreadNotifications }}
+                        </span>
+                    @endif
+                </a>
+
                 {{-- ---- USER BUTTON (semua ukuran) ---- --}}
                 <div class="relative" x-data="{ userMenu: false }">
                     {{-- Desktop: nama + avatar + chevron --}}

@@ -23,7 +23,7 @@ class DataPengurusController extends Controller
             $query->where('kategori_jabatan', $request->kategori);
         }
         
-        $pengurus = $query->urutHierarki()->paginate(12);
+        $pengurus = $query->orderBy('urutan_dalam_kategori', 'asc')->orderBy('id_pengurus', 'asc')->paginate(12);
         
         // Statistik per kategori
         $hierarki = DataPengurus::getHierarki();
@@ -51,47 +51,44 @@ class DataPengurusController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_pengurus' => 'required|max:100',
-            'jabatan' => 'required|max:50',
+            'nama_pengurus'    => 'required|max:100',
             'kategori_jabatan' => 'required',
-            'urutan_dalam_kategori' => 'nullable|integer|min:1',
-            'nip' => 'nullable|max:50',
-            'tugas' => 'nullable',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'nip'              => 'required|digits:18|unique:data_pengurus,nip',
+            'tugas'            => 'nullable',
+            'foto'             => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'nip.required' => 'NIP wajib diisi.',
+            'nip.digits' => 'NIP harus terdiri dari 18 digit angka.',
+            'nip.unique' => 'NIP sudah digunakan oleh pengurus lain.',
         ]);
-        
-        $data = $request->except('foto');
-        
-        // Set level berdasarkan kategori
+
         $hierarki = DataPengurus::getHierarki();
-        $data['level'] = $hierarki[$request->kategori_jabatan]['level'] ?? 99;
-        
+
+        $inputPosisi = $request->input('urutan_dalam_kategori');
+        $posisi = ($inputPosisi !== null && $inputPosisi !== '' && (int)$inputPosisi >= 1)
+            ? (int)$inputPosisi
+            : (int) DataPengurus::max('urutan_dalam_kategori') + 1;
+
+        $foto = null;
         if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store('pengurus', 'public');
-            $data['foto'] = $path;
-        }
-        
-        // Tentukan posisi dalam kategori
-        $requestedPosition = $request->input('urutan_dalam_kategori');
-        $maxUrutan = DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
-                                 ->max('urutan_dalam_kategori');
-        $position = $this->normalizeRequestedPosition($requestedPosition, $maxUrutan, null, true);
-
-        if ($position <= $maxUrutan) {
-            DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
-                        ->where('urutan_dalam_kategori', '>=', $position)
-                        ->increment('urutan_dalam_kategori');
+            $foto = $request->file('foto')->store('pengurus', 'public');
         }
 
-        $data['urutan_dalam_kategori'] = $position;
-        
-        $pengurus = DataPengurus::create($data);
-        $this->reindexCategoryPositions($request->kategori_jabatan);
-        
+        DataPengurus::create([
+            'nama_pengurus'         => $request->nama_pengurus,
+            'nip'                   => $request->nip,
+            'jabatan'               => $hierarki[$request->kategori_jabatan]['nama'] ?? $request->kategori_jabatan,
+            'kategori_jabatan'      => $request->kategori_jabatan,
+            'level'                 => $hierarki[$request->kategori_jabatan]['level'] ?? 99,
+            'urutan_dalam_kategori' => $posisi,
+            'tugas'                 => $request->tugas,
+            'foto'                  => $foto,
+        ]);
+
         return redirect()->route('admin.pengurus.index')
                          ->with('success', 'Pengurus berhasil ditambahkan');
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -101,84 +98,53 @@ class DataPengurusController extends Controller
         $hierarki = DataPengurus::getHierarki();
         return view('admin.pengurus-edit', compact('pengurus', 'hierarki'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
         $pengurus = DataPengurus::findOrFail($id);
-        
+
         $request->validate([
-            'nama_pengurus' => 'required|max:100',
-            'jabatan' => 'required|max:50',
+            'nama_pengurus'    => 'required|max:100',
             'kategori_jabatan' => 'required',
-            'urutan_dalam_kategori' => 'nullable|integer|min:1',
-            'nip' => 'nullable|max:50',
-            'tugas' => 'nullable',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'nip'              => 'required|digits:18|unique:data_pengurus,nip,' . $pengurus->id_pengurus . ',id_pengurus',
+            'tugas'            => 'nullable',
+            'foto'             => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'nip.required' => 'NIP wajib diisi.',
+            'nip.digits' => 'NIP harus terdiri dari 18 digit angka.',
+            'nip.unique' => 'NIP sudah digunakan oleh pengurus lain.',
         ]);
-        
-        $data = $request->except('foto');
-        
-        // Update level jika kategori berubah
+
         $hierarki = DataPengurus::getHierarki();
-        $data['level'] = $hierarki[$request->kategori_jabatan]['level'] ?? 99;
-        
+
+        // Posisi: bebas diisi angka berapa saja >= 1, kosong = pertahankan lama
+        $inputPosisi = $request->input('urutan_dalam_kategori');
+        $posisi = ($inputPosisi !== null && $inputPosisi !== '' && (int)$inputPosisi >= 1)
+            ? (int)$inputPosisi
+            : $pengurus->urutan_dalam_kategori;
+
+        $foto = $pengurus->foto;
         if ($request->hasFile('foto')) {
             if ($pengurus->foto) {
                 Storage::disk('public')->delete($pengurus->foto);
             }
-            $path = $request->file('foto')->store('pengurus', 'public');
-            $data['foto'] = $path;
+            $foto = $request->file('foto')->store('pengurus', 'public');
         }
 
-        $requestedPosition = $request->input('urutan_dalam_kategori');
-        $oldCategory = $pengurus->kategori_jabatan;
-        $currentPosition = $pengurus->urutan_dalam_kategori;
-        $newCategory = $request->kategori_jabatan;
-        $categoryChanged = $oldCategory !== $newCategory;
+        $pengurus->update([
+            'nama_pengurus'         => $request->nama_pengurus,
+            'nip'                   => $request->nip,
+            'jabatan'               => $hierarki[$request->kategori_jabatan]['nama'] ?? $request->kategori_jabatan,
+            'kategori_jabatan'      => $request->kategori_jabatan,
+            'level'                 => $hierarki[$request->kategori_jabatan]['level'] ?? 99,
+            'urutan_dalam_kategori' => $posisi,
+            'tugas'                 => $request->tugas,
+            'foto'                  => $foto,
+        ]);
 
-        if ($categoryChanged) {
-            DataPengurus::where('kategori_jabatan', $oldCategory)
-                        ->where('urutan_dalam_kategori', '>', $currentPosition)
-                        ->decrement('urutan_dalam_kategori');
-
-            $maxUrutan = DataPengurus::where('kategori_jabatan', $newCategory)
-                                     ->max('urutan_dalam_kategori');
-            $targetPosition = $this->normalizeRequestedPosition($requestedPosition, $maxUrutan, null, true);
-
-            if ($targetPosition <= $maxUrutan) {
-                DataPengurus::where('kategori_jabatan', $newCategory)
-                            ->where('urutan_dalam_kategori', '>=', $targetPosition)
-                            ->increment('urutan_dalam_kategori');
-            }
-        } else {
-            $maxUrutan = DataPengurus::where('kategori_jabatan', $newCategory)
-                                     ->max('urutan_dalam_kategori');
-            $targetPosition = $this->normalizeRequestedPosition($requestedPosition, $maxUrutan, $currentPosition, false);
-
-            if ($targetPosition < $currentPosition) {
-                DataPengurus::where('kategori_jabatan', $newCategory)
-                            ->where('urutan_dalam_kategori', '>=', $targetPosition)
-                            ->where('urutan_dalam_kategori', '<', $currentPosition)
-                            ->increment('urutan_dalam_kategori');
-            } elseif ($targetPosition > $currentPosition) {
-                DataPengurus::where('kategori_jabatan', $newCategory)
-                            ->where('urutan_dalam_kategori', '<=', $targetPosition)
-                            ->where('urutan_dalam_kategori', '>', $currentPosition)
-                            ->decrement('urutan_dalam_kategori');
-            }
-        }
-
-        $data['urutan_dalam_kategori'] = $targetPosition;
-        
-        $pengurus->update($data);
-        $this->reindexCategoryPositions($newCategory);
-        if ($categoryChanged) {
-            $this->reindexCategoryPositions($oldCategory);
-        }
-        
         return redirect()->route('admin.pengurus.index')
                          ->with('success', 'Pengurus berhasil diperbarui');
     }
@@ -198,38 +164,67 @@ class DataPengurusController extends Controller
                          ->with('success', 'Pengurus berhasil dihapus');
     }
 
-    private function normalizeRequestedPosition($requestedPosition, $maxUrutan, $currentPosition = null, $isNewCategory = false)
+    /**
+     * Naik satu posisi (global) — tukar dengan record di atasnya
+     */
+    public function naikUrutan($id)
     {
-        if (!$requestedPosition || intval($requestedPosition) < 1) {
-            if ($currentPosition !== null) {
-                return min($currentPosition, $maxUrutan + 1);
-            }
+        $pengurus = DataPengurus::findOrFail($id);
+        $currentPos = $pengurus->urutan_dalam_kategori;
 
-            return $maxUrutan + 1;
+        if ($currentPos <= 1) {
+            return back()->with('info', 'Sudah di posisi paling atas.');
         }
 
-        $requestedPosition = intval($requestedPosition);
-        $maxAllowed = $maxUrutan + ($currentPosition === null || $requestedPosition > $currentPosition ? 1 : 0);
+        // Cari record yang ada di posisi lebih kecil terdekat
+        $above = DataPengurus::where('urutan_dalam_kategori', '<', $currentPos)
+                             ->where('id_pengurus', '!=', $pengurus->id_pengurus)
+                             ->orderBy('urutan_dalam_kategori', 'desc')
+                             ->first();
 
-        if ($isNewCategory) {
-            return min($requestedPosition, max($maxUrutan + 1, 1));
+        if ($above) {
+            $newPos   = $above->urutan_dalam_kategori;
+            $abovePos = $currentPos;
+
+            // Pakai nilai sementara untuk hindari unique constraint jika ada
+            $above->update(['urutan_dalam_kategori' => 99999]);
+            $pengurus->update(['urutan_dalam_kategori' => $newPos]);
+            $above->update(['urutan_dalam_kategori' => $abovePos]);
+        } else {
+            $pengurus->update(['urutan_dalam_kategori' => $currentPos - 1]);
         }
 
-        return min($requestedPosition, max($maxAllowed, 1));
+        return back()->with('success', 'Posisi naik.');
     }
 
-    private function reindexCategoryPositions($kategori)
+    /**
+     * Turun satu posisi (global) — tukar dengan record di bawahnya
+     */
+    public function turunUrutan($id)
     {
-        $items = DataPengurus::where('kategori_jabatan', $kategori)
-                             ->orderBy('urutan_dalam_kategori')
-                             ->orderBy('id_pengurus')
-                             ->get();
+        $pengurus = DataPengurus::findOrFail($id);
+        $currentPos = $pengurus->urutan_dalam_kategori;
 
-        foreach ($items as $index => $item) {
-            $item->update(['urutan_dalam_kategori' => $index + 1]);
+        // Cari record yang ada di posisi lebih besar terdekat
+        $below = DataPengurus::where('urutan_dalam_kategori', '>', $currentPos)
+                             ->where('id_pengurus', '!=', $pengurus->id_pengurus)
+                             ->orderBy('urutan_dalam_kategori', 'asc')
+                             ->first();
+
+        if ($below) {
+            $newPos   = $below->urutan_dalam_kategori;
+            $belowPos = $currentPos;
+
+            $below->update(['urutan_dalam_kategori' => 99999]);
+            $pengurus->update(['urutan_dalam_kategori' => $newPos]);
+            $below->update(['urutan_dalam_kategori' => $belowPos]);
+        } else {
+            $pengurus->update(['urutan_dalam_kategori' => $currentPos + 1]);
         }
+
+        return back()->with('success', 'Posisi turun.');
     }
-    
+
     /**
      * Update urutan dalam satu kategori (drag & drop)
      */

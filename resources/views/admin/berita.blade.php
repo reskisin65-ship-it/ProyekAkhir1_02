@@ -44,6 +44,19 @@
         padding: 4rem 2rem;
     }
 
+    .news-title-scroll {
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .news-title-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
     /* Ultra-Nav */
     .editorial-header {
         display: flex;
@@ -107,6 +120,8 @@
         align-items: center;
         transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         cursor: pointer;
+        min-width: 0;
+        overflow: hidden;
     }
 
     .news-node:hover {
@@ -219,6 +234,134 @@
         transform: translateX(0);
     }
 
+    @media (max-width: 1024px) {
+        .dashboard-wrapper {
+            padding: 1.5rem;
+        }
+
+        .editorial-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .brand-title {
+            font-size: clamp(2.8rem, 8vw, 5rem);
+        }
+
+        .news-node {
+            grid-template-columns: 84px minmax(0, 1fr) auto;
+            grid-template-areas:
+                "media title title"
+                "media category status"
+                "media actions actions";
+            gap: 1rem;
+            padding: 1.25rem;
+            align-items: start;
+        }
+
+        .news-node > .node-media {
+            grid-area: media;
+            width: 84px;
+            height: 84px;
+        }
+
+        .news-node > div:nth-child(2) {
+            grid-area: title;
+            min-width: 0;
+            padding-left: 0;
+        }
+
+        .news-node > div:nth-child(3) {
+            grid-area: category;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .news-node > div:nth-child(4) {
+            grid-area: status;
+            justify-self: end;
+        }
+
+        .news-node > div:nth-child(5) {
+            grid-area: actions;
+            justify-content: flex-start;
+            opacity: 1;
+            transform: none;
+        }
+
+        .node-title {
+            padding-left: 0;
+            font-size: 1rem;
+        }
+
+        .node-meta {
+            padding-left: 0;
+        }
+
+        .pill-category {
+            margin: 0;
+        }
+
+        .action-deck {
+            opacity: 1;
+            transform: none;
+            justify-content: flex-start;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .dashboard-wrapper {
+            padding: 1rem;
+        }
+
+        .brand-title {
+            font-size: clamp(2.4rem, 14vw, 3.5rem);
+        }
+
+        .brand-subtitle {
+            max-width: 100%;
+            font-size: 0.95rem;
+        }
+
+        .btn-system {
+            width: 100%;
+            justify-content: center;
+            padding: 1rem 1.25rem;
+        }
+
+        .news-node {
+            grid-template-columns: 1fr;
+            grid-template-areas:
+                "media"
+                "title"
+                "category"
+                "status"
+                "actions";
+            padding: 1rem;
+        }
+
+        .news-node > .node-media {
+            width: 100%;
+            height: 170px;
+        }
+
+        .status-engine,
+        .action-deck {
+            justify-content: flex-start;
+        }
+
+        .action-deck {
+            flex-wrap: wrap;
+        }
+
+        .deck-btn {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
     .deck-btn {
         width: 44px;
         height: 44px;
@@ -317,8 +460,10 @@
             </div>
 
             {{-- Identity Box --}}
-            <div>
-                <h3 class="node-title truncate">{{ $item->judul }}</h3>
+            <div class="min-w-0">
+                <div class="news-title-scroll">
+                    <h3 class="node-title inline-block whitespace-nowrap">{{ $item->judul }}</h3>
+                </div>
                 <p class="node-meta">Ref: 0x{{ $item->id_berita }} • Created {{ $item->created_at->translatedFormat('d M Y') }}</p>
             </div>
 

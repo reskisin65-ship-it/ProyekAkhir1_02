@@ -476,20 +476,22 @@
                 {{-- NIP --}}
                 <div class="form-group">
                     <label class="form-label">
-                        <i class="fa-regular fa-id-card"></i> NIP
+                        <i class="fa-regular fa-id-card"></i> NIP <span class="required">*</span>
                     </label>
-                    <input type="text" name="nip" value="{{ old('nip', $pengurus->nip) }}"
-                           class="form-control" placeholder="Nomor Induk Pegawai (Opsional)">
+                    <input type="text" name="nip" value="{{ old('nip', $pengurus->nip) }}" maxlength="18" inputmode="numeric" pattern="[0-9]{18}" required
+                           class="form-control" placeholder="Masukkan 18 digit angka NIP">
+                    @foreach ($errors->get('nip') as $message)
+                        <small class="text-red-500 text-xs mt-1">{{ $message }}</small>
+                    @endforeach
                 </div>
                 
-                {{-- Kategori Jabatan (Hierarki Otomatis) --}}
+                {{-- Kategori / Jabatan --}}
                 <div class="form-group">
                     <label class="form-label">
-                        <i class="fa-solid fa-layer-group"></i> Kategori Jabatan <span class="required">*</span>
+                        <i class="fa-solid fa-layer-group"></i> Jabatan <span class="required">*</span>
                     </label>
                     <div class="kategori-options">
                         @foreach($hierarki as $key => $kat)
-                            @if($key !== 'lainnya')
                             <div class="kategori-option">
                                 <input type="radio" name="kategori_jabatan" id="kat_{{ $key }}" 
                                        value="{{ $key }}" 
@@ -516,34 +518,21 @@
                                     @endif
                                 </label>
                             </div>
-                            @endif
                         @endforeach
                     </div>
                 </div>
 
-                {{-- Posisi dalam Kategori --}}
+                {{-- Posisi --}}
                 <div class="form-group">
                     <label class="form-label">
-                        <i class="fa-solid fa-sort-numeric-up"></i> Posisi dalam Kategori
+                        <i class="fa-solid fa-sort-numeric-up"></i> Posisi
                     </label>
-                    <input type="number" name="urutan_dalam_kategori" value="{{ old('urutan_dalam_kategori', $pengurus->urutan_dalam_kategori) }}"
-                           class="form-control" min="1" placeholder="Masukkan angka posisi, 1 = paling atas">
+                    <input type="number" name="urutan_dalam_kategori"
+                           value="{{ old('urutan_dalam_kategori', $pengurus->urutan_dalam_kategori) }}"
+                           class="form-control" placeholder="contoh: 1, 2, 3 ...">
                     <div class="info-text">
                         <i class="fa-regular fa-comment-dots"></i>
-                        Atur posisi di dalam kategori. Posisi 1 akan berada paling atas.
-                    </div>
-                </div>
-                
-                {{-- Jabatan Spesifik --}}
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fa-solid fa-briefcase"></i> Jabatan Spesifik <span class="required">*</span>
-                    </label>
-                    <input type="text" name="jabatan" value="{{ old('jabatan', $pengurus->jabatan) }}" required
-                           class="form-control" placeholder="Contoh: Kepala Desa, Sekretaris Desa, Kasi Pemerintahan">
-                    <div class="info-text">
-                        <i class="fa-regular fa-comment-dots"></i>
-                        Nama jabatan yang akan ditampilkan (bisa lebih spesifik dari kategori)
+                        Posisi bebas — 1 = paling atas. Angka sama = tampil sejajar. Saat ini ada <strong>{{ App\Models\DataPengurus::count() }}</strong> pengurus.
                     </div>
                 </div>
                 

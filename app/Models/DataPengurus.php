@@ -108,11 +108,11 @@ class DataPengurus extends Model
         Cache::forever('pengurus_custom_kategori', $customKategori);
     }
     
-    // Scope untuk urutan hierarki
+    // Scope untuk urutan global (berdasarkan posisi yang diset admin)
     public function scopeUrutHierarki($query)
     {
-        return $query->orderBy('level', 'asc')
-                     ->orderBy('urutan_dalam_kategori', 'asc');
+        return $query->orderBy('urutan_dalam_kategori', 'asc')
+                     ->orderBy('id_pengurus', 'asc');
     }
     
     // Accessor

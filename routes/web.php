@@ -85,8 +85,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifikasi/ambil', [NotifikasiController::class, 'ambil'])->name('notifikasi.ambil');
     Route::post('/notifikasi/baca', [NotifikasiController::class, 'baca'])->name('notifikasi.baca');
     Route::post('/notifikasi/baca-semua', [NotifikasiController::class, 'bacaSemua'])->name('notifikasi.baca-semua');
-    Route::delete('/notifikasi/{id}', [NotifikasiController::class, 'hapus'])->name('notifikasi.hapus');
     Route::delete('/notifikasi/hapus-semua', [NotifikasiController::class, 'hapusSemua'])->name('notifikasi.hapus-semua');
+    Route::delete('/notifikasi/{id}', [NotifikasiController::class, 'hapus'])->name('notifikasi.hapus');
 });
 
 Route::get('/umkm/{id}', [UmkmController::class, 'show'])->name('umkm.show');
@@ -218,6 +218,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::put('/{id}', [App\Http\Controllers\Admin\DataPengurusController::class, 'update'])->name('update');
         Route::delete('/{id}', [App\Http\Controllers\Admin\DataPengurusController::class, 'destroy'])->name('destroy');
         Route::post('/update-urutan', [App\Http\Controllers\Admin\DataPengurusController::class, 'updateUrutan'])->name('update-urutan');
+        Route::post('/{id}/naik', [App\Http\Controllers\Admin\DataPengurusController::class, 'naikUrutan'])->name('naik');
+        Route::post('/{id}/turun', [App\Http\Controllers\Admin\DataPengurusController::class, 'turunUrutan'])->name('turun');
         Route::post('/sync-levels', [App\Http\Controllers\Admin\DataPengurusController::class, 'syncLevels'])->name('sync-levels');
         Route::get('/kategori', [App\Http\Controllers\Admin\DataPengurusController::class, 'showKategori'])->name('kategori');
         Route::post('/kategori', [App\Http\Controllers\Admin\DataPengurusController::class, 'storeKategori'])->name('kategori.store');
