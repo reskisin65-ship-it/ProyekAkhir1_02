@@ -1,4 +1,4 @@
-﻿{{-- resources/views/layouts/navigation_desa.blade.php --}}
+{{-- resources/views/layouts/navigation_desa.blade.php --}}
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Poppins:wght@800;900&display=swap" rel="stylesheet">
 
 <nav class="nav-top" :class="{ 'nav-scrolled': scrolled }" x-data="{ userMenu: false, mobileMenu: false }">
@@ -27,8 +27,13 @@
                     $unreadNotifications = Auth::user()->notifikasiBelumDibaca()->count();
                 @endphp
 
+                @php
+                    $isAdminSection = Auth::user()->role && Auth::user()->role->nama_role === 'admin' && Request::routeIs('admin.*');
+                    $notifRoute = $isAdminSection ? route('admin.notifikasi.index') : route('notifikasi.index');
+                @endphp
+
                 {{-- ---- NOTIFICATION BELL ---- --}}
-                <a href="{{ route('notifikasi.index') }}"
+                <a href="{{ $notifRoute }}"
                    class="relative inline-flex items-center justify-center w-11 h-11 rounded-full bg-[#101828] text-white hover:bg-gray-900 transition-all duration-300 border border-gray-800"
                    aria-label="Notifikasi">
                     <i class="fa-regular fa-bell text-lg"></i>

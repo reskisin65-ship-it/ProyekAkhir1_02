@@ -58,9 +58,7 @@ class StatistikController extends Controller
         return view('masyarakat.statistik', compact('statistik'));
     }
 
-    /**
-     * API endpoint untuk update realtime (optional)
-     */
+   
     public function api()
     {
         $totalPenduduk = Penduduk::count();

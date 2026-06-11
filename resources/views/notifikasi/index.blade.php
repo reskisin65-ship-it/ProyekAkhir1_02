@@ -1,5 +1,5 @@
 {{-- resources/views/notifikasi/index.blade.php --}}
-@extends($layout)
+@extends($layout ?? 'layouts.app')
 
 @section('title', 'Pusat Notifikasi')
 

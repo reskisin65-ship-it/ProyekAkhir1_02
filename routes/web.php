@@ -251,4 +251,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // KONTAK DESA
     Route::resource('kontak-desa', App\Http\Controllers\Admin\KontakDesaController::class);
     Route::get('/kontak-desa/{id}/toggle-status', [KontakDesaController::class, 'toggleStatus'])->name('kontak-desa.toggle-status');
+
+    // NOTIFIKASI ADMIN
+    Route::get('/notifikasi', [NotifikasiController::class, 'adminIndex'])->name('notifikasi.index');
 });

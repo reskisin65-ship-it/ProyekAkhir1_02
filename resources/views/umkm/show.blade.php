@@ -45,7 +45,7 @@
                     <div class="prose prose-slate max-w-none mb-12">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="w-8 h-[2px] bg-emerald-500"></div>
-                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Manifesto Usaha</span>
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Slogan Usaha</span>
                         </div>
                         <p class="text-slate-500 text-lg leading-relaxed font-light italic">
                             "{{ $umkm->deskripsi }}"
@@ -56,7 +56,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 pt-10 border-t border-slate-50">
                         {{-- Card 1: Founding Member (Pemilik) --}}
                         <div class="group p-6 rounded-[2rem] bg-slate-50 hover:bg-emerald-50 transition-all duration-500 hover:-translate-y-1">
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Founding Member</p>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Founder</p>
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
                                     <i class="fa-solid fa-id-badge text-lg"></i>
@@ -86,7 +86,7 @@
                             <a href="https://wa.me/{{ $phoneNumber }}" 
                                target="_blank"
                                class="group p-6 rounded-[2rem] bg-slate-50 hover:bg-green-50 transition-all duration-500 cursor-pointer block hover:-translate-y-1">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 group-hover:text-green-600 transition-colors">Official Line</p>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 group-hover:text-green-600 transition-colors">Kontak</p>
                                 <div class="flex items-center gap-4">
                                     <div class="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center text-green-600 group-hover:bg-green-500 group-hover:text-white transition-all duration-300 group-hover:scale-110">
                                         <i class="fa-brands fa-whatsapp text-xl"></i>
@@ -121,7 +121,7 @@
             <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                 <div class="animate__animated animate__fadeInLeft">
                     <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4 italic">
-                        Katalog <span class="text-emerald-500 font-light not-italic">Produk</span>
+                        Katalog <span class="text-emerald-500 font-light not-italic"> Produk</span>
                     </h2>
                     <p class="text-slate-400 max-w-md font-medium">Kurasi produk terbaik yang dikerjakan dengan penuh ketelitian dan kasih sayang.</p>
                 </div>

@@ -201,7 +201,7 @@
                     <p class="text-xs text-gray-400">Kelola daftar kontak</p>
                 </div>
             </a>
-            <a href="{{ route('notifikasi.index') }}" class="side-item group">
+            <a href="{{ route('admin.notifikasi.index') }}" class="side-item group">
                 <i class="fa-regular fa-bell side-icon"></i>
                 <span class="side-label">Notifikasi</span>
                 <div class="info-box">
@@ -446,7 +446,7 @@
             </a>
             <a href="{{ route('notifikasi.index') }}" class="side-item group relative">
                 <i class="fa-regular fa-bell side-icon"></i>
-                @if($unreadNotifications > 0)
+                @if(isset($unreadNotifications) && $unreadNotifications > 0)
                     <span class="absolute top-1 right-1 inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-[10px] font-bold text-white shadow-lg">
                         {{ $unreadNotifications > 99 ? '99+' : $unreadNotifications }}
                     </span>
@@ -646,7 +646,7 @@
                     <i class="fa-solid fa-phone"></i>
                     <span>Kontak</span>
                 </a>
-                <a href="{{ route('notifikasi.index') }}" class="mobile-nav-item">
+                <a href="{{ route('admin.notifikasi.index') }}" class="mobile-nav-item">
                     <i class="fa-regular fa-bell"></i>
                     <span>Notif</span>
                 </a>

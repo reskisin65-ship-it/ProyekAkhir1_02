@@ -18,9 +18,18 @@ class NotifikasiController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        // Tentukan layout berdasarkan role
-        $isAdmin = Auth::user()->role && Auth::user()->role->nama_role === 'admin';
-        $layout  = $isAdmin ? 'layouts.admin' : 'layouts.app';
+        $layout = 'layouts.app';
+
+        return view('notifikasi.index', compact('notifikasi', 'layout'));
+    }
+
+    public function adminIndex()
+    {
+        $notifikasi = Notifikasi::where('user_id', Auth::user()->user_id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        $layout = 'layouts.admin';
 
         return view('notifikasi.index', compact('notifikasi', 'layout'));
     }
