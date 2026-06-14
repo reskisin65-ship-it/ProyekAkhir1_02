@@ -1,4 +1,3 @@
-{{-- resources/views/admin/keuangan/index.blade.php --}}
 @extends('layouts.admin')
 
 @section('title', 'Keuangan Desa - Lumban Silintong')
@@ -6,6 +5,7 @@
 @section('content')
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&family=Instrument+Sans:ital,wght@0,400;0,700;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
     :root {
@@ -69,6 +69,11 @@
         line-height: 1.6;
     }
 
+    .flex { display: flex; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 1rem; }
+    .items-center { align-items: center; }
+
     /* Stats Grid */
     .stats-architecture {
         display: grid;
@@ -116,6 +121,12 @@
         color: var(--text-mute);
     }
 
+    .text-emerald-600 { color: #059669; }
+    .text-red-600 { color: #dc2626; }
+    .text-blue-600 { color: #2563eb; }
+    .text-purple-600 { color: #7c3aed; }
+    .text-xl { font-size: 1.25rem; }
+
     /* Filter Toggle Button */
     .filter-toggle-btn {
         display: inline-flex;
@@ -142,7 +153,7 @@
         transition: transform 0.3s;
     }
 
-    .filter-toggle-btn.active i {
+    .filter-toggle-btn.active i.fa-chevron-down {
         transform: rotate(180deg);
     }
 
@@ -163,14 +174,8 @@
     }
 
     @keyframes fadeInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .filter-grid {
@@ -266,6 +271,33 @@
         color: var(--accent-primary);
     }
 
+    /* Filter Pill for Action Buttons */
+    .filter-pill {
+        padding: 0.5rem 1.2rem;
+        border-radius: 40px;
+        background: white;
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text-mute);
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .filter-pill:hover {
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
+    }
+
+    .filter-pill.active {
+        background: var(--system-bg);
+        color: white;
+        border-color: var(--system-bg);
+    }
+
     /* Active Filter Tags */
     .active-filters {
         display: flex;
@@ -279,18 +311,19 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.3rem 0.8rem;
-        background: var(--primary-soft);
+        background: #f3f4f6;
         border-radius: 40px;
         font-size: 0.7rem;
-        color: var(--accent-primary-dark);
+        color: #374151;
     }
 
-    .filter-tag i {
+    .filter-tag i.fa-xmark {
         cursor: pointer;
         font-size: 0.6rem;
+        color: #9ca3af;
     }
 
-    .filter-tag i:hover {
+    .filter-tag i.fa-xmark:hover {
         color: var(--accent-red);
     }
 
@@ -343,6 +376,9 @@
         color: #dc2626;
     }
 
+    .opacity-50 { opacity: 0.5; }
+    .hover\:opacity-100:hover { opacity: 1; }
+
     /* Pending Section */
     .pending-section {
         margin-bottom: 2rem;
@@ -367,6 +403,8 @@
         align-items: center;
         gap: 0.5rem;
     }
+
+    .text-amber-600 { color: #d97706; }
 
     /* Table Architecture */
     .table-architecture {
@@ -480,6 +518,17 @@
         border-radius: 40px;
     }
 
+    .w-20 { width: 5rem; }
+    .h-20 { height: 5rem; }
+    .bg-gray-100 { background: #f3f4f6; }
+    .rounded-full { border-radius: 9999px; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .mb-4 { margin-bottom: 1rem; }
+    .text-3xl { font-size: 1.875rem; }
+    .text-gray-400 { color: #9ca3af; }
+    .font-medium { font-weight: 500; }
+    .mt-2 { margin-top: 0.5rem; }
+
     /* Pagination */
     .pagination-container {
         margin-top: 1.5rem;
@@ -543,6 +592,40 @@
         to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
+    .bg-gradient-to-r { background: linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to)); }
+    .from-emerald-600 { --tw-gradient-from: #059669; }
+    .to-emerald-700 { --tw-gradient-to: #047857; }
+    .from-red-600 { --tw-gradient-from: #dc2626; }
+    .to-red-700 { --tw-gradient-to: #b91c1c; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .text-white { color: white; }
+    .text-xl { font-size: 1.25rem; }
+    .font-bold { font-weight: 700; }
+    .mr-2 { margin-right: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-5 { margin-bottom: 1.25rem; }
+    .text-gray-600 { color: #4b5563; }
+    .text-gray-500 { color: #6b7280; }
+    .text-sm { font-size: 0.875rem; }
+    .gap-3 { gap: 0.75rem; }
+    .justify-end { justify-content: flex-end; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .border { border-width: 1px; }
+    .border-gray-300 { border-color: #d1d5db; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .hover\:bg-gray-50:hover { background: #f9fafb; }
+    .hover\:bg-emerald-700:hover { background: #047857; }
+    .hover\:bg-red-700:hover { background: #b91c1c; }
+    .font-semibold { font-weight: 600; }
+    .w-full { width: 100%; }
+    .focus\:border-red-500:focus { border-color: #ef4444; }
+    .focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(239,68,68,0.2); }
+    .focus\:ring-red-200:focus { --tw-ring-color: #fecaca; }
+    .transition { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
     /* Responsive */
     @media (max-width: 1200px) {
         .table-header, .transaction-row {
@@ -589,13 +672,13 @@
             </p>
         </div>
         <div class="flex gap-3">
-            <a href="{{ route('admin.keuangan.kategori') }}" class="filter-pill" style="padding: 0.5rem 1.2rem; border-radius: 40px; background: white; border: 1px solid var(--border-color); text-decoration: none; font-size: 0.75rem; font-weight: 700; color: var(--text-mute);">
+            <a href="{{ route('admin.keuangan.kategori') }}" class="filter-pill">
                 <i class="fa-solid fa-tags"></i> Kategori
             </a>
-            <a href="{{ route('admin.keuangan.laporan') }}" class="filter-pill" style="padding: 0.5rem 1.2rem; border-radius: 40px; background: white; border: 1px solid var(--border-color); text-decoration: none; font-size: 0.75rem; font-weight: 700; color: var(--text-mute);">
+            <a href="{{ route('admin.keuangan.laporan') }}" class="filter-pill">
                 <i class="fa-solid fa-print"></i> Laporan
             </a>
-            <a href="{{ route('admin.keuangan.create') }}" class="filter-pill active" style="padding: 0.5rem 1.2rem; border-radius: 40px; background: var(--system-bg); color: white; border-color: var(--system-bg); text-decoration: none; font-size: 0.75rem; font-weight: 700;">
+            <a href="{{ route('admin.keuangan.create') }}" class="filter-pill active">
                 <i class="fa-solid fa-plus"></i> Tambah
             </a>
         </div>
@@ -633,7 +716,7 @@
         </button>
     </div>
 
-    {{-- Filter Panel (Hidden by default) --}}
+    {{-- Filter Panel --}}
     <div class="filter-panel" id="filterPanel">
         <form method="GET" action="{{ route('admin.keuangan.index') }}" id="filterForm">
             <div class="filter-grid">
@@ -728,6 +811,12 @@
         <button onclick="this.parentElement.remove()" class="opacity-50 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
     </div>
     @endif
+    @if(session('error'))
+    <div class="alert-node alert-error fade-up" style="animation-delay: 0.2s">
+        <div class="flex items-center gap-2"><i class="fa-solid fa-circle-exclamation"></i><span>{{ session('error') }}</span></div>
+        <button onclick="this.parentElement.remove()" class="opacity-50 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    @endif
 
     {{-- Pending Transactions --}}
     @if(isset($transaksiPending) && $transaksiPending->count() > 0)
@@ -772,6 +861,7 @@
             <div class="text-sm font-semibold {{ $t->jenis == 'pemasukan' ? 'text-emerald-600' : 'text-red-600' }}">Rp {{ number_format($t->jumlah, 0, ',', '.') }}</div>
             <div><span class="status-badge status-{{ $t->status }}">@if($t->status == 'disetujui') <i class="fa-regular fa-circle-check"></i> Disetujui @elseif($t->status == 'pending') <i class="fa-regular fa-clock"></i> Pending @else <i class="fa-solid fa-ban"></i> Ditolak @endif</span></div>
             <div class="action-deck">
+                <a href="{{ route('admin.keuangan.show', $t->id_transaksi) }}" class="deck-btn" style="background: #3b82f6; color: white; border-color: #3b82f6;" title="Detail"><i class="fa-solid fa-eye"></i></a>
                 <a href="{{ route('admin.keuangan.edit', $t->id_transaksi) }}" class="deck-btn btn-edit" title="Edit"><i class="fa-solid fa-pen"></i></a>
                 <form action="{{ route('admin.keuangan.destroy', $t->id_transaksi) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus transaksi ini?')">@csrf @method('DELETE')<button type="submit" class="deck-btn btn-delete" title="Hapus"><i class="fa-solid fa-trash"></i></button></form>
             </div>
@@ -786,16 +876,55 @@
     </div>
 
     {{-- Pagination --}}
-    @if(method_exists($transaksiTerbaru, 'hasPages') && $transaksiTerbaru->hasPages())
+    @if(isset($transaksiTerbaru) && method_exists($transaksiTerbaru, 'hasPages') && $transaksiTerbaru->hasPages())
     <div class="pagination-container">{{ $transaksiTerbaru->appends(request()->query())->links() }}</div>
     @endif
 </div>
 
 {{-- Modal Approve --}}
-<div id="approveModal" class="modal-overlay"><div class="modal-container"><div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4"><div class="flex items-center justify-between"><h3 class="text-xl font-bold text-white"><i class="fa-solid fa-check-circle mr-2"></i> Setujui Transaksi</h3><button onclick="closeApproveModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button></div></div><form id="approveForm" method="POST" class="p-6">@csrf<p class="text-gray-600 mb-3">Apakah Anda yakin ingin menyetujui transaksi ini?</p><p class="text-sm text-gray-500 mb-5" id="approveDeskripsi"></p><div class="flex gap-3 justify-end"><button type="button" onclick="closeApproveModal()" class="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50">Batal</button><button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm font-semibold hover:bg-emerald-700">Ya, Setujui</button></div></form></div></div>
+<div id="approveModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-bold text-white"><i class="fa-solid fa-check-circle mr-2"></i> Setujui Transaksi</h3>
+                <button onclick="closeApproveModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
+            </div>
+        </div>
+        <form id="approveForm" method="POST" class="p-6">
+            @csrf
+            <p class="text-gray-600 mb-3">Apakah Anda yakin ingin menyetujui transaksi ini?</p>
+            <p class="text-sm text-gray-500 mb-5" id="approveDeskripsi"></p>
+            <div class="flex gap-3 justify-end">
+                <button type="button" onclick="closeApproveModal()" class="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm font-semibold hover:bg-emerald-700">Ya, Setujui</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 {{-- Modal Reject --}}
-<div id="rejectModal" class="modal-overlay"><div class="modal-container"><div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4"><div class="flex items-center justify-between"><h3 class="text-xl font-bold text-white"><i class="fa-solid fa-times-circle mr-2"></i> Tolak Transaksi</h3><button onclick="closeRejectModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button></div></div><form id="rejectForm" method="POST" class="p-6">@csrf<p class="text-gray-600 mb-3" id="rejectDeskripsi"></p><div class="mb-4"><label class="block text-sm font-semibold text-gray-700 mb-2">Catatan Penolakan</label><textarea name="catatan" rows="3" required class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:border-red-500 focus:ring-2 focus:ring-red-200 transition"></textarea></div><div class="flex gap-3 justify-end"><button type="button" onclick="closeRejectModal()" class="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50">Batal</button><button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-semibold hover:bg-red-700">Ya, Tolak</button></div></form></div></div>
+<div id="rejectModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-bold text-white"><i class="fa-solid fa-times-circle mr-2"></i> Tolak Transaksi</h3>
+                <button onclick="closeRejectModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
+            </div>
+        </div>
+        <form id="rejectForm" method="POST" class="p-6">
+            @csrf
+            <p class="text-gray-600 mb-3" id="rejectDeskripsi"></p>
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan Penolakan <span class="text-red-500">*</span></label>
+                <textarea name="catatan" rows="3" required class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:border-red-500 focus:ring-2 focus:ring-red-200 transition" placeholder="Masukkan alasan penolakan..."></textarea>
+            </div>
+            <div class="flex gap-3 justify-end">
+                <button type="button" onclick="closeRejectModal()" class="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-semibold hover:bg-red-700">Ya, Tolak</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -816,7 +945,6 @@
             this.classList.toggle('active');
         });
         
-        // If there are active filters, show panel by default
         @if(request('dari_tanggal') || request('sampai_tanggal') || request('bulan') || request('tahun') || request('jenis') || request('kategori'))
             filterPanel.classList.add('show');
             toggleBtn.classList.add('active');
@@ -831,14 +959,28 @@
     }
     
     // Modal functions
-    function openApproveModal(id, deskripsi) { document.getElementById('approveForm').action = '/admin/keuangan/' + id + '/approve'; document.getElementById('approveDeskripsi').innerHTML = '<strong>' + deskripsi + '</strong>'; document.getElementById('approveModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-    function closeApproveModal() { document.getElementById('approveModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
-    function openRejectModal(id, deskripsi) { document.getElementById('rejectForm').action = '/admin/keuangan/' + id + '/reject'; document.getElementById('rejectDeskripsi').innerHTML = 'Tolak transaksi: <strong>' + deskripsi + '</strong>'; document.getElementById('rejectModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-    function closeRejectModal() { document.getElementById('rejectModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+    function openApproveModal(id, deskripsi) { 
+        document.getElementById('approveForm').action = '/admin/keuangan/' + id + '/approve'; 
+        document.getElementById('approveDeskripsi').innerHTML = '<strong>' + deskripsi + '</strong>'; 
+        document.getElementById('approveModal').style.display = 'flex'; 
+        document.body.style.overflow = 'hidden'; 
+    }
+    function closeApproveModal() { 
+        document.getElementById('approveModal').style.display = 'none'; 
+        document.body.style.overflow = 'auto'; 
+    }
+    function openRejectModal(id, deskripsi) { 
+        document.getElementById('rejectForm').action = '/admin/keuangan/' + id + '/reject'; 
+        document.getElementById('rejectDeskripsi').innerHTML = 'Tolak transaksi: <strong>' + deskripsi + '</strong>'; 
+        document.getElementById('rejectModal').style.display = 'flex'; 
+        document.body.style.overflow = 'hidden'; 
+    }
+    function closeRejectModal() { 
+        document.getElementById('rejectModal').style.display = 'none'; 
+        document.body.style.overflow = 'auto'; 
+    }
     
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeApproveModal(); closeRejectModal(); } });
     window.onclick = function(event) { if (event.target.classList.contains('modal-overlay')) { closeApproveModal(); closeRejectModal(); } }
 </script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 @endsection

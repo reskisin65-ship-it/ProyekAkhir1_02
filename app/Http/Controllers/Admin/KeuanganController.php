@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/Admin/KeuanganController.php
 
 namespace App\Http\Controllers\Admin;
 
@@ -198,6 +197,17 @@ class KeuanganController extends Controller
         
         return redirect()->route('admin.keuangan.index')
             ->with('success', 'Transaksi berhasil ditambahkan! Menunggu persetujuan.');
+    }
+    
+    /**
+     * Menampilkan detail transaksi
+     */
+    public function show($id)
+    {
+        $transaksi = TransaksiKeuangan::with(['kategori', 'creator', 'approver'])
+            ->findOrFail($id);
+        
+        return view('admin.keuangan.show', compact('transaksi'));
     }
     
     /**

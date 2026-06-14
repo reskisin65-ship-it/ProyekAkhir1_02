@@ -48,8 +48,8 @@ class ProductController extends Controller
         $product = ProdukUmkm::findOrFail($id);
         
         // Hapus foto dari storage jika ada agar tidak memenuhi server
-        if ($product->foto) {
-            Storage::disk('public')->delete($product->foto);
+        if ($product->foto_produk) {
+            Storage::disk('public')->delete($product->foto_produk);
         }
 
         $product->delete();

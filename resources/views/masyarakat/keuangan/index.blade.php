@@ -557,56 +557,64 @@
     </div>
 
     {{-- ============================================ --}}
-    {{-- TABLE CARD PREMIUM --}}
-    {{-- ============================================ --}}
-    <div class="table-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-        <div class="table-header">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-table-list text-emerald-500"></i>
-                <h3 class="font-bold text-gray-800">Daftar Transaksi</h3>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Tanggal</th>
-                        <th>Jenis</th>
-                        <th>Kategori</th>
-                        <th>Deskripsi</th>
-                        <th>Jumlah</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($transaksis as $t)
-                    <tr onclick="window.location='{{ route('masyarakat.keuangan.show', $t->id_transaksi) }}'">
-                        <td>{{ \Carbon\Carbon::parse($t->tanggal)->translatedFormat('d F Y') }}</td>
-                        <td>
-                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold {{ $t->jenis == 'pemasukan' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                                {{ $t->jenis == 'pemasukan' ? '💰 Pemasukan' : '💸 Pengeluaran' }}
-                            </span>
-                        </td>
-                        <td>{{ $t->kategori->nama_kategori }}</td>
-                        <td>{{ Str::limit($t->deskripsi, 50) }}</td>
-                        <td class="font-semibold {{ $t->jenis == 'pemasukan' ? 'text-green-600' : 'text-red-600' }}">
-                            Rp {{ number_format($t->jumlah, 0, ',', '.') }}
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center py-12 text-gray-400">
-                            <i class="fa-regular fa-folder-open text-4xl mb-3 block"></i>
-                            <p>Belum ada transaksi</p>
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        <div class="px-6 py-4 border-t border-gray-100">
-            {{ $transaksis->appends(request()->query())->links() }}
+{{-- TABLE CARD PREMIUM --}}
+{{-- ============================================ --}}
+<div class="table-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+    <div class="table-header">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-table-list text-emerald-500"></i>
+            <h3 class="font-bold text-gray-800">Daftar Transaksi</h3>
         </div>
     </div>
+    <div class="overflow-x-auto">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Jenis</th>
+                    <th>Kategori</th>
+                    <th>Deskripsi</th>
+                    <th>Jumlah</th>
+                    <th class="text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($transaksis as $t)
+                <tr>
+                    <td>{{ \Carbon\Carbon::parse($t->tanggal)->translatedFormat('d F Y') }}</td>
+                    <td>
+                        <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold {{ $t->jenis == 'pemasukan' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+                            {{ $t->jenis == 'pemasukan' ? '💰 Pemasukan' : '💸 Pengeluaran' }}
+                        </span>
+                    </td>
+                    <td>{{ $t->kategori->nama_kategori }}</td>
+                    <td>{{ Str::limit($t->deskripsi, 50) }}</td>
+                    <td class="font-semibold {{ $t->jenis == 'pemasukan' ? 'text-green-600' : 'text-red-600' }}">
+                        Rp {{ number_format($t->jumlah, 0, ',', '.') }}
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ route('masyarakat.keuangan.show', $t->id_transaksi) }}" 
+                           class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gray-100 text-gray-500 hover:bg-emerald-500 hover:text-white transition-all duration-300 group"
+                           title="Lihat Detail">
+                            <i class="fa-regular fa-eye text-sm group-hover:scale-110 transition-transform"></i>
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="text-center py-12 text-gray-400">
+                        <i class="fa-regular fa-folder-open text-4xl mb-3 block"></i>
+                        <p>Belum ada transaksi</p>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+    <div class="px-6 py-4 border-t border-gray-100">
+        {{ $transaksis->appends(request()->query())->links() }}
+    </div>
+</div>
 
     {{-- ============================================== --}}
     {{-- TUTORIAL SECTION PREMIUM --}}

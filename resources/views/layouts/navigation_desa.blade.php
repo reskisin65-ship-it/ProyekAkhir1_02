@@ -44,22 +44,16 @@
                     @endif
                 </a>
 
-                {{-- ---- USER BUTTON (semua ukuran) ---- --}}
-                <div class="relative" x-data="{ userMenu: false }">
-                    {{-- Desktop: nama + avatar + chevron --}}
+                {{-- ---- USER BUTTON (satu tombol responsif) ---- --}}
+                <div class="relative flex items-center">
                     <button @click="userMenu = !userMenu"
-                            class="hidden md:flex items-center gap-2.5 px-3 py-2 rounded-full bg-[#101828] hover:bg-gray-900 transition-all duration-300 border border-gray-800 group">
-                        <div class="w-7 h-7 bg-[#00A389]/20 rounded-full flex items-center justify-center text-[#00A389] text-xs font-bold">
+                            type="button"
+                            class="nav-user-btn flex items-center gap-2 sm:gap-2.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full bg-[#101828] hover:bg-gray-900 transition-all duration-300 border border-gray-800 group flex-shrink-0">
+                        <div class="w-8 h-8 sm:w-7 sm:h-7 bg-[#00A389]/20 rounded-full flex items-center justify-center text-[#00A389] text-xs font-bold flex-shrink-0">
                             {{ substr(Auth::user()->name, 0, 1) }}
                         </div>
-                        <span class="text-sm font-semibold text-white max-w-[120px] truncate">{{ Auth::user()->name }}</span>
-                        <i class="fa-solid fa-chevron-down text-[9px] text-[#00A389] transition-transform duration-300 group-hover:rotate-180"></i>
-                    </button>
-
-                    {{-- Mobile: hanya avatar bulat --}}
-                    <button @click="userMenu = !userMenu"
-                            class="md:hidden w-9 h-9 bg-[#101828] rounded-full flex items-center justify-center text-[#00A389] text-sm font-bold border-2 border-[#00A389]/40 hover:border-[#00A389] transition-all duration-300 shadow-lg">
-                        {{ substr(Auth::user()->name, 0, 1) }}
+                        <span class="nav-user-name hidden sm:inline text-sm font-semibold text-white max-w-[120px] truncate">{{ Auth::user()->name }}</span>
+                        <i class="nav-user-chevron hidden sm:inline fa-solid fa-chevron-down text-[9px] text-[#00A389] transition-transform duration-300 group-hover:rotate-180"></i>
                     </button>
 
                     {{-- Dropdown (sama untuk semua ukuran) --}}
@@ -201,8 +195,13 @@
         display: flex;
         align-items: center;
         padding: 0 16px;
+        overflow: visible;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .nav-user-btn {
+        max-height: 44px;
     }
 
     /* Tablet */
@@ -290,6 +289,17 @@
         background: #101828;
         transform: translateY(-1px) scale(1.02);
         box-shadow: 0 8px 16px rgba(16, 24, 40, 0.12);
+    }
+
+    /* Fallback jika Tailwind CDN lambat — cegah duplikat avatar */
+    @media (max-width: 639px) {
+        .nav-user-name,
+        .nav-user-chevron { display: none !important; }
+    }
+    @media (min-width: 640px) {
+        .nav-user-name,
+        .nav-user-chevron { display: inline !important; }
+        .nav-user-chevron { display: inline-block !important; }
     }
 
     /* ---- Utilities ---- */

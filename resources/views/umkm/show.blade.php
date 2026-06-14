@@ -38,9 +38,22 @@
                         <i class="fa-solid fa-quote-right text-9xl text-emerald-900"></i>
                     </div>
 
-                    <h1 class="text-5xl md:text-6xl font-black text-slate-900 mb-8 tracking-tighter leading-tight animate__animated animate__fadeInUp animate__delay-1s">
-                        {{ $umkm->nama_usaha }}
-                    </h1>
+                    <div class="flex items-start justify-between">
+                        <h1 class="text-5xl md:text-6xl font-black text-slate-900 mb-8 tracking-tighter leading-tight animate__animated animate__fadeInUp animate__delay-1s">
+                            {{ $umkm->nama_usaha }}
+                        </h1>
+                        
+                        @auth
+                            @if(auth()->id() == $umkm->user_id && $umkm->status == 'approved')
+                                <a href="{{ route('umkm.produk.index') }}" 
+                                   class="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl text-sm font-bold hover:bg-emerald-100 transition-all hover:-translate-y-0.5"
+                                   title="Kelola Produk">
+                                    <i class="fa-solid fa-box"></i>
+                                    <span>Kelola Produk</span>
+                                </a>
+                            @endif
+                        @endauth
+                    </div>
                     
                     <div class="prose prose-slate max-w-none mb-12">
                         <div class="flex items-center gap-3 mb-4">
@@ -129,12 +142,20 @@
                 @auth
                     @if(auth()->id() == $umkm->user_id)
                         @if($umkm->status == 'approved')
-                            <button onclick="openModal()" class="group relative px-10 py-5 bg-slate-900 text-white rounded-full font-bold overflow-hidden shadow-2xl transition-all hover:scale-105 active:scale-95">
-                                <span class="relative z-10 flex items-center gap-3 tracking-widest text-xs">
-                                    <i class="fa-solid fa-plus text-emerald-400"></i> TAMBAH PRODUK BARU
-                                </span>
-                                <div class="absolute inset-0 bg-emerald-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                            </button>
+                            <div class="flex gap-3">
+                                <a href="{{ route('umkm.produk.index') }}" 
+                                   class="group relative px-6 py-5 bg-white border-2 border-emerald-500 text-emerald-600 rounded-full font-bold overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
+                                    <span class="relative z-10 flex items-center gap-2 text-xs tracking-widest uppercase">
+                                        <i class="fa-solid fa-box"></i> Kelola Produk
+                                    </span>
+                                </a>
+                                <button onclick="openModal()" class="group relative px-10 py-5 bg-slate-900 text-white rounded-full font-bold overflow-hidden shadow-2xl transition-all hover:scale-105 active:scale-95">
+                                    <span class="relative z-10 flex items-center gap-3 tracking-widest text-xs">
+                                        <i class="fa-solid fa-plus text-emerald-400"></i> TAMBAH PRODUK BARU
+                                    </span>
+                                    <div class="absolute inset-0 bg-emerald-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                                </button>
+                            </div>
                         @else
                             <div class="flex items-center gap-4 px-8 py-5 bg-amber-50 text-amber-600 rounded-[2rem] font-bold border border-amber-100/50 shadow-sm animate-pulse">
                                 <i class="fa-solid fa-hourglass-half"></i>
@@ -167,12 +188,18 @@
                             
                             @auth
                                 @if(auth()->id() == $umkm->user_id)
-                                <form action="{{ route('produk.destroy', $produk->id_produk) }}" method="POST" onsubmit="return confirm('Hapus produk ini?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="w-full py-4 border border-red-100 text-red-400 font-black rounded-2xl hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-500 text-[10px] tracking-[0.2em] uppercase">
-                                        <i class="fa-solid fa-trash-can mr-2"></i> Hapus Produk
-                                    </button>
-                                </form>
+                                    <div class="flex gap-3">
+                                        <a href="{{ route('umkm.produk.edit', $produk->id_produk) }}" 
+                                           class="flex-1 py-4 border border-amber-200 text-amber-600 font-black rounded-2xl hover:bg-amber-500 hover:text-white hover:border-amber-500 transition-all duration-500 text-[10px] tracking-[0.2em] uppercase flex items-center justify-center gap-2">
+                                            <i class="fa-solid fa-pen"></i> Edit Produk
+                                        </a>
+                                        <form action="{{ route('umkm.produk.destroy', $produk->id_produk) }}" method="POST" onsubmit="return confirm('Hapus produk ini?')" class="flex-1">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="w-full py-4 border border-red-100 text-red-400 font-black rounded-2xl hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-500 text-[10px] tracking-[0.2em] uppercase flex items-center justify-center gap-2">
+                                                <i class="fa-solid fa-trash-can"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </div>
                                 @elseif($hasPhone)
                                     <a href="https://wa.me/{{ $phoneNumber }}?text=Halo%20{{ urlencode($umkm->nama_usaha) }}%2C%20saya%20tertarik%20dengan%20produk%20{{ urlencode($produk->nama_produk) }}%20dengan%20harga%20Rp%20{{ number_format($produk->harga, 0, ',', '.') }}.%20Apakah%20masih%20tersedia%3F" 
                                        target="_blank"
@@ -195,74 +222,172 @@
                     </div>
                 @endforelse
             </div>
+
+            {{-- Tutorial Section --}}
+            <div class="tutorial-section">
+                <div class="tutorial-header">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <h3>📖 Tentang Halaman Detail UMKM</h3>
+                </div>
+                
+                <p class="tutorial-intro">
+                    Halaman <strong>Detail UMKM</strong> menyajikan informasi lengkap tentang pelaku usaha, 
+                    produk unggulan, serta cara terhubung dengan pemilik usaha.
+                </p>
+                
+                <div class="tutorial-grid">
+                    <div class="tutorial-item">
+                        <div class="tutorial-num">1</div>
+                        <div class="tutorial-text">
+                            <h4>🏷️ Informasi Usaha</h4>
+                            <p>Lihat profil lengkap UMKM termasuk nama usaha, deskripsi, kategori, dan status verifikasi.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-item">
+                        <div class="tutorial-num">2</div>
+                        <div class="tutorial-text">
+                            <h4>📍 Lokasi & Kontak</h4>
+                            <p>Temukan alamat lengkap dan nomor WhatsApp pemilik usaha untuk memudahkan komunikasi.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-item">
+                        <div class="tutorial-num">3</div>
+                        <div class="tutorial-text">
+                            <h4>📦 Katalog Produk</h4>
+                            <p>Jelajahi berbagai produk unggulan dari UMKM dengan harga dan deskripsi lengkap.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-item">
+                        <div class="tutorial-num">4</div>
+                        <div class="tutorial-text">
+                            <h4>🛒 Cara Memesan</h4>
+                            <p>Klik tombol "Pesan Sekarang" untuk terhubung langsung via WhatsApp ke pemilik usaha.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-item">
+                        <div class="tutorial-num">5</div>
+                        <div class="tutorial-text">
+                            <h4>➕ Tambah Produk (Pemilik)</h4>
+                            <p>Jika Anda pemilik UMKM, klik tombol "Tambah Produk" untuk menambahkan produk baru.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-item">
+                        <div class="tutorial-num">6</div>
+                        <div class="tutorial-text">
+                            <h4>✏️ Edit & Hapus (Pemilik)</h4>
+                            <p>Kelola produk Anda dengan mudah - edit informasi atau hapus produk yang tidak tersedia.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tutorial-footer">
+                    <i class="fa-regular fa-lightbulb"></i>
+                    <span>💡 <strong>Tips Penting:</strong> Selalu konfirmasi ketersediaan produk dan harga sebelum melakukan transaksi. Jangan ragu untuk bertanya detail produk kepada pemilik UMKM.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- MODAL TAMBAH PRODUK --}}
+<div id="modalTambahProduk" class="fixed inset-0 bg-slate-900/5 backdrop-blur-xl hidden items-center justify-center z-[9999] p-6 transition-all duration-1000" onclick="if(event.target===this) closeModal()">
+    <div class="bg-white max-w-lg w-full rounded-[3.5rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.06)] relative scale-95 opacity-0 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden" id="modalContent">
+        
+        <div class="absolute top-0 left-0 w-full h-[3px] bg-slate-50">
+            <div class="h-full bg-emerald-500/40 w-0 transition-all duration-700" id="formProgress"></div>
         </div>
 
-        {{-- ============================================== --}}
-{{-- TUTORIAL SECTION PREMIUM --}}
-{{-- ============================================== --}}
-<div class="tutorial-section">
-    <div class="tutorial-header">
-        <i class="fa-regular fa-circle-question"></i>
-        <h3>📖 Tentang Halaman Detail UMKM</h3>
-    </div>
-    
-    <p class="tutorial-intro">
-        Halaman <strong>Detail UMKM</strong> menyajikan informasi lengkap tentang pelaku usaha, 
-        produk unggulan, serta cara terhubung dengan pemilik usaha.
-    </p>
-    
-    <div class="tutorial-grid">
-        <div class="tutorial-item">
-            <div class="tutorial-num">1</div>
-            <div class="tutorial-text">
-                <h4>🏷️ Informasi Usaha</h4>
-                <p>Lihat profil lengkap UMKM termasuk nama usaha, deskripsi, kategori, dan status verifikasi.</p>
-            </div>
+        <div class="p-12 md:p-16">
+            <header class="mb-14 relative">
+                <span class="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-600/60 mb-2 block animate-fadeIn">Produk Baru</span>
+                <h3 class="text-4xl font-light text-slate-900 tracking-tighter leading-none">
+                    Lengkapi <span class="font-serif italic text-slate-400">Katalog</span>
+                </h3>
+                <button onclick="closeModal()" class="absolute -top-4 -right-4 w-10 h-10 flex items-center justify-center text-slate-300 hover:text-slate-900 transition-all duration-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </header>
+
+            <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data" class="space-y-12" id="productForm">
+                @csrf
+                <input type="hidden" name="umkm_id" value="{{ $umkm->id_umkm }}">
+
+                <div class="space-y-10">
+                    <div class="relative group">
+                        <label class="text-[14px] font-bold uppercase tracking-[0.2em] text-slate-300 group-focus-within:text-emerald-500 transition-colors duration-300">Nama Produk</label>
+                        <input type="text" name="nama_produk" required oninput="updateProgress()"
+                            class="w-full bg-transparent border-b border-slate-100 py-3 outline-none focus:border-slate-900 transition-all duration-700 font-light text-lg text-slate-800 placeholder-slate-200"
+                            placeholder="Nama produk Anda...">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-12">
+                        <div class="relative group">
+                            <label class="text-[14px] font-bold uppercase tracking-[0.2em] text-slate-300 group-focus-within:text-emerald-500 transition-colors duration-300">Harga</label>
+                            <input type="number" name="harga" required oninput="updateProgress()"
+                                class="w-full bg-transparent border-b border-slate-100 py-3 outline-none focus:border-slate-900 transition-all duration-700 font-medium text-slate-800 placeholder-slate-200"
+                                placeholder="0">
+                        </div>
+
+                        <div class="relative group border-b border-slate-100 focus-within:border-slate-900 transition-all duration-700">
+                            <label class="text-[14px] font-bold uppercase tracking-[0.2em] text-slate-300 group-focus-within:text-emerald-500 transition-colors duration-300">Gambar</label>
+                            <input type="file" name="foto" required class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="updateFileName(this); updateProgress();">
+                            <div class="flex justify-between items-center py-3">
+                                <span id="fileNameDisplay" class="text-xs font-light text-slate-300 truncate tracking-wide">Pilih File</span>
+                                <svg class="w-3 h-3 text-slate-300 group-hover:text-slate-900 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <label class="text-[14px] font-bold uppercase tracking-[0.2em] text-slate-300 group-focus-within:text-emerald-500 transition-colors duration-300">Deskripsi</label>
+                        <textarea name="deskripsi" rows="1" oninput="updateProgress()"
+                            class="w-full bg-transparent border-b border-slate-100 py-3 outline-none focus:border-slate-900 transition-all duration-700 font-light text-slate-500 placeholder-slate-200 resize-none"
+                            placeholder="Ceritakan singkat..."></textarea>
+                    </div>
+                </div>
+
+                <div class="pt-8 text-center">
+                    <button type="submit" class="group relative inline-flex items-center justify-center px-12 py-5 bg-slate-900 text-white rounded-full overflow-hidden transition-all duration-500 hover:px-16 active:scale-95">
+                        <span class="relative z-10 text-[10px] font-black uppercase tracking-[0.5em] transition-all group-hover:tracking-[0.6em]">Simpan</span>
+                        <div class="absolute inset-0 bg-emerald-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="tutorial-item">
-            <div class="tutorial-num">2</div>
-            <div class="tutorial-text">
-                <h4>📍 Lokasi & Kontak</h4>
-                <p>Temukan alamat lengkap dan nomor WhatsApp pemilik usaha untuk memudahkan komunikasi.</p>
-            </div>
-        </div>
-        <div class="tutorial-item">
-            <div class="tutorial-num">3</div>
-            <div class="tutorial-text">
-                <h4>📦 Katalog Produk</h4>
-                <p>Jelajahi berbagai produk unggulan dari UMKM dengan harga dan deskripsi lengkap.</p>
-            </div>
-        </div>
-        <div class="tutorial-item">
-            <div class="tutorial-num">4</div>
-            <div class="tutorial-text">
-                <h4>🛒 Cara Memesan</h4>
-                <p>Klik tombol "Pesan Sekarang" untuk terhubung langsung via WhatsApp ke pemilik usaha.</p>
-            </div>
-        </div>
-        <div class="tutorial-item">
-            <div class="tutorial-num">5</div>
-            <div class="tutorial-text">
-                <h4>➕ Tambah Produk (Pemilik)</h4>
-                <p>Jika Anda pemilik UMKM, klik tombol "Tambah Produk" untuk menambahkan produk baru.</p>
-            </div>
-        </div>
-        <div class="tutorial-item">
-            <div class="tutorial-num">6</div>
-            <div class="tutorial-text">
-                <h4>✏️ Edit & Hapus (Pemilik)</h4>
-                <p>Kelola produk Anda dengan mudah - edit informasi atau hapus produk yang tidak tersedia.</p>
-            </div>
-        </div>
-    </div>
-    
-    <div class="tutorial-footer">
-        <i class="fa-regular fa-lightbulb"></i>
-        <span>💡 <strong>Tips Penting:</strong> Selalu konfirmasi ketersediaan produk dan harga sebelum melakukan transaksi. Jangan ragu untuk bertanya detail produk kepada pemilik UMKM.</span>
     </div>
 </div>
 
 <style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn { animation: fadeIn 1s ease-out forwards; }
+
+    #modalTambahProduk.flex { display: flex !important; }
+    #modalContent.active { transform: scale(1); opacity: 1; }
+
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    textarea:focus { min-height: 80px; }
+    
+    .line-clamp-1 {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .break-words {
+        word-break: break-word;
+    }
+
     /* Tutorial Section Styles */
     .tutorial-section {
         margin-top: 2rem;
@@ -519,112 +644,7 @@
             observer.observe(tutorialSection);
         }
     });
-</script>
 
-    </div>
-</div>
-
-{{-- MODAL TAMBAH PRODUK --}}
-<div id="modalTambahProduk" class="fixed inset-0 bg-slate-900/5 backdrop-blur-xl hidden items-center justify-center z-[9999] p-6 transition-all duration-1000" onclick="if(event.target===this) closeModal()">
-    <div class="bg-white max-w-lg w-full rounded-[3.5rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.06)] relative scale-95 opacity-0 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden" id="modalContent">
-        
-        <div class="absolute top-0 left-0 w-full h-[3px] bg-slate-50">
-            <div class="h-full bg-emerald-500/40 w-0 transition-all duration-700" id="formProgress"></div>
-        </div>
-
-        <div class="p-12 md:p-16">
-            <header class="mb-14 relative">
-                <span class="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-600/60 mb-2 block animate-fadeIn">Produk Baru</span>
-                <h3 class="text-4xl font-light text-slate-900 tracking-tighter leading-none">
-                    Lengkapi <span class="font-serif italic text-slate-400">Katalog</span>
-                </h3>
-                <button onclick="closeModal()" class="absolute -top-4 -right-4 w-10 h-10 flex items-center justify-center text-slate-300 hover:text-slate-900 transition-all duration-500">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </header>
-
-            <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data" class="space-y-12" id="productForm">
-                @csrf
-                <input type="hidden" name="umkm_id" value="{{ $umkm->id_umkm }}">
-
-                <div class="space-y-10">
-                    <div class="relative group">
-                        <label class="text-[14px] font-bold uppercase tracking-[0.2em] text-slate-300 group-focus-within:text-emerald-500 transition-colors duration-300">Nama Produk</label>
-                        <input type="text" name="nama_produk" required oninput="updateProgress()"
-                            class="w-full bg-transparent border-b border-slate-100 py-3 outline-none focus:border-slate-900 transition-all duration-700 font-light text-lg text-slate-800 placeholder-slate-200"
-                            placeholder="Nama produk Anda...">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-12">
-                        <div class="relative group">
-                            <label class="text-[14px] font-bold uppercase tracking-[0.2em] text-slate-300 group-focus-within:text-emerald-500 transition-colors duration-300">Harga</label>
-                            <input type="number" name="harga" required oninput="updateProgress()"
-                                class="w-full bg-transparent border-b border-slate-100 py-3 outline-none focus:border-slate-900 transition-all duration-700 font-medium text-slate-800 placeholder-slate-200"
-                                placeholder="0">
-                        </div>
-
-                        <div class="relative group border-b border-slate-100 focus-within:border-slate-900 transition-all duration-700">
-                            <label class="text-[14px] font-bold uppercase tracking-[0.2em] text-slate-300 group-focus-within:text-emerald-500 transition-colors duration-300">Gambar</label>
-                            <input type="file" name="foto" required class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="updateFileName(this); updateProgress();">
-                            <div class="flex justify-between items-center py-3">
-                                <span id="fileNameDisplay" class="text-xs font-light text-slate-300 truncate tracking-wide">Pilih File</span>
-                                <svg class="w-3 h-3 text-slate-300 group-hover:text-slate-900 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="relative group">
-                        <label class="text-[14px] font-bold uppercase tracking-[0.2em] text-slate-300 group-focus-within:text-emerald-500 transition-colors duration-300">Deskripsi</label>
-                        <textarea name="deskripsi" rows="1" oninput="updateProgress()"
-                            class="w-full bg-transparent border-b border-slate-100 py-3 outline-none focus:border-slate-900 transition-all duration-700 font-light text-slate-500 placeholder-slate-200 resize-none"
-                            placeholder="Ceritakan singkat..."></textarea>
-                    </div>
-                </div>
-
-                <div class="pt-8 text-center">
-                    <button type="submit" class="group relative inline-flex items-center justify-center px-12 py-5 bg-slate-900 text-white rounded-full overflow-hidden transition-all duration-500 hover:px-16 active:scale-95">
-                        <span class="relative z-10 text-[10px] font-black uppercase tracking-[0.5em] transition-all group-hover:tracking-[0.6em]">Simpan</span>
-                        <div class="absolute inset-0 bg-emerald-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<style>
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fadeIn { animation: fadeIn 1s ease-out forwards; }
-
-    #modalTambahProduk.flex { display: flex !important; }
-    #modalContent.active { transform: scale(1); opacity: 1; }
-
-    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-    textarea:focus { min-height: 80px; }
-    
-    .line-clamp-1 {
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    
-    .break-words {
-        word-break: break-word;
-    }
-</style>
-
-<script>
     function openModal() {
         const modal = document.getElementById('modalTambahProduk');
         const content = document.getElementById('modalContent');

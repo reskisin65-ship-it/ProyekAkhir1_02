@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Umkm;
-use App\Models\Product;
+use App\Models\ProdukUmkm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +16,6 @@ class UmkmController extends Controller
      */
     public function index()
     {
-        // Tampilkan UMKM yang sudah approved untuk umum
         $umkms = Umkm::where('status', 'approved')->latest()->paginate(9);
         return view('umkm.index', compact('umkms'));
     }
@@ -57,19 +56,16 @@ class UmkmController extends Controller
         $data['user_id'] = Auth::id();
         $data['status'] = 'pending';
 
-        // Simpan logo
         if ($request->hasFile('logo')) {
             $data['logo'] = $request->file('logo')->store('umkm/logos', 'public');
         }
 
-        // Simpan bukti usaha
         if ($request->hasFile('bukti_usaha')) {
             $data['bukti_usaha'] = $request->file('bukti_usaha')->store('bukti_umkm', 'public');
         }
 
         Umkm::create($data);
 
-        // Redirect ke dashboard atau halaman status
         return redirect()->route('umkm.dashboard')->with('success', 'Pendaftaran UMKM berhasil diajukan!');
     }
 
@@ -133,7 +129,6 @@ class UmkmController extends Controller
     {
         $umkm = Umkm::findOrFail($id);
         
-        // Cek kepemilikan
         if ($umkm->user_id != Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
@@ -144,42 +139,36 @@ class UmkmController extends Controller
     /**
      * Update data UMKM
      */
-    /**
- * Update data UMKM
- */
-public function update(Request $request, $id)
-{
-    $umkm = Umkm::findOrFail($id);
-    
-    // Cek kepemilikan
-    if ($umkm->user_id != Auth::id()) {
-        abort(403, 'Unauthorized action.');
-    }
-    
-    $request->validate([
-        'nama_usaha' => 'required|string|max:255',
-        'kategori' => 'required',
-        'no_telepon' => 'required',
-        'alamat_usaha' => 'required',
-        'deskripsi' => 'required',
-        'logo' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-    ]);
-
-    $data = $request->except(['_token', '_method', 'pemilik']);
-    
-    // Update logo jika ada
-    if ($request->hasFile('logo')) {
-        if ($umkm->logo) {
-            Storage::disk('public')->delete($umkm->logo);
+    public function update(Request $request, $id)
+    {
+        $umkm = Umkm::findOrFail($id);
+        
+        if ($umkm->user_id != Auth::id()) {
+            abort(403, 'Unauthorized action.');
         }
-        $data['logo'] = $request->file('logo')->store('umkm/logos', 'public');
-    }
+        
+        $request->validate([
+            'nama_usaha' => 'required|string|max:255',
+            'kategori' => 'required',
+            'no_telepon' => 'required',
+            'alamat_usaha' => 'required',
+            'deskripsi' => 'required',
+            'logo' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+        ]);
 
-    $umkm->update($data);
-    
-    // Redirect ke halaman status masyarakat
-    return redirect()->route('masyarakat.umkm.status')->with('success', 'Data UMKM berhasil diperbarui!');
-}
+        $data = $request->except(['_token', '_method', 'pemilik']);
+        
+        if ($request->hasFile('logo')) {
+            if ($umkm->logo) {
+                Storage::disk('public')->delete($umkm->logo);
+            }
+            $data['logo'] = $request->file('logo')->store('umkm/logos', 'public');
+        }
+
+        $umkm->update($data);
+        
+        return redirect()->route('masyarakat.umkm.status')->with('success', 'Data UMKM berhasil diperbarui!');
+    }
 
     /**
      * Update profil UMKM (alternatif)
@@ -215,33 +204,29 @@ public function update(Request $request, $id)
         return redirect()->back()->with('success', 'Profil UMKM berhasil diperbarui');
     }
 
-/**
- * Hapus UMKM (Batalkan Pengajuan)
- */
-public function destroy($id)
-{
-    $umkm = Umkm::findOrFail($id);
-    
-    // Cek kepemilikan
-    if ($umkm->user_id != Auth::id() && !Auth::user()->hasRole('admin')) {
-        abort(403, 'Unauthorized action.');
+    /**
+     * Hapus UMKM (Batalkan Pengajuan)
+     */
+    public function destroy($id)
+    {
+        $umkm = Umkm::findOrFail($id);
+        
+        if ($umkm->user_id != Auth::id() && !Auth::user()->hasRole('admin')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
+        if ($umkm->logo) {
+            Storage::disk('public')->delete($umkm->logo);
+        }
+        
+        if ($umkm->bukti_usaha) {
+            Storage::disk('public')->delete($umkm->bukti_usaha);
+        }
+        
+        $umkm->delete();
+        
+        return redirect()->route('umkm.index')->with('success', 'Pengajuan UMKM berhasil dibatalkan.');
     }
-    
-    // Hapus logo
-    if ($umkm->logo) {
-        Storage::disk('public')->delete($umkm->logo);
-    }
-    
-    // Hapus bukti usaha
-    if ($umkm->bukti_usaha) {
-        Storage::disk('public')->delete($umkm->bukti_usaha);
-    }
-    
-    $umkm->delete();
-    
-    // Redirect ke halaman index UMKM dengan pesan sukses
-    return redirect()->route('umkm.index')->with('success', 'Pengajuan UMKM berhasil dibatalkan.');
-}
 
     /**
      * Menampilkan form edit profil UMKM
@@ -256,6 +241,12 @@ public function destroy($id)
         
         return view('umkm.edit', compact('umkm'));
     }
+
+    /**
+     * ==============================================
+     * MANAJEMEN PRODUK UMKM
+     * ==============================================
+     */
 
     /**
      * Menampilkan daftar produk UMKM
@@ -297,7 +288,7 @@ public function destroy($id)
     public function produkStore(Request $request)
     {
         $request->validate([
-            'nama_produk' => 'required|string|max:255',
+            'nama_produk' => 'required|string|max:100',
             'harga' => 'required|numeric|min:0',
             'deskripsi' => 'nullable|string',
             'foto_produk' => 'required|image|mimes:jpg,png,jpeg|max:2048',
@@ -309,14 +300,18 @@ public function destroy($id)
             return redirect()->back()->with('error', 'UMKM tidak ditemukan');
         }
 
-        $data = $request->all();
-        $data['umkm_id'] = $umkm->id_umkm;
+        $data = [
+            'umkm_id' => $umkm->id_umkm,
+            'nama_produk' => $request->nama_produk,
+            'harga' => $request->harga,
+            'deskripsi' => $request->input('deskripsi', ''),
+        ];
 
         if ($request->hasFile('foto_produk')) {
             $data['foto_produk'] = $request->file('foto_produk')->store('produk', 'public');
         }
 
-        Product::create($data);
+        ProdukUmkm::create($data);
 
         return redirect()->route('umkm.produk.index')->with('success', 'Produk berhasil ditambahkan');
     }
@@ -326,7 +321,7 @@ public function destroy($id)
      */
     public function produkEdit($id)
     {
-        $produk = Product::findOrFail($id);
+        $produk = ProdukUmkm::findOrFail($id);
         $umkm = Umkm::where('user_id', Auth::id())->first();
         
         if (!$umkm || $produk->umkm_id != $umkm->id_umkm) {
@@ -341,21 +336,25 @@ public function destroy($id)
      */
     public function produkUpdate(Request $request, $id)
     {
-        $produk = Product::findOrFail($id);
+        $produk = ProdukUmkm::findOrFail($id);
         $umkm = Umkm::where('user_id', Auth::id())->first();
         
         if (!$umkm || $produk->umkm_id != $umkm->id_umkm) {
             abort(403, 'Unauthorized action.');
         }
         
-        $request->validate([
-            'nama_produk' => 'required|string|max:255',
+        $validated = $request->validate([
+            'nama_produk' => 'required|string|max:100',
             'harga' => 'required|numeric|min:0',
             'deskripsi' => 'nullable|string',
             'foto_produk' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
-        $data = $request->except(['_token', '_method']);
+        $data = [
+            'nama_produk' => $validated['nama_produk'],
+            'harga' => $validated['harga'],
+            'deskripsi' => $validated['deskripsi'] ?? '',
+        ];
 
         if ($request->hasFile('foto_produk')) {
             if ($produk->foto_produk) {
@@ -374,26 +373,19 @@ public function destroy($id)
      */
     public function produkDestroy($id)
     {
-    $umkm = Umkm::findOrFail($id);
-    
-    // Cek kepemilikan
-    if ($umkm->user_id != Auth::id() && !Auth::user()->hasRole('admin')) {
-        abort(403, 'Unauthorized action.');
+        $produk = ProdukUmkm::findOrFail($id);
+        $umkm = Umkm::where('user_id', Auth::id())->first();
+        
+        if (!$umkm || $produk->umkm_id != $umkm->id_umkm) {
+            abort(403, 'Unauthorized action.');
+        }
+        
+        if ($produk->foto_produk) {
+            Storage::disk('public')->delete($produk->foto_produk);
+        }
+        
+        $produk->delete();
+        
+        return redirect()->route('umkm.produk.index')->with('success', 'Produk berhasil dihapus');
     }
-    
-    // Hapus logo
-    if ($umkm->logo) {
-        Storage::disk('public')->delete($umkm->logo);
-    }
-    
-    // Hapus bukti usaha
-    if ($umkm->bukti_usaha) {
-        Storage::disk('public')->delete($umkm->bukti_usaha);
-    }
-    
-    $umkm->delete();
-    
-    // Redirect ke halaman index dengan pesan sukses
-    return redirect()->route('umkm.index')->with('success', 'Pengajuan UMKM berhasil dibatalkan.');
-}
 }

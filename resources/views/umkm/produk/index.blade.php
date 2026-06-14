@@ -1,4 +1,3 @@
-{{-- resources/views/umkm/produk/index.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Kelola Produk - ' . ($umkm->nama_usaha ?? 'UMKM'))
@@ -60,7 +59,7 @@
         @if($produk->count() > 0)
         <div class="animate__animated animate__fadeInUp">
             {{-- Stats Cards --}}
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-all">
                     <div class="flex items-center justify-between">
                         <div>
@@ -69,17 +68,6 @@
                         </div>
                         <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
                             <i class="fa-solid fa-box text-emerald-600 text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-all">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-slate-400 text-xs uppercase tracking-wider">Total Stok</p>
-                            <p class="text-3xl font-black text-slate-800">{{ $produk->sum('stok') }}</p>
-                        </div>
-                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                            <i class="fa-solid fa-cubes text-blue-600 text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -116,7 +104,6 @@
                                 <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Foto</th>
                                 <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Nama Produk</th>
                                 <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Harga</th>
-                                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Stok</th>
                                 <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
@@ -142,15 +129,6 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="font-black text-emerald-600">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold
-                                        @if($item->stok > 10) bg-emerald-100 text-emerald-700
-                                        @elseif($item->stok > 0) bg-yellow-100 text-yellow-700
-                                        @else bg-red-100 text-red-700 @endif">
-                                        <i class="fa-solid fa-boxes text-xs"></i>
-                                        {{ $item->stok }}
-                                    </span>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-2">
