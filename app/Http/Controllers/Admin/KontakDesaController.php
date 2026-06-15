@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\KontakDesa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class KontakDesaController extends Controller
 {
@@ -33,6 +34,7 @@ class KontakDesaController extends Controller
         ]);
 
         $data = $request->all();
+        $data['user_id'] = Auth::id();
 
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('kontak-desa', 'public');

@@ -14,7 +14,7 @@ class KategoriKeuangan extends Model
     protected $primaryKey = 'id_kategori';
     
     protected $fillable = [
-        'nama_kategori', 'jenis', 'icon', 'warna', 'urutan', 'is_active'
+        'user_id', 'nama_kategori', 'jenis', 'icon', 'warna', 'urutan', 'is_active'
     ];
     
     public function transaksis()
@@ -22,9 +22,9 @@ class KategoriKeuangan extends Model
         return $this->hasMany(TransaksiKeuangan::class, 'id_kategori', 'id_kategori');
     }
     
-    public function anggarans()
+    public function user()
     {
-        return $this->hasMany(AnggaranTahunan::class, 'id_kategori', 'id_kategori');
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
     
     public function getTotalTransaksiAttribute()

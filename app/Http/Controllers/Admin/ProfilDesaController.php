@@ -8,6 +8,7 @@ use App\Models\ProfilDesa;
 use App\Models\DataPengurus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ProfilDesaController extends Controller
 {
@@ -63,6 +64,8 @@ class ProfilDesaController extends Controller
             $data['foto_kegiatan'] = $request->file('foto_kegiatan')->store('profil-desa', 'public');
         }
         
+        $data['user_id'] = Auth::id();
+
         if ($profil) {
             $profil->update($data);
         } else {

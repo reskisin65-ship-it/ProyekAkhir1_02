@@ -11,11 +11,16 @@ class ProdukUmkm extends Model
     protected $primaryKey = 'id_produk';
     
     protected $fillable = [
-        'umkm_id', 'nama_produk', 'deskripsi', 'harga', 'foto_produk', 'stok'
+        'user_id', 'umkm_id', 'nama_produk', 'deskripsi', 'harga', 'foto_produk'
     ];
     
     public function umkm()
     {
         return $this->belongsTo(Umkm::class, 'umkm_id', 'id_umkm');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

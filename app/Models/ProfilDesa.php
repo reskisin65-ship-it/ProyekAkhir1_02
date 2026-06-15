@@ -13,6 +13,7 @@ class ProfilDesa extends Model
     protected $table = 'profil_desa';
     
     protected $fillable = [
+        'user_id',
         'sejarah',
         'visi',
         'misi',
@@ -29,4 +30,9 @@ class ProfilDesa extends Model
         'telepon_desa',
         'maps_embed'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 }

@@ -459,28 +459,8 @@
             </div>
         </div>
 
-        {{-- Status Banner --}}
-        <div class="status-banner fade-up status-banner-{{ $transaksi->status }}" style="animation-delay: 0.05s">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-{{ $transaksi->status == 'pending' ? 'clock' : ($transaksi->status == 'disetujui' ? 'circle-check' : 'ban') }} fa-lg"></i>
-                <span class="font-semibold">Status Transaksi:</span>
-                <span class="status-label status-label-{{ $transaksi->status }}">
-                    @if($transaksi->status == 'pending')
-                        <i class="fa-regular fa-clock"></i> Menunggu Verifikasi
-                    @elseif($transaksi->status == 'disetujui')
-                        <i class="fa-regular fa-circle-check"></i> Telah Disetujui
-                    @else
-                        <i class="fa-solid fa-ban"></i> Ditolak
-                    @endif
-                </span>
-            </div>
-            <div class="text-xs text-muted">
-                <i class="fa-regular fa-calendar"></i> Dibuat: {{ $transaksi->created_at->translatedFormat('d M Y H:i') }}
-            </div>
-        </div>
-
         {{-- Main Grid --}}
-        <div class="detail-grid fade-up" style="animation-delay: 0.1s">
+        <div class="detail-grid fade-up" style="animation-delay: 0.05s">
             
             {{-- Informasi Transaksi --}}
             <div class="info-card">
@@ -521,11 +501,11 @@
                 </div>
             </div>
 
-            {{-- Informasi Pengguna & Verifikasi --}}
+            {{-- Informasi Pengguna --}}
             <div class="info-card">
                 <div class="card-header">
-                    <i class="fa-solid fa-users"></i>
-                    <h3>Informasi Pengguna & Verifikasi</h3>
+                    <i class="fa-solid fa-user"></i>
+                    <h3>Informasi Pengguna</h3>
                 </div>
                 <div class="card-body">
                     <div class="detail-table">
@@ -534,37 +514,20 @@
                             <div class="detail-value">{{ $transaksi->creator->name ?? '-' }}</div>
                         </div>
                         <div class="detail-row">
-                            <div class="detail-label"><i class="fa-regular fa-clock"></i> Waktu dibuat</div>
+                            <div class="detail-label"><i class="fa-regular fa-clock"></i> Tanggal dibuat</div>
                             <div class="detail-value">{{ $transaksi->created_at->translatedFormat('d F Y H:i:s') }}</div>
                         </div>
-                        @if($transaksi->status != 'pending')
                         <div class="detail-row">
-                            <div class="detail-label"><i class="fa-solid fa-check-circle"></i> Disetujui oleh</div>
-                            <div class="detail-value">{{ $transaksi->approver->name ?? '-' }}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label"><i class="fa-regular fa-calendar-check"></i> Waktu verifikasi</div>
+                            <div class="detail-label"><i class="fa-regular fa-clock"></i> Terakhir diubah</div>
                             <div class="detail-value">{{ $transaksi->updated_at->translatedFormat('d F Y H:i:s') }}</div>
                         </div>
-                        @endif
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Catatan Admin (Jika Ditolak) --}}
-        @if($transaksi->status == 'ditolak' && $transaksi->catatan_admin)
-        <div class="catatan-card fade-up" style="animation-delay: 0.15s">
-            <i class="fa-solid fa-message"></i>
-            <div>
-                <div class="font-semibold text-sm mb-1">Catatan Penolakan</div>
-                <p>{{ $transaksi->catatan_admin }}</p>
-            </div>
-        </div>
-        @endif
-
         {{-- Bukti Transaksi --}}
-        <div class="info-card fade-up" style="animation-delay: 0.2s">
+        <div class="info-card fade-up" style="animation-delay: 0.1s">
             <div class="card-header">
                 <i class="fa-solid fa-camera"></i>
                 <h3>Bukti Transaksi</h3>
@@ -586,111 +549,11 @@
                     <div class="no-image">
                         <i class="fa-regular fa-image"></i>
                         <p>Tidak ada bukti foto yang dilampirkan</p>
-                        <p class="text-xs mt-2 text-muted">* Untuk transaksi ini, tidak ada lampiran bukti foto</p>
                     </div>
                 @endif
             </div>
         </div>
-
-        {{-- Action Buttons (Hanya untuk status pending) --}}
-        @if($transaksi->status == 'pending')
-        <div class="action-buttons fade-up" style="animation-delay: 0.25s">
-            <button onclick="openApproveModal()" class="btn-action btn-approve">
-                <i class="fa-solid fa-check"></i> Setujui Transaksi
-            </button>
-            <button onclick="openRejectModal()" class="btn-action btn-reject">
-                <i class="fa-solid fa-times"></i> Tolak Transaksi
-            </button>
-        </div>
-        @endif
-    </div>
-
-    {{-- Modal Approve --}}
-    <div id="approveModal" class="modal-overlay">
-        <div class="modal-container">
-            <div class="bg-gradient-emerald px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-bold text-white"><i class="fa-solid fa-check-circle mr-2"></i> Setujui Transaksi</h3>
-                    <button onclick="closeApproveModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
-                </div>
-            </div>
-            <form id="approveForm" method="POST" class="p-6">
-                @csrf
-                <p class="text-gray-600 mb-3">Apakah Anda yakin ingin menyetujui transaksi ini?</p>
-                <div class="bg-gray-50 p-3 rounded-xl mb-4">
-                    <p class="text-sm text-gray-500">Deskripsi Transaksi:</p>
-                    <p class="font-semibold text-gray-800">{{ $transaksi->deskripsi }}</p>
-                </div>
-                <div class="flex gap-3 justify-end">
-                    <button type="button" onclick="closeApproveModal()" class="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm font-semibold hover:bg-emerald-700">Ya, Setujui</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    {{-- Modal Reject --}}
-    <div id="rejectModal" class="modal-overlay">
-        <div class="modal-container">
-            <div class="bg-gradient-red px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-bold text-white"><i class="fa-solid fa-times-circle mr-2"></i> Tolak Transaksi</h3>
-                    <button onclick="closeRejectModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
-                </div>
-            </div>
-            <form id="rejectForm" method="POST" class="p-6">
-                @csrf
-                <p class="text-gray-600 mb-3">Tolak transaksi ini?</p>
-                <div class="bg-gray-50 p-3 rounded-xl mb-4">
-                    <p class="text-sm text-gray-500">Deskripsi Transaksi:</p>
-                    <p class="font-semibold text-gray-800">{{ $transaksi->deskripsi }}</p>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan Penolakan <span class="text-red-500">*</span></label>
-                    <textarea name="catatan" rows="3" required class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:border-red-500 focus:ring-2 focus:ring-red-200 transition" placeholder="Masukkan alasan penolakan..."></textarea>
-                    <p class="text-xs text-gray-400 mt-1">Catatan ini akan terlihat oleh admin lain</p>
-                </div>
-                <div class="flex gap-3 justify-end">
-                    <button type="button" onclick="closeRejectModal()" class="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-semibold hover:bg-red-700">Ya, Tolak</button>
-                </div>
-            </form>
-        </div>
     </div>
 </div>
 
-<script>
-    function openApproveModal() { 
-        document.getElementById('approveForm').action = "{{ route('admin.keuangan.approve', $transaksi->id_transaksi) }}"; 
-        document.getElementById('approveModal').style.display = 'flex'; 
-        document.body.style.overflow = 'hidden'; 
-    }
-    function closeApproveModal() { 
-        document.getElementById('approveModal').style.display = 'none'; 
-        document.body.style.overflow = 'auto'; 
-    }
-    function openRejectModal() { 
-        document.getElementById('rejectForm').action = "{{ route('admin.keuangan.reject', $transaksi->id_transaksi) }}"; 
-        document.getElementById('rejectModal').style.display = 'flex'; 
-        document.body.style.overflow = 'hidden'; 
-    }
-    function closeRejectModal() { 
-        document.getElementById('rejectModal').style.display = 'none'; 
-        document.body.style.overflow = 'auto'; 
-    }
-    
-    document.addEventListener('keydown', function(e) { 
-        if (e.key === 'Escape') { 
-            closeApproveModal(); 
-            closeRejectModal(); 
-        } 
-    });
-    
-    window.onclick = function(event) { 
-        if (event.target.classList.contains('modal-overlay')) { 
-            closeApproveModal(); 
-            closeRejectModal(); 
-        } 
-    }
-</script>
 @endsection

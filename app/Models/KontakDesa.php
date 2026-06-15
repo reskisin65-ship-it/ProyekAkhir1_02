@@ -10,10 +10,15 @@ class KontakDesa extends Model
 {
     use HasFactory;
 
-    protected $table = 'kontak_desas';
+    protected $table = 'kontak_desa';
     
     protected $fillable = [
-        'nama', 'jabatan', 'bidang', 'no_hp', 'email', 
+        'user_id', 'nama', 'jabatan', 'bidang', 'no_hp', 'email', 
         'foto', 'urutan', 'is_active'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 }

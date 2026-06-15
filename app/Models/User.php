@@ -44,10 +44,28 @@ class User extends Authenticatable
         return $this->role && $this->role->nama_role === 'umkm';
     }
     
-    // Relasi ke About (Profil Desa)
-    public function about()
+    // Relasi ke Profil Desa
+    public function profilDesa()
     {
-        return $this->hasOne(About::class, 'user_id', 'user_id');
+        return $this->hasOne(ProfilDesa::class, 'user_id', 'user_id');
+    }
+    
+    // Relasi ke Kategori Keuangan
+    public function kategoriKeuangan()
+    {
+        return $this->hasMany(KategoriKeuangan::class, 'user_id', 'user_id');
+    }
+    
+    // Relasi ke Galeri
+    public function galeri()
+    {
+        return $this->hasMany(Galeri::class, 'user_id', 'user_id');
+    }
+    
+    // Relasi ke Kontak Desa
+    public function kontakDesa()
+    {
+        return $this->hasMany(KontakDesa::class, 'user_id', 'user_id');
     }
     
     // Relasi ke Data Pengurus
@@ -86,12 +104,12 @@ class User extends Authenticatable
         return $this->hasMany(Aspirasi::class, 'user_id', 'user_id');
     }
     
-    // Relasi ke Testimoni
-    public function testimoni()
+    // Relasi ke Produk UMKM
+    public function produkUmkm()
     {
-        return $this->hasMany(Testimoni::class, 'user_id', 'user_id');
+        return $this->hasMany(ProdukUmkm::class, 'user_id', 'user_id');
     }
-    
+
     // Relasi ke Notifikasi
     public function notifikasi()
     {

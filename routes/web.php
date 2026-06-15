@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\UmkmController;
 use App\Http\Controllers\Masyarakat\SuratController;
 use App\Http\Controllers\Masyarakat\AspirasiController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\Admin\KontakDesaController;
 use Illuminate\Support\Facades\Route;
@@ -63,7 +62,6 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::post('/testimoni', [TestimoniController::class, 'store'])->name('testimoni.store');
 
     Route::get('/umkm/daftar', [UmkmController::class, 'create'])->name('umkm.create');
     Route::post('/umkm/daftar', [UmkmController::class, 'store'])->name('umkm.store');
@@ -241,8 +239,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::delete('/kategori/{id}', [App\Http\Controllers\Admin\KeuanganController::class, 'kategoriDestroy'])->whereNumber('id')->name('kategori.destroy');
         Route::get('/laporan', [App\Http\Controllers\Admin\KeuanganController::class, 'laporan'])->name('laporan');
         Route::get('/{id}/edit', [App\Http\Controllers\Admin\KeuanganController::class, 'edit'])->whereNumber('id')->name('edit');
-        Route::post('/{id}/approve', [App\Http\Controllers\Admin\KeuanganController::class, 'approve'])->whereNumber('id')->name('approve');
-        Route::post('/{id}/reject', [App\Http\Controllers\Admin\KeuanganController::class, 'reject'])->whereNumber('id')->name('reject');
         Route::get('/{id}', [App\Http\Controllers\Admin\KeuanganController::class, 'show'])->whereNumber('id')->name('show');
         Route::put('/{id}', [App\Http\Controllers\Admin\KeuanganController::class, 'update'])->whereNumber('id')->name('update');
         Route::delete('/{id}', [App\Http\Controllers\Admin\KeuanganController::class, 'destroy'])->whereNumber('id')->name('destroy');

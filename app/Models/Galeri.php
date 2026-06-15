@@ -11,8 +11,13 @@ class Galeri extends Model
     protected $primaryKey = 'id_galeri';
     
     protected $fillable = [
-        'judul_galeri', 'gambar_galeri', 'kategori', 'deskripsi'
+        'user_id', 'judul_galeri', 'gambar_galeri', 'kategori', 'deskripsi'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
     
     // Optional: tambahkan accessor untuk mendapatkan URL foto
     public function getFotoUrlAttribute()

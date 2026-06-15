@@ -818,39 +818,10 @@
     </div>
     @endif
 
-    {{-- Pending Transactions --}}
-    @if(isset($transaksiPending) && $transaksiPending->count() > 0)
-    <div class="pending-section fade-up" style="animation-delay: 0.25s">
-        <div class="pending-header">
-            <h3><i class="fa-solid fa-clock"></i> Menunggu Persetujuan ({{ $transaksiPending->count() }})</h3>
-            <i class="fa-solid fa-hourglass-half text-amber-600"></i>
-        </div>
-        <div class="table-architecture" style="border-radius: 0 0 28px 28px;">
-            <div class="table-header">
-                <div>Tanggal</div><div>Jenis</div><div>Kategori</div><div>Deskripsi</div><div>Jumlah</div><div>Pengaju</div><div>Aksi</div>
-            </div>
-            @foreach($transaksiPending as $t)
-            <div class="transaction-row">
-                <div class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($t->tanggal)->translatedFormat('d M Y') }}</div>
-                <div><span class="jenis-pill {{ $t->jenis == 'pemasukan' ? 'jenis-pemasukan' : 'jenis-pengeluaran' }}">{{ $t->jenis == 'pemasukan' ? '💰 Pemasukan' : '💸 Pengeluaran' }}</span></div>
-                <div class="text-sm text-gray-600">{{ $t->kategori->nama_kategori ?? '-' }}</div>
-                <div class="text-sm text-gray-500">{{ Str::limit($t->deskripsi, 35) }}</div>
-                <div class="text-sm font-semibold {{ $t->jenis == 'pemasukan' ? 'text-emerald-600' : 'text-red-600' }}">Rp {{ number_format($t->jumlah, 0, ',', '.') }}</div>
-                <div class="text-sm text-gray-500">{{ $t->creator->name ?? '-' }}</div>
-                <div class="action-deck">
-                    <button onclick="openApproveModal({{ $t->id_transaksi }}, '{{ addslashes($t->deskripsi) }}')" class="deck-btn" style="background: #10b981; color: white; border-color: #10b981;" title="Setujui"><i class="fa-solid fa-check"></i></button>
-                    <button onclick="openRejectModal({{ $t->id_transaksi }}, '{{ addslashes($t->deskripsi) }}')" class="deck-btn" style="background: #ef4444; color: white; border-color: #ef4444;" title="Tolak"><i class="fa-solid fa-times"></i></button>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-    @endif
-
     {{-- Transactions Table --}}
     <div class="table-architecture fade-up" style="animation-delay: 0.3s">
         <div class="table-header">
-            <div>Tanggal</div><div>Jenis</div><div>Kategori</div><div>Deskripsi</div><div>Jumlah</div><div>Status</div><div>Aksi</div>
+            <div>Tanggal</div><div>Jenis</div><div>Kategori</div><div>Deskripsi</div><div>Jumlah</div><div>Aksi</div>
         </div>
         @forelse($transaksiTerbaru as $t)
         <div class="transaction-row">
@@ -859,7 +830,6 @@
             <div class="text-sm text-gray-600">{{ $t->kategori->nama_kategori ?? '-' }}</div>
             <div class="text-sm text-gray-500">{{ Str::limit($t->deskripsi, 40) }}</div>
             <div class="text-sm font-semibold {{ $t->jenis == 'pemasukan' ? 'text-emerald-600' : 'text-red-600' }}">Rp {{ number_format($t->jumlah, 0, ',', '.') }}</div>
-            <div><span class="status-badge status-{{ $t->status }}">@if($t->status == 'disetujui') <i class="fa-regular fa-circle-check"></i> Disetujui @elseif($t->status == 'pending') <i class="fa-regular fa-clock"></i> Pending @else <i class="fa-solid fa-ban"></i> Ditolak @endif</span></div>
             <div class="action-deck">
                 <a href="{{ route('admin.keuangan.show', $t->id_transaksi) }}" class="deck-btn" style="background: #3b82f6; color: white; border-color: #3b82f6;" title="Detail"><i class="fa-solid fa-eye"></i></a>
                 <a href="{{ route('admin.keuangan.edit', $t->id_transaksi) }}" class="deck-btn btn-edit" title="Edit"><i class="fa-solid fa-pen"></i></a>
@@ -879,51 +849,6 @@
     @if(isset($transaksiTerbaru) && method_exists($transaksiTerbaru, 'hasPages') && $transaksiTerbaru->hasPages())
     <div class="pagination-container">{{ $transaksiTerbaru->appends(request()->query())->links() }}</div>
     @endif
-</div>
-
-{{-- Modal Approve --}}
-<div id="approveModal" class="modal-overlay">
-    <div class="modal-container">
-        <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4">
-            <div class="flex items-center justify-between">
-                <h3 class="text-xl font-bold text-white"><i class="fa-solid fa-check-circle mr-2"></i> Setujui Transaksi</h3>
-                <button onclick="closeApproveModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
-            </div>
-        </div>
-        <form id="approveForm" method="POST" class="p-6">
-            @csrf
-            <p class="text-gray-600 mb-3">Apakah Anda yakin ingin menyetujui transaksi ini?</p>
-            <p class="text-sm text-gray-500 mb-5" id="approveDeskripsi"></p>
-            <div class="flex gap-3 justify-end">
-                <button type="button" onclick="closeApproveModal()" class="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm font-semibold hover:bg-emerald-700">Ya, Setujui</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-{{-- Modal Reject --}}
-<div id="rejectModal" class="modal-overlay">
-    <div class="modal-container">
-        <div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4">
-            <div class="flex items-center justify-between">
-                <h3 class="text-xl font-bold text-white"><i class="fa-solid fa-times-circle mr-2"></i> Tolak Transaksi</h3>
-                <button onclick="closeRejectModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
-            </div>
-        </div>
-        <form id="rejectForm" method="POST" class="p-6">
-            @csrf
-            <p class="text-gray-600 mb-3" id="rejectDeskripsi"></p>
-            <div class="mb-4">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan Penolakan <span class="text-red-500">*</span></label>
-                <textarea name="catatan" rows="3" required class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:border-red-500 focus:ring-2 focus:ring-red-200 transition" placeholder="Masukkan alasan penolakan..."></textarea>
-            </div>
-            <div class="flex gap-3 justify-end">
-                <button type="button" onclick="closeRejectModal()" class="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-semibold hover:bg-red-700">Ya, Tolak</button>
-            </div>
-        </form>
-    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -958,29 +883,6 @@
         window.location.href = url.toString();
     }
     
-    // Modal functions
-    function openApproveModal(id, deskripsi) { 
-        document.getElementById('approveForm').action = '/admin/keuangan/' + id + '/approve'; 
-        document.getElementById('approveDeskripsi').innerHTML = '<strong>' + deskripsi + '</strong>'; 
-        document.getElementById('approveModal').style.display = 'flex'; 
-        document.body.style.overflow = 'hidden'; 
-    }
-    function closeApproveModal() { 
-        document.getElementById('approveModal').style.display = 'none'; 
-        document.body.style.overflow = 'auto'; 
-    }
-    function openRejectModal(id, deskripsi) { 
-        document.getElementById('rejectForm').action = '/admin/keuangan/' + id + '/reject'; 
-        document.getElementById('rejectDeskripsi').innerHTML = 'Tolak transaksi: <strong>' + deskripsi + '</strong>'; 
-        document.getElementById('rejectModal').style.display = 'flex'; 
-        document.body.style.overflow = 'hidden'; 
-    }
-    function closeRejectModal() { 
-        document.getElementById('rejectModal').style.display = 'none'; 
-        document.body.style.overflow = 'auto'; 
-    }
-    
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeApproveModal(); closeRejectModal(); } });
-    window.onclick = function(event) { if (event.target.classList.contains('modal-overlay')) { closeApproveModal(); closeRejectModal(); } }
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { /* no modals */ } });
 </script>
 @endsection

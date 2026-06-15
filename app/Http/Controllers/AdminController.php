@@ -276,6 +276,7 @@ class AdminController extends Controller
         $gambarPath = $request->file('foto')->store('galeri', 'public');
 
         Galeri::create([
+            'user_id' => Auth::id(),
             'judul_galeri' => $request->judul,
             'gambar_galeri' => $gambarPath,
             'kategori' => $request->kategori,
@@ -897,9 +898,9 @@ public function umkmDestroy($id)
         ]);
 
         if ($profil) {
-            $profil->update($request->all());
+            $profil->update(array_merge($request->all(), ['user_id' => Auth::id()]));
         } else {
-            ProfilDesa::create($request->all());
+            ProfilDesa::create(array_merge($request->all(), ['user_id' => Auth::id()]));
         }
 
         return redirect()->route('admin.profil-desa')

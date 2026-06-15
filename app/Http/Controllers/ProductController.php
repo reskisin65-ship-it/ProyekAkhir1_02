@@ -6,6 +6,7 @@ use App\Models\ProdukUmkm;
 use App\Models\Umkm; // Import model Umkm
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -30,6 +31,7 @@ class ProductController extends Controller
         ]);
 
         $data = $request->all();
+        $data['user_id'] = Auth::id();
 
         // 4. Proses Upload Foto Produk
         if ($request->hasFile('foto')) {
