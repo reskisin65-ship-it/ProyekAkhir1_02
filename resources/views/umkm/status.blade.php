@@ -608,8 +608,26 @@
 </div>
 @endif
 
-    @if(isset($umkm) && $umkm)
-    <div class="main-card animate__animated animate__fadeInUp">
+    @if(isset($umkms) && $umkms->count() > 0)
+
+    {{-- Section Header --}}
+    <div class="mb-8">
+        <h1 class="text-3xl md:text-4xl font-black text-slate-900 mb-2 flex items-center gap-3">
+            <i class="fa-solid fa-store text-emerald-600"></i> Status Pengajuan UMKM ({{ $umkms->count() }})
+        </h1>
+        <p class="text-slate-400">Kelola dan pantau status semua pengajuan UMKM Anda</p>
+    </div>
+
+    {{-- Tombol Tambah UMKM Baru --}}
+    <div class="mb-6">
+        <a href="{{ route('masyarakat.umkm.create') }}" class="action-button">
+            <i class="fa-solid fa-plus-circle"></i> Daftar UMKM Tambahan
+        </a>
+    </div>
+
+    {{-- Loop Setiap UMKM --}}
+    @foreach($umkms as $umkm)
+    <div class="main-card animate__animated animate__fadeInUp mb-6">
         {{-- Card Header berdasarkan status --}}
         <div class="card-header 
             @if($umkm->status == 'pending') bg-pending
@@ -620,7 +638,7 @@
                 @elseif($umkm->status == 'approved') ✓ Pengajuan Disetujui
                 @else ✗ Pengajuan Ditolak @endif
             </h1>
-            <p>Diajukan pada: {{ $umkm->created_at->translatedFormat('d F Y, H:i') }}</p>
+            <p>{{ $umkm->nama_usaha }} • Diajukan: {{ $umkm->created_at->translatedFormat('d F Y, H:i') }}</p>
         </div>
 
         <div class="card-body">
@@ -640,9 +658,14 @@
                 </span>
                 
                 @if($umkm->status == 'approved')
-                <a href="{{ route('umkm.show', $umkm->id_umkm) }}" class="action-button">
-                    <i class="fa-solid fa-store"></i> Kelola UMKM
-                </a>
+                <div class="flex gap-2 flex-wrap">
+                    <a href="{{ route('masyarakat.umkm.create') }}" class="action-button-outline">
+                        <i class="fa-solid fa-plus-circle"></i> Tambah Usaha Lainnya
+                    </a>
+                    <a href="{{ route('umkm.show', $umkm->id_umkm) }}" class="action-button">
+                        <i class="fa-solid fa-store"></i> Kelola UMKM
+                    </a>
+                </div>
                 @endif
             </div>
 
@@ -663,7 +686,7 @@
             </div>
 
             {{-- Informasi UMKM --}}
-            <h3 class="text-sm font-black text-slate-800 mb-4 flex items-center gap-2">
+            <h3 class="text-sm font-black text-slate-800 mb-4 mt-6 flex items-center gap-2">
                 <i class="fa-solid fa-store text-emerald-500"></i> Detail Informasi Usaha
             </h3>
             
@@ -699,6 +722,53 @@
                 @if($umkm->status == 'pending') alert-pending
                 @elseif($umkm->status == 'approved') alert-approved
                 @else alert-rejected @endif">
+                <div class="alert-icon">
+                    @if($umkm->status == 'pending')
+                        <i class="fa-regular fa-clock"></i>
+                    @elseif($umkm->status == 'approved')
+                        <i class="fa-regular fa-circle-check"></i>
+                    @else
+                        <i class="fa-regular fa-circle-xmark"></i>
+                    @endif
+                </div>
+                <div class="alert-content">
+                    @if($umkm->status == 'pending')
+                        <h4>Menunggu Verifikasi Admin</h4>
+                        <p>Pengajuan UMKM {{ $umkm->nama_usaha }} sedang dalam proses verifikasi oleh admin desa. Mohon tunggu maksimal 2x24 jam.</p>
+                    @elseif($umkm->status == 'approved')
+                        <h4>Selamat! UMKM Anda Telah Aktif 🎉</h4>
+                        <p>{{ $umkm->nama_usaha }} sudah disetujui dan aktif. Sekarang Anda dapat mengelola toko dan menambahkan produk.</p>
+                    @else
+                        <h4>Pengajuan Ditolak</h4>
+                        <p>Maaf, pengajuan UMKM {{ $umkm->nama_usaha }} belum dapat disetujui. Hubungi admin desa untuk informasi lebih lanjut.</p>
+                    @endif
+                </div>
+            </div>
+
+            {{-- Tombol Edit & Batalkan (Hanya untuk status pending) --}}
+            @if($umkm->status == 'pending')
+            <div class="action-group">
+                <a href="{{ route('umkm.edit', $umkm->id_umkm) }}" class="action-button-outline">
+                    <i class="fa-solid fa-pen"></i> Edit Pengajuan
+                </a>
+                <button onclick="openCancelModal({{ $umkm->id_umkm }})" class="action-button-danger">
+                    <i class="fa-solid fa-ban"></i> Batalkan Pengajuan
+                </button>
+            </div>
+            @endif
+
+            @if($umkm->status == 'rejected')
+            <div class="action-group">
+                <a href="{{ route('masyarakat.umkm.create') }}" class="action-button">
+                    <i class="fa-solid fa-rotate-left"></i> Ajukan Ulang UMKM
+                </a>
+            </div>
+            @endif
+        </div>
+    </div>
+    @endforeach
+
+    {{-- Tutorial Section --}}
                 <div class="alert-icon">
                     @if($umkm->status == 'pending')
                         <i class="fa-regular fa-clock"></i>
@@ -851,7 +921,7 @@
             <button onclick="closeCancelModal()" class="btn-modal-cancel">
                 <i class="fa-solid fa-times"></i> Batal
             </button>
-            <form action="{{ route('umkm.destroy', $umkm->id_umkm ?? 0) }}" method="POST" style="display: inline;">
+            <form id="cancelForm" method="POST" style="display: inline;">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn-modal-confirm">
@@ -863,7 +933,12 @@
 </div>
 
 <script>
-    function openCancelModal() {
+    let currentUmkmId = null;
+
+    function openCancelModal(umkmId) {
+        currentUmkmId = umkmId;
+        const form = document.getElementById('cancelForm');
+        form.action = '/umkm/' + umkmId;
         const modal = document.getElementById('cancelModal');
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -881,23 +956,7 @@
             closeCancelModal();
         }
     });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        // Interactive tutorial items
-        const tutorialItems = document.querySelectorAll('.tutorial-item');
-        
-        tutorialItems.forEach(item => {
-            item.addEventListener('click', function() {
-                this.style.transform = 'scale(0.98)';
-                setTimeout(() => { this.style.transform = ''; }, 200);
-                const title = this.querySelector('.tutorial-text h4').innerText;
-                showToast(`💡 ${title} - Klik pada area terkait untuk informasi lebih lanjut`, 'info');
-            });
-        });
-        
-        function showToast(message, type = 'info') {
-            const existingToast = document.querySelector('.custom-toast');
-            if (existingToast) existingToast.remove();
+</script>
             
             const toast = document.createElement('div');
             toast.className = 'custom-toast';

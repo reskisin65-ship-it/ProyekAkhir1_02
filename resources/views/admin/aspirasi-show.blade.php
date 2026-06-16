@@ -365,11 +365,12 @@
                 @endif
                 
                 @if($aspirasi->status == 'baru')
-                <a href="{{ route('admin.aspirasi.status', $aspirasi->id_aspirasi) }}" 
-                   class="btn-primary" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"
-                   onclick="return confirm('Ubah status menjadi diproses?')">
-                    <i class="fa-solid fa-play"></i> Proses
-                </a>
+                <form action="{{ route('admin.aspirasi.status', $aspirasi->id_aspirasi) }}" method="POST" style="display: inline;" onsubmit="return confirm('Ubah status menjadi diproses?')">
+                    @csrf
+                    <button type="submit" class="btn-primary" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                        <i class="fa-solid fa-play"></i> Proses
+                    </button>
+                </form>
                 @endif
                 
                 <form action="{{ route('admin.aspirasi.destroy', $aspirasi->id_aspirasi) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus aspirasi ini?')">

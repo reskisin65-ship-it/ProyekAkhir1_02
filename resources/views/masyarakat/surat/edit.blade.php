@@ -41,10 +41,13 @@
     ========================================= */
     body {
         font-family: var(--font-main);
-        background-color: var(--canvas-bg);
         color: var(--accent-primary);
-        overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
+    }
+
+    .page-container {
+        background-color: var(--canvas-bg);
+        overflow-x: hidden;
     }
 
     /* Subtle Background Ornaments */
@@ -691,9 +694,9 @@
                 </div>
 
                 <div class="action-bar">
-                    <a href="{{ route('masyarakat.surat.index') }}" class="btn-lux btn-lux-secondary">
+                    <button type="button" class="btn-lux btn-lux-secondary" onclick="openCancelEditModal()">
                         <i class="fa-solid fa-times"></i> Batalkan
-                    </a>
+                    </button>
                     <button type="submit" class="btn-lux btn-lux-primary">
                         <span>Simpan Perubahan</span>
                         <i class="fa-solid fa-arrow-right"></i>
@@ -923,5 +926,57 @@
         font-size: 0.85rem;
     }
 </style>
+
+<!-- Modal Konfirmasi Batalkan Edit -->
+<div id="cancelEditModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;" onclick="if(event.target === this) closeCancelEditModal()">
+    <div style="background: white; border-radius: 32px; padding: 2.5rem; max-width: 480px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); animation: slideUpModal 0.3s ease-out;">
+        <!-- Icon Warning -->
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+            <i class="fa-solid fa-exclamation" style="font-size: 2rem; color: white;"></i>
+        </div>
+        
+        <!-- Title & Subtitle -->
+        <h2 style="font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; color: #0f172a;">Batalkan Edit?</h2>
+        <p style="text-align: center; color: #64748b; margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.6;">
+            Perubahan yang belum disimpan akan <strong>hilang</strong>. Apakah Anda ingin melanjutkan?
+        </p>
+        
+        <!-- Warning Box -->
+        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem;">
+            <p style="font-size: 0.85rem; color: #92400e; margin: 0; display: flex; align-items: flex-start; gap: 0.5rem;">
+                <i class="fa-solid fa-info-circle" style="margin-top: 2px; flex-shrink: 0;"></i>
+                <span><strong>Info:</strong> Data yang sudah tersimpan akan tetap aman di database.</span>
+            </p>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 1rem;">
+            <button type="button" onclick="closeCancelEditModal()" style="flex: 1; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8fafc; color: #0f172a; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.95rem;" onmouseover="this.style.background='#ecfdf5'; this.style.borderColor='#10b981';" onmouseout="this.style.background='#f8fafc'; this.style.borderColor='#e2e8f0';">Lanjutkan Edit</button>
+            <a href="{{ route('masyarakat.surat.index') }}" style="flex: 1; padding: 1rem; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; border-radius: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.95rem; text-decoration: none; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 25px rgba(245, 158, 11, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">Ya, Kembali ke Portal</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes slideUpModal {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    function openCancelEditModal() {
+        document.getElementById('cancelEditModal').style.display = 'flex';
+    }
+    
+    function closeCancelEditModal() {
+        document.getElementById('cancelEditModal').style.display = 'none';
+    }
+    
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeCancelEditModal();
+    });
+</script>
 
 @endsection

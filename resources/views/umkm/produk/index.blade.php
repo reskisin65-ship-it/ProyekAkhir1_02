@@ -56,6 +56,27 @@
         </div>
         @endif
 
+        {{-- UMKM Selector (jika ada multiple UMKMs) --}}
+        @if(isset($umkms) && $umkms->count() > 1)
+        <div class="mb-8 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-2xl animate__animated animate__fadeInUp">
+            <label class="block text-sm font-bold text-blue-900 mb-3">
+                <i class="fa-solid fa-store mr-2 text-blue-600"></i>Pilih UMKM untuk melihat produknya
+                <span class="text-blue-600 text-sm font-medium">({{ $umkms->count() }} UMKM)</span>
+            </label>
+            <div class="flex gap-2 flex-wrap">
+                @foreach($umkms as $u)
+                    <a href="{{ route('umkm.produk.index.umkm', $u->id_umkm) }}" 
+                       class="px-4 py-2 rounded-lg font-medium transition-all {{ $u->id_umkm == $umkm->id_umkm ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-blue-600 border border-blue-200 hover:bg-blue-100' }}">
+                        {{ $u->nama_usaha }}
+                        @if($u->status == 'approved')
+                            <span class="text-xs ml-1">✓</span>
+                        @endif
+                    </a>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         @if($produk->count() > 0)
         <div class="animate__animated animate__fadeInUp">
             {{-- Stats Cards --}}

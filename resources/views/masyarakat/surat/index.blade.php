@@ -550,13 +550,9 @@
                     <a href="{{ route('masyarakat.surat.edit', $item->id_surat) }}" class="deck-btn btn-edit" title="Edit">
                         <i class="fa-solid fa-pen"></i>
                     </a>
-                    <form action="{{ route('masyarakat.surat.destroy', $item->id_surat) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin membatalkan pengajuan ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="deck-btn btn-delete" title="Batalkan">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </form>
+                    <button type="button" class="deck-btn btn-delete" title="Batalkan" onclick="openDeleteModal({{ $item->id_surat }}, '{{ $item->jenis_surat }}')">
+                        <i class="fa-solid fa-ban"></i>
+                    </button>
                     @endif
                     @if($item->status == 'selesai' && $item->file_surat)
                     <a href="{{ route('masyarakat.surat.download', $item->id_surat) }}" class="deck-btn btn-download" title="Download">
@@ -640,11 +636,11 @@
         </div>
         <div style="display: flex; gap: 0.8rem; padding: 0.6rem; border-radius: 16px; transition: all 0.2s;">
             <div style="width: 32px; height: 32px; background: #ecfdf5; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <i class="fa-solid fa-trash" style="font-size: 0.8rem; color: var(--accent-primary);"></i>
+                <i class="fa-solid fa-ban" style="font-size: 0.8rem; color: var(--accent-primary);"></i>
             </div>
             <div>
                 <h4 style="font-weight: 700; font-size: 0.8rem; margin-bottom: 0.2rem;">Batalkan Pengajuan</h4>
-                <p style="font-size: 0.7rem; color: #64748b;">Hanya untuk status <strong>Menunggu</strong>. Klik ikon tong sampah untuk membatalkan.</p>
+                <p style="font-size: 0.7rem; color: #64748b;">Hanya untuk status <strong>Menunggu</strong>. Klik ikon ban untuk membatalkan pengajuan.</p>
             </div>
         </div>
         <div style="display: flex; gap: 0.8rem; padding: 0.6rem; border-radius: 16px; transition: all 0.2s;">
@@ -704,4 +700,85 @@
 </script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Modal Konfirmasi Batalkan Pengajuan -->
+<div id="deleteModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;" onclick="if(event.target === this) closeDeleteModal()">
+    <div style="background: white; border-radius: 32px; padding: 2.5rem; max-width: 480px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); animation: slideUp 0.3s ease-out;">
+        <!-- Icon Warning -->
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 2rem; color: white;"></i>
+        </div>
+        
+        <!-- Title & Subtitle -->
+        <h2 style="font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; color: #0f172a;">Batalkan Pengajuan?</h2>
+        <p style="text-align: center; color: #64748b; margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.6;">
+            <strong id="jenisWillDelete" style="color: #0f172a;"></strong> akan dibatalkan dan <strong>tidak dapat dipulihkan</strong>. Anda akan perlu mengajukan ulang jika ingin melanjutkan.
+        </p>
+        
+        <!-- Warning Box -->
+        <div style="background: #fef2f2; border-left: 4px solid #ef4444; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem;">
+            <p style="font-size: 0.85rem; color: #b91c1c; margin: 0; display: flex; align-items: flex-start; gap: 0.5rem;">
+                <i class="fa-solid fa-circle-exclamation" style="margin-top: 2px; flex-shrink: 0;"></i>
+                <span><strong>Perhatian:</strong> Tindakan ini bersifat permanen dan tidak dapat dibatalkan kembali.</span>
+            </p>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 1rem;">
+            <button type="button" onclick="closeDeleteModal()" style="flex: 1; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8fafc; color: #0f172a; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.95rem;" onmouseover="this.style.background='#ecfdf5'; this.style.borderColor='#10b981';" onmouseout="this.style.background='#f8fafc'; this.style.borderColor='#e2e8f0';">Jangan, Batalkan</button>
+            <button type="button" id="confirmDeleteBtn" style="flex: 1; padding: 1rem; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; border-radius: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.95rem;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 25px rgba(239, 68, 68, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">Ya, Batalkan Pengajuan</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    let selectedSuratId = null;
+    
+    function openDeleteModal(suratId, jenisSurat) {
+        selectedSuratId = suratId;
+        document.getElementById('jenisWillDelete').textContent = jenisSurat;
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+    
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+        selectedSuratId = null;
+    }
+    
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        if (selectedSuratId) {
+            // Create form and submit
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/masyarakat/surat/${selectedSuratId}`;
+            
+            const tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = '_token';
+            tokenInput.value = '{{ csrf_token() }}';
+            
+            const methodInput = document.createElement('input');
+            methodInput.type = 'hidden';
+            methodInput.name = '_method';
+            methodInput.value = 'DELETE';
+            
+            form.appendChild(tokenInput);
+            form.appendChild(methodInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+    
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeDeleteModal();
+    });
+</script>
+
 @endsection

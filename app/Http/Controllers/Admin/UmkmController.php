@@ -82,27 +82,27 @@ class UmkmController extends Controller
      */
     public function status()
     {
-        $umkm = Umkm::where('user_id', auth()->id())->first();
+        $umkms = Umkm::where('user_id', auth()->id())->latest()->get();
         
-        if (!$umkm) {
+        if ($umkms->isEmpty()) {
             return redirect()->route('umkm.index')->with('error', 'Anda belum mendaftarkan UMKM.');
         }
         
-        return view('umkm.status', compact('umkm'));
+        return view('umkm.status', compact('umkms'));
     }
 
     /**
-     * Menampilkan halaman status untuk masyarakat
+     * Menampilkan halaman status untuk masyarakat (multiple UMKM)
      */
     public function statusMasyarakat()
     {
-        $umkm = Umkm::where('user_id', auth()->id())->first();
+        $umkms = Umkm::where('user_id', auth()->id())->latest()->get();
         
-        if (!$umkm) {
+        if ($umkms->isEmpty()) {
             return redirect()->route('masyarakat.dashboard')->with('error', 'Anda belum mendaftarkan UMKM.');
         }
         
-        return view('umkm.status', compact('umkm'));
+        return view('umkm.status', compact('umkms'));
     }
 
     /**
@@ -171,14 +171,20 @@ class UmkmController extends Controller
     }
 
     /**
-     * Update profil UMKM (alternatif)
+     * Update profil UMKM (alternatif untuk multiple UMKMs)
      */
     public function updateProfil(Request $request)
     {
-        $umkm = Umkm::where('user_id', Auth::id())->first();
+        $umkmId = $request->input('umkm_id');
         
-        if (!$umkm) {
-            return redirect()->back()->with('error', 'UMKM tidak ditemukan');
+        if ($umkmId) {
+            $umkm = Umkm::findOrFail($umkmId);
+        } else {
+            $umkm = Umkm::where('user_id', Auth::id())->first();
+        }
+        
+        if (!$umkm || $umkm->user_id != Auth::id()) {
+            return redirect()->back()->with('error', 'UMKM tidak ditemukan atau tidak memiliki akses');
         }
         
         $request->validate([
@@ -190,7 +196,7 @@ class UmkmController extends Controller
             'logo' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
-        $data = $request->except(['_token', '_method']);
+        $data = $request->except(['_token', '_method', 'umkm_id']);
         
         if ($request->hasFile('logo')) {
             if ($umkm->logo) {
@@ -229,17 +235,20 @@ class UmkmController extends Controller
     }
 
     /**
-     * Menampilkan form edit profil UMKM
+     * Menampilkan form edit profil UMKM (multiple UMKMs)
      */
     public function editProfil()
     {
-        $umkm = Umkm::where('user_id', Auth::id())->first();
+        $umkms = Umkm::where('user_id', Auth::id())->latest()->get();
         
-        if (!$umkm) {
+        if ($umkms->isEmpty()) {
             return redirect()->route('umkm.create')->with('error', 'Silakan daftarkan UMKM terlebih dahulu');
         }
         
-        return view('umkm.edit', compact('umkm'));
+        // Get first UMKM as default, or user can select another
+        $umkm = $umkms->first();
+        
+        return view('umkm.edit', compact('umkm', 'umkms'));
     }
 
     /**
@@ -249,41 +258,56 @@ class UmkmController extends Controller
      */
 
     /**
-     * Menampilkan daftar produk UMKM
+     * Menampilkan daftar produk UMKM (multiple UMKMs support)
      */
-    public function produkIndex()
+    public function produkIndex($umkmId = null)
     {
-        $umkm = Umkm::where('user_id', Auth::id())->first();
-        
-        if (!$umkm) {
-            return redirect()->route('umkm.create')->with('error', 'Silakan daftarkan UMKM terlebih dahulu');
+        if ($umkmId) {
+            $umkm = Umkm::where('id_umkm', $umkmId)
+                        ->where('user_id', Auth::id())
+                        ->firstOrFail();
+        } else {
+            $umkm = Umkm::where('user_id', Auth::id())->first();
+            
+            if (!$umkm) {
+                return redirect()->route('umkm.create')->with('error', 'Silakan daftarkan UMKM terlebih dahulu');
+            }
         }
         
+        $umkms = Umkm::where('user_id', Auth::id())->latest()->get();
         $produk = $umkm->products()->latest()->get();
         
-        return view('umkm.produk.index', compact('umkm', 'produk'));
+        return view('umkm.produk.index', compact('umkm', 'umkms', 'produk'));
     }
 
     /**
-     * Menampilkan form tambah produk
+     * Menampilkan form tambah produk (multiple UMKMs support)
      */
-    public function produkCreate()
+    public function produkCreate($umkmId = null)
     {
-        $umkm = Umkm::where('user_id', Auth::id())->first();
-        
-        if (!$umkm) {
-            return redirect()->route('umkm.create')->with('error', 'Silakan daftarkan UMKM terlebih dahulu');
+        if ($umkmId) {
+            $umkm = Umkm::where('id_umkm', $umkmId)
+                        ->where('user_id', Auth::id())
+                        ->firstOrFail();
+        } else {
+            $umkm = Umkm::where('user_id', Auth::id())->first();
+            
+            if (!$umkm) {
+                return redirect()->route('umkm.create')->with('error', 'Silakan daftarkan UMKM terlebih dahulu');
+            }
         }
         
         if ($umkm->status != 'approved') {
             return redirect()->back()->with('error', 'UMKM Anda belum disetujui oleh admin');
         }
         
-        return view('umkm.produk.create', compact('umkm'));
+        $umkms = Umkm::where('user_id', Auth::id())->where('status', 'approved')->latest()->get();
+        
+        return view('umkm.produk.create', compact('umkm', 'umkms'));
     }
 
     /**
-     * Menyimpan produk baru
+     * Menyimpan produk baru (support multiple UMKMs)
      */
     public function produkStore(Request $request)
     {
@@ -292,12 +316,26 @@ class UmkmController extends Controller
             'harga' => 'required|numeric|min:0',
             'deskripsi' => 'nullable|string',
             'foto_produk' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'umkm_id' => 'nullable|numeric',
         ]);
 
-        $umkm = Umkm::where('user_id', Auth::id())->first();
+        // Get UMKM ID from form or use first UMKM
+        $umkmId = $request->input('umkm_id');
+        
+        if ($umkmId) {
+            $umkm = Umkm::where('id_umkm', $umkmId)
+                        ->where('user_id', Auth::id())
+                        ->firstOrFail();
+        } else {
+            $umkm = Umkm::where('user_id', Auth::id())->first();
+        }
         
         if (!$umkm) {
             return redirect()->back()->with('error', 'UMKM tidak ditemukan');
+        }
+
+        if ($umkm->status != 'approved') {
+            return redirect()->back()->with('error', 'UMKM Anda belum disetujui oleh admin');
         }
 
         $data = [

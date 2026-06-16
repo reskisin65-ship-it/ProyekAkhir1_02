@@ -878,10 +878,10 @@
                         @if(isset($pengumuman) && $pengumuman->count() > 0)
                             <div class="space-y-3">
                                 @foreach($pengumuman as $p)
-                                <div class="border-l-4 border-amber-400 pl-4 py-2 hover:bg-amber-50/50 rounded-r-lg transition-all duration-300 hover:translate-x-1">
-                                    <h4 class="font-bold text-slate-800 text-sm group-hover:text-amber-700 transition">{{ $p->judul }}</h4>
+                                <a href="{{ route('berita.show', $p->slug) }}" class="block border-l-4 border-amber-400 pl-4 py-2 hover:bg-amber-50/50 rounded-r-lg transition-all duration-300 hover:translate-x-1">
+                                    <h4 class="font-bold text-slate-800 text-sm group-hover:text-amber-700 transition line-clamp-2">{{ $p->judul }}</h4>
                                     <p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1"><i class="fa-regular fa-calendar"></i> {{ $p->created_at->translatedFormat('d M Y') }}</p>
-                                </div>
+                                </a>
                                 @endforeach
                             </div>
                         @else

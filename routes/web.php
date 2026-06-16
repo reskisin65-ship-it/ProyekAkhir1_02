@@ -138,7 +138,8 @@ Route::middleware(['auth', 'role:umkm'])->prefix('umkm')->name('umkm.')->group(f
     Route::get('/profil', [UmkmController::class, 'editProfil'])->name('profil.edit');
     Route::put('/profil', [UmkmController::class, 'updateProfil']);
     Route::get('/produk', [UmkmController::class, 'produkIndex'])->name('produk.index');
-    Route::get('/produk/create', [UmkmController::class, 'produkCreate'])->name('produk.create');
+    Route::get('/produk/{umkmId?}', [UmkmController::class, 'produkIndex'])->whereNumber('umkmId')->name('produk.index.umkm');
+    Route::get('/produk/create/{umkmId?}', [UmkmController::class, 'produkCreate'])->whereNumber('umkmId')->name('produk.create');
     Route::post('/produk', [UmkmController::class, 'produkStore'])->name('produk.store');
     Route::get('/produk/{id}/edit', [UmkmController::class, 'produkEdit'])->whereNumber('id')->name('produk.edit');
     Route::post('/produk/{id}', [UmkmController::class, 'produkUpdate'])->whereNumber('id')->name('produk.update');

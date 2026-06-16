@@ -461,6 +461,30 @@
         </div>
 
         <div class="card-body">
+            {{-- UMKM Selector (jika ada multiple UMKMs) --}}
+            @if(isset($umkms) && $umkms->count() > 1)
+            <div class="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+                <label class="form-label mb-2">
+                    <i class="fa-solid fa-list"></i> Pilih UMKM yang ingin diedit
+                    <span class="text-blue-600 text-sm font-medium">({{ $umkms->count() }} UMKM)</span>
+                </label>
+                <select onchange="window.location.href = this.value" class="form-select">
+                    @foreach($umkms as $u)
+                        <option value="{{ route('umkm.edit', $u->id_umkm) }}" {{ $u->id_umkm == $umkm->id_umkm ? 'selected' : '' }}>
+                            {{ $u->nama_usaha }} 
+                            @if($u->status == 'approved')
+                                <span class="text-green-600">✓ Aktif</span>
+                            @elseif($u->status == 'pending')
+                                <span class="text-amber-600">⏳ Menunggu</span>
+                            @else
+                                <span class="text-red-600">✗ Ditolak</span>
+                            @endif
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+
             <form action="{{ route('umkm.update', $umkm->id_umkm) }}" method="POST" enctype="multipart/form-data" id="editForm">
                 @csrf
                 @method('PUT')

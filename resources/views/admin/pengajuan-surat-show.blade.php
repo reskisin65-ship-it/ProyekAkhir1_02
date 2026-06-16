@@ -21,13 +21,13 @@
         --teal: #14b8a6;
     }
 
-    * {
+    .glass-container, .glass-container * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
 
-    body {
+    .glass-container {
         background: #ffffff;
         font-family: 'Plus Jakarta Sans', sans-serif;
     }

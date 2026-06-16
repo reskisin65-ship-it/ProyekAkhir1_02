@@ -560,11 +560,12 @@
             @endif
             
             @if($a->status == 'baru')
-            <a href="{{ route('admin.aspirasi.status', $a->id_aspirasi) }}" 
-            class="deck-btn" title="Proses"
-            onclick="return confirm('Ubah status menjadi diproses?')">
-                <i class="fa-solid fa-play"></i>
-            </a>
+            <form action="{{ route('admin.aspirasi.status', $a->id_aspirasi) }}" method="POST" style="display: inline;" onsubmit="return confirm('Ubah status menjadi diproses?')">
+                @csrf
+                <button type="submit" class="deck-btn" title="Proses">
+                    <i class="fa-solid fa-play"></i>
+                </button>
+            </form>
             @endif
             
             <form action="{{ route('admin.aspirasi.destroy', $a->id_aspirasi) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus aspirasi ini?')">

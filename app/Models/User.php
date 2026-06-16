@@ -86,10 +86,16 @@ class User extends Authenticatable
         return $this->hasMany(Berita::class, 'user_id', 'user_id');
     }
     
-    // Relasi ke UMKM
+    // Relasi ke UMKM (one user can have many UMKMs)
     public function umkm()
     {
         return $this->hasOne(Umkm::class, 'user_id', 'user_id');
+    }
+
+    // Relasi ke multiple UMKMs
+    public function umkms()
+    {
+        return $this->hasMany(Umkm::class, 'user_id', 'user_id');
     }
     
     // Relasi ke Pengajuan Surat
