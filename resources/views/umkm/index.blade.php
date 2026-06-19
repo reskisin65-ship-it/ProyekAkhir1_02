@@ -61,7 +61,11 @@
     @auth
         @php 
             // Cari UMKM milik user yang sedang login
-            $myUmkm = \App\Models\Umkm::where('user_id', Auth::id())->first(); 
+            $myUmkm = \App\Models\Umkm::where('user_id', Auth::id())->first();
+            // Cek jika ada UMKM lainnya dengan status pending atau rejected
+            $hasPendingOrRejected = \App\Models\Umkm::where('user_id', Auth::id())
+                                        ->whereIn('status', ['pending', 'rejected'])
+                                        ->count() > 0;
         @endphp
         
         @if(!$myUmkm)
@@ -73,10 +77,22 @@
         @elseif($myUmkm->status == 'approved')
             {{-- UMKM sudah disetujui - TAMPILKAN DUA TOMBOL --}}
             <div class="flex flex-col sm:flex-row gap-3">
-                <a href="{{ route('umkm.create') }}" class="group flex items-center gap-3 px-6 py-4 bg-emerald-600 text-white rounded-full font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all whitespace-nowrap">
-                    <span>TAMBAH USAHA BARU</span>
-                    <i class="fa-solid fa-plus group-hover:rotate-90 transition-transform"></i>
-                </a>
+                @if($hasPendingOrRejected)
+                    {{-- Jika ada UMKM lainnya yang pending/rejected, tampilkan "STATUS UMKM" --}}
+                    <a href="{{ route('masyarakat.umkm.status') }}" class="group flex items-center gap-3 px-6 py-4 bg-amber-500 text-white rounded-full font-bold shadow-lg shadow-amber-200 hover:bg-amber-600 hover:-translate-y-1 transition-all whitespace-nowrap">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-regular fa-clock"></i>
+                            STATUS UMKM
+                        </span>
+                        <i class="fa-solid fa-chart-simple group-hover:rotate-12 transition-transform"></i>
+                    </a>
+                @else
+                    {{-- Jika tidak ada UMKM pending, tampilkan "TAMBAH USAHA BARU" --}}
+                    <a href="{{ route('umkm.create') }}" class="group flex items-center gap-3 px-6 py-4 bg-emerald-600 text-white rounded-full font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all whitespace-nowrap">
+                        <span>TAMBAH USAHA BARU</span>
+                        <i class="fa-solid fa-plus group-hover:rotate-90 transition-transform"></i>
+                    </a>
+                @endif
                 <a href="{{ route('umkm.show', $myUmkm->id_umkm) }}" class="group flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-full font-bold shadow-lg hover:shadow-slate-200 hover:-translate-y-1 transition-all whitespace-nowrap">
                     <span>KELOLA USAHA</span>
                     <i class="fa-solid fa-gear group-hover:rotate-90 transition-transform"></i>
@@ -120,15 +136,6 @@
                             {{ $item->kategori }}
                         </span>
                     </div>
-                    
-                    {{-- Status Badge untuk UMKM milik sendiri yang pending --}}
-                    @if(Auth::check() && Auth::id() == $item->user_id && $item->status == 'pending')
-                    <div class="absolute top-5 right-5">
-                        <span class="px-3 py-1 bg-amber-500 text-white text-[8px] font-black uppercase tracking-wider rounded-full shadow-sm">
-                            <i class="fa-regular fa-clock"></i> Menunggu
-                        </span>
-                    </div>
-                    @endif
                 </div>
 
                 {{-- Content --}}

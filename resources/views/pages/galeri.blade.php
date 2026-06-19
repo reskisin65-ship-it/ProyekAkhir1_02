@@ -666,7 +666,7 @@
     <div class="galeri-grid" id="galeri-grid">
         @forelse($galeris as $index => $galeri)
         <div class="galeri-item" data-kategori="{{ $galeri->kategori }}" data-id="{{ $galeri->id_galeri }}" 
-             onclick="openLightbox(this, '{{ asset('storage/' . $galeri->gambar_galeri) }}', '{{ addslashes($galeri->judul_galeri) }}')">
+             onclick="window.location.href='{{ route('galeri.show', $galeri->id_galeri) }}'">
             <div class="galeri-image">
                 <img src="{{ asset('storage/' . $galeri->gambar_galeri) }}" alt="{{ $galeri->judul_galeri }}">
             </div>

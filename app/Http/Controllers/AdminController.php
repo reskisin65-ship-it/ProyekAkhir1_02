@@ -414,10 +414,17 @@ class AdminController extends Controller
             ->with('success', 'UMKM berhasil disetujui!');
     }
 
-    public function umkmReject($id)
+    public function umkmReject(Request $request, $id)
     {
+        $request->validate([
+            'alasan_penolakan' => 'required|string|min:10|max:500'
+        ]);
+
         $umkm = Umkm::findOrFail($id);
-        $umkm->update(['status' => 'rejected']);
+        $umkm->update([
+            'status' => 'rejected',
+            'alasan_penolakan' => $request->alasan_penolakan
+        ]);
         
         // KIRIM NOTIFIKASI KE PEMILIK UMKM
         if ($umkm->user_id) {
@@ -425,8 +432,8 @@ class AdminController extends Controller
                 'user_id' => $umkm->user_id,
                 'jenis' => 'umkm',
                 'judul' => '❌ UMKM Ditolak',
-                'pesan' => 'Pendaftaran UMKM ' . $umkm->nama_usaha . ' Anda ditolak. Silakan hubungi admin.',
-                'link' => route('umkm.show', $umkm->id_umkm),
+                'pesan' => 'Pendaftaran UMKM ' . $umkm->nama_usaha . ' Anda ditolak. Silakan lihat alasan penolakan di halaman status.',
+                'link' => route('masyarakat.umkm.status'),
                 'ref_id' => $umkm->id_umkm,
                 'dibaca' => false
             ]);
@@ -450,7 +457,7 @@ class AdminController extends Controller
         }
         
         return redirect()->route('admin.umkm.index')
-            ->with('success', 'UMKM ditolak!');
+            ->with('success', 'UMKM ditolak dengan alasan diberikan!');
     }
 
     /**

@@ -99,8 +99,8 @@
                                 <label class="block text-sm font-bold text-gray-700 mb-2 group-focus-within/input:text-indigo-600">
                                     Tanggal Publikasi
                                 </label>
-                                <input type="date" name="tanggal_publikasi" value="{{ old('tanggal_publikasi', $berita->tanggal_publikasi) }}" 
-                                       class="block w-full px-5 py-4 bg-gray-50/50 border-0 ring-1 ring-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-300 font-medium text-gray-700" required>
+                                <input type="date" name="tanggal_publikasi" value="{{ date('Y-m-d') }}" readonly
+                                       class="block w-full px-5 py-4 bg-gray-100 border-0 ring-1 ring-gray-200 rounded-xl font-medium text-gray-500 cursor-not-allowed">
                             </div>
                         </div>
 

@@ -722,7 +722,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const form = document.getElementById(`reject-form-${id}`);
                 const inputAlasan = document.createElement('input');
                 inputAlasan.type = 'hidden';
-                inputAlasan.name = 'alasan';
+                inputAlasan.name = 'alasan_penolakan';
                 inputAlasan.value = alasan;
                 form.appendChild(inputAlasan);
                 form.submit();

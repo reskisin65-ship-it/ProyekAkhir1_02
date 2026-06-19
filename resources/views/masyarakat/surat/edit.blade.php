@@ -928,7 +928,7 @@
 </style>
 
 <!-- Modal Konfirmasi Batalkan Edit -->
-<div id="cancelEditModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;" onclick="if(event.target === this) closeCancelEditModal()">
+<div id="cancelEditModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; align-items: center; justify-content: center;" onclick="if(event.target === this) closeCancelEditModal()">
     <div style="background: white; border-radius: 32px; padding: 2.5rem; max-width: 480px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); animation: slideUpModal 0.3s ease-out;">
         <!-- Icon Warning -->
         <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">

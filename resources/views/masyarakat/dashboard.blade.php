@@ -414,17 +414,17 @@
                 <div class="slider-wrapper" :style="'transform: translateX(-' + (slide * 100) + '%)'">
                     @php
                         $hero = [
-                            ['t' => 'Peradaban Digital Lumban Silintong', 'd' => 'Menyatukan teknologi dengan kearifan lokal Toba.', 'img' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb', 'badge' => '✨ Smart Village'],
-                            ['t' => 'UMKM Naik Kelas Menuju Global', 'd' => 'Mendorong ekonomi kreatif warga semakin kompetitif.', 'img' => 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b', 'badge' => '🚀 Ekonomi Kreatif'],
-                            ['t' => 'Harmonisasi Alam Danau Toba', 'd' => 'Menjaga kelestarian pesisir untuk generasi masa depan.', 'img' => 'https://images.unsplash.com/photo-1533105079780-92b9be482077', 'badge' => '🌿 Ekowisata'],
-                            ['t' => 'Pelayanan Publik Satu Genggaman', 'd' => 'Akses administrasi kini lebih cepat dan transparan.', 'img' => 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e', 'badge' => '📱 E-Government'],
-                            ['t' => 'Budaya Batak Yang Mendunia', 'd' => 'Melestarikan adat istiadat di tengah modernisasi.', 'img' => 'https://images.unsplash.com/photo-1501785888041-af3ef285b470', 'badge' => '🎭 Kearifan Lokal'],
-                            ['t' => 'Lumban Silintong Excellence', 'd' => 'Bersama membangun desa cerdas (Smart Village).', 'img' => 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e', 'badge' => '🏆 Smart Village'],
+                            ['t' => 'Peradaban Digital Lumban Silintong', 'd' => 'Menyatukan teknologi dengan kearifan lokal Toba.', 'img' => asset('images/login dan register/1.jpeg'), 'badge' => '✨ Smart Village'],
+                            ['t' => 'UMKM Naik Kelas Menuju Global', 'd' => 'Mendorong ekonomi kreatif warga semakin kompetitif.', 'img' => asset('images/login dan register/2.jpeg'), 'badge' => '🚀 Ekonomi Kreatif'],
+                            ['t' => 'Harmonisasi Alam Danau Toba', 'd' => 'Menjaga kelestarian pesisir untuk generasi masa depan.', 'img' => asset('images/login dan register/3.jpeg'), 'badge' => '🌿 Ekowisata'],
+                            ['t' => 'Pelayanan Publik Satu Genggaman', 'd' => 'Akses administrasi kini lebih cepat dan transparan.', 'img' => asset('images/login dan register/4.jpeg'), 'badge' => '📱 E-Government'],
+                            ['t' => 'Budaya Batak Yang Mendunia', 'd' => 'Melestarikan adat istiadat di tengah modernisasi.', 'img' => asset('images/login dan register/5.jpeg'), 'badge' => '🎭 Kearifan Lokal'],
+                            ['t' => 'Lumban Silintong Excellence', 'd' => 'Bersama membangun desa cerdas (Smart Village).', 'img' => asset('images/login dan register/1.jpeg'), 'badge' => '🏆 Smart Village'],
                         ];
                     @endphp
                     @foreach($hero as $h)
                     <div class="slide">
-                        <img src="{{ $h['img'] }}?auto=format&fit=crop&q=80&w=2070" class="absolute inset-0 w-full h-full object-cover brightness-[0.6]">
+                        <img src="{{ $h['img'] }}" class="absolute inset-0 w-full h-full object-cover brightness-[0.6]">
                         <div class="slide-content">
                             <span class="inline-block px-5 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white text-xs font-bold rounded-full mb-5 tracking-wide shadow-lg animate-pulse">{{ $h['badge'] }}</span>
                             <h2 class="text-5xl md:text-7xl font-serif italic mb-5 leading-tight">{{ $h['t'] }}</h2>
@@ -1051,7 +1051,7 @@
                     @if(isset($galeris) && $galeris->count() > 0)
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             @foreach($galeris as $g)
-                            <div class="group relative rounded-2xl overflow-hidden shadow-md cursor-pointer">
+                            <div class="group relative rounded-2xl overflow-hidden shadow-md cursor-pointer" onclick="window.location.href='{{ route('galeri.show', $g->id_galeri) }}'">
                                 <div class="h-44 overflow-hidden">
                                     <img src="{{ $g->gambar_galeri ? asset('storage/' . $g->gambar_galeri) : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300' }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                                 </div>

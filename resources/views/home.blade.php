@@ -1546,17 +1546,17 @@
             <div class="hero-slider-wrapper" :style="'transform: translateX(-' + (slide * 100) + '%)'">
                 @php
                     $hero = [
-                        ['t' => 'Peradaban Digital', 'd' => 'Menyatukan teknologi dengan kearifan lokal Batak Toba.', 'img' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb', 'badge' => 'Smart Village'],
-                        ['t' => 'UMKM Go Digital', 'd' => 'Mendorong ekonomi kreatif warga menuju pasar global.', 'img' => 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b', 'badge' => 'Ekonomi Kreatif'],
-                        ['t' => 'Danau Toba Lestari', 'd' => 'Menjaga keindahan alam untuk generasi mendatang.', 'img' => 'https://images.unsplash.com/photo-1533105079780-92b9be482077', 'badge' => 'Ekowisata'],
-                        ['t' => 'Layanan Digital', 'd' => 'Akses administrasi desa kini lebih cepat dan transparan.', 'img' => 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e', 'badge' => 'E-Government'],
-                        ['t' => 'Budaya Batak', 'd' => 'Melestarikan adat istiadat di tengah modernisasi.', 'img' => 'https://images.unsplash.com/photo-1501785888041-af3ef285b470', 'badge' => 'Kearifan Lokal'],
-                        ['t' => 'Desa Cerdas', 'd' => 'Bersama membangun desa digital yang berkelanjutan.', 'img' => 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e', 'badge' => 'Smart Village'],
+                        ['t' => 'Peradaban Digital', 'd' => 'Menyatukan teknologi dengan kearifan lokal Batak Toba.', 'img' => asset('images/login dan register/1.jpeg'), 'badge' => 'Smart Village'],
+                        ['t' => 'UMKM Go Digital', 'd' => 'Mendorong ekonomi kreatif warga menuju pasar global.', 'img' => asset('images/login dan register/2.jpeg'), 'badge' => 'Ekonomi Kreatif'],
+                        ['t' => 'Danau Toba Lestari', 'd' => 'Menjaga keindahan alam untuk generasi mendatang.', 'img' => asset('images/login dan register/3.jpeg'), 'badge' => 'Ekowisata'],
+                        ['t' => 'Layanan Digital', 'd' => 'Akses administrasi desa kini lebih cepat dan transparan.', 'img' => asset('images/login dan register/4.jpeg'), 'badge' => 'E-Government'],
+                        ['t' => 'Budaya Batak', 'd' => 'Melestarikan adat istiadat di tengah modernisasi.', 'img' => asset('images/login dan register/5.jpeg'), 'badge' => 'Kearifan Lokal'],
+                        ['t' => 'Desa Cerdas', 'd' => 'Bersama membangun desa digital yang berkelanjutan.', 'img' => asset('images/login dan register/1.jpeg'), 'badge' => 'Smart Village'],
                     ];
                 @endphp
                 @foreach($hero as $h)
                 <div class="hero-slide">
-                    <img src="{{ $h['img'] }}?auto=format&fit=crop&q=80&w=2070" alt="{{ $h['t'] }}" loading="lazy">
+                    <img src="{{ $h['img'] }}" alt="{{ $h['t'] }}" loading="lazy">
                     <div class="hero-content">
                         <span class="hero-badge">{{ $h['badge'] }}</span>
                         <h1 class="hero-title">{{ $h['t'] }}</h1>
@@ -1800,7 +1800,7 @@
         @if(isset($galeris) && count($galeris) > 0)
         <div class="gallery-grid">
             @foreach($galeris->take(8) as $g)
-            <div class="gallery-item" onclick="window.location='{{ route('galeri') }}'">
+            <div class="gallery-item" onclick="window.location='{{ route('galeri.show', $g->id_galeri) }}'">
                 <img src="{{ $g->gambar_galeri ? asset('storage/' . $g->gambar_galeri) : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300' }}" loading="lazy">
                 <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
             </div>

@@ -25,7 +25,8 @@ class Umkm extends Model
         'deskripsi', 
         'logo', 
         'bukti_usaha', 
-        'status'
+        'status',
+        'alasan_penolakan'
     ];
     
     /**

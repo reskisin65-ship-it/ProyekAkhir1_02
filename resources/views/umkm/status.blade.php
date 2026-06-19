@@ -619,11 +619,18 @@
     </div>
 
     {{-- Tombol Tambah UMKM Baru --}}
+    @php
+        // Cek jika ada UMKM dengan status pending atau rejected
+        $hasPendingOrRejected = $umkms->whereIn('status', ['pending', 'rejected'])->count() > 0;
+    @endphp
+    
+    @if(!$hasPendingOrRejected)
     <div class="mb-6">
         <a href="{{ route('masyarakat.umkm.create') }}" class="action-button">
             <i class="fa-solid fa-plus-circle"></i> Daftar UMKM Tambahan
         </a>
     </div>
+    @endif
 
     {{-- Loop Setiap UMKM --}}
     @foreach($umkms as $umkm)
@@ -659,9 +666,25 @@
                 
                 @if($umkm->status == 'approved')
                 <div class="flex gap-2 flex-wrap">
-                    <a href="{{ route('masyarakat.umkm.create') }}" class="action-button-outline">
-                        <i class="fa-solid fa-plus-circle"></i> Tambah Usaha Lainnya
-                    </a>
+                    @php
+                        // Cek jika ada UMKM lainnya dengan status pending atau rejected
+                        $hasOtherPendingOrRejected = collect($umkms)
+                            ->where('id_umkm', '!=', $umkm->id_umkm)
+                            ->whereIn('status', ['pending', 'rejected'])
+                            ->count() > 0;
+                    @endphp
+                    
+                    @if($hasOtherPendingOrRejected)
+                        {{-- Jika ada UMKM lainnya yang pending/rejected, tampilkan "Status UMKM" --}}
+                        <a href="{{ route('masyarakat.umkm.status') }}" class="action-button-outline" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; border-color: #f59e0b;">
+                            <i class="fa-solid fa-spinner"></i> Status UMKM
+                        </a>
+                    @else
+                        {{-- Jika tidak ada UMKM pending/rejected lainnya, tampilkan "Tambah Usaha Lainnya" --}}
+                        <a href="{{ route('masyarakat.umkm.create') }}" class="action-button-outline">
+                            <i class="fa-solid fa-plus-circle"></i> Tambah Usaha Lainnya
+                        </a>
+                    @endif
                     <a href="{{ route('umkm.show', $umkm->id_umkm) }}" class="action-button">
                         <i class="fa-solid fa-store"></i> Kelola UMKM
                     </a>
@@ -740,7 +763,14 @@
                         <p>{{ $umkm->nama_usaha }} sudah disetujui dan aktif. Sekarang Anda dapat mengelola toko dan menambahkan produk.</p>
                     @else
                         <h4>Pengajuan Ditolak</h4>
-                        <p>Maaf, pengajuan UMKM {{ $umkm->nama_usaha }} belum dapat disetujui. Hubungi admin desa untuk informasi lebih lanjut.</p>
+                        <p>Maaf, pengajuan UMKM {{ $umkm->nama_usaha }} belum dapat disetujui.</p>
+                        @if($umkm->alasan_penolakan)
+                            <div class="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <p class="text-sm font-semibold text-red-700 mb-1">Alasan Penolakan:</p>
+                                <p class="text-sm text-red-600">{{ $umkm->alasan_penolakan }}</p>
+                            </div>
+                        @endif
+                        <p class="mt-3">Hubungi admin desa untuk informasi lebih lanjut atau perbaiki data yang diperlukan.</p>
                     @endif
                 </div>
             </div>
@@ -767,64 +797,6 @@
         </div>
     </div>
     @endforeach
-
-    {{-- Tutorial Section --}}
-                <div class="alert-icon">
-                    @if($umkm->status == 'pending')
-                        <i class="fa-regular fa-clock"></i>
-                    @elseif($umkm->status == 'approved')
-                        <i class="fa-regular fa-circle-check"></i>
-                    @else
-                        <i class="fa-regular fa-circle-xmark"></i>
-                    @endif
-                </div>
-                <div class="alert-content">
-                    @if($umkm->status == 'pending')
-                        <h4>Menunggu Verifikasi Admin</h4>
-                        <p>Pengajuan UMKM Anda sedang dalam proses verifikasi oleh admin desa. Mohon tunggu maksimal 2x24 jam. Anda akan menerima notifikasi setelah status berubah.</p>
-                    @elseif($umkm->status == 'approved')
-                        <h4>Selamat! UMKM Anda Telah Aktif 🎉</h4>
-                        <p>Akun UMKM Anda sudah disetujui dan aktif. Sekarang Anda dapat mengelola toko, menambahkan produk, dan mulai berjualan di portal desa.</p>
-                    @else
-                        <h4>Pengajuan Ditolak</h4>
-                        <p>Maaf, pengajuan UMKM Anda belum dapat disetujui. Silakan hubungi admin desa untuk informasi lebih lanjut atau perbaiki data yang diperlukan.</p>
-                    @endif
-                </div>
-            </div>
-
-            {{-- Tombol Edit & Batalkan (Hanya untuk status pending) --}}
-            @if($umkm->status == 'pending')
-            <div class="action-group">
-                <a href="{{ route('umkm.edit', $umkm->id_umkm) }}" class="action-button-outline">
-                    <i class="fa-solid fa-pen"></i> Edit Pengajuan
-                </a>
-                <button onclick="openCancelModal()" class="action-button-danger">
-                    <i class="fa-solid fa-ban"></i> Batalkan Pengajuan
-                </button>
-            </div>
-            @endif
-
-            @if($umkm->status == 'rejected')
-            <div class="action-group">
-                <a href="{{ route('masyarakat.umkm.create') }}" class="action-button">
-                    <i class="fa-solid fa-rotate-left"></i> Ajukan Ulang UMKM
-                </a>
-            </div>
-            @endif
-
-            {{-- Tombol Tambahan untuk Pending --}}
-            @if($umkm->status == 'pending')
-            <div class="mt-4 text-center">
-                <p class="text-xs text-gray-400 mb-3">Butuh bantuan? Hubungi admin desa</p>
-                <a href="https://wa.me/6281234567890?text=Halo%20Admin%2C%20saya%20ingin%20menanyakan%20status%20pengajuan%20UMKM%20{{ urlencode($umkm->nama_usaha) }}" 
-                   target="_blank"
-                   class="inline-flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700 transition">
-                    <i class="fa-brands fa-whatsapp"></i> Hubungi Admin via WhatsApp
-                </a>
-            </div>
-            @endif
-        </div>
-    </div>
 
     {{-- Tutorial Section --}}
     <div class="tutorial-section animate__animated animate__fadeInUp">
@@ -954,55 +926,6 @@
     document.getElementById('cancelModal').addEventListener('click', function(e) {
         if (e.target === this) {
             closeCancelModal();
-        }
-    });
-</script>
-            
-            const toast = document.createElement('div');
-            toast.className = 'custom-toast';
-            const bgColor = type === 'error' ? '#ef4444' : '#10b981';
-            toast.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background: ${bgColor};
-                color: white;
-                padding: 10px 16px;
-                border-radius: 40px;
-                font-size: 0.75rem;
-                font-weight: 500;
-                z-index: 10000;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                animation: slideInRight 0.3s ease;
-                font-family: 'Plus Jakarta Sans', sans-serif;
-                max-width: 320px;
-            `;
-            toast.innerHTML = `<i class="fa-regular fa-lightbulb"></i> ${message}`;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-        
-        const tutorialSection = document.querySelector('.tutorial-section');
-        if (tutorialSection) {
-            tutorialSection.style.opacity = '0';
-            tutorialSection.style.transform = 'translateY(20px)';
-            tutorialSection.style.transition = 'all 0.6s ease';
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
-            observer.observe(tutorialSection);
         }
     });
 </script>

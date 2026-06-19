@@ -199,8 +199,8 @@
                         {{-- Date --}}
                         <div class="space-y-2">
                             <span class="block text-[10px] font-black text-emerald-400 uppercase tracking-[0.3em]">Publish Date</span>
-                            <input type="date" name="tanggal_publikasi" value="{{ date('Y-m-d') }}" 
-                                class="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 text-sm focus:ring-2 focus:ring-emerald-500 transition-all">
+                            <input type="date" name="tanggal_publikasi" value="{{ date('Y-m-d') }}" readonly
+                                class="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 text-sm opacity-70 cursor-not-allowed">
                         </div>
 
                         {{-- Status Switch --}}
@@ -209,11 +209,11 @@
                             <div class="flex gap-3">
                                 <label class="flex-1 cursor-pointer">
                                     <input type="radio" name="status" value="publish" checked class="peer hidden">
-                                    <div class="py-3 text-center rounded-xl border border-white/10 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 transition-all text-[10px] font-black uppercase tracking-widest opacity-60 peer-checked:opacity-100">Publish</div>
+                                    <div class="py-3 text-center rounded-xl border border-white/10 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 transition-all text-[10px] font-black uppercase tracking-widest opacity-60 peer-checked:opacity-100">Set Publish</div>
                                 </label>
                                 <label class="flex-1 cursor-pointer">
                                     <input type="radio" name="status" value="draft" class="peer hidden">
-                                    <div class="py-3 text-center rounded-xl border border-white/10 peer-checked:bg-white peer-checked:text-slate-900 transition-all text-[10px] font-black uppercase tracking-widest opacity-60 peer-checked:opacity-100">Draft</div>
+                                    <div class="py-3 text-center rounded-xl border border-white/10 peer-checked:bg-white peer-checked:text-slate-900 transition-all text-[10px] font-black uppercase tracking-widest opacity-60 peer-checked:opacity-100">Set Draft</div>
                                 </label>
                             </div>
                         </div>
@@ -226,10 +226,10 @@
                 <div class="glass-card p-3 sm:p-4 rounded-2xl flex items-center justify-between shadow-2xl gap-3">
                     <div class="hidden sm:flex items-center ml-2 space-x-3">
                         <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0"></div>
-                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest whitespace-nowrap">publish artikel</span>
+                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest whitespace-nowrap">simpan artikel ke sistem</span>
                     </div>
                     <button type="submit" class="btn-gradient px-8 py-3.5 rounded-xl text-white font-extrabold text-sm uppercase tracking-widest transition-all w-full sm:w-auto">
-                        Publish
+                        Simpan Berita
                     </button>
                 </div>
             </div>
