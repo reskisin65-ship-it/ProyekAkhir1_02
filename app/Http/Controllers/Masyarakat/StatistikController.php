@@ -14,6 +14,14 @@ use Illuminate\Http\Request;
 class StatistikController extends Controller
 {
     /**
+     * Statistik personal masyarakat (surat & aspirasi milik user sendiri)
+     */
+    public function masyarakat()
+    {
+        return view('masyarakat.statistik');
+    }
+
+    /**
      * Menampilkan halaman statistik untuk masyarakat dan guest
      */
     public function index()

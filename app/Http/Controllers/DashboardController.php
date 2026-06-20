@@ -42,7 +42,7 @@ class DashboardController extends Controller
             return redirect('/login');
         }
         
-        $userId = Auth::id();
+        $userId = Auth::user()->user_id;
         
         // ==============================================
         // STATISTIK PENGGUNA
@@ -77,28 +77,68 @@ class DashboardController extends Controller
         $galeris = Galeri::orderBy('created_at', 'desc')->limit(4)->get();
         
         // ==============================================
-        // DATA STATISTIK UNTUK DIAGRAM
+        // DATA STATISTIK UNTUK DASHBOARD
         // ==============================================
-        $totalPenduduk = DataPenduduk::count();
-        $pendudukPria = DataPenduduk::where('jenis_kelamin', 'L')->count();
-        $pendudukWanita = DataPenduduk::where('jenis_kelamin', 'P')->count();
-        $totalKK = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
-        
+        $totalPenduduk   = DataPenduduk::count();
+        $pendudukPria    = DataPenduduk::where('jenis_kelamin', 'L')->count();
+        $pendudukWanita  = DataPenduduk::where('jenis_kelamin', 'P')->count();
+        $totalKK         = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
+
         // Kelompok Umur
-        $kelompokUmur014 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count();
+        $kelompokUmur014  = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count();
         $kelompokUmur1529 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count();
         $kelompokUmur3059 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count();
-        $kelompokUmur60 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count();
-        
+        $kelompokUmur60   = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count();
+
+        // Agama
+        $distribusiAgama = DataPenduduk::whereNotNull('agama')
+            ->where('agama', '!=', '')
+            ->selectRaw('agama, COUNT(*) as total')
+            ->groupBy('agama')->orderByDesc('total')->get();
+
+        // Pendidikan
+        $distribusiPendidikan = DataPenduduk::whereNotNull('pendidikan')
+            ->where('pendidikan', '!=', '')
+            ->selectRaw('pendidikan, COUNT(*) as total')
+            ->groupBy('pendidikan')->orderByDesc('total')->get();
+
+        // Pekerjaan (top 6)
+        $distribusiPekerjaan = DataPenduduk::whereNotNull('pekerjaan')
+            ->where('pekerjaan', '!=', '')
+            ->selectRaw('pekerjaan, COUNT(*) as total')
+            ->groupBy('pekerjaan')->orderByDesc('total')->limit(6)->get();
+
+        // Status Perkawinan
+        $distribusiPerkawinan = DataPenduduk::whereNotNull('status_perkawinan')
+            ->where('status_perkawinan', '!=', '')
+            ->selectRaw('status_perkawinan, COUNT(*) as total')
+            ->groupBy('status_perkawinan')->orderByDesc('total')->get();
+
+        // UMKM & layanan desa (untuk konteks publik)
+        $totalUmkm     = \App\Models\Umkm::count();
+        $umkmAktif     = \App\Models\Umkm::where('status', 'approved')->count();
+        $totalBerita   = Berita::where('status', 'publish')->count();
+        $totalAspirasiDesa = Aspirasi::count();
+        $totalSuratDesa    = PengajuanSurat::count();
+
         $statistik = [
-            'total_penduduk' => $totalPenduduk,
-            'penduduk_pria' => $pendudukPria,
-            'penduduk_wanita' => $pendudukWanita,
-            'total_kk' => $totalKK,
-            'kelompok_umur_0_14' => $kelompokUmur014,
-            'kelompok_umur_15_29' => $kelompokUmur1529,
-            'kelompok_umur_30_59' => $kelompokUmur3059,
-            'kelompok_umur_60' => $kelompokUmur60,
+            'total_penduduk'       => $totalPenduduk,
+            'penduduk_pria'        => $pendudukPria,
+            'penduduk_wanita'      => $pendudukWanita,
+            'total_kk'             => $totalKK,
+            'kelompok_umur_0_14'   => $kelompokUmur014,
+            'kelompok_umur_15_29'  => $kelompokUmur1529,
+            'kelompok_umur_30_59'  => $kelompokUmur3059,
+            'kelompok_umur_60'     => $kelompokUmur60,
+            'distribusi_agama'     => $distribusiAgama,
+            'distribusi_pendidikan'=> $distribusiPendidikan,
+            'distribusi_pekerjaan' => $distribusiPekerjaan,
+            'distribusi_perkawinan'=> $distribusiPerkawinan,
+            'total_umkm'           => $totalUmkm,
+            'umkm_aktif'           => $umkmAktif,
+            'total_berita'         => $totalBerita,
+            'total_aspirasi_desa'  => $totalAspirasiDesa,
+            'total_surat_desa'     => $totalSuratDesa,
         ];
         
         // ==============================================

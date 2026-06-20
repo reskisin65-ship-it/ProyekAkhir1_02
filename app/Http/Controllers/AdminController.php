@@ -794,21 +794,38 @@ public function umkmDestroy($id)
     public function statistik()
     {
         $statistik = [
-            'total_penduduk' => DataPenduduk::count(),
-            'penduduk_pria' => DataPenduduk::where('jenis_kelamin', 'L')->count(),
-            'penduduk_wanita' => DataPenduduk::where('jenis_kelamin', 'P')->count(),
-            'total_kk' => DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count(),
-            'kelompok_umur_0_14' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count(),
-            'kelompok_umur_15_29' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count(),
-            'kelompok_umur_30_59' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count(),
-            'kelompok_umur_60' => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count(),
-            'total_umkm' => Umkm::count(),
-            'umkm_approved' => Umkm::where('status', 'approved')->count(),
-            'total_berita' => Berita::count(),
-            'total_aspirasi' => Aspirasi::count(),
-            'total_surat' => PengajuanSurat::count(),
+            // Kependudukan
+            'total_penduduk'       => DataPenduduk::count(),
+            'penduduk_pria'        => DataPenduduk::where('jenis_kelamin', 'L')->count(),
+            'penduduk_wanita'      => DataPenduduk::where('jenis_kelamin', 'P')->count(),
+            'total_kk'             => DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count(),
+            // Kelompok Umur
+            'kelompok_umur_0_14'   => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count(),
+            'kelompok_umur_15_29'  => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count(),
+            'kelompok_umur_30_59'  => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count(),
+            'kelompok_umur_60'     => DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count(),
+            // UMKM
+            'total_umkm'           => Umkm::count(),
+            'umkm_approved'        => Umkm::where('status', 'approved')->count(),
+            'umkm_pending'         => Umkm::where('status', 'pending')->count(),
+            'umkm_rejected'        => Umkm::where('status', 'rejected')->count(),
+            // Pengajuan Surat
+            'total_surat'          => PengajuanSurat::count(),
+            'surat_menunggu'       => PengajuanSurat::where('status', 'menunggu')->count(),
+            'surat_diproses'       => PengajuanSurat::where('status', 'diproses')->count(),
+            'surat_selesai'        => PengajuanSurat::where('status', 'selesai')->count(),
+            'surat_ditolak'        => PengajuanSurat::where('status', 'ditolak')->count(),
+            // Aspirasi
+            'total_aspirasi'       => Aspirasi::count(),
+            'aspirasi_baru'        => Aspirasi::where('status', 'baru')->count(),
+            'aspirasi_diproses'    => Aspirasi::where('status', 'diproses')->count(),
+            'aspirasi_selesai'     => Aspirasi::where('status', 'selesai')->count(),
+            // Konten & Perangkat
+            'total_berita'         => Berita::count(),
+            'total_pengurus'       => DataPengurus::count(),
+            'total_galeri'         => Galeri::count(),
         ];
-        
+
         return view('admin.statistik', compact('statistik'));
     }
 

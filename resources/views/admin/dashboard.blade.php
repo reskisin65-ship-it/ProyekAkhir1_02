@@ -653,6 +653,192 @@
             </div>
         </div>
 
+        <!-- Statistik Detail Section -->
+        <div class="reveal-up" style="animation-delay: 0.08s; margin-bottom: 3rem;">
+            @php
+                use App\Models\DataPenduduk;
+                use App\Models\DataPengurus;
+
+                $dp          = DataPenduduk::count();
+                $dp_pria     = DataPenduduk::where('jenis_kelamin','L')->count();
+                $dp_wanita   = DataPenduduk::where('jenis_kelamin','P')->count();
+                $dp_kk       = DataPenduduk::where('status_keluarga','Kepala Keluarga')->count();
+                $u014        = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR,tanggal_lahir,CURDATE()) BETWEEN 0 AND 14')->count();
+                $u1529       = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR,tanggal_lahir,CURDATE()) BETWEEN 15 AND 29')->count();
+                $u3059       = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR,tanggal_lahir,CURDATE()) BETWEEN 30 AND 59')->count();
+                $u60         = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR,tanggal_lahir,CURDATE()) >= 60')->count();
+                $maxU        = max($u014,$u1529,$u3059,$u60,1);
+
+                $umkmTotal   = \App\Models\Umkm::count();
+                $umkmAktif   = \App\Models\Umkm::where('status','approved')->count();
+                $umkmPend    = \App\Models\Umkm::where('status','pending')->count();
+
+                $suratTotal  = \App\Models\PengajuanSurat::count();
+                $suratMen    = \App\Models\PengajuanSurat::where('status','menunggu')->count();
+                $suratSel    = \App\Models\PengajuanSurat::where('status','selesai')->count();
+                $suratTolak  = \App\Models\PengajuanSurat::where('status','ditolak')->count();
+
+                $aspTotal    = \App\Models\Aspirasi::count();
+                $aspBaru     = \App\Models\Aspirasi::where('status','baru')->count();
+
+                $pengurus    = DataPengurus::count();
+                $beritaTotal = \App\Models\Berita::count();
+                $galeriTotal = \App\Models\Galeri::count();
+            @endphp
+
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
+
+                {{-- Kependudukan --}}
+                <div class="content-card" style="grid-column:span 1;">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-users" style="color:var(--green);"></i> Kependudukan</h3>
+                        <a href="{{ route('admin.penduduk.index') }}">Detail →</a>
+                    </div>
+                    <div class="card-body" style="padding:0.5rem 1rem;">
+                        @foreach([
+                            ['label'=>'Total Penduduk','val'=>$dp,'color'=>'var(--green)','pct'=>100],
+                            ['label'=>'Laki-laki','val'=>$dp_pria,'color'=>'var(--blue)','pct'=>$dp>0?round($dp_pria/$dp*100):0],
+                            ['label'=>'Perempuan','val'=>$dp_wanita,'color'=>'#ec4899','pct'=>$dp>0?round($dp_wanita/$dp*100):0],
+                            ['label'=>'Kepala Keluarga','val'=>$dp_kk,'color'=>'var(--orange)','pct'=>$dp>0?round($dp_kk/$dp*100):0],
+                        ] as $row)
+                        <div style="padding:0.6rem 0;border-bottom:1px solid var(--line-color);">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.25rem;">
+                                <span style="font-size:0.72rem;color:var(--text-secondary);">{{ $row['label'] }}</span>
+                                <span style="font-size:0.8rem;font-weight:700;">{{ number_format($row['val']) }}</span>
+                            </div>
+                            <div style="height:3px;background:#f1f5f9;border-radius:4px;">
+                                <div style="width:{{ $row['pct'] }}%;height:100%;background:{{ $row['color'] }};border-radius:4px;"></div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Kelompok Umur --}}
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-chart-bar" style="color:var(--purple);"></i> Kelompok Umur</h3>
+                    </div>
+                    <div class="card-body" style="padding:0.5rem 1rem;">
+                        @foreach([
+                            ['label'=>'0–14 tahun','val'=>$u014,'color'=>'var(--green)','pct'=>round($u014/$maxU*100)],
+                            ['label'=>'15–29 tahun','val'=>$u1529,'color'=>'var(--blue)','pct'=>round($u1529/$maxU*100)],
+                            ['label'=>'30–59 tahun','val'=>$u3059,'color'=>'var(--orange)','pct'=>round($u3059/$maxU*100)],
+                            ['label'=>'60+ tahun','val'=>$u60,'color'=>'var(--purple)','pct'=>round($u60/$maxU*100)],
+                        ] as $row)
+                        <div style="padding:0.6rem 0;border-bottom:1px solid var(--line-color);">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.25rem;">
+                                <span style="font-size:0.72rem;color:var(--text-secondary);">{{ $row['label'] }}</span>
+                                <span style="font-size:0.8rem;font-weight:700;">{{ number_format($row['val']) }}</span>
+                            </div>
+                            <div style="height:3px;background:#f1f5f9;border-radius:4px;">
+                                <div style="width:{{ $row['pct'] }}%;height:100%;background:{{ $row['color'] }};border-radius:4px;"></div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- UMKM --}}
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-store" style="color:var(--orange);"></i> UMKM</h3>
+                        <a href="{{ route('admin.umkm.index') }}">Detail →</a>
+                    </div>
+                    <div class="card-body" style="padding:0.5rem 1rem;">
+                        @foreach([
+                            ['label'=>'Total UMKM','val'=>$umkmTotal,'color'=>'var(--orange)','pct'=>100],
+                            ['label'=>'Aktif/Approved','val'=>$umkmAktif,'color'=>'var(--green)','pct'=>$umkmTotal>0?round($umkmAktif/$umkmTotal*100):0],
+                            ['label'=>'Menunggu Verifikasi','val'=>$umkmPend,'color'=>'#eab308','pct'=>$umkmTotal>0?round($umkmPend/$umkmTotal*100):0],
+                        ] as $row)
+                        <div style="padding:0.6rem 0;border-bottom:1px solid var(--line-color);">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.25rem;">
+                                <span style="font-size:0.72rem;color:var(--text-secondary);">{{ $row['label'] }}</span>
+                                <span style="font-size:0.8rem;font-weight:700;">{{ number_format($row['val']) }}</span>
+                            </div>
+                            <div style="height:3px;background:#f1f5f9;border-radius:4px;">
+                                <div style="width:{{ $row['pct'] }}%;height:100%;background:{{ $row['color'] }};border-radius:4px;"></div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Pengajuan Surat --}}
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3><i class="fa-regular fa-file-lines" style="color:var(--green);"></i> Pengajuan Surat</h3>
+                        <a href="{{ route('admin.pengajuan-surat.index') }}">Detail →</a>
+                    </div>
+                    <div class="card-body" style="padding:0.5rem 1rem;">
+                        @foreach([
+                            ['label'=>'Total Pengajuan','val'=>$suratTotal,'color'=>'var(--green)','pct'=>100],
+                            ['label'=>'Menunggu','val'=>$suratMen,'color'=>'var(--orange)','pct'=>$suratTotal>0?round($suratMen/$suratTotal*100):0],
+                            ['label'=>'Selesai','val'=>$suratSel,'color'=>'var(--teal)','pct'=>$suratTotal>0?round($suratSel/$suratTotal*100):0],
+                            ['label'=>'Ditolak','val'=>$suratTolak,'color'=>'#ef4444','pct'=>$suratTotal>0?round($suratTolak/$suratTotal*100):0],
+                        ] as $row)
+                        <div style="padding:0.6rem 0;border-bottom:1px solid var(--line-color);">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.25rem;">
+                                <span style="font-size:0.72rem;color:var(--text-secondary);">{{ $row['label'] }}</span>
+                                <span style="font-size:0.8rem;font-weight:700;">{{ number_format($row['val']) }}</span>
+                            </div>
+                            <div style="height:3px;background:#f1f5f9;border-radius:4px;">
+                                <div style="width:{{ $row['pct'] }}%;height:100%;background:{{ $row['color'] }};border-radius:4px;"></div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Aspirasi --}}
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-comment-dots" style="color:var(--purple);"></i> Aspirasi</h3>
+                        <a href="{{ route('admin.aspirasi.index') }}">Detail →</a>
+                    </div>
+                    <div class="card-body" style="padding:0.5rem 1rem;">
+                        @foreach([
+                            ['label'=>'Total Aspirasi','val'=>$aspTotal,'color'=>'var(--purple)','pct'=>100],
+                            ['label'=>'Baru/Belum Diproses','val'=>$aspBaru,'color'=>'#ec4899','pct'=>$aspTotal>0?round($aspBaru/$aspTotal*100):0],
+                        ] as $row)
+                        <div style="padding:0.6rem 0;border-bottom:1px solid var(--line-color);">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.25rem;">
+                                <span style="font-size:0.72rem;color:var(--text-secondary);">{{ $row['label'] }}</span>
+                                <span style="font-size:0.8rem;font-weight:700;">{{ number_format($row['val']) }}</span>
+                            </div>
+                            <div style="height:3px;background:#f1f5f9;border-radius:4px;">
+                                <div style="width:{{ $row['pct'] }}%;height:100%;background:{{ $row['color'] }};border-radius:4px;"></div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Konten & Perangkat --}}
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-layer-group" style="color:var(--cyan);"></i> Konten & Perangkat</h3>
+                    </div>
+                    <div class="card-body" style="padding:0.5rem 1rem;">
+                        @foreach([
+                            ['label'=>'Pengurus Desa','val'=>$pengurus,'color'=>'var(--teal)','icon'=>'fa-user-tie'],
+                            ['label'=>'Total Berita','val'=>$beritaTotal,'color'=>'var(--blue)','icon'=>'fa-newspaper'],
+                            ['label'=>'Total Galeri','val'=>$galeriTotal,'color'=>'var(--pink)','icon'=>'fa-image'],
+                        ] as $row)
+                        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.65rem 0;border-bottom:1px solid var(--line-color);">
+                            <div style="width:32px;height:32px;border-radius:10px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;">
+                                <i class="fa-solid {{ $row['icon'] }}" style="font-size:0.8rem;color:{{ $row['color'] }};"></i>
+                            </div>
+                            <span style="font-size:0.78rem;color:var(--text-secondary);flex:1;">{{ $row['label'] }}</span>
+                            <span style="font-size:0.95rem;font-weight:800;color:var(--text-primary);">{{ number_format($row['val']) }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <!-- Main Content Grid -->
         <div class="two-columns">
             

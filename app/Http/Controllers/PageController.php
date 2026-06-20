@@ -317,90 +317,75 @@ public function umkmShow($id)
      */
     public function statistik()
     {
-        // ==============================================
-        // DATA PENDUDUK
-        // ==============================================
-        $totalPenduduk = DataPenduduk::count();
-        $pendudukPria = DataPenduduk::where('jenis_kelamin', 'L')->count();
+        // Kependudukan
+        $totalPenduduk  = DataPenduduk::count();
+        $pendudukPria   = DataPenduduk::where('jenis_kelamin', 'L')->count();
         $pendudukWanita = DataPenduduk::where('jenis_kelamin', 'P')->count();
-        $totalKK = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
+        $totalKK        = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
 
-        // ==============================================
-        // KELOMPOK UMUR
-        // ==============================================
-        $kelompokUmur014 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count();
+        // Kelompok Umur
+        $kelompokUmur014  = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 0 AND 14')->count();
         $kelompokUmur1529 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count();
         $kelompokUmur3059 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count();
-        $kelompokUmur60 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count();
+        $kelompokUmur60   = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count();
 
-        // ==============================================
-        // DATA UMKM
-        // ==============================================
-        $totalUmkm = Umkm::count();
+        // Agama
+        $distribusiAgama = DataPenduduk::whereNotNull('agama')->where('agama','!=','')
+            ->selectRaw('agama, COUNT(*) as total')->groupBy('agama')->orderByDesc('total')->get();
+
+        // Pendidikan
+        $distribusiPendidikan = DataPenduduk::whereNotNull('pendidikan')->where('pendidikan','!=','')
+            ->selectRaw('pendidikan, COUNT(*) as total')->groupBy('pendidikan')->orderByDesc('total')->get();
+
+        // Pekerjaan (top 8)
+        $distribusiPekerjaan = DataPenduduk::whereNotNull('pekerjaan')->where('pekerjaan','!=','')
+            ->selectRaw('pekerjaan, COUNT(*) as total')->groupBy('pekerjaan')->orderByDesc('total')->limit(8)->get();
+
+        // Status Perkawinan
+        $distribusiPerkawinan = DataPenduduk::whereNotNull('status_perkawinan')->where('status_perkawinan','!=','')
+            ->selectRaw('status_perkawinan, COUNT(*) as total')->groupBy('status_perkawinan')->orderByDesc('total')->get();
+
+        // UMKM
+        $totalUmkm    = Umkm::count();
         $umkmApproved = Umkm::where('status', 'approved')->count();
-        $umkmPending = Umkm::where('status', 'pending')->count();
+        $umkmPending  = Umkm::where('status', 'pending')->count();
         $umkmRejected = Umkm::where('status', 'rejected')->count();
 
-        // ==============================================
-        // DATA LAYANAN
-        // ==============================================
-        $totalBerita = Berita::count();
+        // Layanan
+        $totalBerita   = Berita::where('status', 'publish')->count();
         $totalAspirasi = Aspirasi::count();
-        $totalSurat = PengajuanSurat::count();
+        $totalSurat    = PengajuanSurat::count();
+        $suratSelesai  = PengajuanSurat::where('status', 'selesai')->count();
+        $suratMenunggu = PengajuanSurat::where('status', 'menunggu')->count();
+        $suratDitolak  = PengajuanSurat::where('status', 'ditolak')->count();
+        $aspirasiSelesai = Aspirasi::where('status', 'selesai')->count();
 
-        // Statistik tambahan untuk surat berdasarkan status
-        $suratPending = PengajuanSurat::where('status', 'pending')->count();
-        $suratApproved = PengajuanSurat::where('status', 'disetujui')->count();
-        $suratCompleted = PengajuanSurat::where('status', 'selesai')->count();
-        $suratRejected = PengajuanSurat::where('status', 'ditolak')->count();
-
-        // ==============================================
-        // PERSIAPAN DATA UNTUK CHART
-        // ==============================================
-        $chartData = [
-            'penduduk' => [
-                'labels' => ['Laki-laki', 'Perempuan', 'Kepala Keluarga'],
-                'values' => [$pendudukPria, $pendudukWanita, $totalKK],
-                'colors' => ['#3b82f6', '#ec489a', '#f59e0b'],
-                'title' => 'Statistik Penduduk'
-            ],
-            'umur' => [
-                'labels' => ['0-14 tahun', '15-29 tahun', '30-59 tahun', '60+ tahun'],
-                'values' => [$kelompokUmur014, $kelompokUmur1529, $kelompokUmur3059, $kelompokUmur60],
-                'colors' => ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'],
-                'title' => 'Kelompok Umur Penduduk'
-            ],
-            'umkm' => [
-                'labels' => ['Aktif (Approved)', 'Menunggu Verifikasi', 'Ditolak'],
-                'values' => [$umkmApproved, $umkmPending, $umkmRejected],
-                'colors' => ['#22c55e', '#eab308', '#ef4444'],
-                'title' => 'Statistik UMKM'
-            ],
-            'layanan' => [
-                'labels' => ['Pengajuan Surat', 'Aspirasi', 'Berita'],
-                'values' => [$totalSurat, $totalAspirasi, $totalBerita],
-                'colors' => ['#06b6d4', '#a855f7', '#ec489a'],
-                'title' => 'Statistik Layanan'
-            ]
-        ];
-
-        // Data untuk statistik cards
         $statistics = [
-            'total_penduduk' => $totalPenduduk,
-            'total_umkm' => $totalUmkm,
-            'total_surat' => $totalSurat,
-            'total_aspirasi' => $totalAspirasi,
-            'penduduk_pria' => $pendudukPria,
-            'penduduk_wanita' => $pendudukWanita,
-            'total_kk' => $totalKK,
-            'umkm_approved' => $umkmApproved,
-            'umkm_pending' => $umkmPending,
-            'kelompok_umur_0_14' => $kelompokUmur014,
-            'kelompok_umur_15_29' => $kelompokUmur1529,
-            'kelompok_umur_30_59' => $kelompokUmur3059,
-            'kelompok_umur_60' => $kelompokUmur60,
+            'total_penduduk'        => $totalPenduduk,
+            'penduduk_pria'         => $pendudukPria,
+            'penduduk_wanita'       => $pendudukWanita,
+            'total_kk'              => $totalKK,
+            'kelompok_umur_0_14'    => $kelompokUmur014,
+            'kelompok_umur_15_29'   => $kelompokUmur1529,
+            'kelompok_umur_30_59'   => $kelompokUmur3059,
+            'kelompok_umur_60'      => $kelompokUmur60,
+            'distribusi_agama'      => $distribusiAgama,
+            'distribusi_pendidikan' => $distribusiPendidikan,
+            'distribusi_pekerjaan'  => $distribusiPekerjaan,
+            'distribusi_perkawinan' => $distribusiPerkawinan,
+            'total_umkm'            => $totalUmkm,
+            'umkm_approved'         => $umkmApproved,
+            'umkm_pending'          => $umkmPending,
+            'umkm_rejected'         => $umkmRejected,
+            'total_berita'          => $totalBerita,
+            'total_aspirasi'        => $totalAspirasi,
+            'aspirasi_selesai'      => $aspirasiSelesai,
+            'total_surat'           => $totalSurat,
+            'surat_selesai'         => $suratSelesai,
+            'surat_menunggu'        => $suratMenunggu,
+            'surat_ditolak'         => $suratDitolak,
         ];
 
-        return view('pages.statistik', compact('chartData', 'statistics'));
+        return view('pages.statistik', compact('statistics'));
     }
 }

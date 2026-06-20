@@ -413,8 +413,8 @@
                 <span class="side-label">Produk</span>
                 <div class="info-box">
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu UMKM</span>
-                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Kelola Produk</h5>
-                    <p class="text-xs text-gray-400">Kelola produk usaha Anda</p>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Kelola USAHA</h5>
+                    <p class="text-xs text-gray-400">Kelola usaha Anda</p>
                 </div>
             </a>
             <a href="{{ route('statistik.publik') }}" class="side-item group">

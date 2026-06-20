@@ -13,6 +13,15 @@ class User extends Authenticatable
 
     protected $primaryKey = 'user_id';
     protected $table = 'users';
+
+    /**
+     * Override getAuthIdentifier agar Auth::id() mengembalikan user_id
+     * (bukan field 'id' yang tidak ada di tabel ini)
+     */
+    public function getAuthIdentifier()
+    {
+        return $this->user_id;
+    }
     
     protected $fillable = [
         'id_role', 'name', 'email', 'password', 'nomor_telepon', 'alamat', 'foto_profil'

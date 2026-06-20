@@ -359,7 +359,7 @@
     {{-- Statistik UMKM --}}
     <div class="stat-card-premium animate-up delay-2 mt-6">
         <div class="p-6">
-            <div class="flex items-center gap-3 mb-6">
+            <div class="flex items-center gap-3 mb-5">
                 <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-md">
                     <i class="fa-solid fa-store text-white text-lg"></i>
                 </div>
@@ -368,89 +368,128 @@
                     <p class="text-[11px] text-gray-400">Usaha Mikro Kecil dan Menengah</p>
                 </div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div class="card-gradient bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl p-5 text-white">
-                    <div class="flex items-center justify-between mb-3">
-                        <i class="fa-solid fa-shop text-2xl text-white/80"></i>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="card-gradient bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-shop text-xl text-white/80 mb-2 block"></i>
                     <p class="text-amber-100 text-xs">Total UMKM</p>
                     <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['total_umkm'] ?? 0) }}</p>
-                    <div class="mt-2 flex items-center gap-1 text-[9px] text-amber-100">
-                        <i class="fa-solid fa-building"></i> Usaha terdaftar
-                    </div>
                 </div>
-                
-                <div class="card-gradient bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-5 text-white">
-                    <div class="flex items-center justify-between mb-3">
-                        <i class="fa-solid fa-circle-check text-2xl text-white/80"></i>
-                    </div>
-                    <p class="text-green-100 text-xs">UMKM Aktif</p>
+                <div class="card-gradient bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-circle-check text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-green-100 text-xs">Aktif / Approved</p>
                     <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['umkm_approved'] ?? 0) }}</p>
-                    <div class="mt-2 progress-container">
-                        <div class="progress-bar bg-white/50" style="width: {{ ($statistik['umkm_approved'] / max($statistik['total_umkm'], 1)) * 100 }}%"></div>
-                    </div>
+                    <p class="text-[10px] text-green-100 mt-1">{{ $statistik['total_umkm'] > 0 ? round($statistik['umkm_approved']/$statistik['total_umkm']*100,1) : 0 }}% dari total</p>
                 </div>
-                
-                <div class="card-gradient bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl p-5 text-white">
-                    <div class="flex items-center justify-between mb-3">
-                        <i class="fa-solid fa-clock text-2xl text-white/80"></i>
-                    </div>
+                <div class="card-gradient bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-clock text-xl text-white/80 mb-2 block"></i>
                     <p class="text-yellow-100 text-xs">Menunggu Verifikasi</p>
-                    <p class="text-2xl font-bold mt-1 counter">{{ number_format(($statistik['total_umkm'] ?? 0) - ($statistik['umkm_approved'] ?? 0)) }}</p>
-                    <div class="mt-2 progress-container">
-                        <div class="progress-bar bg-white/50" style="width: {{ ((($statistik['total_umkm'] ?? 0) - ($statistik['umkm_approved'] ?? 0)) / max($statistik['total_umkm'], 1)) * 100 }}%"></div>
-                    </div>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['umkm_pending'] ?? 0) }}</p>
+                </div>
+                <div class="card-gradient bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-circle-xmark text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-red-100 text-xs">Ditolak</p>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['umkm_rejected'] ?? 0) }}</p>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Statistik Layanan --}}
+    {{-- Statistik Pengajuan Surat --}}
     <div class="stat-card-premium animate-up delay-3 mt-6">
         <div class="p-6">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
-                    <i class="fa-solid fa-envelope-open-text text-white text-lg"></i>
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-md">
+                    <i class="fa-solid fa-file-signature text-white text-lg"></i>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-slate-800">Statistik Layanan</h2>
-                    <p class="text-[11px] text-gray-400">Aktivitas pelayanan publik</p>
+                    <h2 class="text-lg font-bold text-slate-800">Statistik Pengajuan Surat</h2>
+                    <p class="text-[11px] text-gray-400">Status pengajuan administrasi warga</p>
                 </div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div class="card-gradient bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-5 text-white">
-                    <div class="flex items-center justify-between mb-3">
-                        <i class="fa-solid fa-newspaper text-2xl text-white/80"></i>
-                    </div>
-                    <p class="text-blue-100 text-xs">Total Berita</p>
-                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['total_berita'] ?? 0) }}</p>
-                    <div class="mt-2 flex items-center gap-1 text-[9px] text-blue-100">
-                        <i class="fa-regular fa-newspaper"></i> Informasi publik
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="card-gradient bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-file-lines text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-emerald-100 text-xs">Total Pengajuan</p>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['total_surat'] ?? 0) }}</p>
                 </div>
-                
-                <div class="card-gradient bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-5 text-white">
-                    <div class="flex items-center justify-between mb-3">
-                        <i class="fa-solid fa-comment-dots text-2xl text-white/80"></i>
-                    </div>
+                <div class="card-gradient bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-hourglass-half text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-orange-100 text-xs">Menunggu</p>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['surat_menunggu'] ?? 0) }}</p>
+                </div>
+                <div class="card-gradient bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-spinner text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-blue-100 text-xs">Diproses</p>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['surat_diproses'] ?? 0) }}</p>
+                </div>
+                <div class="card-gradient bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-circle-check text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-teal-100 text-xs">Selesai</p>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['surat_selesai'] ?? 0) }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Statistik Aspirasi --}}
+    <div class="stat-card-premium animate-up delay-3 mt-6">
+        <div class="p-6">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-md">
+                    <i class="fa-solid fa-comment-dots text-white text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800">Statistik Aspirasi Warga</h2>
+                    <p class="text-[11px] text-gray-400">Aspirasi dan keluhan warga desa</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="card-gradient bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-comments text-xl text-white/80 mb-2 block"></i>
                     <p class="text-purple-100 text-xs">Total Aspirasi</p>
                     <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['total_aspirasi'] ?? 0) }}</p>
-                    <div class="mt-2 flex items-center gap-1 text-[9px] text-purple-100">
-                        <i class="fa-regular fa-comment-dots"></i> Suara warga
-                    </div>
                 </div>
-                
-                <div class="card-gradient bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-5 text-white">
-                    <div class="flex items-center justify-between mb-3">
-                        <i class="fa-solid fa-file-signature text-2xl text-white/80"></i>
-                    </div>
-                    <p class="text-emerald-100 text-xs">Pengajuan Surat</p>
-                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['total_surat'] ?? 0) }}</p>
-                    <div class="mt-2 flex items-center gap-1 text-[9px] text-emerald-100">
-                        <i class="fa-regular fa-file"></i> Administrasi
-                    </div>
+                <div class="card-gradient bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-bell text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-pink-100 text-xs">Baru / Belum Diproses</p>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['aspirasi_baru'] ?? 0) }}</p>
+                </div>
+                <div class="card-gradient bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-circle-check text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-teal-100 text-xs">Selesai Ditanggapi</p>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['aspirasi_selesai'] ?? 0) }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Konten & Perangkat Desa --}}
+    <div class="stat-card-premium animate-up delay-4 mt-6">
+        <div class="p-6">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-md">
+                    <i class="fa-solid fa-layer-group text-white text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800">Konten & Perangkat Desa</h2>
+                    <p class="text-[11px] text-gray-400">Data pengelolaan konten dan struktur perangkat</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="card-gradient bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-newspaper text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-blue-100 text-xs">Total Berita</p>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['total_berita'] ?? 0) }}</p>
+                </div>
+                <div class="card-gradient bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-images text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-pink-100 text-xs">Total Galeri</p>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['total_galeri'] ?? 0) }}</p>
+                </div>
+                <div class="card-gradient bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl p-4 text-white">
+                    <i class="fa-solid fa-user-tie text-xl text-white/80 mb-2 block"></i>
+                    <p class="text-teal-100 text-xs">Pengurus Desa</p>
+                    <p class="text-2xl font-bold mt-1 counter">{{ number_format($statistik['total_pengurus'] ?? 0) }}</p>
                 </div>
             </div>
         </div>

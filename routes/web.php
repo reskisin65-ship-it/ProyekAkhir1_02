@@ -128,6 +128,9 @@ Route::middleware(['auth'])->prefix('masyarakat')->name('masyarakat.')->group(fu
     // KEUANGAN MASYARAKAT
     Route::get('/keuangan', [App\Http\Controllers\Masyarakat\KeuanganController::class, 'index'])->name('keuangan.index');
     Route::get('/keuangan/{id}', [App\Http\Controllers\Masyarakat\KeuanganController::class, 'show'])->name('keuangan.show');
+    
+    // STATISTIK MASYARAKAT
+    Route::get('/statistik', [App\Http\Controllers\Masyarakat\StatistikController::class, 'masyarakat'])->name('statistik');
 });
 
 // ==============================================

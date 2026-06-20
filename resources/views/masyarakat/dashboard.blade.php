@@ -588,58 +588,259 @@
             </a>
         </div>
 
-{{-- 5. STATISTIK DESA - CARD SEDERHANA --}}
+{{-- 5. STATISTIK DESA --}}
 <div class="mb-16">
-    <div class="bg-white rounded-[2.5rem] border border-slate-100 p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-500">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div>
-                <span class="inline-block px-4 py-1 mb-3 text-[10px] font-black tracking-[0.3em] text-emerald-600 uppercase bg-emerald-100/50 rounded-full">
-                    📊 Data Statistik
-                </span>
-                <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Statistik Penduduk</h2>
-                <p class="text-slate-400 text-sm mt-1">Data realtime dari database desa</p>
+
+    {{-- Header --}}
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div>
+            <span class="inline-block px-4 py-1 mb-2 text-[10px] font-black tracking-[0.3em] text-emerald-600 uppercase bg-emerald-100/50 rounded-full">📊 Data Statistik Desa</span>
+            <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Statistik <span class="text-emerald-600">Desa</span></h2>
+            <p class="text-slate-400 text-sm mt-1">Data kependudukan, demografi, dan layanan desa secara realtime</p>
+        </div>
+        <a href="{{ route('statistik.publik') }}" class="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-2xl text-xs font-bold hover:bg-emerald-700 transition">
+            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Statistik Lengkap
+        </a>
+    </div>
+
+    {{-- ROW 1: 4 kartu utama kependudukan --}}
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+        @foreach([
+            ['label'=>'Total Penduduk','val'=>($statistik['penduduk_pria']??0)+($statistik['penduduk_wanita']??0),'icon'=>'fa-users','from'=>'from-emerald-500','to'=>'to-teal-500','light'=>'from-emerald-50 to-teal-50','text'=>'emerald'],
+            ['label'=>'Laki-laki',     'val'=>$statistik['penduduk_pria']??0,   'icon'=>'fa-mars',      'from'=>'from-blue-500','to'=>'to-cyan-500',   'light'=>'from-blue-50 to-cyan-50',   'text'=>'blue'],
+            ['label'=>'Perempuan',     'val'=>$statistik['penduduk_wanita']??0, 'icon'=>'fa-venus',     'from'=>'from-pink-500','to'=>'to-rose-500',   'light'=>'from-pink-50 to-rose-50',   'text'=>'pink'],
+            ['label'=>'Kepala Keluarga','val'=>$statistik['total_kk']??0,       'icon'=>'fa-house-user','from'=>'from-amber-500','to'=>'to-orange-500','light'=>'from-amber-50 to-orange-50','text'=>'amber'],
+        ] as $c)
+        <div class="bg-gradient-to-br {{ $c['light'] }} rounded-2xl p-5 text-center border border-{{ $c['text'] }}-100/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <div class="w-14 h-14 bg-gradient-to-br {{ $c['from'] }} {{ $c['to'] }} rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                <i class="fa-solid {{ $c['icon'] }} text-white text-xl"></i>
+            </div>
+            <p class="text-3xl font-black text-{{ $c['text'] }}-700">{{ number_format($c['val']) }}</p>
+            <p class="text-xs font-bold text-{{ $c['text'] }}-600/70 mt-1 uppercase tracking-wider">{{ $c['label'] }}</p>
+        </div>
+        @endforeach
+    </div>
+
+    {{-- ROW 2: Kelompok Umur + Status Perkawinan --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+        {{-- Kelompok Umur --}}
+        <div class="bg-white rounded-[2rem] border border-slate-100 p-6 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center shadow">
+                    <i class="fa-solid fa-chart-bar text-white"></i>
+                </div>
+                <div>
+                    <h3 class="font-black text-slate-800 text-base">Kelompok Umur</h3>
+                    <p class="text-xs text-slate-400">Sebaran usia penduduk desa</p>
+                </div>
+            </div>
+            @php
+                $umurData = [
+                    ['label'=>'0 – 14 Tahun (Anak)','val'=>$statistik['kelompok_umur_0_14']??0,'color'=>'bg-emerald-500'],
+                    ['label'=>'15 – 29 Tahun (Remaja/Pemuda)','val'=>$statistik['kelompok_umur_15_29']??0,'color'=>'bg-blue-500'],
+                    ['label'=>'30 – 59 Tahun (Dewasa/Produktif)','val'=>$statistik['kelompok_umur_30_59']??0,'color'=>'bg-amber-500'],
+                    ['label'=>'60+ Tahun (Lansia)','val'=>$statistik['kelompok_umur_60']??0,'color'=>'bg-purple-500'],
+                ];
+                $maxUmur = max(array_column($umurData,'val') ?: [1]);
+                $totalPop = ($statistik['penduduk_pria']??0)+($statistik['penduduk_wanita']??0);
+            @endphp
+            <div class="space-y-3">
+                @foreach($umurData as $u)
+                @php $pct = $totalPop > 0 ? round($u['val']/$totalPop*100,1) : 0; @endphp
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm text-slate-600 font-medium">{{ $u['label'] }}</span>
+                        <span class="text-sm font-black text-slate-800">{{ number_format($u['val']) }} <span class="text-xs font-normal text-slate-400">({{ $pct }}%)</span></span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                        <div class="{{ $u['color'] }} h-2.5 rounded-full" style="width:{{ $maxUmur > 0 ? round($u['val']/$maxUmur*100) : 0 }}%"></div>
+                    </div>
+                </div>
+                @endforeach
             </div>
         </div>
-        
-        {{-- Statistik Cards --}}
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {{-- Total Penduduk --}}
-            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-5 text-center border border-emerald-100/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                    <i class="fa-solid fa-users text-white text-xl"></i>
+
+        {{-- Status Perkawinan --}}
+        <div class="bg-white rounded-[2rem] border border-slate-100 p-6 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-gradient-to-br from-rose-500 to-pink-600 rounded-xl flex items-center justify-center shadow">
+                    <i class="fa-solid fa-heart text-white"></i>
                 </div>
-                <p class="text-3xl font-black text-emerald-700">{{ number_format(($statistik['penduduk_pria'] ?? 0) + ($statistik['penduduk_wanita'] ?? 0)) }}</p>
-                <p class="text-xs font-bold text-emerald-600/70 mt-1 uppercase tracking-wider">Total Penduduk</p>
+                <div>
+                    <h3 class="font-black text-slate-800 text-base">Status Perkawinan</h3>
+                    <p class="text-xs text-slate-400">Distribusi status pernikahan</p>
+                </div>
             </div>
-            
-            {{-- Laki-laki --}}
-            <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-5 text-center border border-blue-100/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                    <i class="fa-solid fa-mars text-white text-xl"></i>
+            @php
+                $pkColors = ['bg-emerald-500','bg-blue-500','bg-amber-500','bg-rose-500','bg-purple-500','bg-cyan-500'];
+                $pkTotal = $statistik['distribusi_perkawinan']?->sum('total') ?: 1;
+                $pkMax   = $statistik['distribusi_perkawinan']?->max('total') ?: 1;
+            @endphp
+            @if($statistik['distribusi_perkawinan']?->count() > 0)
+            <div class="space-y-3">
+                @foreach($statistik['distribusi_perkawinan'] as $idx => $pk)
+                @php $pct = round($pk->total/$pkTotal*100,1); @endphp
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm text-slate-600 font-medium">{{ $pk->status_perkawinan }}</span>
+                        <span class="text-sm font-black text-slate-800">{{ number_format($pk->total) }} <span class="text-xs font-normal text-slate-400">({{ $pct }}%)</span></span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                        <div class="{{ $pkColors[$idx % count($pkColors)] }} h-2.5 rounded-full" style="width:{{ round($pk->total/$pkMax*100) }}%"></div>
+                    </div>
                 </div>
-                <p class="text-3xl font-black text-blue-700">{{ number_format($statistik['penduduk_pria'] ?? 0) }}</p>
-                <p class="text-xs font-bold text-blue-600/70 mt-1 uppercase tracking-wider">Laki-laki</p>
+                @endforeach
             </div>
-            
-            {{-- Perempuan --}}
-            <div class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-5 text-center border border-pink-100/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                    <i class="fa-solid fa-venus text-white text-xl"></i>
+            @else
+            <div class="flex items-center justify-center h-24 text-slate-400 text-sm">Data belum tersedia</div>
+            @endif
+        </div>
+    </div>
+
+    {{-- ROW 3: Agama + Pendidikan --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+        {{-- Agama --}}
+        <div class="bg-white rounded-[2rem] border border-slate-100 p-6 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-xl flex items-center justify-center shadow">
+                    <i class="fa-solid fa-place-of-worship text-white"></i>
                 </div>
-                <p class="text-3xl font-black text-pink-700">{{ number_format($statistik['penduduk_wanita'] ?? 0) }}</p>
-                <p class="text-xs font-bold text-pink-600/70 mt-1 uppercase tracking-wider">Perempuan</p>
+                <div>
+                    <h3 class="font-black text-slate-800 text-base">Distribusi Agama</h3>
+                    <p class="text-xs text-slate-400">Keberagaman keyakinan warga</p>
+                </div>
             </div>
-            
-            {{-- Kepala Keluarga --}}
-            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 text-center border border-amber-100/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                    <i class="fa-solid fa-house-user text-white text-xl"></i>
+            @php
+                $agColors  = ['bg-amber-500','bg-blue-500','bg-emerald-500','bg-rose-500','bg-purple-500','bg-cyan-500','bg-orange-500'];
+                $agTotal   = $statistik['distribusi_agama']?->sum('total') ?: 1;
+                $agMax     = $statistik['distribusi_agama']?->max('total') ?: 1;
+            @endphp
+            @if($statistik['distribusi_agama']?->count() > 0)
+            <div class="space-y-3">
+                @foreach($statistik['distribusi_agama'] as $idx => $ag)
+                @php $pct = round($ag->total/$agTotal*100,1); @endphp
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm text-slate-600 font-medium">{{ $ag->agama }}</span>
+                        <span class="text-sm font-black text-slate-800">{{ number_format($ag->total) }} <span class="text-xs font-normal text-slate-400">({{ $pct }}%)</span></span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                        <div class="{{ $agColors[$idx % count($agColors)] }} h-2.5 rounded-full" style="width:{{ round($ag->total/$agMax*100) }}%"></div>
+                    </div>
                 </div>
-                <p class="text-3xl font-black text-amber-700">{{ number_format($statistik['total_kk'] ?? 0) }}</p>
-                <p class="text-xs font-bold text-amber-600/70 mt-1 uppercase tracking-wider">Kepala Keluarga</p>
+                @endforeach
+            </div>
+            @else
+            <div class="flex items-center justify-center h-24 text-slate-400 text-sm">Data belum tersedia</div>
+            @endif
+        </div>
+
+        {{-- Pendidikan --}}
+        <div class="bg-white rounded-[2rem] border border-slate-100 p-6 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow">
+                    <i class="fa-solid fa-graduation-cap text-white"></i>
+                </div>
+                <div>
+                    <h3 class="font-black text-slate-800 text-base">Tingkat Pendidikan</h3>
+                    <p class="text-xs text-slate-400">Jenjang pendidikan terakhir</p>
+                </div>
+            </div>
+            @php
+                $pdColors = ['bg-cyan-500','bg-blue-500','bg-indigo-500','bg-emerald-500','bg-purple-500','bg-amber-500','bg-rose-500'];
+                $pdTotal  = $statistik['distribusi_pendidikan']?->sum('total') ?: 1;
+                $pdMax    = $statistik['distribusi_pendidikan']?->max('total') ?: 1;
+            @endphp
+            @if($statistik['distribusi_pendidikan']?->count() > 0)
+            <div class="space-y-3">
+                @foreach($statistik['distribusi_pendidikan'] as $idx => $pd)
+                @php $pct = round($pd->total/$pdTotal*100,1); @endphp
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm text-slate-600 font-medium">{{ $pd->pendidikan }}</span>
+                        <span class="text-sm font-black text-slate-800">{{ number_format($pd->total) }} <span class="text-xs font-normal text-slate-400">({{ $pct }}%)</span></span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                        <div class="{{ $pdColors[$idx % count($pdColors)] }} h-2.5 rounded-full" style="width:{{ round($pd->total/$pdMax*100) }}%"></div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @else
+            <div class="flex items-center justify-center h-24 text-slate-400 text-sm">Data belum tersedia</div>
+            @endif
+        </div>
+    </div>
+
+    {{-- ROW 4: Pekerjaan + UMKM & Layanan --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        {{-- Pekerjaan --}}
+        <div class="bg-white rounded-[2rem] border border-slate-100 p-6 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-xl flex items-center justify-center shadow">
+                    <i class="fa-solid fa-briefcase text-white"></i>
+                </div>
+                <div>
+                    <h3 class="font-black text-slate-800 text-base">Profesi</h3>
+                    <p class="text-xs text-slate-400">6 pekerjaan terbanyak warga</p>
+                </div>
+            </div>
+            @php
+                $pkjColors = ['bg-teal-500','bg-emerald-500','bg-blue-500','bg-amber-500','bg-purple-500','bg-rose-500'];
+                $pkjMax    = $statistik['distribusi_pekerjaan']?->max('total') ?: 1;
+            @endphp
+            @if($statistik['distribusi_pekerjaan']?->count() > 0)
+            <div class="space-y-3">
+                @foreach($statistik['distribusi_pekerjaan'] as $idx => $pk)
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm text-slate-600 font-medium">{{ $pk->pekerjaan }}</span>
+                        <span class="text-sm font-black text-slate-800">{{ number_format($pk->total) }}</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                        <div class="{{ $pkjColors[$idx % count($pkjColors)] }} h-2.5 rounded-full" style="width:{{ round($pk->total/$pkjMax*100) }}%"></div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @else
+            <div class="flex items-center justify-center h-24 text-slate-400 text-sm">Data belum tersedia</div>
+            @endif
+        </div>
+
+        {{-- UMKM & Layanan Desa --}}
+        <div class="bg-white rounded-[2rem] border border-slate-100 p-6 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-500 rounded-xl flex items-center justify-center shadow">
+                    <i class="fa-solid fa-bolt text-white"></i>
+                </div>
+                <div>
+                    <h3 class="font-black text-slate-800 text-base">UMKM & Layanan Desa</h3>
+                    <p class="text-xs text-slate-400">Ringkasan aktivitas layanan</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                @foreach([
+                    ['label'=>'Total UMKM','val'=>$statistik['total_umkm']??0,'icon'=>'fa-store','bg'=>'bg-amber-100','text'=>'text-amber-700','icon_color'=>'text-amber-600'],
+                    ['label'=>'UMKM Aktif','val'=>$statistik['umkm_aktif']??0,'icon'=>'fa-circle-check','bg'=>'bg-emerald-100','text'=>'text-emerald-700','icon_color'=>'text-emerald-600'],
+                    ['label'=>'Total Berita','val'=>$statistik['total_berita']??0,'icon'=>'fa-newspaper','bg'=>'bg-blue-100','text'=>'text-blue-700','icon_color'=>'text-blue-600'],
+                    ['label'=>'Aspirasi Warga','val'=>$statistik['total_aspirasi_desa']??0,'icon'=>'fa-comment-dots','bg'=>'bg-purple-100','text'=>'text-purple-700','icon_color'=>'text-purple-600'],
+                ] as $item)
+                <div class="flex items-center gap-3 p-3 {{ $item['bg'] }} rounded-2xl">
+                    <i class="fa-solid {{ $item['icon'] }} {{ $item['icon_color'] }} text-lg"></i>
+                    <div>
+                        <div class="text-lg font-black {{ $item['text'] }}">{{ number_format($item['val']) }}</div>
+                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">{{ $item['label'] }}</div>
+                    </div>
+                </div>
+                @endforeach
             </div>
         </div>
     </div>
+
 </div>
 
         {{-- ============================================= --}}
