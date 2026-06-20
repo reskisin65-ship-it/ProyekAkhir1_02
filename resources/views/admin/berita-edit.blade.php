@@ -162,7 +162,7 @@
                             <div class="flex flex-col gap-6">
                                 <div>
                                     <h3 class="text-base font-bold text-gray-800 mb-2">Media Utama</h3>
-                                    <p class="text-sm text-gray-500 mb-4">Unggah foto berkualitas tinggi (JPG, PNG, atau WebP) maksimal 2MB untuk hasil terbaik.</p>
+                                    <p class="text-sm text-gray-500 mb-4">Unggah foto berkualitas tinggi (JPG, PNG, atau JPeg) maksimal 2MB untuk hasil terbaik.</p>
                                     
                                     <div class="relative">
                                         <input type="file" name="foto" @change="previewImage" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">

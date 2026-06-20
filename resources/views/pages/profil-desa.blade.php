@@ -682,6 +682,77 @@
     </div>
 </section>
 
+{{-- 3.5 FOTO KANTOR & KEGIATAN DESA --}}
+@if((isset($profil) && $profil->foto_kantor) || (isset($profil) && $profil->foto_kegiatan))
+<section class="py-24 px-6 bg-emerald-50/30">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-emerald-600 font-space text-xs font-bold uppercase tracking-[0.4em] mb-2 inline-block" data-aos="fade-up">Dokumentasi Resmi</span>
+            <h2 class="text-4xl md:text-5xl font-serif" data-aos="fade-up" data-aos-delay="100">Foto <span class="italic text-emerald-600">Desa</span></h2>
+            <p class="text-gray-500 mt-2 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">Dokumentasi visual kantor desa dan kegiatan masyarakat Lumban Silintong</p>
+        </div>
+
+        <div class="grid grid-cols-1 {{ ($profil->foto_kantor && $profil->foto_kegiatan) ? 'md:grid-cols-2' : 'md:grid-cols-1 max-w-2xl mx-auto' }} gap-8">
+            @if($profil->foto_kantor)
+            <div class="group relative rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 hover:-translate-y-3" data-aos="fade-right">
+                <div class="aspect-[4/3] overflow-hidden">
+                    <img src="{{ asset('storage/' . $profil->foto_kantor) }}" 
+                         alt="Kantor Desa Lumban Silintong" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-emerald-500/90 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                            <i class="fa-solid fa-building text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-bold text-lg">Kantor Desa</p>
+                            <p class="text-emerald-300 text-xs font-semibold uppercase tracking-wider">Lumban Silintong</p>
+                        </div>
+                    </div>
+                </div>
+                {{-- Label Badge --}}
+                <div class="absolute top-4 left-4">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold text-emerald-700 shadow-lg">
+                        <i class="fa-solid fa-building text-emerald-500"></i> Kantor Desa
+                    </span>
+                </div>
+            </div>
+            @endif
+
+            @if($profil->foto_kegiatan)
+            <div class="group relative rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 hover:-translate-y-3" data-aos="fade-left">
+                <div class="aspect-[4/3] overflow-hidden">
+                    <img src="{{ asset('storage/' . $profil->foto_kegiatan) }}" 
+                         alt="Kegiatan Desa Lumban Silintong" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-amber-500/90 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                            <i class="fa-solid fa-people-group text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-bold text-lg">Kegiatan Desa</p>
+                            <p class="text-amber-300 text-xs font-semibold uppercase tracking-wider">Dokumentasi Aktivitas</p>
+                        </div>
+                    </div>
+                </div>
+                {{-- Label Badge --}}
+                <div class="absolute top-4 left-4">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold text-amber-700 shadow-lg">
+                        <i class="fa-solid fa-people-group text-amber-500"></i> Kegiatan Desa
+                    </span>
+                </div>
+            </div>
+            @endif
+        </div>
+    </div>
+</section>
+@endif
+
 {{-- 4. VISI & MISI --}}
 <section class="py-24 px-6 bg-emerald-50/30">
     <div class="max-w-7xl mx-auto">

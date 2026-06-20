@@ -19,6 +19,9 @@
         --orange: #f59e0b;
         --pink: #ec4899;
         --teal: #14b8a6;
+        --rose: #f43f5e;
+        --amber: #d97706;
+        --indigo: #6366f1;
     }
 
     body {
@@ -105,7 +108,7 @@
     /* Stats Cards */
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         gap: 1rem;
         margin-bottom: 2rem;
     }
@@ -135,6 +138,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
     }
 
     .stat-info h4 {
@@ -145,7 +149,7 @@
     }
 
     .stat-info p {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         color: #64748b;
         font-weight: 500;
         text-transform: uppercase;
@@ -212,7 +216,7 @@
     .badge-pembangunan { background: rgba(245,158,11,0.9); color: white; }
     .badge-budaya { background: rgba(139,92,246,0.9); color: white; }
     .badge-wisata { background: rgba(20,184,166,0.9); color: white; }
-    .badge-umkm { background: rgba(236,72,153,0.9); color: white; }
+    .badge-umkm { background: rgba(244,63,94,0.9); color: white; }
     .badge-default { background: rgba(100,116,139,0.9); color: white; }
 
     /* Overlay Actions */
@@ -279,7 +283,10 @@
         font-size: 0.9rem;
         color: #1e293b;
         margin-bottom: 0.5rem;
-        line-clamp: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .info-date {
@@ -338,6 +345,10 @@
     }
 
     /* Responsive */
+    @media (max-width: 1200px) {
+        .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
     @media (max-width: 1024px) {
         .premium-container { padding: 1rem; }
         .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
@@ -362,13 +373,6 @@
     .delay-1 { animation-delay: 0.05s; }
     .delay-2 { animation-delay: 0.1s; }
     .delay-3 { animation-delay: 0.15s; }
-
-    .line-clamp-1 {
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
 </style>
 
 <div class="premium-container">
@@ -397,8 +401,9 @@
     </div>
     @endif
 
-    <!-- Stats Cards -->
+    <!-- Stats Cards - 5 Cards -->
     <div class="stats-grid fade-up delay-2">
+        <!-- Card 1: Total Foto -->
         <div class="stat-card">
             <div class="stat-icon" style="background: rgba(59,130,246,0.1); color: var(--blue);">
                 <i class="fa-solid fa-images text-xl"></i>
@@ -408,8 +413,10 @@
                 <p>Total Foto</p>
             </div>
         </div>
+
+        <!-- Card 2: Kegiatan -->
         <div class="stat-card">
-            <div class="stat-icon" style="background: rgba(245,158,11,0.1); color: var(--orange);">
+            <div class="stat-icon" style="background: rgba(59,130,246,0.1); color: var(--blue);">
                 <i class="fa-solid fa-calendar-check text-xl"></i>
             </div>
             <div class="stat-info">
@@ -417,8 +424,10 @@
                 <p>Kegiatan</p>
             </div>
         </div>
+
+        <!-- Card 3: Pembangunan -->
         <div class="stat-card">
-            <div class="stat-icon" style="background: rgba(139,92,246,0.1); color: var(--purple);">
+            <div class="stat-icon" style="background: rgba(245,158,11,0.1); color: var(--orange);">
                 <i class="fa-solid fa-hard-hat text-xl"></i>
             </div>
             <div class="stat-info">
@@ -426,13 +435,26 @@
                 <p>Pembangunan</p>
             </div>
         </div>
+
+        <!-- Card 4: Budaya & Wisata -->
         <div class="stat-card">
-            <div class="stat-icon" style="background: rgba(20,184,166,0.1); color: var(--teal);">
+            <div class="stat-icon" style="background: rgba(139,92,246,0.1); color: var(--purple);">
                 <i class="fa-solid fa-umbrella-beach text-xl"></i>
             </div>
             <div class="stat-info">
-                <h4>{{ $galeris->whereIn('kategori', ['budaya', 'wisata', 'umkm'])->count() }}</h4>
+                <h4>{{ $galeris->whereIn('kategori', ['budaya', 'wisata'])->count() }}</h4>
                 <p>Budaya & Wisata</p>
+            </div>
+        </div>
+
+        <!-- Card 5: UMKM -->
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(244,63,94,0.1); color: var(--rose);">
+                <i class="fa-solid fa-store text-xl"></i>
+            </div>
+            <div class="stat-info">
+                <h4>{{ $galeris->where('kategori', 'umkm')->count() }}</h4>
+                <p>UMKM</p>
             </div>
         </div>
     </div>

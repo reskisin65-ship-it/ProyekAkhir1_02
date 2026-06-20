@@ -858,7 +858,17 @@
     const chartData = @json($dataPerBulan);
     const labels = []; const pemasukanData = []; const pengeluaranData = [];
     Object.values(chartData).forEach(item => { labels.push(item.bulan.substring(0, 3)); pemasukanData.push(item.pemasukan); pengeluaranData.push(item.pengeluaran); });
-    new Chart(ctx, { type: 'line', data: { labels: labels, datasets: [{ label: 'Pemasukan', data: pemasukanData, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.05)', fill: true, tension: 0.4, borderWidth: 2 }, { label: 'Pengeluaran', data: pengeluaranData, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.05)', fill: true, tension: 0.4, borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { tooltip: { callbacks: { label: function(context) { return context.dataset.label + ': Rp ' + context.raw.toLocaleString('id-ID'); } } }, legend: { position: 'top' } }, scales: { y: { ticks: { callback: function(value) { return 'Rp ' + value.toLocaleString('id-ID'); } } } } } });
+    
+    const activeJenis = @json(request('jenis'));
+    const datasets = [];
+    if (!activeJenis || activeJenis === 'pemasukan') {
+        datasets.push({ label: 'Pemasukan', data: pemasukanData, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.05)', fill: true, tension: 0.4, borderWidth: 2 });
+    }
+    if (!activeJenis || activeJenis === 'pengeluaran') {
+        datasets.push({ label: 'Pengeluaran', data: pengeluaranData, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.05)', fill: true, tension: 0.4, borderWidth: 2 });
+    }
+
+    new Chart(ctx, { type: 'line', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: true, plugins: { tooltip: { callbacks: { label: function(context) { return context.dataset.label + ': Rp ' + context.raw.toLocaleString('id-ID'); } } }, legend: { position: 'top' } }, scales: { y: { ticks: { callback: function(value) { return 'Rp ' + value.toLocaleString('id-ID'); } } } } } });
     
     // Filter Toggle
     const toggleBtn = document.getElementById('filterToggleBtn');

@@ -419,7 +419,7 @@
                     <label class="form-label">
                         <i class="fa-regular fa-calendar"></i> Tanggal Transaksi <span class="required">*</span>
                     </label>
-                    <input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" required class="form-control">
+                    <input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" max="{{ date('Y-m-d') }}" required class="form-control">
                 </div>
                 
                 {{-- Jenis Transaksi --}}
@@ -477,7 +477,7 @@
                     </label>
                     <div class="amount-input">
                         <span class="amount-prefix">Rp</span>
-                        <input type="number" name="jumlah" step="1000" value="{{ old('jumlah') }}" required class="form-control" placeholder="0">
+                        <input type="number" name="jumlah" step="1000" value="{{ old('jumlah') }}" min="0" required class="form-control" placeholder="0">
                     </div>
                 </div>
                 

@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
                 'provinsi'      => 'Sumatera Utara',
                 'tahun_berdiri' => '1920',
                 'jumlah_dusun'  => 6,
-                'alamat_kantor' => 'Jl. Lumban Silintong No. 1, Balige, Toba, Sumatera Utara',
+                'alamat_kantor' => 'Jl. Lumban Silintong No. 1, Balige, Toba, Sumatera Utara, 22312',
                 'email_desa'    => 'desa.lumbansilintong@gmail.com',
                 'telepon_desa'  => '0812-3456-7890',
                 'maps_embed'    => '',

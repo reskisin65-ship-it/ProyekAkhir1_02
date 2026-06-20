@@ -43,6 +43,19 @@ class KeuanganController extends Controller
         // ── data grafik per bulan ────────────────────────────────────────────
         $grafikData = [];
         for ($i = 1; $i <= 12; $i++) {
+            if ($bulan !== 'semua' && $bulan != $i) {
+                continue;
+            }
+
+            $monthStart = date('Y-m-d', mktime(0, 0, 0, $i, 1, $tahun));
+            $monthEnd = date('Y-m-d', mktime(0, 0, 0, $i + 1, 0, $tahun));
+            if ($request->filled('dari_tanggal') && $request->dari_tanggal > $monthEnd) {
+                continue;
+            }
+            if ($request->filled('sampai_tanggal') && $request->sampai_tanggal < $monthStart) {
+                continue;
+            }
+
             $gq = TransaksiKeuangan::whereYear('tanggal', $tahun)->whereMonth('tanggal', $i);
             if ($request->filled('dari_tanggal'))  $gq->whereDate('tanggal', '>=', $request->dari_tanggal);
             if ($request->filled('sampai_tanggal')) $gq->whereDate('tanggal', '<=', $request->sampai_tanggal);

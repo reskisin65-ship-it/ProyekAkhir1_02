@@ -13,8 +13,8 @@ use App\Models\ProfilDesa;
 use App\Models\DataPengurus;
 use App\Models\DataPenduduk;
 use App\Models\Role;
-use App\Models\PengaturanStatistik;
-use App\Models\Notifikasi; // TAMBAHKAN INI
+use App\Models\Notifikasi;
+use App\Helpers\NotifikasiHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -87,37 +87,14 @@ class AdminController extends Controller
             'respon_admin' => $request->respon,
             'status' => 'selesai'
         ]);
-        
-        // KIRIM NOTIFIKASI KE PENGIRIM ASPIRASI
-        if ($aspirasi->user_id) {
-            Notifikasi::create([
-                'user_id' => $aspirasi->user_id,
-                'jenis' => 'aspirasi',
-                'judul' => '✅ Aspirasi Telah Dijawab',
-                'pesan' => 'Aspirasi Anda telah direspon oleh admin desa.',
-                'link' => route('masyarakat.aspirasi.show', $aspirasi->id_aspirasi),
-                'ref_id' => $aspirasi->id_aspirasi,
-                'dibaca' => false
-            ]);
-        }
-        
-        // KIRIM NOTIFIKASI KE ADMIN LAINNYA
-        $admins = User::whereHas('role', function($q) {
-            $q->where('nama_role', 'admin');
-        })->where('user_id', '!=', Auth::user()->user_id)->get();
-        
-        foreach ($admins as $admin) {
-            Notifikasi::create([
-                'user_id' => $admin->user_id,
-                'jenis' => 'aspirasi',
-                'judul' => '📋 Admin ' . Auth::user()->name . ' merespon aspirasi',
-                'pesan' => 'Aspirasi ID: ' . $aspirasi->id_aspirasi . ' telah direspon.',
-                'link' => route('admin.aspirasi.show', $aspirasi->id_aspirasi),
-                'ref_id' => $aspirasi->id_aspirasi,
-                'dibaca' => false
-            ]);
-        }
-        
+
+        NotifikasiHelper::aspirasiDijawab(
+            $aspirasi->user_id,
+            $aspirasi->judul,
+            $aspirasi->id_aspirasi,
+            Auth::user()->user_id
+        );
+
         return redirect()->route('admin.aspirasi.index')->with('success', 'Respon berhasil dikirim!');
     }
 
@@ -125,7 +102,14 @@ class AdminController extends Controller
     {
         $aspirasi = Aspirasi::findOrFail($id);
         $aspirasi->update(['status' => 'diproses']);
-        
+
+        NotifikasiHelper::aspirasiDiproses(
+            $aspirasi->user_id,
+            $aspirasi->judul,
+            $aspirasi->id_aspirasi,
+            Auth::user()->user_id
+        );
+
         return back()->with('success', 'Status aspirasi diperbarui!');
     }
 
@@ -376,42 +360,19 @@ class AdminController extends Controller
     {
         $umkm = Umkm::findOrFail($id);
         $umkm->update(['status' => 'approved']);
-        
+
         $roleUmkm = Role::where('nama_role', 'umkm')->first();
         if ($roleUmkm && !$umkm->user->isAdmin()) {
             $umkm->user->update(['id_role' => $roleUmkm->id_role]);
         }
-        
-        // KIRIM NOTIFIKASI KE PEMILIK UMKM
-        if ($umkm->user_id) {
-            Notifikasi::create([
-                'user_id' => $umkm->user_id,
-                'jenis' => 'umkm',
-                'judul' => '✅ UMKM Disetujui',
-                'pesan' => 'Pendaftaran UMKM ' . $umkm->nama_usaha . ' Anda telah disetujui.',
-                'link' => route('umkm.show', $umkm->id_umkm),
-                'ref_id' => $umkm->id_umkm,
-                'dibaca' => false
-            ]);
-        }
-        
-        // KIRIM NOTIFIKASI KE ADMIN LAINNYA
-        $admins = User::whereHas('role', function($q) {
-            $q->where('nama_role', 'admin');
-        })->where('user_id', '!=', Auth::user()->user_id)->get();
-        
-        foreach ($admins as $admin) {
-            Notifikasi::create([
-                'user_id' => $admin->user_id,
-                'jenis' => 'umkm',
-                'judul' => '✅ Admin ' . Auth::user()->name . ' menyetujui UMKM',
-                'pesan' => 'UMKM ' . $umkm->nama_usaha . ' telah disetujui.',
-                'link' => route('admin.umkm.index'),
-                'ref_id' => $umkm->id_umkm,
-                'dibaca' => false
-            ]);
-        }
-        
+
+        NotifikasiHelper::umkmDisetujui(
+            $umkm->user_id,
+            $umkm->nama_usaha,
+            $umkm->id_umkm,
+            Auth::user()->user_id
+        );
+
         return redirect()->route('admin.umkm.index')
             ->with('success', 'UMKM berhasil disetujui!');
     }
@@ -419,7 +380,7 @@ class AdminController extends Controller
     public function umkmReject(Request $request, $id)
     {
         $request->validate([
-            'alasan_penolakan' => 'required|string|min:10|max:500'
+            'alasan_penolakan' => 'required|string|min:3|max:500'
         ]);
 
         $umkm = Umkm::findOrFail($id);
@@ -427,37 +388,15 @@ class AdminController extends Controller
             'status' => 'rejected',
             'alasan_penolakan' => $request->alasan_penolakan
         ]);
-        
-        // KIRIM NOTIFIKASI KE PEMILIK UMKM
-        if ($umkm->user_id) {
-            Notifikasi::create([
-                'user_id' => $umkm->user_id,
-                'jenis' => 'umkm',
-                'judul' => '❌ UMKM Ditolak',
-                'pesan' => 'Pendaftaran UMKM ' . $umkm->nama_usaha . ' Anda ditolak. Silakan lihat alasan penolakan di halaman status.',
-                'link' => route('masyarakat.umkm.status'),
-                'ref_id' => $umkm->id_umkm,
-                'dibaca' => false
-            ]);
-        }
-        
-        // KIRIM NOTIFIKASI KE ADMIN LAINNYA
-        $admins = User::whereHas('role', function($q) {
-            $q->where('nama_role', 'admin');
-        })->where('user_id', '!=', Auth::user()->user_id)->get();
-        
-        foreach ($admins as $admin) {
-            Notifikasi::create([
-                'user_id' => $admin->user_id,
-                'jenis' => 'umkm',
-                'judul' => '❌ Admin ' . Auth::user()->name . ' menolak UMKM',
-                'pesan' => 'UMKM ' . $umkm->nama_usaha . ' telah ditolak.',
-                'link' => route('admin.umkm.index'),
-                'ref_id' => $umkm->id_umkm,
-                'dibaca' => false
-            ]);
-        }
-        
+
+        NotifikasiHelper::umkmDitolak(
+            $umkm->user_id,
+            $umkm->nama_usaha,
+            $umkm->id_umkm,
+            $request->alasan_penolakan,
+            Auth::user()->user_id
+        );
+
         return redirect()->route('admin.umkm.index')
             ->with('success', 'UMKM ditolak dengan alasan diberikan!');
     }
@@ -531,37 +470,14 @@ public function umkmDestroy($id)
     {
         $pengajuan = PengajuanSurat::findOrFail($id);
         $pengajuan->update(['status' => 'diproses']);
-        
-        // KIRIM NOTIFIKASI KE PEMOHON
-        if ($pengajuan->user_id) {
-            Notifikasi::create([
-                'user_id' => $pengajuan->user_id,
-                'jenis' => 'pengajuan_surat',
-                'judul' => '🔄 Pengajuan Surat Diproses',
-                'pesan' => 'Pengajuan surat ' . $pengajuan->jenis_surat . ' Anda sedang diproses oleh admin.',
-                'link' => route('masyarakat.surat.show', $pengajuan->id_surat),
-                'ref_id' => $pengajuan->id_surat,
-                'dibaca' => false
-            ]);
-        }
-        
-        // KIRIM NOTIFIKASI KE ADMIN LAINNYA
-        $admins = User::whereHas('role', function($q) {
-            $q->where('nama_role', 'admin');
-        })->where('user_id', '!=', Auth::user()->user_id)->get();
-        
-        foreach ($admins as $admin) {
-            Notifikasi::create([
-                'user_id' => $admin->user_id,
-                'jenis' => 'pengajuan_surat',
-                'judul' => '🔄 Admin ' . Auth::user()->name . ' memproses surat',
-                'pesan' => 'Pengajuan surat ' . $pengajuan->jenis_surat . ' sedang diproses.',
-                'link' => route('admin.pengajuan-surat.show', $pengajuan->id_surat),
-                'ref_id' => $pengajuan->id_surat,
-                'dibaca' => false
-            ]);
-        }
-        
+
+        NotifikasiHelper::suratDiproses(
+            $pengajuan->user_id,
+            $pengajuan->jenis_surat,
+            $pengajuan->id_surat,
+            Auth::user()->user_id
+        );
+
         return back()->with('success', 'Pengajuan surat diterima dan sedang diproses!');
     }
 
@@ -579,37 +495,14 @@ public function umkmDestroy($id)
             'status' => 'selesai',
             'file_surat' => $filePath,
         ]);
-        
-        // KIRIM NOTIFIKASI SURAT SELESAI
-        if ($pengajuan->user_id) {
-            Notifikasi::create([
-                'user_id' => $pengajuan->user_id,
-                'jenis' => 'pengajuan_surat',
-                'judul' => '✅ Surat Selesai',
-                'pesan' => 'Surat ' . $pengajuan->jenis_surat . ' Anda telah selesai. Silakan download.',
-                'link' => route('masyarakat.surat.show', $pengajuan->id_surat),
-                'ref_id' => $pengajuan->id_surat,
-                'dibaca' => false
-            ]);
-        }
-        
-        // KIRIM NOTIFIKASI KE ADMIN LAINNYA
-        $admins = User::whereHas('role', function($q) {
-            $q->where('nama_role', 'admin');
-        })->where('user_id', '!=', Auth::user()->user_id)->get();
-        
-        foreach ($admins as $admin) {
-            Notifikasi::create([
-                'user_id' => $admin->user_id,
-                'jenis' => 'pengajuan_surat',
-                'judul' => '✅ Admin ' . Auth::user()->name . ' menyelesaikan surat',
-                'pesan' => 'Pengajuan surat ' . $pengajuan->jenis_surat . ' telah diselesaikan.',
-                'link' => route('admin.pengajuan-surat.show', $pengajuan->id_surat),
-                'ref_id' => $pengajuan->id_surat,
-                'dibaca' => false
-            ]);
-        }
-        
+
+        NotifikasiHelper::suratSelesai(
+            $pengajuan->user_id,
+            $pengajuan->jenis_surat,
+            $pengajuan->id_surat,
+            Auth::user()->user_id
+        );
+
         return redirect()->route('admin.pengajuan-surat.index')
             ->with('success', 'Surat selesai dan telah diunggah!');
     }
@@ -625,37 +518,15 @@ public function umkmDestroy($id)
             'status' => 'ditolak',
             'catatan_penolakan' => $request->catatan,
         ]);
-        
-        // KIRIM NOTIFIKASI PENOLAKAN
-        if ($pengajuan->user_id) {
-            Notifikasi::create([
-                'user_id' => $pengajuan->user_id,
-                'jenis' => 'pengajuan_surat',
-                'judul' => '❌ Pengajuan Surat Ditolak',
-                'pesan' => 'Pengajuan surat ' . $pengajuan->jenis_surat . ' ditolak. Catatan: ' . $request->catatan,
-                'link' => route('masyarakat.surat.show', $pengajuan->id_surat),
-                'ref_id' => $pengajuan->id_surat,
-                'dibaca' => false
-            ]);
-        }
-        
-        // KIRIM NOTIFIKASI KE ADMIN LAINNYA
-        $admins = User::whereHas('role', function($q) {
-            $q->where('nama_role', 'admin');
-        })->where('user_id', '!=', Auth::user()->user_id)->get();
-        
-        foreach ($admins as $admin) {
-            Notifikasi::create([
-                'user_id' => $admin->user_id,
-                'jenis' => 'pengajuan_surat',
-                'judul' => '❌ Admin ' . Auth::user()->name . ' menolak surat',
-                'pesan' => 'Pengajuan surat ' . $pengajuan->jenis_surat . ' telah ditolak.',
-                'link' => route('admin.pengajuan-surat.show', $pengajuan->id_surat),
-                'ref_id' => $pengajuan->id_surat,
-                'dibaca' => false
-            ]);
-        }
-        
+
+        NotifikasiHelper::suratDitolak(
+            $pengajuan->user_id,
+            $pengajuan->jenis_surat,
+            $pengajuan->id_surat,
+            $request->catatan,
+            Auth::user()->user_id
+        );
+
         return back()->with('success', 'Pengajuan surat ditolak!');
     }
 

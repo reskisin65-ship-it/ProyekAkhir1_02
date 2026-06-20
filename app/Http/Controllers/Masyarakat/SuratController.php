@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Masyarakat;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengajuanSurat;
-use App\Models\Notifikasi;
-use App\Models\User;
+use App\Helpers\NotifikasiHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,37 +101,12 @@ class SuratController extends Controller
             'tgl_pengajuan' => now(),
         ]);
 
-        // ==============================================
-        // KIRIM NOTIFIKASI
-        // ==============================================
-        
-        // 1. Notifikasi untuk pengirim (masyarakat)
-        Notifikasi::create([
-            'user_id' => Auth::user()->user_id,
-            'jenis' => 'pengajuan_surat',
-            'judul' => '✅ Pengajuan Surat Berhasil',
-            'pesan' => 'Pengajuan surat ' . $request->jenis_surat . ' Anda telah dikirim dan sedang diproses.',
-            'link' => route('masyarakat.surat.show', $pengajuan->id_surat),
-            'ref_id' => $pengajuan->id_surat,
-            'dibaca' => false
-        ]);
-        
-        // 2. Notifikasi untuk semua admin
-        $admins = User::whereHas('role', function($q) {
-            $q->where('nama_role', 'admin');
-        })->get();
-        
-        foreach ($admins as $admin) {
-            Notifikasi::create([
-                'user_id' => $admin->user_id,
-                'jenis' => 'pengajuan_surat',
-                'judul' => '📋 Pengajuan Surat Baru',
-                'pesan' => Auth::user()->name . ' mengajukan surat ' . $request->jenis_surat,
-                'link' => route('admin.pengajuan-surat.show', $pengajuan->id_surat),
-                'ref_id' => $pengajuan->id_surat,
-                'dibaca' => false
-            ]);
-        }
+        NotifikasiHelper::suratBaru(
+            Auth::user()->user_id,
+            $request->jenis_surat,
+            $pengajuan->id_surat,
+            Auth::user()->name
+        );
 
         return redirect()->route('masyarakat.surat.index')
             ->with('success', 'Pengajuan surat berhasil dikirim!');

@@ -493,6 +493,23 @@
     </div>
     @endif
 
+    @if($errors->any())
+    <div class="alert-node alert-error fade-up delay-2">
+        <div class="flex items-start gap-2">
+            <i class="fa-solid fa-circle-exclamation mt-1"></i>
+            <div>
+                <strong>Gagal memproses data:</strong>
+                <ul class="list-disc list-inside text-xs mt-1">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+        <button onclick="this.parentElement.remove()" class="opacity-50 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    @endif
+
     {{-- TABLE WITH HORIZONTAL SCROLL --}}
     <div class="table-responsive fade-up delay-3">
         <div class="table-architecture">

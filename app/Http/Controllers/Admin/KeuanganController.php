@@ -37,6 +37,19 @@ class KeuanganController extends Controller
         // ── data grafik per bulan (selalu per-tahun, hormati filter lain) ───
         $dataPerBulan = [];
         for ($i = 1; $i <= 12; $i++) {
+            if ($request->filled('bulan') && $request->bulan != $i) {
+                continue;
+            }
+
+            $monthStart = date('Y-m-d', mktime(0, 0, 0, $i, 1, $tahun));
+            $monthEnd = date('Y-m-d', mktime(0, 0, 0, $i + 1, 0, $tahun));
+            if ($request->filled('dari_tanggal') && $request->dari_tanggal > $monthEnd) {
+                continue;
+            }
+            if ($request->filled('sampai_tanggal') && $request->sampai_tanggal < $monthStart) {
+                continue;
+            }
+
             $pq = TransaksiKeuangan::whereYear('tanggal', $tahun)->whereMonth('tanggal', $i);
             $eq = TransaksiKeuangan::whereYear('tanggal', $tahun)->whereMonth('tanggal', $i);
 
@@ -80,7 +93,7 @@ class KeuanganController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tanggal'    => 'required|date',
+            'tanggal'    => 'required|date|before_or_equal:today',
             'jenis'      => 'required|in:pemasukan,pengeluaran',
             'id_kategori'=> 'required|exists:kategori_keuangan,id_kategori',
             'deskripsi'  => 'required|min:5',
@@ -134,12 +147,14 @@ class KeuanganController extends Controller
         $transaksi = TransaksiKeuangan::findOrFail($id);
 
         $request->validate([
-            'tanggal'    => 'required|date',
+            'tanggal'    => 'required|date|before_or_equal:today',
             'jenis'      => 'required|in:pemasukan,pengeluaran',
             'id_kategori'=> 'required|exists:kategori_keuangan,id_kategori',
             'deskripsi'  => 'required|min:5',
-            'jumlah'     => 'required|numeric|min:0',
+            'jumlah'     => 'required|numeric|min:' . $transaksi->jumlah,
             'bukti_foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
+            'jumlah.min' => 'Jumlah transaksi tidak boleh berkurang dari jumlah sebelumnya (Rp ' . number_format($transaksi->jumlah, 0, ',', '.') . ').',
         ]);
 
         $data = $request->only(['tanggal', 'jenis', 'id_kategori', 'deskripsi', 'jumlah']);

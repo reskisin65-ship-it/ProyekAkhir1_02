@@ -632,11 +632,7 @@
             </div>
             <h3 class="font-bold text-gray-800 mb-3">Ikuti Kami di Sosial Media</h3>
             <div class="flex gap-3 flex-wrap">
-                <a href="#" class="social-btn w-10 h-10 bg-[#1877f2] rounded-xl flex items-center justify-center text-white hover:scale-110 transition"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#" class="social-btn w-10 h-10 bg-[#1da1f2] rounded-xl flex items-center justify-center text-white hover:scale-110 transition"><i class="fa-brands fa-twitter"></i></a>
                 <a href="#" class="social-btn w-10 h-10 bg-[#e4405f] rounded-xl flex items-center justify-center text-white hover:scale-110 transition"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="social-btn w-10 h-10 bg-[#25d366] rounded-xl flex items-center justify-center text-white hover:scale-110 transition"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="#" class="social-btn w-10 h-10 bg-[#ff0000] rounded-xl flex items-center justify-center text-white hover:scale-110 transition"><i class="fa-brands fa-youtube"></i></a>
             </div>
         </div>
 

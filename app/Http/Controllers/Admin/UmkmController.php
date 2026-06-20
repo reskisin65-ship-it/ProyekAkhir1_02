@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Umkm;
 use App\Models\ProdukUmkm;
+use App\Helpers\NotifikasiHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -64,7 +65,14 @@ class UmkmController extends Controller
             $data['bukti_usaha'] = $request->file('bukti_usaha')->store('bukti_umkm', 'public');
         }
 
-        Umkm::create($data);
+        $umkm = Umkm::create($data);
+
+        NotifikasiHelper::umkmBaru(
+            Auth::user()->user_id,
+            $umkm->nama_usaha,
+            $umkm->id_umkm,
+            Auth::user()->name
+        );
 
         return redirect()->route('umkm.dashboard')->with('success', 'Pendaftaran UMKM berhasil diajukan!');
     }
@@ -373,6 +381,12 @@ class UmkmController extends Controller
         }
 
         ProdukUmkm::create($data);
+
+        NotifikasiHelper::produkBaru(
+            Auth::user()->user_id,
+            $request->nama_produk,
+            $umkm->nama_usaha
+        );
 
         return redirect()->route('umkm.produk.index')->with('success', 'Produk berhasil ditambahkan');
     }
