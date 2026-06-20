@@ -17,46 +17,47 @@ class KeuanganController extends Controller
     public function index(Request $request)
     {
         $tahun = $request->tahun ?? date('Y');
-        
-        $applyFilters = function($query) use ($request, $tahun) {
+
+        // ── helper closure: terapkan semua filter ke query ──────────────────
+        $applyFilters = function ($query) use ($request, $tahun) {
             $query->whereYear('tanggal', $tahun);
-            if ($request->filled('dari_tanggal')) $query->whereDate('tanggal', '>=', $request->dari_tanggal);
+            if ($request->filled('dari_tanggal'))  $query->whereDate('tanggal', '>=', $request->dari_tanggal);
             if ($request->filled('sampai_tanggal')) $query->whereDate('tanggal', '<=', $request->sampai_tanggal);
-            if ($request->filled('bulan')) $query->whereMonth('tanggal', $request->bulan);
-            if ($request->filled('jenis')) $query->where('jenis', $request->jenis);
-            if ($request->filled('kategori')) $query->where('id_kategori', $request->kategori);
+            if ($request->filled('bulan'))          $query->whereMonth('tanggal', $request->bulan);
+            if ($request->filled('jenis'))          $query->where('jenis', $request->jenis);
+            if ($request->filled('kategori'))       $query->where('id_kategori', $request->kategori);
             return $query;
         };
 
-        $totalPemasukan = $applyFilters(TransaksiKeuangan::where('jenis', 'pemasukan'))->sum('jumlah');
+        // ── summary cards ────────────────────────────────────────────────────
+        $totalPemasukan   = $applyFilters(TransaksiKeuangan::where('jenis', 'pemasukan'))->sum('jumlah');
         $totalPengeluaran = $applyFilters(TransaksiKeuangan::where('jenis', 'pengeluaran'))->sum('jumlah');
-        $saldo = $totalPemasukan - $totalPengeluaran;
+        $saldo            = $totalPemasukan - $totalPengeluaran;
 
+        // ── data grafik per bulan (selalu per-tahun, hormati filter lain) ───
         $dataPerBulan = [];
         for ($i = 1; $i <= 12; $i++) {
-            $pq = TransaksiKeuangan::where('jenis', 'pemasukan')->whereYear('tanggal', $tahun)->whereMonth('tanggal', $i);
-            $eq = TransaksiKeuangan::where('jenis', 'pengeluaran')->whereYear('tanggal', $tahun)->whereMonth('tanggal', $i);
-            if ($request->filled('dari_tanggal')) { $pq->whereDate('tanggal', '>=', $request->dari_tanggal); $eq->whereDate('tanggal', '>=', $request->dari_tanggal); }
-            if ($request->filled('sampai_tanggal')) { $pq->whereDate('tanggal', '<=', $request->sampai_tanggal); $eq->whereDate('tanggal', '<=', $request->sampai_tanggal); }
-            if ($request->filled('kategori')) { $pq->where('id_kategori', $request->kategori); $eq->where('id_kategori', $request->kategori); }
+            $pq = TransaksiKeuangan::whereYear('tanggal', $tahun)->whereMonth('tanggal', $i);
+            $eq = TransaksiKeuangan::whereYear('tanggal', $tahun)->whereMonth('tanggal', $i);
 
+            if ($request->filled('dari_tanggal'))  { $pq->whereDate('tanggal', '>=', $request->dari_tanggal);  $eq->whereDate('tanggal', '>=', $request->dari_tanggal); }
+            if ($request->filled('sampai_tanggal')) { $pq->whereDate('tanggal', '<=', $request->sampai_tanggal); $eq->whereDate('tanggal', '<=', $request->sampai_tanggal); }
+            if ($request->filled('kategori'))       { $pq->where('id_kategori', $request->kategori);             $eq->where('id_kategori', $request->kategori); }
+
+            $jenis = $request->jenis;
             $dataPerBulan[$i] = [
-                'pemasukan'  => (!$request->filled('jenis') || $request->jenis === 'pemasukan') ? $pq->sum('jumlah') : 0,
-                'pengeluaran'=> (!$request->filled('jenis') || $request->jenis === 'pengeluaran') ? $eq->sum('jumlah') : 0,
-                'bulan'      => date('F', mktime(0, 0, 0, $i, 1)),
+                'bulan'       => date('F', mktime(0, 0, 0, $i, 1)),
+                'pemasukan'   => (!$jenis || $jenis === 'pemasukan')   ? (clone $pq)->where('jenis', 'pemasukan')->sum('jumlah')   : 0,
+                'pengeluaran' => (!$jenis || $jenis === 'pengeluaran') ? (clone $eq)->where('jenis', 'pengeluaran')->sum('jumlah') : 0,
             ];
         }
 
+        // ── tabel transaksi (sinkron dengan semua filter termasuk tahun) ────
         $query = TransaksiKeuangan::with(['kategori', 'creator']);
-        if ($request->filled('dari_tanggal')) $query->whereDate('tanggal', '>=', $request->dari_tanggal);
-        if ($request->filled('sampai_tanggal')) $query->whereDate('tanggal', '<=', $request->sampai_tanggal);
-        if ($request->filled('bulan')) $query->whereMonth('tanggal', $request->bulan);
-        if ($request->filled('tahun')) $query->whereYear('tanggal', $request->tahun);
-        if ($request->filled('jenis')) $query->where('jenis', $request->jenis);
-        if ($request->filled('kategori')) $query->where('id_kategori', $request->kategori);
+        $applyFilters($query);
 
-        $transaksiTerbaru = $query->orderBy('tanggal', 'desc')->paginate(15);
-        $kategoris = KategoriKeuangan::orderBy('urutan')->get();
+        $transaksiTerbaru = $query->orderBy('tanggal', 'desc')->paginate(15)->withQueryString();
+        $kategoris        = KategoriKeuangan::orderBy('urutan')->get();
 
         return view('admin.keuangan.index', compact(
             'totalPemasukan', 'totalPengeluaran', 'saldo', 'dataPerBulan',

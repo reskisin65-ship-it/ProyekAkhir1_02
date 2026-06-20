@@ -24,7 +24,10 @@ class PageController extends Controller
     public function home()
     {
         // Profil Desa
-        $profil = ProfilDesa::first();
+        $profil = ProfilDesa::first() ?? new ProfilDesa([
+            'luas_wilayah' => '12.5 km²',
+            'telepon_desa' => '',
+        ]);
         
         // Berita (limit 4)
         $beritas = Berita::orderBy('created_at', 'desc')->limit(4)->get();
@@ -92,7 +95,21 @@ class PageController extends Controller
      */
     public function profilDesa()
     {
-        $profil = ProfilDesa::first();
+        $profil = ProfilDesa::first() ?? new ProfilDesa([
+            'sejarah'       => '',
+            'visi'          => '',
+            'misi'          => '',
+            'luas_wilayah'  => '12.5 km²',
+            'kecamatan'     => '-',
+            'kabupaten'     => '-',
+            'provinsi'      => '-',
+            'tahun_berdiri' => '-',
+            'jumlah_dusun'  => 0,
+            'alamat_kantor' => '-',
+            'email_desa'    => '',
+            'telepon_desa'  => '',
+            'maps_embed'    => '',
+        ]);
         // Urutkan berdasarkan posisi global (urutan_dalam_kategori ascending)
         $aparaturs = DataPengurus::urutHierarki()->get();
         

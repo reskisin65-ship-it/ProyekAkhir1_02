@@ -12,42 +12,41 @@ class KeuanganController extends Controller
 {
     public function index(Request $request)
     {
-        $tahun         = $request->tahun ?? date('Y');
-        $bulan         = $request->bulan ?? 'semua';
-        $jenis         = $request->jenis ?? 'semua';
-        $dariTanggal   = $request->dari_tanggal;
-        $sampaiTanggal = $request->sampai_tanggal;
-        $kategori      = $request->kategori;
+        $tahun = $request->tahun ?? date('Y');
+        $bulan = $request->bulan ?? 'semua';
+        $jenis = $request->jenis ?? 'semua';
 
-        // Semua transaksi (tidak ada status filter)
+        // ── tabel transaksi ──────────────────────────────────────────────────
         $query = TransaksiKeuangan::with(['kategori'])->whereYear('tanggal', $tahun);
+        if ($request->filled('dari_tanggal'))  $query->whereDate('tanggal', '>=', $request->dari_tanggal);
+        if ($request->filled('sampai_tanggal')) $query->whereDate('tanggal', '<=', $request->sampai_tanggal);
+        if ($bulan !== 'semua')                 $query->whereMonth('tanggal', $bulan);
+        if ($jenis !== 'semua')                 $query->where('jenis', $jenis);
+        if ($request->filled('kategori'))       $query->where('id_kategori', $request->kategori);
 
-        if ($request->filled('dari_tanggal')) $query->whereDate('tanggal', '>=', $dariTanggal);
-        if ($request->filled('sampai_tanggal')) $query->whereDate('tanggal', '<=', $sampaiTanggal);
-        if ($bulan != 'semua') $query->whereMonth('tanggal', $bulan);
-        if ($jenis != 'semua') $query->where('jenis', $jenis);
-        if ($request->filled('kategori')) $query->where('id_kategori', $kategori);
+        $transaksis = $query->orderBy('tanggal', 'desc')->paginate(15)->withQueryString();
 
-        $transaksis = $query->orderBy('tanggal', 'desc')->paginate(15);
-
-        // Statistik
+        // ── summary cards ────────────────────────────────────────────────────
         $statsQuery = TransaksiKeuangan::whereYear('tanggal', $tahun);
-        if ($request->filled('dari_tanggal')) $statsQuery->whereDate('tanggal', '>=', $dariTanggal);
-        if ($request->filled('sampai_tanggal')) $statsQuery->whereDate('tanggal', '<=', $sampaiTanggal);
-        if ($request->filled('kategori')) $statsQuery->where('id_kategori', $kategori);
-        if ($jenis != 'semua') $statsQuery->where('jenis', $jenis);
+        if ($request->filled('dari_tanggal'))  $statsQuery->whereDate('tanggal', '>=', $request->dari_tanggal);
+        if ($request->filled('sampai_tanggal')) $statsQuery->whereDate('tanggal', '<=', $request->sampai_tanggal);
+        if ($bulan !== 'semua')                 $statsQuery->whereMonth('tanggal', $bulan);
+        if ($request->filled('kategori'))       $statsQuery->where('id_kategori', $request->kategori);
 
         $totalPemasukan   = (clone $statsQuery)->where('jenis', 'pemasukan')->sum('jumlah');
         $totalPengeluaran = (clone $statsQuery)->where('jenis', 'pengeluaran')->sum('jumlah');
-        $saldo            = $totalPemasukan - $totalPengeluaran;
+        // Jika filter jenis aktif, sesuaikan display
+        if ($jenis === 'pemasukan')   $totalPengeluaran = 0;
+        if ($jenis === 'pengeluaran') $totalPemasukan   = 0;
+        $saldo = $totalPemasukan - $totalPengeluaran;
 
-        // Data grafik per bulan
+        // ── data grafik per bulan ────────────────────────────────────────────
         $grafikData = [];
         for ($i = 1; $i <= 12; $i++) {
-            $gq = TransaksiKeuangan::whereMonth('tanggal', $i)->whereYear('tanggal', $tahun);
-            if ($request->filled('dari_tanggal')) $gq->whereDate('tanggal', '>=', $dariTanggal);
-            if ($request->filled('sampai_tanggal')) $gq->whereDate('tanggal', '<=', $sampaiTanggal);
-            if ($request->filled('kategori')) $gq->where('id_kategori', $kategori);
+            $gq = TransaksiKeuangan::whereYear('tanggal', $tahun)->whereMonth('tanggal', $i);
+            if ($request->filled('dari_tanggal'))  $gq->whereDate('tanggal', '>=', $request->dari_tanggal);
+            if ($request->filled('sampai_tanggal')) $gq->whereDate('tanggal', '<=', $request->sampai_tanggal);
+            if ($request->filled('kategori'))       $gq->where('id_kategori', $request->kategori);
 
             $grafikData[$i] = [
                 'bulan'       => date('F', mktime(0, 0, 0, $i, 1)),

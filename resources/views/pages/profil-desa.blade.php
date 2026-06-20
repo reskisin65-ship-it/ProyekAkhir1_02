@@ -1003,12 +1003,12 @@
         {{-- Kontak WA di Footer --}}
         @if($profil->telepon_desa)
         <div class="mb-6">
-            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $profil->telepon_desa) }}" 
+            <a href="https://wa.me/{{ $profil->telepon_desa ? preg_replace('/[^0-9]/', '', $profil->telepon_desa) : '62' }}" 
                target="_blank"
                class="wa-footer-btn">
                 <i class="fa-brands fa-whatsapp"></i>
                 <span>Hubungi via WhatsApp</span>
-                <span class="text-sm opacity-75">{{ $profil->telepon_desa }}</span>
+                <span class="text-sm opacity-75">{{ $profil->telepon_desa ?? '-' }}</span>
             </a>
         </div>
         @else
