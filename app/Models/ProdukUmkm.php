@@ -13,6 +13,10 @@ class ProdukUmkm extends Model
     protected $fillable = [
         'user_id', 'umkm_id', 'nama_produk', 'deskripsi', 'harga', 'foto_produk'
     ];
+
+    protected $casts = [
+        'harga' => 'integer',
+    ];
     
     public function umkm()
     {

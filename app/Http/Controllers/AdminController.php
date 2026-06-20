@@ -167,10 +167,11 @@ class AdminController extends Controller
     {
         $request->validate([
             'judul' => 'required|min:5',
-            'kategori' => 'required',
+            'kategori' => 'required|in:berita,pengumuman,kegiatan',
             'isi_berita' => 'required|min:10',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'tanggal_publikasi' => 'required|date',
+            'status' => 'required|in:publish,draft',
         ]);
 
         $fotoPath = null;
@@ -206,10 +207,11 @@ class AdminController extends Controller
         
         $request->validate([
             'judul' => 'required|min:5',
-            'kategori' => 'required',
+            'kategori' => 'required|in:berita,pengumuman,kegiatan',
             'isi_berita' => 'required|min:10',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'tanggal_publikasi' => 'required|date',
+            'status' => 'required|in:publish,draft',
         ]);
 
         $fotoPath = $berita->foto;
@@ -376,7 +378,7 @@ class AdminController extends Controller
         $umkm->update(['status' => 'approved']);
         
         $roleUmkm = Role::where('nama_role', 'umkm')->first();
-        if ($roleUmkm) {
+        if ($roleUmkm && !$umkm->user->isAdmin()) {
             $umkm->user->update(['id_role' => $roleUmkm->id_role]);
         }
         

@@ -588,147 +588,59 @@
             </a>
         </div>
 
-        {{-- ============================================= --}}
-        {{-- 5. STATISTIK DIAGRAM PREMIUM --}}
-        {{-- ============================================= --}}
-        <div class="mb-16">
-            <div class="bg-white rounded-[2.5rem] border border-slate-100 p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-500">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-                    <div>
-                        <span class="inline-block px-4 py-1 mb-3 text-[10px] font-black tracking-[0.3em] text-emerald-600 uppercase bg-emerald-100/50 rounded-full">
-                            📊 Data Statistik
-                        </span>
-                        <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Visualisasi Data Penduduk</h2>
-                        <p class="text-slate-400 text-sm mt-1">Data realtime dari database desa</p>
-                    </div>
-                    
-                    {{-- Tombol Setting Premium --}}
-                    <div class="w-full md:w-auto" x-data="{ 
-                        settingOpen: false, 
-                        chartType: 'bar', 
-                        dataType: 'penduduk'
-                    }">
-                        <button @click="settingOpen = !settingOpen" class="group flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-full font-black text-xs tracking-wider hover:shadow-xl transition-all duration-300 hover:scale-105 w-full md:w-auto">
-                            <i class="fa-solid fa-sliders-h text-sm group-hover:rotate-90 transition-transform duration-500"></i>
-                            <span>PENGATURAN DIAGRAM</span>
-                            <i class="fa-solid fa-chevron-down text-xs transition-all duration-300" :class="settingOpen ? 'rotate-180' : ''"></i>
-                        </button>
-                        
-                        {{-- Dropdown Setting --}}
-                        <div x-show="settingOpen" @click.away="settingOpen = false" x-cloak 
-                            x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 scale-95"
-                            x-transition:enter-end="opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="opacity-100 scale-100"
-                            x-transition:leave-end="opacity-0 scale-95"
-                            class="mt-3 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden z-50 w-full md:w-[480px]">
-                            
-                            <div class="bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3 flex items-center justify-between">
-                                <div>
-                                    <h3 class="font-black text-white text-sm"><i class="fa-solid fa-chart-simple mr-2"></i> Customize Chart</h3>
-                                    <p class="text-[9px] text-emerald-100">Sesuaikan tampilan diagram sesuai kebutuhan</p>
-                                </div>
-                                <button @click="settingOpen = false" class="text-white/80 hover:text-white transition-transform hover:rotate-90 duration-300">
-                                    <i class="fa-solid fa-times text-lg"></i>
-                                </button>
-                            </div>
-                            
-                            <div class="p-5">
-                                <div class="mb-6">
-                                    <label class="block text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-2">
-                                        <i class="fa-solid fa-chart-line text-emerald-500"></i> Jenis Diagram
-                                    </label>
-                                    <div class="grid grid-cols-2 gap-3">
-                                        <button @click="chartType = 'bar'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="px-4 py-3 rounded-xl text-xs font-black transition-all duration-300" :class="chartType === 'bar' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
-                                            <i class="fa-solid fa-chart-bar mr-2"></i> Bar Chart
-                                        </button>
-                                        <button @click="chartType = 'line'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="px-4 py-3 rounded-xl text-xs font-black transition-all duration-300" :class="chartType === 'line' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
-                                            <i class="fa-solid fa-chart-line mr-2"></i> Line Chart
-                                        </button>
-                                        <button @click="chartType = 'pie'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="px-4 py-3 rounded-xl text-xs font-black transition-all duration-300" :class="chartType === 'pie' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
-                                            <i class="fa-solid fa-chart-pie mr-2"></i> Pie Chart
-                                        </button>
-                                        <button @click="chartType = 'doughnut'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="px-4 py-3 rounded-xl text-xs font-black transition-all duration-300" :class="chartType === 'doughnut' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'">
-                                            <i class="fa-solid fa-chart-simple mr-2"></i> Donut Chart
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-2">
-                                        <i class="fa-solid fa-database text-emerald-500"></i> Kategori Data
-                                    </label>
-                                    <div class="space-y-2">
-                                        <button @click="dataType = 'penduduk'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="w-full px-4 py-3 rounded-xl text-xs font-black transition-all duration-300 text-left flex items-center justify-between group" :class="dataType === 'penduduk' ? 'bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border-l-4 border-emerald-500 shadow-md' : 'bg-gray-50 text-gray-600 hover:bg-emerald-50'">
-                                            <span class="flex items-center gap-3">
-                                                <i class="fa-solid fa-users text-lg" :class="dataType === 'penduduk' ? 'text-emerald-500' : 'text-gray-400'"></i>
-                                                <div>
-                                                    <p class="font-black text-sm">📊 Statistik Penduduk</p>
-                                                    <p class="text-[8px] text-gray-400">Laki-laki, Perempuan, Kepala Keluarga</p>
-                                                </div>
-                                            </span>
-                                            <i x-show="dataType === 'penduduk'" class="fa-solid fa-check-circle text-emerald-500 text-xl animate-bounce"></i>
-                                        </button>
-                                        <button @click="dataType = 'umur'; updateChartMasyarakat(chartType, dataType); settingOpen = false" class="w-full px-4 py-3 rounded-xl text-xs font-black transition-all duration-300 text-left flex items-center justify-between group" :class="dataType === 'umur' ? 'bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border-l-4 border-emerald-500 shadow-md' : 'bg-gray-50 text-gray-600 hover:bg-emerald-50'">
-                                            <span class="flex items-center gap-3">
-                                                <i class="fa-solid fa-chart-line text-lg" :class="dataType === 'umur' ? 'text-emerald-500' : 'text-gray-400'"></i>
-                                                <div>
-                                                    <p class="font-black text-sm">📈 Kelompok Umur</p>
-                                                    <p class="text-[8px] text-gray-400">0-14, 15-29, 30-59, 60+ tahun</p>
-                                                </div>
-                                            </span>
-                                            <i x-show="dataType === 'umur'" class="fa-solid fa-check-circle text-emerald-500 text-xl animate-bounce"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="bg-gray-50 px-5 py-3 border-t border-gray-100">
-                                <p class="text-[9px] text-gray-400 text-center flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-sync-alt text-emerald-500 animate-spin"></i> Data diupdate secara realtime
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                {{-- Canvas untuk Diagram --}}
-                <div class="relative">
-                    <div id="chartLoadingM" class="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-10 opacity-0 invisible transition-all duration-300 rounded-2xl">
-                        <div class="flex flex-col items-center gap-3">
-                            <div class="w-10 h-10 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
-                            <p class="text-xs text-emerald-600 font-bold">Memuat diagram...</p>
-                        </div>
-                    </div>
-                    <canvas id="masyarakatStatistikChart" width="800" height="400" style="max-height: 400px; width: 100%;"></canvas>
-                </div>
-                
-                {{-- Quick Access Cards --}}
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6 pt-4 border-t border-slate-100">
-                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-3 text-center cursor-pointer hover:scale-105 transition-all duration-300" onclick="quickChangeMasyarakat('bar', 'penduduk')">
-                        <i class="fa-solid fa-venus-mars text-emerald-500 text-sm"></i>
-                        <p class="text-xs font-bold text-emerald-700 mt-1">Jenis Kelamin</p>
-                        <p class="text-lg font-black text-emerald-600">{{ number_format(($statistik['penduduk_pria'] ?? 0) + ($statistik['penduduk_wanita'] ?? 0)) }}</p>
-                    </div>
-                    <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-3 text-center cursor-pointer hover:scale-105 transition-all duration-300" onclick="quickChangeMasyarakat('pie', 'penduduk')">
-                        <i class="fa-solid fa-chart-pie text-blue-500 text-sm"></i>
-                        <p class="text-xs font-bold text-blue-700 mt-1">Komposisi</p>
-                        <p class="text-lg font-black text-blue-600">{{ number_format($statistik['penduduk_pria'] ?? 0) }} : {{ number_format($statistik['penduduk_wanita'] ?? 0) }}</p>
-                    </div>
-                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-3 text-center cursor-pointer hover:scale-105 transition-all duration-300" onclick="quickChangeMasyarakat('bar', 'umur')">
-                        <i class="fa-solid fa-calendar-week text-purple-500 text-sm"></i>
-                        <p class="text-xs font-bold text-purple-700 mt-1">Produktif</p>
-                        <p class="text-lg font-black text-purple-600">{{ number_format(($statistik['kelompok_umur_15_29'] ?? 0) + ($statistik['kelompok_umur_30_59'] ?? 0)) }}</p>
-                    </div>
-                    <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-3 text-center cursor-pointer hover:scale-105 transition-all duration-300" onclick="quickChangeMasyarakat('doughnut', 'umur')">
-                        <i class="fa-solid fa-chart-simple text-amber-500 text-sm"></i>
-                        <p class="text-xs font-bold text-amber-700 mt-1">Rasio</p>
-                        <p class="text-lg font-black text-amber-600">{{ number_format((($statistik['kelompok_umur_0_14'] ?? 0) / max(($statistik['kelompok_umur_60'] ?? 0), 1)) * 100, 1) }}%</p>
-                    </div>
-                </div>
+{{-- 5. STATISTIK DESA - CARD SEDERHANA --}}
+<div class="mb-16">
+    <div class="bg-white rounded-[2.5rem] border border-slate-100 p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-500">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+            <div>
+                <span class="inline-block px-4 py-1 mb-3 text-[10px] font-black tracking-[0.3em] text-emerald-600 uppercase bg-emerald-100/50 rounded-full">
+                    📊 Data Statistik
+                </span>
+                <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Statistik Penduduk</h2>
+                <p class="text-slate-400 text-sm mt-1">Data realtime dari database desa</p>
             </div>
         </div>
+        
+        {{-- Statistik Cards --}}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {{-- Total Penduduk --}}
+            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-5 text-center border border-emerald-100/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <i class="fa-solid fa-users text-white text-xl"></i>
+                </div>
+                <p class="text-3xl font-black text-emerald-700">{{ number_format(($statistik['penduduk_pria'] ?? 0) + ($statistik['penduduk_wanita'] ?? 0)) }}</p>
+                <p class="text-xs font-bold text-emerald-600/70 mt-1 uppercase tracking-wider">Total Penduduk</p>
+            </div>
+            
+            {{-- Laki-laki --}}
+            <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-5 text-center border border-blue-100/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <i class="fa-solid fa-mars text-white text-xl"></i>
+                </div>
+                <p class="text-3xl font-black text-blue-700">{{ number_format($statistik['penduduk_pria'] ?? 0) }}</p>
+                <p class="text-xs font-bold text-blue-600/70 mt-1 uppercase tracking-wider">Laki-laki</p>
+            </div>
+            
+            {{-- Perempuan --}}
+            <div class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-5 text-center border border-pink-100/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <i class="fa-solid fa-venus text-white text-xl"></i>
+                </div>
+                <p class="text-3xl font-black text-pink-700">{{ number_format($statistik['penduduk_wanita'] ?? 0) }}</p>
+                <p class="text-xs font-bold text-pink-600/70 mt-1 uppercase tracking-wider">Perempuan</p>
+            </div>
+            
+            {{-- Kepala Keluarga --}}
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 text-center border border-amber-100/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <i class="fa-solid fa-house-user text-white text-xl"></i>
+                </div>
+                <p class="text-3xl font-black text-amber-700">{{ number_format($statistik['total_kk'] ?? 0) }}</p>
+                <p class="text-xs font-bold text-amber-600/70 mt-1 uppercase tracking-wider">Kepala Keluarga</p>
+            </div>
+        </div>
+    </div>
+</div>
 
         {{-- ============================================= --}}
         {{-- 6. STATUS PENGAJUAN SURAT TERBARU --}}
@@ -996,8 +908,7 @@
                         
                         <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
                             <div class="flex items-center gap-2 text-xs text-slate-400">
-                                <i class="fa-regular fa-heart"></i>
-                                <span>Dukung aspirasi ini</span>
+    
                             </div>
                             <a href="{{ route('masyarakat.aspirasi.create') }}" class="text-[9px] text-emerald-600 font-black hover:text-emerald-700 transition flex items-center gap-1">
                                 <i class="fa-regular fa-comment"></i> SAMPAIKAN ASPIRASI
@@ -1166,9 +1077,6 @@
                 <div class="flex gap-5 justify-center flex-wrap">
                     <a href="{{ route('kontak') }}" class="group inline-flex items-center gap-2 px-8 py-4 bg-white text-emerald-700 rounded-full font-black text-sm tracking-wider hover:shadow-xl transition-all duration-300 hover:scale-105">
                         <i class="fa-regular fa-envelope group-hover:scale-110 transition"></i> HUBUNGI KAMI
-                    </a>
-                    <a href="#" class="group inline-flex items-center gap-2 px-8 py-4 border-2 border-white text-white rounded-full font-black text-sm tracking-wider hover:bg-white/10 transition-all duration-300 hover:scale-105">
-                        <i class="fa-brands fa-whatsapp group-hover:scale-110 transition"></i> WHATSAPP
                     </a>
                 </div>
             </div>

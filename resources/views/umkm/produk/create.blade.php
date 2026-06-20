@@ -450,9 +450,9 @@
                             <i class="fa-solid fa-money-bill"></i> Harga (Rp)
                             <span class="required">*</span>
                         </label>
-                        <input type="number" name="harga" value="{{ old('harga') }}" min="0" required
+                        <input type="number" name="harga" value="{{ old('harga') }}" min="100" max="999999999999" step="1" required
                                class="form-control @error('harga') is-invalid @enderror"
-                               placeholder="0">
+                               placeholder="Contoh: 15000">
                         @error('harga')
                             <p class="error-feedback">
                                 <i class="fa-solid fa-circle-exclamation"></i>

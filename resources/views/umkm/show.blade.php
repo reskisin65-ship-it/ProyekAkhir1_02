@@ -49,7 +49,7 @@
                                    class="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl text-sm font-bold hover:bg-emerald-100 transition-all hover:-translate-y-0.5"
                                    title="Kelola Produk">
                                     <i class="fa-solid fa-box"></i>
-                                    <span>Kelola Produk</span>
+                                    <span>Kelola USAHA</span>
                                 </a>
                             @endif
                         @endauth
@@ -146,7 +146,7 @@
                                 <a href="{{ route('umkm.produk.index') }}" 
                                    class="group relative px-6 py-5 bg-white border-2 border-emerald-500 text-emerald-600 rounded-full font-bold overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
                                     <span class="relative z-10 flex items-center gap-2 text-xs tracking-widest uppercase">
-                                        <i class="fa-solid fa-box"></i> Kelola Produk
+                                        <i class="fa-solid fa-box"></i> Kelola USAHA
                                     </span>
                                 </a>
                                 <button onclick="openModal()" class="group relative px-10 py-5 bg-slate-900 text-white rounded-full font-bold overflow-hidden shadow-2xl transition-all hover:scale-105 active:scale-95">

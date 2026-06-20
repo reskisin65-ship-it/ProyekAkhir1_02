@@ -492,11 +492,17 @@
                     </label>
                     <div class="kategori-options">
                         @foreach($hierarki as $key => $kat)
+                            @php
+                                $disabled = in_array($key, ['kepala_desa', 'sekretaris_desa'])
+                                    && ($kategoriCounts[$key] ?? 0) > 0
+                                    && $pengurus->kategori_jabatan !== $key;
+                            @endphp
                             <div class="kategori-option">
                                 <input type="radio" name="kategori_jabatan" id="kat_{{ $key }}" 
                                        value="{{ $key }}" 
-                                       {{ old('kategori_jabatan', $pengurus->kategori_jabatan) == $key ? 'checked' : '' }}>
-                                <label for="kat_{{ $key }}">
+                                       {{ old('kategori_jabatan', $pengurus->kategori_jabatan) == $key ? 'checked' : '' }}
+                                       {{ $disabled ? 'disabled' : '' }}>
+                                <label for="kat_{{ $key }}" class="{{ $disabled ? 'opacity-50 cursor-not-allowed' : '' }}">
                                     <div class="kategori-icon" style="background: 
                                         @if($kat['color'] == 'amber') #fef3c7
                                         @elseif($kat['color'] == 'blue') #dbeafe

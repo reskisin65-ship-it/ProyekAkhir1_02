@@ -77,23 +77,19 @@
         @elseif($myUmkm->status == 'approved')
             {{-- UMKM sudah disetujui - TAMPILKAN DUA TOMBOL --}}
             <div class="flex flex-col sm:flex-row gap-3">
-                @if($hasPendingOrRejected)
-                    {{-- Jika ada UMKM lainnya yang pending/rejected, tampilkan "STATUS UMKM" --}}
-                    <a href="{{ route('masyarakat.umkm.status') }}" class="group flex items-center gap-3 px-6 py-4 bg-amber-500 text-white rounded-full font-bold shadow-lg shadow-amber-200 hover:bg-amber-600 hover:-translate-y-1 transition-all whitespace-nowrap">
-                        <span class="flex items-center gap-2">
-                            <i class="fa-regular fa-clock"></i>
-                            STATUS UMKM
-                        </span>
-                        <i class="fa-solid fa-chart-simple group-hover:rotate-12 transition-transform"></i>
-                    </a>
-                @else
-                    {{-- Jika tidak ada UMKM pending, tampilkan "TAMBAH USAHA BARU" --}}
-                    <a href="{{ route('umkm.create') }}" class="group flex items-center gap-3 px-6 py-4 bg-emerald-600 text-white rounded-full font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all whitespace-nowrap">
-                        <span>TAMBAH USAHA BARU</span>
-                        <i class="fa-solid fa-plus group-hover:rotate-90 transition-transform"></i>
-                    </a>
-                @endif
-                <a href="{{ route('umkm.show', $myUmkm->id_umkm) }}" class="group flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-full font-bold shadow-lg hover:shadow-slate-200 hover:-translate-y-1 transition-all whitespace-nowrap">
+                {{-- Selalu tampilkan TAMBAH USAHA BARU dan STATUS UMKM --}}
+                <a href="{{ route('umkm.create') }}" class="group flex items-center gap-3 px-6 py-4 bg-emerald-600 text-white rounded-full font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all whitespace-nowrap">
+                    <span>TAMBAH USAHA BARU</span>
+                    <i class="fa-solid fa-plus group-hover:rotate-90 transition-transform"></i>
+                </a>
+                <a href="{{ route('masyarakat.umkm.status') }}" class="group flex items-center gap-3 px-6 py-4 bg-amber-500 text-white rounded-full font-bold shadow-lg shadow-amber-200 hover:bg-amber-600 hover:-translate-y-1 transition-all whitespace-nowrap">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-regular fa-clock"></i>
+                        STATUS UMKM
+                    </span>
+                    <i class="fa-solid fa-chart-simple group-hover:rotate-12 transition-transform"></i>
+                </a>
+                <a href="{{ route('umkm.produk.index.umkm', $myUmkm->id_umkm) }}" class="group flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-full font-bold shadow-lg hover:shadow-slate-200 hover:-translate-y-1 transition-all whitespace-nowrap">
                     <span>KELOLA USAHA</span>
                     <i class="fa-solid fa-gear group-hover:rotate-90 transition-transform"></i>
                 </a>

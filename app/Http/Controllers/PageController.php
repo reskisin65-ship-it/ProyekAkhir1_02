@@ -112,7 +112,7 @@ class PageController extends Controller
         // ==============================================
         // DATA GALERI UNTUK PROFIL DESA
         // ==============================================
-        $galeris = Galeri::orderBy('created_at', 'desc')->limit(6)->get();
+        $galeris = Galeri::orderBy('created_at', 'desc')->limit(4)->get();
         
         return view('pages.profil-desa', compact(
             'profil', 'aparaturs', 

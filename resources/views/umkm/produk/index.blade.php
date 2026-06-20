@@ -20,7 +20,7 @@
                         </a>
                     </div>
                     <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
-                        Kelola <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Produk</span>
+                        Kelola <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">USAHA</span>
                     </h1>
                     <p class="text-slate-500 mt-2 max-w-md">
                         Kelola dan atur semua produk dari usaha Anda
@@ -28,7 +28,7 @@
                 </div>
                 
                 <div class="flex gap-3">
-                    <a href="{{ route('umkm.dashboard') }}" 
+                    <a href="{{ route('umkm.show', $umkm->id_umkm) }}" 
                        class="group px-6 py-3 bg-white border border-slate-200 text-slate-600 rounded-xl font-bold hover:bg-slate-50 hover:-translate-y-0.5 transition-all duration-300 shadow-sm">
                         <i class="fa-solid fa-store mr-2"></i>
                         Profil Usaha

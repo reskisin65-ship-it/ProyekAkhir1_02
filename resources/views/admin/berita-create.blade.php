@@ -184,9 +184,9 @@
                             <div class="relative">
                                 <select name="kategori" 
                                     class="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 text-sm text-white focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all appearance-none cursor-pointer hover:bg-white/10">
-                                    <option value="berita" class="bg-white text-slate-700">🗞️ Berita</option>
-                                    <option value="pengumuman" class="bg-white text-slate-700">📢 Pengumuman</option>
-                                    <option value="kegiatan" class="bg-white text-slate-700">📅 Kegiatan</option>
+                                    <option value="berita" class="bg-white text-slate-700" {{ old('kategori') == 'berita' ? 'selected' : '' }}>🗞️ Berita</option>
+                                    <option value="pengumuman" class="bg-white text-slate-700" {{ old('kategori') == 'pengumuman' ? 'selected' : '' }}>📢 Pengumuman</option>
+                                    <option value="kegiatan" class="bg-white text-slate-700" {{ old('kategori') == 'kegiatan' ? 'selected' : '' }}>📅 Kegiatan</option>
                                 </select>
                                 <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-emerald-400">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -208,11 +208,11 @@
                             <span class="block text-[10px] font-black text-emerald-400 uppercase tracking-[0.3em]">Visibility</span>
                             <div class="flex gap-3">
                                 <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="status" value="publish" checked class="peer hidden">
+                                    <input type="radio" name="status" value="publish" {{ old('status', 'publish') == 'publish' ? 'checked' : '' }} class="peer hidden">
                                     <div class="py-3 text-center rounded-xl border border-white/10 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 transition-all text-[10px] font-black uppercase tracking-widest opacity-60 peer-checked:opacity-100">Set Publish</div>
                                 </label>
                                 <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="status" value="draft" class="peer hidden">
+                                    <input type="radio" name="status" value="draft" {{ old('status') == 'draft' ? 'checked' : '' }} class="peer hidden">
                                     <div class="py-3 text-center rounded-xl border border-white/10 peer-checked:bg-white peer-checked:text-slate-900 transition-all text-[10px] font-black uppercase tracking-widest opacity-60 peer-checked:opacity-100">Set Draft</div>
                                 </label>
                             </div>

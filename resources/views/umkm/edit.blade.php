@@ -575,6 +575,62 @@
                         @enderror
                         <p class="text-xs text-gray-400 mt-1">* Tulis deskripsi yang menarik untuk menarik minat pelanggan</p>
                     </div>
+
+                    {{-- Logo Usaha --}}
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            <i class="fa-solid fa-image"></i> Update Logo Usaha
+                            <span class="text-gray-400 text-xs ml-1">(Biarkan kosong jika tidak ingin mengubah)</span>
+                        </label>
+                        
+                        @if($umkm->logo)
+                        <div class="mb-3">
+                            <p class="text-xs text-gray-500 mb-1">Logo Saat Ini:</p>
+                            <img src="{{ asset('storage/' . $umkm->logo) }}" alt="Logo UMKM" class="h-20 object-cover rounded shadow-sm border border-gray-200">
+                        </div>
+                        @endif
+
+                        <div class="upload-area" onclick="document.getElementById('logo_input').click()">
+                            <div class="upload-icon">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </div>
+                            <div class="upload-title">Klik untuk ubah logo</div>
+                            <div class="upload-hint">Format: JPG, PNG. Maks: 2MB</div>
+                            <input type="file" name="logo" id="logo_input" accept="image/*" class="file-input" onchange="updateFileName('logo_input', 'logo_name')">
+                            <div id="logo_name" class="file-name"></div>
+                        </div>
+                        @error('logo')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Bukti Usaha --}}
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            <i class="fa-solid fa-file-image"></i> Update Bukti Usaha
+                            <span class="text-gray-400 text-xs ml-1">(Biarkan kosong jika tidak ingin mengubah)</span>
+                        </label>
+                        
+                        @if($umkm->bukti_usaha)
+                        <div class="mb-3">
+                            <p class="text-xs text-gray-500 mb-1">Bukti Saat Ini:</p>
+                            <img src="{{ asset('storage/' . $umkm->bukti_usaha) }}" alt="Bukti Usaha" class="h-20 object-cover rounded shadow-sm border border-gray-200">
+                        </div>
+                        @endif
+
+                        <div class="upload-area" onclick="document.getElementById('bukti_input').click()" style="border-color: var(--border);">
+                            <div class="upload-icon" style="background: #f1f5f9;">
+                                <i class="fa-solid fa-folder-open" style="color: var(--gray);"></i>
+                            </div>
+                            <div class="upload-title">Klik untuk ubah bukti usaha</div>
+                            <div class="upload-hint">Format: JPG, PNG. Maks: 2MB (Foto tempat usaha/produk)</div>
+                            <input type="file" name="bukti_usaha" id="bukti_input" accept="image/*" class="file-input" onchange="updateFileName('bukti_input', 'bukti_name')">
+                            <div id="bukti_name" class="file-name"></div>
+                        </div>
+                        @error('bukti_usaha')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- Action Buttons --}}
@@ -659,6 +715,18 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // File name display function
+        window.updateFileName = function(inputId, displayId) {
+            const input = document.getElementById(inputId);
+            const display = document.getElementById(displayId);
+            if (input.files && input.files[0]) {
+                display.innerHTML = `<i class="fa-solid fa-check-circle"></i> ${input.files[0].name}`;
+                display.style.color = '#10b981';
+            } else {
+                display.innerHTML = '';
+            }
+        };
+
         // Form validation before submit
         const form = document.getElementById('editForm');
         const submitBtn = document.getElementById('submitBtn');

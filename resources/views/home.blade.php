@@ -105,69 +105,105 @@
     .hero-content {
         position: absolute;
         inset: 0;
-        background: linear-gradient(105deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+        background: linear-gradient(105deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.1) 100%);
         display: flex;
         flex-direction: column;
         justify-content: center;
         padding-left: 8%;
         padding-right: 40%;
     }
-    .hero-badge {
+
+    /* ============================================
+       HERO SLIDER - TEKS PUTIH DENGAN SHADOW
+    ============================================ */
+    .hero-slide .hero-content .hero-badge {
+        background: rgba(16, 185, 129, 0.25) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        color: #ffffff !important;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4) !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.1em !important;
+        padding: 0.4rem 1.4rem !important;
+        font-size: 0.75rem !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
         display: inline-block;
-        padding: 0.3rem 1.2rem;
-        background: rgba(255,255,255,0.15);
-        backdrop-filter: blur(8px);
         border-radius: 40px;
         width: fit-content;
         margin-bottom: 1rem;
-        font-size: 0.7rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        color: white;
     }
-    .hero-title {
+
+    .hero-slide .hero-content .hero-title {
+        color: #ffffff !important;
+        text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+        font-weight: 700 !important;
         font-size: clamp(2.5rem, 6vw, 5rem);
         font-family: 'Playfair Display', serif;
-        font-weight: 700;
-        color: white;
         line-height: 1.1;
         margin-bottom: 1rem;
     }
-    .hero-subtitle {
-        font-size: 1rem;
-        color: rgba(255,255,255,0.85);
+
+    .hero-slide .hero-content .hero-subtitle {
+        color: rgba(255, 255, 255, 0.95) !important;
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5) !important;
+        font-weight: 400 !important;
+        font-size: 1.05rem !important;
         max-width: 500px;
         line-height: 1.6;
         margin-bottom: 2rem;
     }
-    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-hero-primary {
+
+    .hero-slide .hero-content .hero-buttons .btn-hero-primary {
+        background: #ffffff !important;
+        color: #059669 !important;
+        font-weight: 700 !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25) !important;
         padding: 0.8rem 2rem;
-        background: white;
-        color: var(--primary-dark);
         border-radius: 50px;
-        font-weight: 700;
-        font-size: 0.8rem;
-        transition: var(--transition-bounce);
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
+        transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
     }
-    .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); background: var(--primary); color: white; }
-    .btn-hero-secondary {
+
+    .hero-slide .hero-content .hero-buttons .btn-hero-primary:hover {
+        background: #10b981 !important;
+        color: #ffffff !important;
+        box-shadow: 0 12px 40px rgba(16, 185, 129, 0.4) !important;
+        transform: translateY(-3px);
+    }
+
+    .hero-slide .hero-content .hero-buttons .btn-hero-secondary {
+        background: rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3) !important;
         padding: 0.8rem 2rem;
-        background: rgba(255,255,255,0.15);
-        backdrop-filter: blur(8px);
-        color: white;
         border-radius: 50px;
-        font-weight: 600;
-        font-size: 0.8rem;
-        transition: var(--transition-bounce);
         text-decoration: none;
-        border: 1px solid rgba(255,255,255,0.3);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
     }
-    .btn-hero-secondary:hover { background: rgba(255,255,255,0.3); transform: translateY(-3px); }
+
+    .hero-slide .hero-content .hero-buttons .btn-hero-secondary:hover {
+        background: rgba(255, 255, 255, 0.3) !important;
+        border-color: rgba(255, 255, 255, 0.6) !important;
+        transform: translateY(-3px);
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
     .slider-nav {
         position: absolute;
         bottom: 2rem;
@@ -187,7 +223,7 @@
     .slider-dot.active { background: white; width: 60px; }
 
     /* ============================================
-       STATS CARDS PREMIUM (SEPERTI STATISTIK.BLADE.PHP)
+       STATS CARDS PREMIUM
     ============================================ */
     .stats-grid {
         display: grid;
@@ -438,7 +474,7 @@
     .locked-content span { font-weight: 700; font-size: 0.8rem; color: var(--dark); }
 
     /* ============================================
-       CHART SECTION (DARI STATISTIK.BLADE.PHP)
+       CHART SECTION
     ============================================ */
     .chart-section {
         background: var(--card);
@@ -584,7 +620,7 @@
     .info-content p:last-child { font-size: 0.65rem; color: var(--gray); }
 
     /* ============================================
-       NEWS & GALLERY - ELEGAN & BERANIMASI
+       NEWS & GALLERY
     ============================================ */
     .news-grid {
         display: grid;
@@ -678,7 +714,7 @@
     .gallery-overlay i { color: white; font-size: 1.5rem; }
 
     /* ============================================
-       FAQ SECTION - DROPDOWN WORKING DENGAN JAVASCRIPT
+       FAQ SECTION
     ============================================ */
     .faq-grid {
         display: grid;
@@ -730,290 +766,192 @@
     }
 
     /* ============================================
-   TUTORIAL SECTION PREMIUM
-   ============================================ */
-   
-.tutorial-section {
-    margin-top: 2.5rem;
-    background: white;
-    border-radius: 28px;
-    padding: 2rem;
-    border: 1px solid #eef2f6;
-    transition: all 0.3s ease;
-}
-
-.tutorial-section:hover {
-    border-color: #10b981;
-    box-shadow: 0 6px 26px rgba(0,0,0,0.07);
-}
-
-/* Header Tutorial */
-.tutorial-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #eef2f6;
-    padding-bottom: 1rem;
-}
-
-.tutorial-header i {
-    font-size: 1.6rem;
-    color: #10b981;
-    min-width: 2rem;
-    text-align: center;
-}
-
-.tutorial-header h3 {
-    font-size: 1.45rem;
-    font-weight: 800;
-    margin: 0;
-    color: #0f172a;
-    line-height: 1.1;
-}
-
-/* Intro Text */
-.tutorial-intro {
-    font-size: 1rem;
-    color: #475569;
-    margin-bottom: 1.75rem;
-    line-height: 1.7;
-    max-width: 780px;
-}
-
-.tutorial-content-grid {
-    display: grid;
-    gap: 1.5rem;
-}
-
-.tutorial-special-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 0;
-}
-
-.tutorial-special-card {
-    background: linear-gradient(135deg, #f8fafc, #ffffff);
-    border-radius: 24px;
-    padding: 1.4rem;
-    text-align: left;
-    border: 1px solid #eef2f6;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    min-height: 230px;
-    display: flex;
-    flex-direction: column;
-}
-
-.tutorial-special-card:hover {
-    transform: translateY(-5px);
-    border-color: #10b981;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
-}
-
-.tutorial-special-icon {
-    width: 56px;
-    height: 56px;
-    background: rgba(16, 185, 129, 0.1);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-    transition: all 0.3s ease;
-}
-
-.tutorial-special-card:hover .tutorial-special-icon {
-    background: #10b981;
-}
-
-.tutorial-special-card:hover .tutorial-special-icon i {
-    color: white;
-}
-
-.tutorial-special-icon i {
-    font-size: 1.4rem;
-    color: #10b981;
-    transition: all 0.3s ease;
-}
-
-.tutorial-special-title {
-    font-weight: 800;
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
-    color: #0f172a;
-}
-
-.tutorial-special-desc {
-    font-size: 0.95rem;
-    color: #475569;
-    line-height: 1.7;
-    flex-grow: 1;
-}
-
-.tutorial-general-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.tutorial-general-title {
-    font-size: 1.05rem;
-    font-weight: 800;
-    margin: 0;
-    color: #0f172a;
-}
-
-.tutorial-general-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    margin: 0;
-}
-
-.tutorial-general-item {
-    display: flex;
-    gap: 0.85rem;
-    padding: 1rem 1.1rem;
-    border-radius: 18px;
-    background: #f8fafc;
-    transition: all 0.3s ease;
-    align-items: flex-start;
-}
-
-.tutorial-general-item:hover {
-    background: rgba(16, 185, 129, 0.12);
-    transform: translateX(3px);
-}
-
-.tutorial-num {
-    width: 34px;
-    height: 34px;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 0.85rem;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-}
-
-.tutorial-general-item:hover .tutorial-num {
-    transform: scale(1.05);
-}
-
-.tutorial-general-text h4 {
-    font-size: 0.95rem;
-    font-weight: 700;
-    margin-bottom: 0.35rem;
-    color: #0f172a;
-}
-
-.tutorial-general-text p {
-    font-size: 0.85rem;
-    color: #475569;
-    line-height: 1.6;
-    margin: 0;
-}
-
-/* Footer Tutorial */
-.tutorial-footer {
-    margin-top: 1.5rem;
-    padding: 1rem 1.25rem;
-    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-    transition: all 0.3s ease;
-}
-
-.tutorial-footer:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(16,185,129,0.15);
-}
-
-.tutorial-footer i {
-    color: #10b981;
-    font-size: 1rem;
-}
-
-.tutorial-footer span {
-    font-size: 0.9rem;
-    color: #0f5f34;
-    line-height: 1.6;
-}
-
-@media (max-width: 1024px) {
-    .tutorial-special-grid { grid-template-columns: 1fr; }
-    .tutorial-general-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 768px) {
-    .tutorial-section { padding: 1.5rem; }
-    .tutorial-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
-    .tutorial-intro { font-size: 0.95rem; }
-    .tutorial-special-card { min-height: auto; }
-}
-
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .tutorial-special-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .tutorial-general-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
+       TUTORIAL SECTION PREMIUM
+    ============================================ */
     .tutorial-section {
-        padding: 1rem;
+        margin-top: 2.5rem;
+        background: white;
+        border-radius: 28px;
+        padding: 2rem;
+        border: 1px solid #eef2f6;
+        transition: all 0.3s ease;
     }
-    
-    .tutorial-special-grid {
-        grid-template-columns: 1fr;
+    .tutorial-section:hover {
+        border-color: #10b981;
+        box-shadow: 0 6px 26px rgba(0,0,0,0.07);
     }
-    
-    .tutorial-general-grid {
-        grid-template-columns: 1fr;
+    .tutorial-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #eef2f6;
+        padding-bottom: 1rem;
     }
-    
-    .tutorial-header h3 {
-        font-size: 0.85rem;
-    }
-    
     .tutorial-header i {
-        font-size: 1.1rem;
+        font-size: 1.6rem;
+        color: #10b981;
+        min-width: 2rem;
+        text-align: center;
     }
-    
+    .tutorial-header h3 {
+        font-size: 1.45rem;
+        font-weight: 800;
+        margin: 0;
+        color: #0f172a;
+        line-height: 1.1;
+    }
+    .tutorial-intro {
+        font-size: 1rem;
+        color: #475569;
+        margin-bottom: 1.75rem;
+        line-height: 1.7;
+        max-width: 780px;
+    }
+    .tutorial-content-grid {
+        display: grid;
+        gap: 1.5rem;
+    }
+    .tutorial-special-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 0;
+    }
+    .tutorial-special-card {
+        background: linear-gradient(135deg, #f8fafc, #ffffff);
+        border-radius: 24px;
+        padding: 1.4rem;
+        text-align: left;
+        border: 1px solid #eef2f6;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        min-height: 230px;
+        display: flex;
+        flex-direction: column;
+    }
+    .tutorial-special-card:hover {
+        transform: translateY(-5px);
+        border-color: #10b981;
+        box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    }
+    .tutorial-special-icon {
+        width: 56px;
+        height: 56px;
+        background: rgba(16, 185, 129, 0.1);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+    .tutorial-special-card:hover .tutorial-special-icon {
+        background: #10b981;
+    }
+    .tutorial-special-card:hover .tutorial-special-icon i {
+        color: white;
+    }
+    .tutorial-special-icon i {
+        font-size: 1.4rem;
+        color: #10b981;
+        transition: all 0.3s ease;
+    }
     .tutorial-special-title {
-        font-size: 0.75rem;
+        font-weight: 800;
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+        color: #0f172a;
     }
-    
     .tutorial-special-desc {
-        font-size: 0.6rem;
+        font-size: 0.95rem;
+        color: #475569;
+        line-height: 1.7;
+        flex-grow: 1;
     }
-    
+    .tutorial-general-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .tutorial-general-title {
+        font-size: 1.05rem;
+        font-weight: 800;
+        margin: 0;
+        color: #0f172a;
+    }
+    .tutorial-general-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 0;
+    }
+    .tutorial-general-item {
+        display: flex;
+        gap: 0.85rem;
+        padding: 1rem 1.1rem;
+        border-radius: 18px;
+        background: #f8fafc;
+        transition: all 0.3s ease;
+        align-items: flex-start;
+    }
+    .tutorial-general-item:hover {
+        background: rgba(16, 185, 129, 0.12);
+        transform: translateX(3px);
+    }
+    .tutorial-num {
+        width: 34px;
+        height: 34px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+    }
+    .tutorial-general-item:hover .tutorial-num {
+        transform: scale(1.05);
+    }
     .tutorial-general-text h4 {
-        font-size: 0.65rem;
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+        color: #0f172a;
     }
-    
     .tutorial-general-text p {
-        font-size: 0.55rem;
+        font-size: 0.85rem;
+        color: #475569;
+        line-height: 1.6;
+        margin: 0;
     }
-    
+    .tutorial-footer {
+        margin-top: 1.5rem;
+        padding: 1rem 1.25rem;
+        background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        transition: all 0.3s ease;
+    }
+    .tutorial-footer:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(16,185,129,0.15);
+    }
+    .tutorial-footer i {
+        color: #10b981;
+        font-size: 1rem;
+    }
     .tutorial-footer span {
-        font-size: 0.65rem;
+        font-size: 0.9rem;
+        color: #0f5f34;
+        line-height: 1.6;
     }
-}
 
     /* ============================================
        CTA BANNER & FOOTER
@@ -1156,8 +1094,205 @@
         z-index: 1;
     }
 
-    /* Responsive */
+    /* ============================================
+       HERO PROFIL SECTION
+    ============================================ */
+    .hero-profil-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 5rem 1.5rem;
+    }
+    .hero-ornaments {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+        pointer-events: none;
+        z-index: 0;
+    }
+    .hero-ornament-1 {
+        position: absolute;
+        top: 10%;
+        right: 5%;
+        width: 24rem;
+        height: 24rem;
+        background: #10b981;
+        border-radius: 50%;
+        filter: blur(120px);
+        animation: floatOrnament 8s ease-in-out infinite;
+    }
+    .hero-ornament-2 {
+        position: absolute;
+        bottom: 10%;
+        left: 5%;
+        width: 20rem;
+        height: 20rem;
+        background: #c5a358;
+        border-radius: 50%;
+        filter: blur(100px);
+        animation: floatOrnament 10s ease-in-out infinite reverse;
+    }
+    @keyframes floatOrnament {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(20px, -20px) scale(1.05); }
+    }
+    .hero-grid {
+        max-width: 1280px;
+        margin: 0 auto;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 3rem;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+    .hero-left { padding: 1rem; }
+    .hero-badge-profil {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 1rem;
+        border-radius: 60px;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(4px);
+        margin-bottom: 2rem;
+    }
+    .hero-badge-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        background: #10b981;
+        border-radius: 50%;
+        display: inline-block;
+        animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+    @keyframes ping {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        75% { opacity: 0.5; transform: scale(1.2); }
+    }
+    .hero-badge-text {
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: #059669;
+        margin: 0;
+    }
+    .hero-title-profil {
+        font-size: clamp(3rem, 8vw, 7rem);
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        line-height: 0.85;
+        margin-bottom: 2rem;
+        letter-spacing: -0.03em;
+        color: #121a17;
+    }
+    .hero-title-italic {
+        font-style: italic;
+        font-weight: 500;
+        color: #121a17;
+    }
+    .hero-title-gradient {
+        background: linear-gradient(135deg, #062c1f 0%, #10b981 80%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero-description-text {
+        font-size: 1rem;
+        color: #64748b;
+        font-weight: 400;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+        max-width: 500px;
+    }
+    .hero-right { position: relative; }
+    .hero-image-container {
+        position: relative;
+        border-radius: 60px;
+        overflow: hidden;
+        transform: rotate(3deg);
+        transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .hero-image-container:hover {
+        transform: rotate(0deg);
+    }
+    .hero-image {
+        aspect-ratio: 3 / 4;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.7s ease;
+    }
+    .hero-image-container:hover .hero-image {
+        transform: scale(1.05);
+    }
+    .hero-quote {
+        position: absolute;
+        bottom: -1.5rem;
+        left: -1.5rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 1.5rem 2rem;
+        border-radius: 32px;
+        box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        transition: all 0.3s ease;
+    }
+    .hero-quote:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.2);
+    }
+    .hero-quote-text {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        font-style: italic;
+        color: #0c110f;
+        margin-bottom: 0.3rem;
+        line-height: 1.2;
+    }
+    .hero-quote-sub {
+        font-size: 0.6rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #10b981;
+        margin: 0;
+    }
+    .btn-hero {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.8rem 1.8rem;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        border-radius: 60px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+        border: none;
+        cursor: pointer;
+    }
+    .btn-hero:hover {
+        background: linear-gradient(135deg, #059669, #047857);
+        gap: 1rem;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+    }
+
+    /* ============================================
+       RESPONSIVE
+    ============================================ */
     @media (max-width: 1024px) {
+        .container-premium { padding: 1rem; }
         .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
         .service-grid { grid-template-columns: repeat(3, 1fr); }
         .news-grid { grid-template-columns: 1fr; }
@@ -1172,9 +1307,18 @@
         .footer-content { flex-direction: column; text-align: center; }
         .footer-links { justify-content: center; }
         .footer-social { justify-content: center; }
+        .hero-grid { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
+        .hero-left { text-align: center; }
+        .hero-description-text { margin-left: auto; margin-right: auto; }
+        .hero-badge-profil { justify-content: center; margin-left: auto; margin-right: auto; }
+        .hero-title-profil { text-align: center; }
+        .hero-right { max-width: 500px; margin: 0 auto; }
+        .hero-quote { bottom: -1rem; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+        .hero-quote:hover { transform: translateX(-50%) translateY(-5px); }
     }
+
     @media (max-width: 768px) {
-        .container-premium { padding: 1rem; }
+        .container-premium { padding: 0.8rem; }
         .stats-grid { grid-template-columns: 1fr; }
         .service-grid { grid-template-columns: 1fr; }
         .gallery-grid { grid-template-columns: 1fr; }
@@ -1183,354 +1327,33 @@
         .chart-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
         .category-group { flex-wrap: wrap; justify-content: center; }
         .canvas-container { padding: 1rem; margin: 0.5rem; }
+        .hero-slide { height: 60vh; }
+        .hero-slide .hero-content .hero-title { font-size: clamp(2rem, 8vw, 3rem) !important; }
+        .hero-slide .hero-content .hero-subtitle { font-size: 0.85rem !important; }
+        .hero-slide .hero-content .hero-badge { font-size: 0.6rem !important; padding: 0.3rem 1rem !important; }
+        .hero-content { padding-right: 5%; }
+        .hero-profil-section { padding: 2rem 1rem; }
+        .hero-title-profil { font-size: clamp(2rem, 8vw, 3.5rem); margin-bottom: 1rem; }
+        .hero-description-text { font-size: 0.9rem; }
+        .hero-image-container { border-radius: 40px; }
+        .hero-quote { padding: 0.8rem 1.2rem; white-space: normal; text-align: center; width: 90%; left: 5%; transform: translateX(0); bottom: -0.8rem; }
+        .hero-quote-text { font-size: 1rem; }
+        .hero-quote-sub { font-size: 0.5rem; }
+        .hero-quote:hover { transform: translateY(-5px); }
+        .tutorial-section { padding: 1rem; }
+        .tutorial-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+        .tutorial-header h3 { font-size: 0.85rem; }
+        .tutorial-header i { font-size: 1.1rem; }
+        .tutorial-special-card { min-height: auto; }
+        .tutorial-special-title { font-size: 0.75rem; }
+        .tutorial-special-desc { font-size: 0.6rem; }
+        .tutorial-general-text h4 { font-size: 0.65rem; }
+        .tutorial-general-text p { font-size: 0.55rem; }
+        .tutorial-footer span { font-size: 0.65rem; }
+        .slider-nav { bottom: 1rem; right: 1rem; }
+        .slider-dot { width: 30px; }
+        .slider-dot.active { width: 45px; }
     }
-
-    /* ============================================
-   HERO SECTION PREMIUM (Dari Profil Desa)
-   ============================================ */
-   
-/* Hero Container */
-.hero-profil-section {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: 5rem 1.5rem;
-}
-
-/* Background Ornaments */
-.hero-ornaments {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.1;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.hero-ornament-1 {
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    width: 24rem;
-    height: 24rem;
-    background: #10b981;
-    border-radius: 50%;
-    filter: blur(120px);
-    animation: floatOrnament 8s ease-in-out infinite;
-}
-
-.hero-ornament-2 {
-    position: absolute;
-    bottom: 10%;
-    left: 5%;
-    width: 20rem;
-    height: 20rem;
-    background: #c5a358;
-    border-radius: 50%;
-    filter: blur(100px);
-    animation: floatOrnament 10s ease-in-out infinite reverse;
-}
-
-@keyframes floatOrnament {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(20px, -20px) scale(1.05); }
-}
-
-/* Grid Layout */
-.hero-grid {
-    max-width: 1280px;
-    margin: 0 auto;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 3rem;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-}
-
-/* Left Column */
-.hero-left {
-    padding: 1rem;
-}
-
-/* Badge Profil */
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 1rem;
-    border-radius: 60px;
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(4px);
-    margin-bottom: 2rem;
-}
-
-.hero-badge-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    background: #10b981;
-    border-radius: 50%;
-    display: inline-block;
-    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-@keyframes ping {
-    0%, 100% { 
-        opacity: 1; 
-        transform: scale(1); 
-    }
-    75% { 
-        opacity: 0.5; 
-        transform: scale(1.2); 
-    }
-}
-
-.hero-badge-text {
-    font-size: 0.65rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: #059669;
-    margin: 0;
-}
-
-/* Title */
-.hero-title {
-    font-size: clamp(3rem, 8vw, 7rem);
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    line-height: 0.85;
-    margin-bottom: 2rem;
-    letter-spacing: -0.03em;
-    color: #121a17;
-}
-
-.hero-title-italic {
-    font-style: italic;
-    font-weight: 500;
-    color: #121a17;
-}
-
-.hero-title-gradient {
-    background: linear-gradient(135deg, #062c1f 0%, #10b981 80%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Description */
-.hero-description {
-    max-width: 500px;
-}
-
-.hero-description-text {
-    font-size: 1rem;
-    color: #64748b;
-    font-weight: 400;
-    line-height: 1.7;
-    margin-bottom: 2rem;
-}
-
-/* Right Column */
-.hero-right {
-    position: relative;
-}
-
-/* Image Container */
-.hero-image-container {
-    position: relative;
-    border-radius: 60px;
-    overflow: hidden;
-    transform: rotate(3deg);
-    transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
-
-.hero-image-container:hover {
-    transform: rotate(0deg);
-}
-
-.hero-image {
-    aspect-ratio: 3 / 4;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.7s ease;
-}
-
-.hero-image-container:hover .hero-image {
-    transform: scale(1.05);
-}
-
-/* Quote Card */
-.hero-quote {
-    position: absolute;
-    bottom: -1.5rem;
-    left: -1.5rem;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    padding: 1.5rem 2rem;
-    border-radius: 32px;
-    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    transition: all 0.3s ease;
-}
-
-.hero-quote:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.2);
-}
-
-.hero-quote-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-style: italic;
-    color: #0c110f;
-    margin-bottom: 0.3rem;
-    line-height: 1.2;
-}
-
-.hero-quote-sub {
-    font-size: 0.6rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #10b981;
-    margin: 0;
-}
-
-/* Button */
-.btn-hero {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.8rem 1.8rem;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    border-radius: 60px;
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
-    border: none;
-    cursor: pointer;
-}
-
-.btn-hero:hover {
-    background: linear-gradient(135deg, #059669, #047857);
-    gap: 1rem;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-}
-
-/* Text Reveal Animation */
-.text-reveal {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-}
-
-/* Glass Card Effect */
-.glass-card {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(137, 125, 125, 0.5);
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .hero-profil-section {
-        padding: 4rem 1rem;
-        min-height: auto;
-    }
-    
-    .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        text-align: center;
-    }
-    
-    .hero-left {
-        text-align: center;
-    }
-    
-    .hero-description {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
-    .hero-badge {
-        justify-content: center;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
-    .hero-title {
-        text-align: center;
-    }
-    
-    .hero-right {
-        max-width: 500px;
-        margin: 0 auto;
-    }
-    
-    .hero-quote {
-        bottom: -1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        white-space: nowrap;
-    }
-    
-    .hero-quote:hover {
-        transform: translateX(-50%) translateY(-5px);
-    }
-}
-
-@media (max-width: 768px) {
-    .hero-profil-section {
-        padding: 2rem 1rem;
-    }
-    
-    .hero-title {
-        font-size: clamp(2rem, 8vw, 3.5rem);
-        margin-bottom: 1rem;
-    }
-    
-    .hero-description-text {
-        font-size: 0.9rem;
-    }
-    
-    .hero-image-container {
-        border-radius: 40px;
-    }
-    
-    .hero-quote {
-        padding: 0.8rem 1.2rem;
-        white-space: normal;
-        text-align: center;
-        width: 90%;
-        left: 5%;
-        transform: translateX(0);
-        bottom: -0.8rem;
-    }
-    
-    .hero-quote-text {
-        font-size: 1rem;
-    }
-    
-    .hero-quote-sub {
-        font-size: 0.5rem;
-    }
-    
-    .hero-quote:hover {
-        transform: translateY(-5px);
-    }
-}
-    
 </style>
 
 <div class="scroll-line"></div>
@@ -1577,55 +1400,52 @@
         </div>
     </section>
 
-{{-- 1. HERO SECTION (Dari Profil Desa) --}}
-<section class="hero-profil-section">
-    <div class="hero-ornaments">
-        <div class="hero-ornament-1"></div>
-        <div class="hero-ornament-2"></div>
-    </div>
-
-    <div class="hero-grid">
-        <div class="hero-left">
-            <div class="hero-badge">
-                <span class="hero-badge-dot"></span>
-                <span class="hero-badge-text">Profil</span>
+    {{-- ============================================= --}}
+    {{-- 2. HERO PROFIL DESA --}}
+    {{-- ============================================= --}}
+    <section class="hero-profil-section">
+        <div class="hero-ornaments">
+            <div class="hero-ornament-1"></div>
+            <div class="hero-ornament-2"></div>
+        </div>
+        <div class="hero-grid">
+            <div class="hero-left">
+                <div class="hero-badge-profil">
+                    <span class="hero-badge-dot"></span>
+                    <span class="hero-badge-text">Profil</span>
+                </div>
+                <h1 class="hero-title-profil" data-aos="fade-up" data-aos-delay="200">
+                    Profil <br>
+                    <span class="hero-title-italic">Desa</span> <br>
+                    <span class="hero-title-gradient">Lumban Silintong.</span>
+                </h1>
+                <div class="hero-description" data-aos="fade-up" data-aos-delay="400">
+                    <p class="hero-description-text">
+                        Simfoni harmoni antara kemegahan tebing vulkanik, jernihnya Danau Toba, 
+                        dan luhurnya tradisi Batak yang terjaga dalam modernitas.
+                    </p>
+                    <a href="{{ route('profil-desa') }}" class="btn-hero">
+                        Pelajari Lebih Lanjut <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
-            
-            <h1 class="hero-title" data-aos="fade-up" data-aos-delay="200">
-                Profil <br>
-                <span class="hero-title-italic">Desa</span> <br>
-                <span class="hero-title-gradient">Lumban Silintong.</span>
-            </h1>
-
-            <div class="hero-description" data-aos="fade-up" data-aos-delay="400">
-                <p class="hero-description-text">
-                    Simfoni harmoni antara kemegahan tebing vulkanik, jernihnya Danau Toba, 
-                    dan luhurnya tradisi Batak yang terjaga dalam modernitas.
-                </p>
-                <a href="{{ route('profil-desa') }}" class="btn-hero">
-                    Pelajari Lebih Lanjut <i class="fa-solid fa-arrow-right"></i>
-                </a>
+            <div class="hero-right" data-aos="zoom-out" data-aos-delay="600">
+                <div class="hero-image-container">
+                    <img src="{{ asset('images/profil/1.jpeg') }}" alt="Desa Lumban Silintong" class="hero-image">
+                </div>
+                <div class="hero-quote" data-aos="fade-up" data-aos-delay="800">
+                    <p class="hero-quote-text">"Mansai Uli"</p>
+                    <p class="hero-quote-sub">Keindahan yang natural, budaya yang abadi.</p>
+                </div>
             </div>
         </div>
-        
-        <div class="hero-right" data-aos="zoom-out" data-aos-delay="600">
-            <div class="hero-image-container">
-                <img src="{{ asset('images/profil/1.jpeg') }}" alt="Desa Lumban Silintong" class="hero-image">
-            </div>
-            <div class="hero-quote" data-aos="fade-up" data-aos-delay="800">
-                <p class="hero-quote-text">"Mansai Uli"</p>
-                <p class="hero-quote-sub">Keindahan yang natural, budaya yang abadi.</p>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
     {{-- ============================================= --}}
-    {{-- 2. STATISTIK DESA (SEPERTI STATISTIK.BLADE.PHP) --}}
+    {{-- 3. STATISTIK DESA --}}
     {{-- ============================================= --}}
     <section data-aos="fade-up" data-aos-delay="100">
         <div class="stats-grid">
-            {{-- Card 1 - Total Penduduk --}}
             <div class="stat-card">
                 <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
                 <div class="stat-value counter">{{ number_format($stat_penduduk) }}</div>
@@ -1634,8 +1454,6 @@
                     <div class="stat-progress-bar" style="width: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-light));"></div>
                 </div>
             </div>
-
-            {{-- Card 2 - Laki-laki --}}
             <div class="stat-card">
                 <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb); box-shadow: 0 8px 20px rgba(59,130,246,0.2);">
                     <i class="fa-solid fa-mars"></i>
@@ -1646,8 +1464,6 @@
                     <div class="stat-progress-bar" style="width: {{ ($penduduk_pria / max($stat_penduduk, 1)) * 100 }}%; background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div>
                 </div>
             </div>
-
-            {{-- Card 3 - Perempuan --}}
             <div class="stat-card">
                 <div class="stat-icon" style="background: linear-gradient(135deg, #ec4899, #db2777); box-shadow: 0 8px 20px rgba(236,72,153,0.2);">
                     <i class="fa-solid fa-venus"></i>
@@ -1658,8 +1474,6 @@
                     <div class="stat-progress-bar" style="width: {{ ($penduduk_wanita / max($stat_penduduk, 1)) * 100 }}%; background: linear-gradient(90deg, #ec4899, #f472b6);"></div>
                 </div>
             </div>
-
-            {{-- Card 4 - Kepala Keluarga --}}
             <div class="stat-card">
                 <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 8px 20px rgba(245,158,11,0.2);">
                     <i class="fa-solid fa-house-user"></i>
@@ -1674,7 +1488,7 @@
     </section>
 
     {{-- ============================================= --}}
-    {{-- 3. STATISTIK PENDUDUK DENGAN DIAGRAM (SEPERTI STATISTIK.BLADE.PHP) --}}
+    {{-- 4. CHART VISUALISASI DATA --}}
     {{-- ============================================= --}}
     <section data-aos="fade-up" data-aos-delay="150">
         <div class="chart-section">
@@ -1695,18 +1509,15 @@
                     </div>
                 </div>
             </div>
-
             <div class="px-6 pt-4">
                 <div class="category-group">
                     <button id="btn-penduduk" onclick="loadChartData('penduduk', this)" class="category-btn active"><i class="fa-solid fa-users"></i> Statistik Penduduk</button>
                     <button id="btn-umur" onclick="loadChartData('umur', this)" class="category-btn"><i class="fa-solid fa-chart-line"></i> Kelompok Umur</button>
                 </div>
             </div>
-
             <div class="canvas-container">
                 <canvas id="statistikChart"></canvas>
             </div>
-
             <div class="info-grid">
                 <div class="info-item">
                     <div class="info-icon" style="background: rgba(16,185,129,0.1);"><i class="fa-solid fa-database text-emerald-600"></i></div>
@@ -1725,7 +1536,7 @@
     </section>
 
     {{-- ============================================= --}}
-    {{-- 4. LAYANAN PUBLIK - BERANIMASI --}}
+    {{-- 5. LAYANAN PUBLIK --}}
     {{-- ============================================= --}}
     <section id="layanan-publik" data-aos="fade-up" data-aos-delay="200">
         <div class="text-center mb-4">
@@ -1733,7 +1544,6 @@
             <h2 class="section-title">Layanan <span>Publik</span></h2>
             <p class="text-gray-500 mt-2">Akses berbagai layanan informasi desa secara mudah dan cepat</p>
         </div>
-
         <div class="service-grid">
             <a href="{{ route('profil-desa') }}" class="service-card"><div class="service-icon"><i class="fa-solid fa-landmark-dome"></i></div><div class="service-title">Profil Desa</div><div class="service-desc">Sejarah & Struktur</div></a>
             <a href="{{ route('berita') }}" class="service-card"><div class="service-icon"><i class="fa-solid fa-newspaper"></i></div><div class="service-title">Berita</div><div class="service-desc">Info & Pengumuman</div></a>
@@ -1744,7 +1554,7 @@
     </section>
 
     {{-- ============================================= --}}
-    {{-- 5. LAYANAN DIGITAL (LOCKED OVERLAY) --}}
+    {{-- 6. LAYANAN DIGITAL (LOCKED) --}}
     {{-- ============================================= --}}
     <section data-aos="fade-up" data-aos-delay="250">
         <div class="text-center mb-4">
@@ -1752,7 +1562,6 @@
             <h2 class="section-title">Layanan <span>Digital Desa</span></h2>
             <p class="text-gray-500 mt-2">Akses layanan administrasi online. <span class="text-primary font-semibold">Login terlebih dahulu</span> untuk menggunakan layanan berikut.</p>
         </div>
-
         <div class="digital-grid">
             <div class="locked-card" onclick="window.location='{{ route('login') }}'">
                 <div class="card-content"><div class="card-icon"><i class="fa-solid fa-file-signature"></i></div><h3>Ajukan Surat</h3><p>Domisili, Usaha, Tidak Mampu, Kelahiran, Kematian, dan 12 jenis lainnya.</p><div class="card-arrow"><span>Ajukan Sekarang</span><i class="fa-solid fa-arrow-right"></i></div></div>
@@ -1766,14 +1575,13 @@
     </section>
 
     {{-- ============================================= --}}
-    {{-- 6. BERITA TERKINI - ELEGAN & BERANIMASI --}}
+    {{-- 7. BERITA TERKINI --}}
     {{-- ============================================= --}}
     <section id="berita" data-aos="fade-up" data-aos-delay="300">
         <div class="flex justify-between items-end mb-6 flex-wrap gap-4">
             <div><div class="section-badge d-inline-flex"><i class="fa-solid fa-newspaper"></i><span>Update Terkini</span></div><h2 class="section-title" style="font-size: 1.8rem;">📰 Berita <span>Utama</span></h2></div>
             <a href="{{ route('berita') }}" class="text-sm text-primary hover:underline flex items-center gap-1">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
         </div>
-
         @if(isset($beritas) && count($beritas) > 0)
         <div class="news-grid">
             @foreach($beritas->take(4) as $berita)
@@ -1789,14 +1597,13 @@
     </section>
 
     {{-- ============================================= --}}
-    {{-- 7. GALERI  - ELEGAN & BERANIMASI --}}
+    {{-- 8. GALERI --}}
     {{-- ============================================= --}}
     <section id="galeri" data-aos="fade-up" data-aos-delay="350">
         <div class="flex justify-between items-end mb-6 flex-wrap gap-4">
-            <div><div class="section-badge d-inline-flex"><i class="fa-solid fa-camera"></i><span>Momen Berharga</span></div><h2 class="section-title" style="font-size: 1.8rem;">📸 Galeri </h2></div>
+            <div><div class="section-badge d-inline-flex"><i class="fa-solid fa-camera"></i><span>Momen Berharga</span></div><h2 class="section-title" style="font-size: 1.8rem;">📸 Galeri</h2></div>
             <a href="{{ route('galeri') }}" class="text-sm text-primary hover:underline flex items-center gap-1">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
         </div>
-
         @if(isset($galeris) && count($galeris) > 0)
         <div class="gallery-grid">
             @foreach($galeris->take(8) as $g)
@@ -1812,7 +1619,7 @@
     </section>
 
     {{-- ============================================= --}}
-    {{-- 8. PUSAT INFORMASI (FAQ DROPDOWN WORKING) --}}
+    {{-- 9. FAQ --}}
     {{-- ============================================= --}}
     <section data-aos="fade-up" data-aos-delay="400">
         <div class="text-center mb-4">
@@ -1820,7 +1627,6 @@
             <h2 class="section-title">Pusat <span>Informasi</span></h2>
             <p class="text-gray-500 mt-2">Pertanyaan yang sering diajukan seputar layanan desa</p>
         </div>
-
         <div class="faq-grid" id="faqContainer">
             @php
                 $faqs = [
@@ -1846,115 +1652,119 @@
         </div>
     </section>
 
-   {{-- TUTORIAL SECTION --}}
-<div class="tutorial-section" data-aos="fade-up" data-aos-delay="450">
-    <div class="tutorial-header">
-        <i class="fa-solid fa-circle-question"></i>
-        <h3>📖 Tutorial Layanan Digital Desa</h3>
-    </div>
-
-    <p class="tutorial-intro">
-        Panduan lengkap menggunakan layanan digital Desa Lumban Silintong. Ikuti langkah berikut untuk pengalaman yang lebih cepat dan jelas.
-    </p>
-
-    <div class="tutorial-content-grid">
-        <!-- 3 Tutorial Khusus -->
-        <div class="tutorial-special-grid">
-            <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
-                <div class="tutorial-special-icon"><i class="fa-solid fa-file-pen"></i></div>
-                <div class="tutorial-special-title">📋 Mengajukan Surat</div>
-                <div class="tutorial-special-desc">Login, pilih menu Ajukan Surat, isi data lengkap, upload dokumen, lalu kirim. Proses selesai dalam 1–3 hari kerja.</div>
-            </div>
-            <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
-                <div class="tutorial-special-icon"><i class="fa-solid fa-comment-dots"></i></div>
-                <div class="tutorial-special-title">💬 Mengirim Aspirasi</div>
-                <div class="tutorial-special-desc">Login kemudian pilih Aspirasi & Keluhan. Tulis pesan, pilih kategori, dan kirim. Aspirasi ditanggapi maksimal 3 hari kerja.</div>
-            </div>
-            <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
-                <div class="tutorial-special-icon"><i class="fa-solid fa-store"></i></div>
-                <div class="tutorial-special-title">🏪 Request Akun UMKM</div>
-                <div class="tutorial-special-desc">Login, buka halaman UMKM, klik Daftarkan Usaha, isi data usaha lengkap, dan tunggu verifikasi admin dalam 2x24 jam.</div>
-            </div>
+    {{-- ============================================= --}}
+    {{-- 10. TUTORIAL SECTION --}}
+    {{-- ============================================= --}}
+    <div class="tutorial-section" data-aos="fade-up" data-aos-delay="450">
+        <div class="tutorial-header">
+            <i class="fa-solid fa-circle-question"></i>
+            <h3>📖 Tutorial Layanan Digital Desa</h3>
         </div>
-
-        <!-- 8 Point General Tutorial -->
-        <div class="tutorial-general-wrapper">
-            <h4 class="tutorial-general-title">Langkah Cepat dan Penting</h4>
-            <div class="tutorial-general-grid">
-                <div class="tutorial-general-item">
-                    <div class="tutorial-num">1</div>
-                    <div class="tutorial-general-text">
-                        <h4>🏠 Navigasi Utama</h4>
-                        <p>Gunakan menu navbar untuk mengakses semua halaman layanan.</p>
-                    </div>
+        <p class="tutorial-intro">
+            Panduan lengkap menggunakan layanan digital Desa Lumban Silintong. Ikuti langkah berikut untuk pengalaman yang lebih cepat dan jelas.
+        </p>
+        <div class="tutorial-content-grid">
+            <div class="tutorial-special-grid">
+                <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
+                    <div class="tutorial-special-icon"><i class="fa-solid fa-file-pen"></i></div>
+                    <div class="tutorial-special-title">📋 Mengajukan Surat</div>
+                    <div class="tutorial-special-desc">Login, pilih menu Ajukan Surat, isi data lengkap, upload dokumen, lalu kirim. Proses selesai dalam 1–3 hari kerja.</div>
                 </div>
-                <div class="tutorial-general-item">
-                    <div class="tutorial-num">2</div>
-                    <div class="tutorial-general-text">
-                        <h4>📊 Visualisasi Data</h4>
-                        <p>Pilih Bar, Line, atau Pie untuk mengubah tampilan grafik dengan mudah.</p>
-                    </div>
+                <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
+                    <div class="tutorial-special-icon"><i class="fa-solid fa-comment-dots"></i></div>
+                    <div class="tutorial-special-title">💬 Mengirim Aspirasi</div>
+                    <div class="tutorial-special-desc">Login kemudian pilih Aspirasi & Keluhan. Tulis pesan, pilih kategori, dan kirim. Aspirasi ditanggapi maksimal 3 hari kerja.</div>
                 </div>
-                <div class="tutorial-general-item">
-                    <div class="tutorial-num">3</div>
-                    <div class="tutorial-general-text">
-                        <h4>🔐 Login Terlebih Dahulu</h4>
-                        <p>Login diperlukan untuk mengajukan surat, aspirasi, dan pendaftaran UMKM.</p>
-                    </div>
+                <div class="tutorial-special-card" onclick="window.location='{{ route('login') }}'">
+                    <div class="tutorial-special-icon"><i class="fa-solid fa-store"></i></div>
+                    <div class="tutorial-special-title">🏪 Request Akun UMKM</div>
+                    <div class="tutorial-special-desc">Login, buka halaman UMKM, klik Daftarkan Usaha, isi data usaha lengkap, dan tunggu verifikasi admin dalam 2x24 jam.</div>
                 </div>
-                <div class="tutorial-general-item">
-                    <div class="tutorial-num">4</div>
-                    <div class="tutorial-general-text">
-                        <h4>🖱️ Hover Interaktif</h4>
-                        <p>Arahkan kursor pada kartu untuk melihat efek animasi dan informasi tambahan.</p>
+            </div>
+            <div class="tutorial-general-wrapper">
+                <h4 class="tutorial-general-title">Langkah Cepat dan Penting</h4>
+                <div class="tutorial-general-grid">
+                    <div class="tutorial-general-item">
+                        <div class="tutorial-num">1</div>
+                        <div class="tutorial-general-text">
+                            <h4>🏠 Navigasi Utama</h4>
+                            <p>Gunakan menu navbar untuk mengakses semua halaman layanan.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="tutorial-general-item">
-                    <div class="tutorial-num">5</div>
-                    <div class="tutorial-general-text">
-                        <h4>📱 Responsif</h4>
-                        <p>Portal dapat diakses dengan baik dari smartphone, tablet, maupun desktop.</p>
+                    <div class="tutorial-general-item">
+                        <div class="tutorial-num">2</div>
+                        <div class="tutorial-general-text">
+                            <h4>📊 Visualisasi Data</h4>
+                            <p>Pilih Bar, Line, atau Pie untuk mengubah tampilan grafik dengan mudah.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="tutorial-general-item">
-                    <div class="tutorial-num">6</div>
-                    <div class="tutorial-general-text">
-                        <h4>⏱️ Waktu Proses</h4>
-                        <p>Surat 1-3 hari, aspirasi max 3 hari, UMKM 2x24 jam setelah verifikasi.</p>
+                    <div class="tutorial-general-item">
+                        <div class="tutorial-num">3</div>
+                        <div class="tutorial-general-text">
+                            <h4>🔐 Login Terlebih Dahulu</h4>
+                            <p>Login diperlukan untuk mengajukan surat, aspirasi, dan pendaftaran UMKM.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="tutorial-general-item">
-                    <div class="tutorial-num">7</div>
-                    <div class="tutorial-general-text">
-                        <h4>📎 Lampiran Dokumen</h4>
-                        <p>Upload berkas pendukung agar permohonan diproses lebih cepat dan tepat.</p>
+                    <div class="tutorial-general-item">
+                        <div class="tutorial-num">4</div>
+                        <div class="tutorial-general-text">
+                            <h4>🖱️ Hover Interaktif</h4>
+                            <p>Arahkan kursor pada kartu untuk melihat efek animasi dan informasi tambahan.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="tutorial-general-item">
-                    <div class="tutorial-num">8</div>
-                    <div class="tutorial-general-text">
-                        <h4>💡 Tips Penting</h4>
-                        <p>Pastikan data yang diisi sesuai dokumen asli untuk menghindari penolakan.</p>
+                    <div class="tutorial-general-item">
+                        <div class="tutorial-num">5</div>
+                        <div class="tutorial-general-text">
+                            <h4>📱 Responsif</h4>
+                            <p>Portal dapat diakses dengan baik dari smartphone, tablet, maupun desktop.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-general-item">
+                        <div class="tutorial-num">6</div>
+                        <div class="tutorial-general-text">
+                            <h4>⏱️ Waktu Proses</h4>
+                            <p>Surat 1-3 hari, aspirasi max 3 hari, UMKM 2x24 jam setelah verifikasi.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-general-item">
+                        <div class="tutorial-num">7</div>
+                        <div class="tutorial-general-text">
+                            <h4>📎 Lampiran Dokumen</h4>
+                            <p>Upload berkas pendukung agar permohonan diproses lebih cepat dan tepat.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-general-item">
+                        <div class="tutorial-num">8</div>
+                        <div class="tutorial-general-text">
+                            <h4>💡 Tips Penting</h4>
+                            <p>Pastikan data yang diisi sesuai dokumen asli untuk menghindari penolakan.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="tutorial-footer">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span>💡 <strong>Tips Penting:</strong> Pastikan Anda sudah login terlebih dahulu sebelum menggunakan layanan pengajuan surat, aspirasi, atau pendaftaran UMKM. Data yang diisi harus sesuai dokumen asli untuk menghindari penolakan.</span>
+        </div>
     </div>
-    
-    <div class="tutorial-footer">
-        <i class="fa-solid fa-lightbulb"></i>
-        <span>💡 <strong>Tips Penting:</strong> Pastikan Anda sudah login terlebih dahulu sebelum menggunakan layanan pengajuan surat, aspirasi, atau pendaftaran UMKM. Data yang diisi harus sesuai dokumen asli untuk menghindari penolakan.</span>
-    </div>
-</div>
 
     {{-- ============================================= --}}
-    {{-- 10. CTA BANTUAN & FOOTER --}}
+    {{-- 11. CTA BANTUAN --}}
     {{-- ============================================= --}}
     <section data-aos="fade-up" data-aos-delay="500">
-        <div class="cta-banner"><div class="relative z-10"><div class="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce"><i class="fa-solid fa-headset text-3xl text-white"></i></div><h3 class="text-2xl font-bold text-white mb-2">💬 Butuh Bantuan?</h3><p class="text-emerald-100/80 mb-5">Jika mengalami kendala, silakan hubungi admin atau datang ke kantor desa.</p><a href="{{ route('kontak') }}" class="btn-cta">Hubungi Kami <i class="fa-solid fa-arrow-right"></i></a></div></div>
+        <div class="cta-banner">
+            <div class="relative z-10">
+                <div class="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                    <i class="fa-solid fa-headset text-3xl text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">💬 Butuh Bantuan?</h3>
+                <p class="text-emerald-100/80 mb-5">Jika mengalami kendala, silakan hubungi admin atau datang ke kantor desa.</p>
+                <a href="{{ route('kontak') }}" class="btn-cta">Hubungi Kami <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
     </section>
 
-    
 </div>
 
 <script>
@@ -1987,36 +1797,24 @@
         update();
     });
 
-    // ============================================
-    // FAQ DROPDOWN - WORKING WITH PURE JAVASCRIPT
-    // ============================================
+    // FAQ DROPDOWN
     document.addEventListener('DOMContentLoaded', function() {
         const faqItems = document.querySelectorAll('.faq-item');
-        
         faqItems.forEach(item => {
             const questionDiv = item.querySelector('.faq-question');
-            
             questionDiv.addEventListener('click', function(e) {
                 e.stopPropagation();
-                
-                // Close other open FAQs
                 faqItems.forEach(otherItem => {
                     if (otherItem !== item && otherItem.classList.contains('active')) {
                         otherItem.classList.remove('active');
                     }
                 });
-                
-                // Toggle current FAQ
                 item.classList.toggle('active');
             });
         });
-        
-        console.log('FAQ dropdown initialized with', faqItems.length, 'items');
     });
 
-    // ============================================
-    // CHART DATA & FUNCTIONS (DARI STATISTIK.BLADE.PHP)
-    // ============================================
+    // CHART
     Chart.defaults.font.family = "'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif";
     Chart.defaults.font.size = 11;
     Chart.defaults.color = '#64748b';
@@ -2047,26 +1845,20 @@
     function loadChartData(kategori, btnElement = null) {
         currentKategori = kategori;
         const data = chartData[kategori];
-        
         if (!data || !data.labels || !data.values) {
             console.error("Data tidak ditemukan untuk: " + kategori);
             return;
         }
-        
         const canvas = document.getElementById('statistikChart');
         canvas.style.opacity = '0.5';
-        
         setTimeout(() => {
             if (statistikChart) statistikChart.destroy();
-            
             const ctx = canvas.getContext('2d');
             const isPieType = ['pie', 'doughnut'].includes(currentChartType);
-            
             let gradientFill = ctx.createLinearGradient(0, 0, 0, 400);
             gradientFill.addColorStop(0, 'rgba(16, 185, 129, 0.3)');
             gradientFill.addColorStop(0.5, 'rgba(16, 185, 129, 0.1)');
             gradientFill.addColorStop(1, 'rgba(16, 185, 129, 0.02)');
-            
             const commonOptions = {
                 responsive: true,
                 maintainAspectRatio: true,
@@ -2100,14 +1892,12 @@
                 },
                 onHover: function(event, activeElements) { canvas.style.cursor = activeElements.length ? 'pointer' : 'default'; }
             };
-            
             if (!isPieType) {
                 commonOptions.scales = {
                     y: { beginAtZero: true, grid: { color: '#e2e8f0', drawBorder: false, lineWidth: 1 }, ticks: { padding: 8, callback: (v) => v.toLocaleString(), font: { size: 10 } }, title: { display: true, text: '📊 Jumlah Data', font: { size: 10, weight: '600' }, color: '#64748b' } },
                     x: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' }, color: '#334155' } }
                 };
             }
-            
             if (isPieType) {
                 statistikChart = new Chart(ctx, {
                     type: currentChartType,
@@ -2121,10 +1911,8 @@
                     options: commonOptions
                 });
             }
-            
             canvas.style.opacity = '1';
         }, 200);
-        
         if (btnElement) {
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
@@ -2142,184 +1930,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         const defaultBtn = document.getElementById('btn-penduduk');
         if (defaultBtn) loadChartData('penduduk', defaultBtn);
-
-        // ============================================
-// HERO SECTION INTERACTIONS
-// ============================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // 1. AOS Initialization (sudah ada di kode Anda)
-    AOS.init({ 
-        duration: 800, 
-        once: true, 
-        easing: 'ease-out-expo' 
-    });
-    
-    // 2. Scroll Progress Bar
-    window.addEventListener('scroll', function() {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        const scrollLine = document.querySelector('.scroll-line');
-        if (scrollLine) {
-            scrollLine.style.width = scrolled + '%';
-        }
-    });
-    
-    // 3. Parallax Effect untuk Gambar
-    const parallaxImages = document.querySelectorAll('.hero-image');
-    if (parallaxImages.length > 0) {
-        window.addEventListener('scroll', function() {
-            parallaxImages.forEach(img => {
-                const speed = 0.1;
-                const rect = img.parentElement.getBoundingClientRect();
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    const shift = (window.innerHeight - rect.top) * speed;
-                    img.style.transform = `translateY(${shift - 50}px) scale(1.05)`;
-                }
-            });
-        });
-    }
-    
-    // 4. Interactive Tutorial Items (jika ada di halaman)
-    const tutorialItems = document.querySelectorAll('.tutorial-item');
-    tutorialItems.forEach(item => {
-        item.addEventListener('click', function() {
-            this.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 200);
-            
-            // Optional: Show toast or scroll to section
-            const title = this.querySelector('.tutorial-text h4')?.innerText || '';
-            if (title) {
-                console.log(`Tutorial clicked: ${title}`);
-            }
-        });
-    });
-    
-    // 5. Smooth Scroll untuk Anchor Links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if (targetId !== '#' && targetId !== '') {
-                const target = document.querySelector(targetId);
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-    });
-    
-    // 6. Image Container Hover Effect Enhancement
-    const imageContainers = document.querySelectorAll('.hero-image-container');
-    imageContainers.forEach(container => {
-        container.addEventListener('mouseenter', function() {
-            this.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1)';
-        });
-    });
-    
-    // 7. Quote Card Animation on Scroll
-    const quoteCard = document.querySelector('.hero-quote');
-    if (quoteCard) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        quoteCard.style.opacity = '0';
-        quoteCard.style.transform = 'translateY(20px)';
-        quoteCard.style.transition = 'all 0.6s ease';
-        observer.observe(quoteCard);
-    }
-    
-    // 8. Badge Animation Enhancement
-    const badgeDot = document.querySelector('.hero-badge-dot');
-    if (badgeDot) {
-        setInterval(() => {
-            badgeDot.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                badgeDot.style.transform = 'scale(1)';
-            }, 300);
-        }, 1500);
-    }
-    
-    // 9. GSAP Animations (Optional - jika GSAP tersedia)
-    if (typeof gsap !== 'undefined') {
-        // Hero Title Animation
-        gsap.from('.hero-title', {
-            scrollTrigger: {
-                trigger: '.hero-left',
-                start: 'top 80%',
-            },
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out'
-        });
-        
-        // Hero Description Animation
-        gsap.from('.hero-description', {
-            scrollTrigger: {
-                trigger: '.hero-left',
-                start: 'top 80%',
-            },
-            y: 30,
-            opacity: 0,
-            duration: 0.6,
-            delay: 0.2,
-            ease: 'power3.out'
-        });
-        
-        // Hero Badge Animation
-        gsap.from('.hero-badge', {
-            scrollTrigger: {
-                trigger: '.hero-left',
-                start: 'top 85%',
-            },
-            y: -20,
-            opacity: 0,
-            duration: 0.5,
-            ease: 'back.out(0.5)'
-        });
-        
-        // Hero Image Animation
-        gsap.from('.hero-image-container', {
-            scrollTrigger: {
-                trigger: '.hero-right',
-                start: 'top 85%',
-            },
-            scale: 0.9,
-            opacity: 0,
-            duration: 0.7,
-            ease: 'back.out(0.5)'
-        });
-        
-        // Quote Card Animation
-        gsap.from('.hero-quote', {
-            scrollTrigger: {
-                trigger: '.hero-right',
-                start: 'top 85%',
-            },
-            y: 40,
-            opacity: 0,
-            duration: 0.6,
-            delay: 0.3,
-            ease: 'bounce.out'
-        });
-    }
-    
-    console.log('Hero Section initialized');
-});
     });
 </script>
 @endsection

@@ -102,7 +102,7 @@
                         @endif
 
                         {{-- Profile link untuk masyarakat dan UMKM saja --}}
-                        @if(optional(Auth::user()->role)->nama_role !== 'admin')
+                        @if(!Auth::user()->role || Auth::user()->role->nama_role != 'admin')
                             <div class="px-4 pt-3">
                                 <a href="{{ route('masyarakat.profil') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition text-sm text-gray-700 font-medium">
                                     <i class="fa-solid fa-user-circle text-gray-400 w-4 text-center"></i>

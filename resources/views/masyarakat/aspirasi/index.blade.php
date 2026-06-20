@@ -319,6 +319,8 @@
         position: relative;
         animation: fadeUp 0.5s ease forwards;
         opacity: 0;
+        max-width: 100%;
+        min-width: 0;
     }
 
     .aspirasi-card:nth-child(1) { animation-delay: 0.05s; }
@@ -345,12 +347,15 @@
         align-items: flex-start;
         flex-wrap: wrap;
         gap: 0.8rem;
+        max-width: 100%;
     }
 
     .user-info {
         display: flex;
         align-items: center;
         gap: 0.8rem;
+        max-width: 70%;
+        min-width: 0;
     }
 
     .user-avatar {
@@ -362,6 +367,7 @@
         align-items: center;
         justify-content: center;
         transition: var(--transition-bounce);
+        flex-shrink: 0;
     }
 
     .aspirasi-card:hover .user-avatar {
@@ -374,6 +380,9 @@
         font-weight: 700;
         font-size: 0.85rem;
         color: var(--dark);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
     }
 
     .user-date {
@@ -383,6 +392,7 @@
         align-items: center;
         gap: 0.2rem;
         margin-top: 0.2rem;
+        flex-wrap: wrap;
     }
 
     /* Category Badge */
@@ -395,6 +405,8 @@
         font-size: 0.6rem;
         font-weight: 700;
         transition: var(--transition-bounce);
+        flex-shrink: 0;
+        white-space: nowrap;
     }
 
     .aspirasi-card:hover .category-badge {
@@ -409,6 +421,8 @@
     /* Card Body */
     .card-body {
         padding: 0 1.2rem 0.8rem 1.2rem;
+        overflow: hidden;
+        max-width: 100%;
     }
 
     .aspirasi-title {
@@ -417,6 +431,11 @@
         margin-bottom: 0.4rem;
         color: var(--dark);
         transition: var(--transition);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        max-width: 100%;
+        line-height: 1.3;
     }
 
     .aspirasi-card:hover .aspirasi-title {
@@ -431,6 +450,9 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
     }
 
     /* Status Badge */
@@ -444,6 +466,10 @@
         font-weight: 700;
         margin: 0 1.2rem 0.8rem 1.2rem;
         transition: var(--transition-bounce);
+        max-width: calc(100% - 2.4rem);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .aspirasi-card:hover .status-badge {
@@ -462,6 +488,7 @@
         border-radius: 18px;
         border-left: 3px solid var(--primary);
         transition: var(--transition-bounce);
+        max-width: calc(100% - 2.4rem);
     }
 
     .response-card:hover {
@@ -473,6 +500,7 @@
         align-items: center;
         gap: 0.4rem;
         margin-bottom: 0.3rem;
+        flex-wrap: wrap;
     }
 
     .response-header i { color: var(--primary); font-size: 0.7rem; }
@@ -482,6 +510,9 @@
         font-size: 0.75rem;
         color: var(--dark);
         line-height: 1.4;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
     }
 
     /* Proses Card */
@@ -491,6 +522,7 @@
         background: linear-gradient(135deg, #eff6ff, #dbeafe);
         border-radius: 18px;
         border-left: 3px solid #3b82f6;
+        max-width: calc(100% - 2.4rem);
     }
 
     .pending-card {
@@ -499,6 +531,7 @@
         background: linear-gradient(135deg, #fef3c7, #fde68a);
         border-radius: 18px;
         border-left: 3px solid #d97706;
+        max-width: calc(100% - 2.4rem);
     }
 
     /* Card Footer */
@@ -509,6 +542,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
     .footer-note {
@@ -522,6 +557,7 @@
     .action-buttons {
         display: flex;
         gap: 0.5rem;
+        flex-shrink: 0;
     }
 
     .action-btn {
@@ -638,6 +674,7 @@
         margin-bottom: 1.2rem;
         border-bottom: 1px solid var(--border);
         padding-bottom: 0.8rem;
+        flex-wrap: wrap;
     }
 
     .tutorial-header i { font-size: 1.5rem; color: var(--primary); }
@@ -718,12 +755,30 @@
         .stat-value { font-size: 1.4rem; }
         .stat-icon { width: 44px; height: 44px; }
         .tutorial-header { flex-wrap: wrap; }
+        .user-info { max-width: 100%; }
+        .category-badge { white-space: normal; }
+        .status-badge { white-space: normal; }
+        .aspirasi-title { font-size: 0.9rem; }
+        .aspirasi-content { 
+            font-size: 0.75rem;
+            -webkit-line-clamp: 3;
+        }
     }
 
     @media (max-width: 480px) {
         .stats-grid { grid-template-columns: 1fr; }
         .card-header { flex-direction: column; align-items: flex-start; }
         .action-buttons { justify-content: flex-end; }
+        .response-card, .proses-card, .pending-card {
+            max-width: calc(100% - 2rem);
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+        .status-badge {
+            max-width: calc(100% - 2rem);
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
     }
 </style>
 
@@ -831,7 +886,7 @@
                     <div class="user-avatar">
                         <i class="fa-regular fa-user"></i>
                     </div>
-                    <div>
+                    <div style="min-width: 0; max-width: 100%;">
                         <div class="user-name">{{ $item->user->name ?? 'Warga' }}</div>
                         <div class="user-date">
                             <i class="fa-regular fa-calendar"></i>

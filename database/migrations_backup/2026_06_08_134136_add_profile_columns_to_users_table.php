@@ -6,10 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Cek apakah kolom sudah ada sebelum menambah
+            // Cek dan tambah kolom jika belum ada
             if (!Schema::hasColumn('users', 'nomor_telepon')) {
                 $table->string('nomor_telepon')->nullable()->after('email');
             }
@@ -22,10 +25,22 @@ return new class extends Migration
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['nomor_telepon', 'alamat', 'foto_profil']);
+            // Hapus kolom jika ada
+            if (Schema::hasColumn('users', 'nomor_telepon')) {
+                $table->dropColumn('nomor_telepon');
+            }
+            if (Schema::hasColumn('users', 'alamat')) {
+                $table->dropColumn('alamat');
+            }
+            if (Schema::hasColumn('users', 'foto_profil')) {
+                $table->dropColumn('foto_profil');
+            }
         });
     }
 };

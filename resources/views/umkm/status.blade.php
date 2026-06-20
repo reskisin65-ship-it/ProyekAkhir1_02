@@ -619,18 +619,11 @@
     </div>
 
     {{-- Tombol Tambah UMKM Baru --}}
-    @php
-        // Cek jika ada UMKM dengan status pending atau rejected
-        $hasPendingOrRejected = $umkms->whereIn('status', ['pending', 'rejected'])->count() > 0;
-    @endphp
-    
-    @if(!$hasPendingOrRejected)
-    <div class="mb-6">
-        <a href="{{ route('masyarakat.umkm.create') }}" class="action-button">
-            <i class="fa-solid fa-plus-circle"></i> Daftar UMKM Tambahan
+    <div class="mb-6 flex justify-end">
+        <a href="{{ route('masyarakat.umkm.create') }}" class="action-button" style="background: var(--primary); color: white; padding: 0.8rem 1.8rem; border-radius: 40px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem; box-shadow: var(--shadow-md); transition: var(--transition-bounce);">
+            <i class="fa-solid fa-plus-circle"></i> Daftarkan Usaha Lainnya
         </a>
     </div>
-    @endif
 
     {{-- Loop Setiap UMKM --}}
     @foreach($umkms as $umkm)

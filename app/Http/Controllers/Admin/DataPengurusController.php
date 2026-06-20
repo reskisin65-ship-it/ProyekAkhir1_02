@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 
 class DataPengurusController extends Controller
 {
@@ -42,7 +43,12 @@ class DataPengurusController extends Controller
     public function create()
     {
         $hierarki = DataPengurus::getHierarki();
-        return view('admin.pengurus-create', compact('hierarki'));
+        $kategoriCounts = DataPengurus::selectRaw('kategori_jabatan, count(*) as total')
+            ->groupBy('kategori_jabatan')
+            ->pluck('total', 'kategori_jabatan')
+            ->toArray();
+
+        return view('admin.pengurus-create', compact('hierarki', 'kategoriCounts'));
     }
     
     /**
@@ -50,7 +56,9 @@ class DataPengurusController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $protectedCategories = ['kepala_desa', 'sekretaris_desa'];
+
+        $validator = Validator::make($request->all(), [
             'nama_pengurus'    => 'required|max:100',
             'kategori_jabatan' => 'required',
             'nip'              => 'required|digits:18|unique:data_pengurus,nip',
@@ -61,6 +69,20 @@ class DataPengurusController extends Controller
             'nip.digits' => 'NIP harus terdiri dari 18 digit angka.',
             'nip.unique' => 'NIP sudah digunakan oleh pengurus lain.',
         ]);
+
+        $validator->after(function ($validator) use ($request, $protectedCategories) {
+            if (in_array($request->kategori_jabatan, $protectedCategories)) {
+                $exists = DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)->exists();
+                if ($exists) {
+                    $label = $request->kategori_jabatan === 'kepala_desa'
+                        ? 'Kepala Desa'
+                        : 'Sekretaris Desa';
+                    $validator->errors()->add('kategori_jabatan', "$label sudah terdaftar. Hanya boleh ada satu.");
+                }
+            }
+        });
+
+        $validator->validate();
 
         $hierarki = DataPengurus::getHierarki();
 
@@ -96,7 +118,12 @@ class DataPengurusController extends Controller
     {
         $pengurus = DataPengurus::findOrFail($id);
         $hierarki = DataPengurus::getHierarki();
-        return view('admin.pengurus-edit', compact('pengurus', 'hierarki'));
+        $kategoriCounts = DataPengurus::selectRaw('kategori_jabatan, count(*) as total')
+            ->groupBy('kategori_jabatan')
+            ->pluck('total', 'kategori_jabatan')
+            ->toArray();
+
+        return view('admin.pengurus-edit', compact('pengurus', 'hierarki', 'kategoriCounts'));
     }
 
     /**
@@ -105,8 +132,9 @@ class DataPengurusController extends Controller
     public function update(Request $request, $id)
     {
         $pengurus = DataPengurus::findOrFail($id);
+        $protectedCategories = ['kepala_desa', 'sekretaris_desa'];
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nama_pengurus'    => 'required|max:100',
             'kategori_jabatan' => 'required',
             'nip'              => 'required|digits:18|unique:data_pengurus,nip,' . $pengurus->id_pengurus . ',id_pengurus',
@@ -117,6 +145,22 @@ class DataPengurusController extends Controller
             'nip.digits' => 'NIP harus terdiri dari 18 digit angka.',
             'nip.unique' => 'NIP sudah digunakan oleh pengurus lain.',
         ]);
+
+        $validator->after(function ($validator) use ($request, $protectedCategories, $pengurus) {
+            if (in_array($request->kategori_jabatan, $protectedCategories)) {
+                $exists = DataPengurus::where('kategori_jabatan', $request->kategori_jabatan)
+                    ->where('id_pengurus', '!=', $pengurus->id_pengurus)
+                    ->exists();
+                if ($exists) {
+                    $label = $request->kategori_jabatan === 'kepala_desa'
+                        ? 'Kepala Desa'
+                        : 'Sekretaris Desa';
+                    $validator->errors()->add('kategori_jabatan', "$label sudah terdaftar. Hanya boleh ada satu.");
+                }
+            }
+        });
+
+        $validator->validate();
 
         $hierarki = DataPengurus::getHierarki();
 

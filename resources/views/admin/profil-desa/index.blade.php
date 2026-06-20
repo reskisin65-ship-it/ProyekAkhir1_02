@@ -4,6 +4,8 @@
 @section('title', 'Kelola Profil Desa - Lumban Silintong')
 
 @section('content')
+<!-- Tambahkan Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&family=Instrument+Sans:ital,wght@0,400;0,700;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
@@ -131,6 +133,87 @@
         color: var(--accent-primary);
     }
 
+    /* Sejarah Content */
+    .sejarah-content {
+        background: #f8fafc;
+        border-radius: 20px;
+        padding: 1.2rem;
+        border: 1px solid var(--border-color);
+        max-height: 300px;
+        overflow-y: auto;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .sejarah-content p {
+        font-size: 0.85rem;
+        line-height: 1.8;
+        color: var(--text-main);
+        margin: 0;
+        white-space: pre-wrap;
+    }
+
+    .sejarah-content::-webkit-scrollbar {
+        width: 4px;
+    }
+    .sejarah-content::-webkit-scrollbar-track {
+        background: #e2e8f0;
+        border-radius: 10px;
+    }
+    .sejarah-content::-webkit-scrollbar-thumb {
+        background: var(--accent-primary);
+        border-radius: 10px;
+    }
+
+    /* Visi Misi Grid */
+    .vm-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .vm-card {
+        background: #f8fafc;
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 1.2rem;
+        transition: all 0.3s;
+        min-height: 120px;
+    }
+
+    .vm-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent-primary);
+    }
+
+    .vm-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .vm-title.visi i { color: var(--accent-primary); }
+    .vm-title.misi i { color: var(--accent-blue); }
+
+    .vm-content {
+        font-size: 0.85rem;
+        line-height: 1.8;
+        color: var(--text-main);
+        font-style: italic;
+        word-wrap: break-word;
+        word-break: break-word;
+        white-space: pre-wrap;
+    }
+
+    .vm-content span {
+        color: var(--text-mute);
+        font-style: normal;
+    }
+
     /* Stats Grid */
     .stats-grid {
         display: grid;
@@ -164,6 +247,10 @@
         margin: 0 auto 0.75rem;
     }
 
+    .stat-icon i {
+        font-size: 1.2rem;
+    }
+
     .stat-value {
         font-size: 1.3rem;
         font-weight: 800;
@@ -179,75 +266,7 @@
         margin-top: 0.2rem;
     }
 
-    /* Visi Misi Grid */
-    .vm-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.2rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .vm-card {
-        background: #f8fafc;
-        border: 1px solid var(--border-color);
-        border-radius: 20px;
-        padding: 1.2rem;
-        transition: all 0.3s;
-    }
-
-    .vm-card:hover {
-        transform: translateY(-2px);
-        border-color: var(--accent-primary);
-    }
-
-    .vm-title {
-        font-size: 0.8rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-    }
-
-    .vm-title.visi i { color: var(--accent-primary); }
-    .vm-title.misi i { color: var(--accent-blue); }
-
-    .vm-content {
-        font-size: 0.8rem;
-        line-height: 1.5;
-        color: var(--text-mute);
-        font-style: italic;
-    }
-
-    /* Sejarah Content */
-    .sejarah-content {
-        background: #f8fafc;
-        border-radius: 20px;
-        padding: 1rem;
-        border: 1px solid var(--border-color);
-        max-height: 150px;
-        overflow-y: auto;
-    }
-
-    .sejarah-content p {
-        font-size: 0.85rem;
-        line-height: 1.6;
-        color: var(--text-main);
-    }
-
-    .sejarah-content::-webkit-scrollbar {
-        width: 4px;
-    }
-    .sejarah-content::-webkit-scrollbar-track {
-        background: #e2e8f0;
-        border-radius: 10px;
-    }
-    .sejarah-content::-webkit-scrollbar-thumb {
-        background: var(--accent-primary);
-        border-radius: 10px;
-    }
-
-    /* Kontak Row */
+    /* Kontak Row - DIPERBAIKI */
     .kontak-row {
         display: flex;
         flex-wrap: wrap;
@@ -266,6 +285,8 @@
         background: #f8fafc;
         border-radius: 16px;
         transition: all 0.3s;
+        min-width: 200px;
+        cursor: default;
     }
 
     .kontak-item:hover {
@@ -285,14 +306,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
     }
 
-    .kontak-icon i { font-size: 0.9rem; color: var(--accent-primary); }
+    .kontak-icon i {
+        font-size: 1rem;
+        color: var(--accent-primary);
+        transition: color 0.3s;
+    }
 
     .kontak-text {
         font-size: 0.8rem;
         color: var(--text-mute);
-        transition: all 0.3s;
+        transition: color 0.3s;
+        word-wrap: break-word;
+        word-break: break-word;
+        flex: 1;
     }
 
     /* Table Architecture */
@@ -358,7 +387,7 @@
 
     .avatar-small i {
         font-size: 1.2rem;
-        color: var(--gray);
+        color: #94a3b8;
     }
 
     /* Badge Jabatan */
@@ -378,6 +407,7 @@
         gap: 0.5rem;
         opacity: 0.6;
         transition: all 0.3s;
+        justify-content: center;
     }
 
     .aparatur-row:hover .action-deck {
@@ -397,6 +427,10 @@
         background: white;
         cursor: pointer;
         text-decoration: none;
+    }
+
+    .deck-btn i {
+        font-size: 0.75rem;
     }
 
     .deck-btn:hover {
@@ -423,6 +457,11 @@
         align-items: center;
         justify-content: center;
         margin: 0 auto 1rem;
+    }
+
+    .empty-icon i {
+        font-size: 2rem;
+        color: var(--text-mute);
     }
 
     /* Table Footer */
@@ -463,6 +502,10 @@
         gap: 0.4rem;
     }
 
+    .footer-info span i {
+        font-size: 0.8rem;
+    }
+
     /* Animations */
     @keyframes fadeUp {
         from { opacity: 0; transform: translateY(20px); }
@@ -490,6 +533,8 @@
         .brand-title { font-size: 2rem; }
         .stats-grid { grid-template-columns: 1fr; }
         .btn-premium { padding: 0.6rem 1.2rem; font-size: 0.75rem; }
+        .sejarah-content { max-height: 200px; }
+        .kontak-item { min-width: 100%; }
     }
 </style>
 
@@ -506,21 +551,21 @@
             </p>
         </div>
         <a href="{{ route('admin.profil-desa.edit') }}" class="btn-premium">
-            <i class="fa-solid fa-pen"></i> Edit Profil Desa
+            <i class="fas fa-pen"></i> Edit Profil Desa
         </a>
     </header>
 
     {{-- Preview Card --}}
     <div class="preview-card fade-up delay-1">
         <div class="card-header">
-            <h2><i class="fa-regular fa-eye"></i> Preview Profil Desa</h2>
+            <h2><i class="far fa-eye"></i> Preview Profil Desa</h2>
         </div>
         <div style="padding: 1.5rem;">
             
             {{-- Sejarah --}}
             <div style="margin-bottom: 1.5rem;">
                 <h3 style="font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
-                    <i class="fa-regular fa-clock" style="color: var(--accent-primary);"></i> Sejarah Desa
+                    <i class="far fa-clock" style="color: var(--accent-primary);"></i> Sejarah Desa
                 </h3>
                 <div class="sejarah-content">
                     @if($profil && $profil->sejarah)
@@ -535,25 +580,25 @@
             <div class="vm-grid">
                 <div class="vm-card">
                     <div class="vm-title visi">
-                        <i class="fa-solid fa-eye"></i> Visi
+                        <i class="fas fa-eye"></i> Visi
                     </div>
                     <div class="vm-content">
                         @if($profil && $profil->visi)
-                            "{{ $profil->visi }}"
+                            {{ $profil->visi }}
                         @else
-                            <span style="color: var(--text-mute);">Belum ada visi</span>
+                            <span>Belum ada visi</span>
                         @endif
                     </div>
                 </div>
                 <div class="vm-card">
                     <div class="vm-title misi">
-                        <i class="fa-solid fa-flag-checkered"></i> Misi
+                        <i class="fas fa-flag-checkered"></i> Misi
                     </div>
                     <div class="vm-content">
                         @if($profil && $profil->misi)
                             {{ $profil->misi }}
                         @else
-                            <span style="color: var(--text-mute);">Belum ada misi</span>
+                            <span>Belum ada misi</span>
                         @endif
                     </div>
                 </div>
@@ -563,28 +608,28 @@
             <div class="stats-grid">
                 <div class="stat-node">
                     <div class="stat-icon" style="background: rgba(16,185,129,0.1);">
-                        <i class="fa-regular fa-calendar" style="color: var(--accent-primary);"></i>
+                        <i class="far fa-calendar" style="color: var(--accent-primary);"></i>
                     </div>
                     <div class="stat-value">{{ $profil->tahun_berdiri ?? '-' }}</div>
                     <div class="stat-label">Tahun Berdiri</div>
                 </div>
                 <div class="stat-node">
                     <div class="stat-icon" style="background: rgba(59,130,246,0.1);">
-                        <i class="fa-solid fa-map" style="color: var(--accent-blue);"></i>
+                        <i class="fas fa-map" style="color: var(--accent-blue);"></i>
                     </div>
                     <div class="stat-value">{{ $profil->luas_wilayah ?? '-' }}</div>
                     <div class="stat-label">Luas (km²)</div>
                 </div>
                 <div class="stat-node">
                     <div class="stat-icon" style="background: rgba(245,158,11,0.1);">
-                        <i class="fa-solid fa-tree" style="color: var(--accent-amber);"></i>
+                        <i class="fas fa-tree" style="color: var(--accent-amber);"></i>
                     </div>
                     <div class="stat-value">{{ $profil->jumlah_dusun ?? '-' }}</div>
                     <div class="stat-label">Jumlah Dusun</div>
                 </div>
                 <div class="stat-node">
                     <div class="stat-icon" style="background: rgba(139,92,246,0.1);">
-                        <i class="fa-solid fa-users" style="color: var(--accent-purple);"></i>
+                        <i class="fas fa-users" style="color: var(--accent-purple);"></i>
                     </div>
                     <div class="stat-value">{{ $aparaturs->count() }}</div>
                     <div class="stat-label">Aparatur Desa</div>
@@ -594,15 +639,15 @@
             {{-- Kontak --}}
             <div class="kontak-row">
                 <div class="kontak-item">
-                    <div class="kontak-icon"><i class="fa-regular fa-envelope"></i></div>
+                    <div class="kontak-icon"><i class="fas fa-envelope"></i></div>
                     <div class="kontak-text">{{ $profil->email_desa ?? 'Email belum diisi' }}</div>
                 </div>
                 <div class="kontak-item">
-                    <div class="kontak-icon"><i class="fa-regular fa-phone"></i></div>
+                    <div class="kontak-icon"><i class="fas fa-phone"></i></div>
                     <div class="kontak-text">{{ $profil->telepon_desa ?? 'Telepon belum diisi' }}</div>
                 </div>
                 <div class="kontak-item">
-                    <div class="kontak-icon"><i class="fa-regular fa-location-dot"></i></div>
+                    <div class="kontak-icon"><i class="fas fa-map-pin"></i></div>
                     <div class="kontak-text">{{ $profil->alamat_kantor ?? 'Alamat belum diisi' }}</div>
                 </div>
             </div>
@@ -612,9 +657,9 @@
     {{-- Aparatur Desa Table --}}
     <div class="table-architecture fade-up delay-2">
         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-            <h2><i class="fa-solid fa-users"></i> Aparatur Desa</h2>
+            <h2><i class="fas fa-users"></i> Aparatur Desa</h2>
             <a href="{{ route('admin.pengurus.index') }}" style="font-size: 0.7rem; font-weight: 700; color: var(--accent-primary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
-                Kelola Semua <i class="fa-solid fa-arrow-right"></i>
+                Kelola Semua <i class="fas fa-arrow-right"></i>
             </a>
         </div>
         
@@ -630,22 +675,22 @@
                     @if($a->foto)
                         <img src="{{ asset('storage/' . $a->foto) }}" alt="{{ $a->nama_pengurus }}">
                     @else
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fas fa-user"></i>
                     @endif
                 </div>
             </div>
             <div style="font-weight: 600; font-size: 0.85rem;">{{ $a->nama_pengurus ?? $a->nama }}</div>
             <div><span class="jabatan-badge">{{ $a->nama_kategori }}</span></div>
             <div>
-                <div class="action-deck" style="justify-content: center;">
+                <div class="action-deck">
                     <a href="{{ route('admin.pengurus.edit', $a->id_pengurus) }}" class="deck-btn btn-edit" title="Edit">
-                        <i class="fa-solid fa-pen"></i>
+                        <i class="fas fa-pen"></i>
                     </a>
                     <form action="{{ route('admin.pengurus.destroy', $a->id_pengurus) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="deck-btn btn-delete" title="Hapus">
-                            <i class="fa-solid fa-trash"></i>
+                            <i class="fas fa-trash"></i>
                         </button>
                     </form>
                 </div>
@@ -653,7 +698,7 @@
         </div>
         @empty
         <div class="empty-state">
-            <div class="empty-icon"><i class="fa-solid fa-users-slash" style="font-size: 2rem; color: var(--text-mute);"></i></div>
+            <div class="empty-icon"><i class="fas fa-users-slash"></i></div>
             <p style="color: var(--text-mute); font-size: 0.8rem;">Belum ada data aparatur desa</p>
             <a href="{{ route('admin.pengurus.index') }}" style="display: inline-block; margin-top: 0.8rem; font-size: 0.75rem; color: var(--accent-primary); text-decoration: none;">Kelola Aparatur →</a>
         </div>
@@ -662,7 +707,7 @@
         @if($aparaturs->count() > 5)
         <div class="table-footer">
             <a href="{{ route('admin.pengurus.index') }}">
-                Lihat Semua Aparatur ({{ $aparaturs->count() }}) <i class="fa-solid fa-arrow-right"></i>
+                Lihat Semua Aparatur ({{ $aparaturs->count() }}) <i class="fas fa-arrow-right"></i>
             </a>
         </div>
         @endif
@@ -670,9 +715,9 @@
 
     {{-- Footer Info --}}
     <div class="footer-info fade-up delay-3">
-        <span><i class="fa-regular fa-circle-check" style="color: var(--accent-primary);"></i> Data dikelola oleh administrator</span>
-        <span><i class="fa-regular fa-clock" style="color: var(--accent-primary);"></i> Update: {{ now()->translatedFormat('d F Y H:i') }}</span>
-        <span><i class="fa-solid fa-shield-alt" style="color: var(--accent-primary);"></i> Data terverifikasi</span>
+        <span><i class="fas fa-check-circle" style="color: var(--accent-primary);"></i> Data dikelola oleh administrator</span>
+        <span><i class="far fa-clock" style="color: var(--accent-primary);"></i> Update: {{ now()->translatedFormat('d F Y H:i') }}</span>
+        <span><i class="fas fa-shield-alt" style="color: var(--accent-primary);"></i> Data terverifikasi</span>
     </div>
 </div>
 @endsection

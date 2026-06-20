@@ -154,6 +154,7 @@ class UmkmController extends Controller
             'alamat_usaha' => 'required',
             'deskripsi' => 'required',
             'logo' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'bukti_usaha' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
         $data = $request->except(['_token', '_method', 'pemilik']);
@@ -163,6 +164,13 @@ class UmkmController extends Controller
                 Storage::disk('public')->delete($umkm->logo);
             }
             $data['logo'] = $request->file('logo')->store('umkm/logos', 'public');
+        }
+
+        if ($request->hasFile('bukti_usaha')) {
+            if ($umkm->bukti_usaha) {
+                Storage::disk('public')->delete($umkm->bukti_usaha);
+            }
+            $data['bukti_usaha'] = $request->file('bukti_usaha')->store('bukti_umkm', 'public');
         }
 
         $umkm->update($data);
@@ -194,6 +202,7 @@ class UmkmController extends Controller
             'alamat_usaha' => 'required',
             'deskripsi' => 'required',
             'logo' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'bukti_usaha' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
         $data = $request->except(['_token', '_method', 'umkm_id']);
@@ -203,6 +212,13 @@ class UmkmController extends Controller
                 Storage::disk('public')->delete($umkm->logo);
             }
             $data['logo'] = $request->file('logo')->store('umkm/logos', 'public');
+        }
+
+        if ($request->hasFile('bukti_usaha')) {
+            if ($umkm->bukti_usaha) {
+                Storage::disk('public')->delete($umkm->bukti_usaha);
+            }
+            $data['bukti_usaha'] = $request->file('bukti_usaha')->store('bukti_umkm', 'public');
         }
 
         $umkm->update($data);
@@ -267,14 +283,18 @@ class UmkmController extends Controller
                         ->where('user_id', Auth::id())
                         ->firstOrFail();
         } else {
-            $umkm = Umkm::where('user_id', Auth::id())->first();
+            $umkm = Umkm::where('user_id', Auth::id())->where('status', 'approved')->first();
             
             if (!$umkm) {
-                return redirect()->route('umkm.create')->with('error', 'Silakan daftarkan UMKM terlebih dahulu');
+                return redirect()->route('umkm.create')->with('error', 'Silakan daftarkan UMKM terlebih dahulu atau tunggu persetujuan');
             }
         }
         
-        $umkms = Umkm::where('user_id', Auth::id())->latest()->get();
+        if ($umkm->status != 'approved') {
+            return redirect()->back()->with('error', 'UMKM Anda belum disetujui oleh admin');
+        }
+        
+        $umkms = Umkm::where('user_id', Auth::id())->where('status', 'approved')->latest()->get();
         $produk = $umkm->products()->latest()->get();
         
         return view('umkm.produk.index', compact('umkm', 'umkms', 'produk'));
@@ -313,10 +333,13 @@ class UmkmController extends Controller
     {
         $request->validate([
             'nama_produk' => 'required|string|max:100',
-            'harga' => 'required|numeric|min:0',
+            'harga' => 'required|numeric|min:100|max:999999999999',
             'deskripsi' => 'nullable|string',
             'foto_produk' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'umkm_id' => 'nullable|numeric',
+        ], [
+            'harga.min' => 'Harga minimal adalah Rp 100.',
+            'harga.max' => 'Harga maksimal adalah Rp 999.999.999.999 (12 digit).',
         ]);
 
         // Get UMKM ID from form or use first UMKM
@@ -341,7 +364,7 @@ class UmkmController extends Controller
         $data = [
             'umkm_id' => $umkm->id_umkm,
             'nama_produk' => $request->nama_produk,
-            'harga' => $request->harga,
+            'harga' => intval($request->harga),
             'deskripsi' => $request->input('deskripsi', ''),
         ];
 
@@ -383,14 +406,17 @@ class UmkmController extends Controller
         
         $validated = $request->validate([
             'nama_produk' => 'required|string|max:100',
-            'harga' => 'required|numeric|min:0',
+            'harga' => 'required|numeric|min:100|max:999999999999',
             'deskripsi' => 'nullable|string',
             'foto_produk' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+        ], [
+            'harga.min' => 'Harga minimal adalah Rp 100.',
+            'harga.max' => 'Harga maksimal adalah Rp 999.999.999.999 (12 digit).',
         ]);
 
         $data = [
             'nama_produk' => $validated['nama_produk'],
-            'harga' => $validated['harga'],
+            'harga' => intval($validated['harga']),
             'deskripsi' => $validated['deskripsi'] ?? '',
         ];
 

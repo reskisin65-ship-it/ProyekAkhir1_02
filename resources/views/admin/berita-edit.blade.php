@@ -84,7 +84,7 @@
                                 </label>
                                 <div class="relative">
                                     <select name="kategori" class="appearance-none block w-full px-5 py-4 bg-gray-50/50 border-0 ring-1 ring-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-300 font-medium text-gray-700">
-                                        <option value="umum" {{ old('kategori', $berita->kategori) == 'umum' ? 'selected' : '' }}>🌎 Berita</option>
+                                        <option value="berita" {{ old('kategori', $berita->kategori) == 'berita' ? 'selected' : '' }}>🗞️ Berita</option>
                                         <option value="kegiatan" {{ old('kategori', $berita->kategori) == 'kegiatan' ? 'selected' : '' }}>📅 Kegiatan</option>
                                         <option value="pengumuman" {{ old('kategori', $berita->kategori) == 'pengumuman' ? 'selected' : '' }}>📢 Pengumuman</option>
                                     </select>
@@ -99,10 +99,50 @@
                                 <label class="block text-sm font-bold text-gray-700 mb-2 group-focus-within/input:text-indigo-600">
                                     Tanggal Publikasi
                                 </label>
-                                <input type="date" name="tanggal_publikasi" value="{{ date('Y-m-d') }}" readonly
+                                <input type="date" name="tanggal_publikasi" value="{{ old('tanggal_publikasi', optional($berita->tanggal_publikasi)->format('Y-m-d') ?? date('Y-m-d')) }}" readonly
                                        class="block w-full px-5 py-4 bg-gray-100 border-0 ring-1 ring-gray-200 rounded-xl font-medium text-gray-500 cursor-not-allowed">
                             </div>
                         </div>
+
+                        {{-- Status Pilihan --}}
+<div class="group/input">
+    <label class="block text-sm font-bold text-gray-700 mb-2 group-focus-within/input:text-indigo-600">
+        Status Publikasi
+    </label>
+    <div class="grid grid-cols-2 gap-3">
+        {{-- Publish --}}
+        <label class="cursor-pointer">
+            <input type="radio" name="status" value="publish" class="hidden peer/publish" {{ old('status', $berita->status) == 'publish' ? 'checked' : '' }}>
+            <div class="px-4 py-3 rounded-xl border-2 text-center text-sm font-semibold transition-all duration-300 
+                        peer-checked/publish:bg-green-50 peer-checked/publish:border-green-500 peer-checked/publish:text-green-700 peer-checked/publish:shadow-lg peer-checked/publish:shadow-green-200
+                        border-gray-200 text-gray-700 bg-white hover:border-green-400 hover:bg-green-50/50">
+                <span class="flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4 peer-checked/publish:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>✅ Publish</span>
+                </span>
+                <span class="text-[10px] font-normal text-gray-400 block mt-0.5 peer-checked/publish:text-green-600">Tampil di publik</span>
+            </div>
+        </label>
+        
+        {{-- Draft --}}
+        <label class="cursor-pointer">
+            <input type="radio" name="status" value="draft" class="hidden peer/draft" {{ old('status', $berita->status) == 'draft' ? 'checked' : '' }}>
+            <div class="px-4 py-3 rounded-xl border-2 text-center text-sm font-semibold transition-all duration-300 
+                        peer-checked/draft:bg-amber-50 peer-checked/draft:border-amber-500 peer-checked/draft:text-amber-700 peer-checked/draft:shadow-lg peer-checked/draft:shadow-amber-200
+                        border-gray-200 text-gray-700 bg-white hover:border-amber-400 hover:bg-amber-50/50">
+                <span class="flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4 peer-checked/draft:text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                    </svg>
+                    <span>📝 Draft</span>
+                </span>
+                <span class="text-[10px] font-normal text-gray-400 block mt-0.5 peer-checked/draft:text-amber-600">Belum dipublikasikan</span>
+            </div>
+        </label>
+    </div>
+</div>
 
                         {{-- Isi Berita (Textarea) --}}
                         <div class="group/input">

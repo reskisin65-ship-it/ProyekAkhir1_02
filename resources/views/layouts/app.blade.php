@@ -317,11 +317,24 @@
                         <div>
                             <h5 class="footer-heading mb-3">LAYANAN</h5>
                             <ul class="space-y-2 md:space-y-3">
-                                <li><a href="{{ route('masyarakat.surat.create') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Layanan Surat</a></li>
-                                <li><a href="{{ route('masyarakat.aspirasi.create') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Aspirasi & Pengaduan</a></li>
-                                <li><a href="#" class="footer-link-cerah text-sm md:text-[0.95rem]">UMKM Lokal</a></li>
-                                <li><a href="#" class="footer-link-cerah text-sm md:text-[0.95rem]">Galeri Desa</a></li>
-                                <li><a href="#" class="footer-link-cerah text-sm md:text-[0.95rem]">Informasi Publik</a></li>
+                                @auth
+                                    @if(auth()->user()->role == 'admin')
+                                        <li><a href="{{ route('admin.dashboard') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Dashboard Admin</a></li>
+                                        <li><a href="{{ route('admin.pengajuan-surat.index') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Kelola Surat</a></li>
+                                        <li><a href="{{ route('admin.aspirasi.index') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Kelola Aspirasi</a></li>
+                                    @else
+                                        {{-- Menu untuk Masyarakat & Pemilik UMKM disamakan --}}
+                                        <li><a href="{{ route('masyarakat.dashboard') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Dashboard</a></li>
+                                        <li><a href="{{ route('masyarakat.surat.index') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Layanan Surat</a></li>
+                                        <li><a href="{{ route('masyarakat.aspirasi.index') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Aspirasi & Pengaduan</a></li>
+                                        <li><a href="{{ route('masyarakat.keuangan.index') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Transparansi Keuangan</a></li>
+                                    @endif
+                                @else
+                                    <li><a href="{{ route('login') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Layanan Surat</a></li>
+                                    <li><a href="{{ route('login') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Aspirasi & Pengaduan</a></li>
+                                    <li><a href="{{ route('umkm') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">UMKM Lokal</a></li>
+                                    <li><a href="{{ route('galeri') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Galeri Desa</a></li>
+                                @endauth
                             </ul>
                         </div>
                     </div>
