@@ -541,31 +541,64 @@
                     <i class="fa-solid fa-plus-circle"></i>
                     Tambah Kategori Baru
                 </div>
+
+                {{-- Validation Errors --}}
+                @if($errors->any())
+                <div style="margin-bottom: 1rem; padding: 0.85rem 1.2rem; background: #fef2f2; border-left: 3px solid #ef4444; border-radius: 16px;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #ef4444;"></i>
+                        <strong style="color: #dc2626; font-size: 0.8rem;">Gagal menyimpan kategori:</strong>
+                    </div>
+                    <ul style="margin-left: 1.2rem; color: #dc2626; font-size: 0.78rem;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
                 <form action="{{ route('admin.pengurus.kategori.store') }}" method="POST">
                     @csrf
                     <div class="form-grid">
                         <div class="form-group">
                             <label><i class="fa-regular fa-key"></i> Key Identifier</label>
-                            <input type="text" name="key" class="form-control" placeholder="contoh: bpd, lpmd, linmas" required>
-                            <small style="font-size: 0.6rem; color: var(--gray-light);">Huruf kecil, tanpa spasi</small>
+                            <input type="text" name="key" class="form-control {{ $errors->has('key') ? 'border-red-400' : '' }}"
+                                   placeholder="contoh: bpd, lpmd, linmas"
+                                   value="{{ old('key') }}"
+                                   pattern="[a-zA-Z0-9_\-]+"
+                                   title="Hanya huruf, angka, underscore, dan strip"
+                                   required>
+                            <small style="font-size: 0.6rem; color: var(--gray-light);">Huruf, angka, underscore (_) atau strip (-). Tanpa spasi.</small>
+                            @error('key')
+                                <small style="color: #ef4444; font-size: 0.65rem;">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label><i class="fa-regular fa-tag"></i> Nama Kategori</label>
-                            <input type="text" name="nama" class="form-control" placeholder="Contoh: BPD, LPMD, Linmas" required>
+                            <input type="text" name="nama" class="form-control {{ $errors->has('nama') ? 'border-red-400' : '' }}"
+                                   placeholder="Contoh: BPD, LPMD, Linmas"
+                                   value="{{ old('nama') }}"
+                                   required>
+                            @error('nama')
+                                <small style="color: #ef4444; font-size: 0.65rem;">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label><i class="fa-regular fa-icons"></i> Icon (FontAwesome)</label>
-                            <input type="text" name="icon" class="form-control" placeholder="fa-building, fa-handshake" value="fa-solid fa-tag">
+                            <input type="text" name="icon" class="form-control"
+                                   placeholder="fa-building, fa-handshake"
+                                   value="{{ old('icon', 'fa-tag') }}">
+                            <small style="font-size: 0.6rem; color: var(--gray-light);">Contoh: fa-building, fa-users</small>
                         </div>
                         <div class="form-group">
                             <label><i class="fa-regular fa-palette"></i> Warna</label>
                             <select name="color" class="form-control">
-                                <option value="gray">Gray (Abu-abu)</option>
-                                <option value="amber">Amber (Kuning)</option>
-                                <option value="blue">Blue (Biru)</option>
-                                <option value="green">Green (Hijau)</option>
-                                <option value="purple">Purple (Ungu)</option>
-                                <option value="pink">Pink (Merah Muda)</option>
+                                <option value="gray" {{ old('color') == 'gray' ? 'selected' : '' }}>Gray (Abu-abu)</option>
+                                <option value="amber" {{ old('color') == 'amber' ? 'selected' : '' }}>Amber (Kuning)</option>
+                                <option value="blue" {{ old('color') == 'blue' ? 'selected' : '' }}>Blue (Biru)</option>
+                                <option value="green" {{ old('color') == 'green' ? 'selected' : '' }}>Green (Hijau)</option>
+                                <option value="purple" {{ old('color') == 'purple' ? 'selected' : '' }}>Purple (Ungu)</option>
+                                <option value="pink" {{ old('color') == 'pink' ? 'selected' : '' }}>Pink (Merah Muda)</option>
                             </select>
                         </div>
                     </div>

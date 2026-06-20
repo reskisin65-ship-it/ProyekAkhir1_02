@@ -497,8 +497,17 @@
                     </label>
                     <div class="amount-input">
                         <span class="amount-prefix">Rp</span>
-                        <input type="number" name="jumlah" step="1000" value="{{ old('jumlah', $transaksi->jumlah) }}" min="{{ $transaksi->jumlah }}" required class="form-control" placeholder="0">
+                        <input type="number" name="jumlah" step="1000"
+                               value="{{ old('jumlah', $transaksi->jumlah) }}"
+                               min="{{ max(1000, $transaksi->jumlah) }}" max="999999999999"
+                               required class="form-control"
+                               placeholder="Minimal Rp 1.000">
                     </div>
+                    <small style="font-size: 0.7rem; color: var(--text-mute); margin-top: 0.3rem; display: block;">
+                        Tidak boleh berkurang dari jumlah sebelumnya
+                        (Rp {{ number_format($transaksi->jumlah, 0, ',', '.') }})
+                        &nbsp;·&nbsp; Maksimal Rp 999.999.999.999
+                    </small>
                 </div>
                 
                 {{-- Bukti Foto --}}

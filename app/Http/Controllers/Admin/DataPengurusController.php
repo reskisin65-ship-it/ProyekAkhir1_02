@@ -302,14 +302,26 @@ class DataPengurusController extends Controller
     public function storeKategori(Request $request)
     {
         $request->validate([
-            'key' => 'required|alpha_dash',
+            'key'  => ['required', 'regex:/^[a-zA-Z0-9_\-]+$/', 'max:50'],
             'nama' => 'required|max:50',
-            'icon' => 'nullable|string|max:50',
-            'color' => 'nullable|string|max:20'
+            'icon' => 'nullable|string|max:100',
+            'color'=> 'nullable|string|max:20',
+        ], [
+            'key.required' => 'Key identifier wajib diisi.',
+            'key.regex'    => 'Key hanya boleh berisi huruf, angka, underscore (_), atau strip (-). Tanpa spasi.',
+            'nama.required'=> 'Nama kategori wajib diisi.',
         ]);
-        
+
+        // Pastikan key belum ada di hierarki (default maupun custom)
+        $hierarki = DataPengurus::getHierarki();
+        if (isset($hierarki[$request->key])) {
+            return back()
+                ->withInput()
+                ->withErrors(['key' => 'Key "' . $request->key . '" sudah digunakan oleh kategori lain.']);
+        }
+
         DataPengurus::addCustomKategori(
-            $request->key,
+            strtolower($request->key),
             $request->nama,
             $request->icon ?? 'fa-tag',
             $request->color ?? 'gray'

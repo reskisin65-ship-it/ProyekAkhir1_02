@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
+    <!-- Favicon PNG -->
+<link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+<link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">

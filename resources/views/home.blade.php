@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 
@@ -1369,12 +1368,12 @@
             <div class="hero-slider-wrapper" :style="'transform: translateX(-' + (slide * 100) + '%)'">
                 @php
                     $hero = [
-                        ['t' => 'Peradaban Digital', 'd' => 'Menyatukan teknologi dengan kearifan lokal Batak Toba.', 'img' => asset('images/login dan register/1.jpeg'), 'badge' => 'Smart Village'],
-                        ['t' => 'UMKM Go Digital', 'd' => 'Mendorong ekonomi kreatif warga menuju pasar global.', 'img' => asset('images/login dan register/2.jpeg'), 'badge' => 'Ekonomi Kreatif'],
-                        ['t' => 'Danau Toba Lestari', 'd' => 'Menjaga keindahan alam untuk generasi mendatang.', 'img' => asset('images/login dan register/3.jpeg'), 'badge' => 'Ekowisata'],
-                        ['t' => 'Layanan Digital', 'd' => 'Akses administrasi desa kini lebih cepat dan transparan.', 'img' => asset('images/login dan register/4.jpeg'), 'badge' => 'E-Government'],
-                        ['t' => 'Budaya Batak', 'd' => 'Melestarikan adat istiadat di tengah modernisasi.', 'img' => asset('images/login dan register/5.jpeg'), 'badge' => 'Kearifan Lokal'],
-                        ['t' => 'Desa Cerdas', 'd' => 'Bersama membangun desa digital yang berkelanjutan.', 'img' => asset('images/login dan register/1.jpeg'), 'badge' => 'Smart Village'],
+                        ['t' => 'Peradaban Digital', 'd' => 'Menyatukan teknologi dengan kearifan lokal Batak Toba.', 'img' => asset('images/Slider/5.jpg'), 'badge' => 'Smart Village'],
+                        ['t' => 'UMKM Go Digital', 'd' => 'Mendorong ekonomi kreatif warga menuju pasar global.', 'img' => asset('images/Slider/6.png'), 'badge' => 'Ekonomi Kreatif'],
+                        ['t' => 'Danau Toba Lestari', 'd' => 'Menjaga keindahan alam untuk generasi mendatang.', 'img' => asset('images/Slider/4.png'), 'badge' => 'Ekowisata'],
+                        ['t' => 'Layanan Digital', 'd' => 'Akses administrasi desa kini lebih cepat dan transparan.', 'img' => asset('images/Slider/3.png'), 'badge' => 'E-Government'],
+                        ['t' => 'Budaya Batak', 'd' => 'Melestarikan adat istiadat di tengah modernisasi.', 'img' => asset('images/Slider/2.png'), 'badge' => 'Kearifan Lokal'],
+                        ['t' => 'Desa Cerdas', 'd' => 'Bersama membangun desa digital yang berkelanjutan.', 'img' => asset('images/Slider/1.png'), 'badge' => 'Smart Village'],
                     ];
                 @endphp
                 @foreach($hero as $h)
@@ -1385,8 +1384,8 @@
                         <h1 class="hero-title">{{ $h['t'] }}</h1>
                         <p class="hero-subtitle">{{ $h['d'] }}</p>
                         <div class="hero-buttons">
-                            <a href="#layanan-publik" class="btn-hero-primary">✨ Layanan Publik</a>
-                            <a href="#berita" class="btn-hero-secondary">📖 Pelajari →</a>
+                            <a href="{{ route('profil-desa') }}" class="btn-hero-primary">✨ Tentang Desa</a>
+                            <a href="{{ route('register') }}" class="btn-hero-secondary">📖 Daftar →</a>
                         </div>
                     </div>
                 </div>
@@ -1488,50 +1487,312 @@
     </section>
 
     {{-- ============================================= --}}
-    {{-- 4. CHART VISUALISASI DATA --}}
+    {{-- 4. STATISTIK DETAIL DESA --}}
     {{-- ============================================= --}}
     <section data-aos="fade-up" data-aos-delay="150">
-        <div class="chart-section">
-            <div class="chart-header">
-                <div class="flex flex-wrap justify-between items-center gap-4">
-                    <div>
-                        <div class="chart-title">
-                            <div class="chart-title-icon"><i class="fa-solid fa-chart-simple"></i></div>
-                            <h2>Visualisasi Data Penduduk</h2>
+        {{-- Section Header --}}
+        <div class="text-center mb-4">
+            <div class="section-badge d-inline-flex"><i class="fa-solid fa-chart-simple"></i><span>Data Terkini</span></div>
+            <h2 class="section-title">Statistik <span>Desa</span></h2>
+            <p class="text-gray-500 mt-2">Data kependudukan dan layanan desa secara lengkap dan transparan</p>
+        </div>
+
+        <style>
+            /* ── Statistik Detail Cards ── */
+            .stat-detail-section {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 32px;
+                overflow: hidden;
+                box-shadow: var(--shadow-md);
+            }
+            .stat-detail-section:hover { box-shadow: var(--shadow-lg); }
+
+            .stat-detail-header {
+                padding: 1.2rem 1.8rem;
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            .stat-detail-header-icon {
+                width: 38px; height: 38px;
+                border-radius: 14px;
+                display: flex; align-items: center; justify-content: center;
+            }
+            .stat-detail-header h3 {
+                font-size: 0.9rem; font-weight: 700; color: var(--dark);
+            }
+
+            .stat-detail-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0;
+            }
+            .stat-detail-item {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: 1.2rem 1.8rem;
+                border-bottom: 1px solid var(--border);
+                transition: var(--transition);
+            }
+            .stat-detail-item:nth-child(odd) { border-right: 1px solid var(--border); }
+            .stat-detail-item:nth-last-child(-n+2):not(:nth-child(odd)):not(:nth-last-child(1)),
+            .stat-detail-item:last-child,
+            .stat-detail-item:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+            .stat-detail-item:hover {
+                background: var(--primary-soft);
+            }
+            .stat-detail-dot {
+                width: 44px; height: 44px; border-radius: 16px;
+                display: flex; align-items: center; justify-content: center;
+                flex-shrink: 0;
+                transition: var(--transition-bounce);
+            }
+            .stat-detail-item:hover .stat-detail-dot { transform: scale(1.08); }
+            .stat-detail-dot i { font-size: 1.1rem; }
+            .stat-detail-info { flex: 1; }
+            .stat-detail-value {
+                font-size: 1.6rem; font-weight: 800;
+                letter-spacing: -0.03em; line-height: 1; color: var(--dark);
+            }
+            .stat-detail-label {
+                font-size: 0.65rem; font-weight: 700;
+                text-transform: uppercase; letter-spacing: 0.08em;
+                color: var(--gray); margin-top: 0.2rem;
+            }
+            .stat-detail-bar {
+                height: 4px; border-radius: 10px;
+                background: var(--border); margin-top: 0.5rem; overflow: hidden;
+            }
+            .stat-detail-bar-fill { height: 100%; border-radius: 10px; }
+
+            .stat-sections-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                margin-top: 1.5rem;
+            }
+
+            @media (max-width: 768px) {
+                .stat-detail-grid { grid-template-columns: 1fr; }
+                .stat-detail-item:nth-child(odd) { border-right: none; }
+                .stat-detail-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+                .stat-detail-item:last-child { border-bottom: none; }
+                .stat-sections-grid { grid-template-columns: 1fr; }
+            }
+        </style>
+
+        @php
+            $totalPendudukInt = $stat_total_penduduk ?? 0;
+            $priaInt          = $penduduk_pria ?? 0;
+            $wanitaInt        = $penduduk_wanita ?? 0;
+            $kkInt            = $stat_kk_int ?? 0;
+            $umur014          = $kelompok_umur_0_14 ?? 0;
+            $umur1529         = $kelompok_umur_15_29 ?? 0;
+            $umur3059         = $kelompok_umur_30_59 ?? 0;
+            $umur60           = $kelompok_umur_60 ?? 0;
+            $umkmInt          = (int)($stat_umkm_count ?? 0);
+            $suratInt         = $stat_surat ?? 0;
+            $aspirasiInt      = $stat_aspirasi ?? 0;
+            $maxUmur          = max($umur014, $umur1529, $umur3059, $umur60, 1);
+        @endphp
+
+        <div class="stat-sections-grid">
+
+            {{-- KIRI: Kependudukan --}}
+            <div class="stat-detail-section">
+                <div class="stat-detail-header">
+                    <div class="stat-detail-header-icon" style="background:rgba(16,185,129,0.1);">
+                        <i class="fa-solid fa-users" style="color:var(--primary); font-size:1rem;"></i>
+                    </div>
+                    <h3>Data Kependudukan</h3>
+                </div>
+                <div class="stat-detail-grid">
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(16,185,129,0.12);">
+                            <i class="fa-solid fa-users" style="color:var(--primary);"></i>
                         </div>
-                        <p class="chart-subtitle">Pilih kategori dan jenis diagram untuk melihat detail statistik</p>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $totalPendudukInt }}</div>
+                            <div class="stat-detail-label">Total Penduduk</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:100%; background:linear-gradient(90deg,var(--primary),var(--primary-light));"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="chart-type-group">
-                        <button onclick="changeChartType('bar', this)" class="chart-type-btn active"><i class="fa-solid fa-chart-column"></i> Bar</button>
-                        <button onclick="changeChartType('line', this)" class="chart-type-btn"><i class="fa-solid fa-chart-line"></i> Line</button>
-                        <button onclick="changeChartType('pie', this)" class="chart-type-btn"><i class="fa-solid fa-chart-pie"></i> Pie</button>
-                        <button onclick="changeChartType('doughnut', this)" class="chart-type-btn"><i class="fa-solid fa-circle-notch"></i> Donut</button>
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(245,158,11,0.12);">
+                            <i class="fa-solid fa-house-user" style="color:#f59e0b;"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $kkInt }}</div>
+                            <div class="stat-detail-label">Kepala Keluarga</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:{{ $totalPendudukInt > 0 ? round(($kkInt/$totalPendudukInt)*100) : 0 }}%; background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(59,130,246,0.12);">
+                            <i class="fa-solid fa-mars" style="color:#3b82f6;"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $priaInt }}</div>
+                            <div class="stat-detail-label">Laki-laki</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:{{ $totalPendudukInt > 0 ? round(($priaInt/$totalPendudukInt)*100) : 0 }}%; background:linear-gradient(90deg,#3b82f6,#60a5fa);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(236,72,153,0.12);">
+                            <i class="fa-solid fa-venus" style="color:#ec4899;"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $wanitaInt }}</div>
+                            <div class="stat-detail-label">Perempuan</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:{{ $totalPendudukInt > 0 ? round(($wanitaInt/$totalPendudukInt)*100) : 0 }}%; background:linear-gradient(90deg,#ec4899,#f472b6);"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="px-6 pt-4">
-                <div class="category-group">
-                    <button id="btn-penduduk" onclick="loadChartData('penduduk', this)" class="category-btn active"><i class="fa-solid fa-users"></i> Statistik Penduduk</button>
-                    <button id="btn-umur" onclick="loadChartData('umur', this)" class="category-btn"><i class="fa-solid fa-chart-line"></i> Kelompok Umur</button>
+
+            {{-- KANAN: Kelompok Umur --}}
+            <div class="stat-detail-section">
+                <div class="stat-detail-header">
+                    <div class="stat-detail-header-icon" style="background:rgba(139,92,246,0.1);">
+                        <i class="fa-solid fa-chart-bar" style="color:#8b5cf6; font-size:1rem;"></i>
+                    </div>
+                    <h3>Kelompok Umur</h3>
+                </div>
+                <div class="stat-detail-grid">
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(16,185,129,0.12);">
+                            <i class="fa-solid fa-baby" style="color:var(--primary);"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $umur014 }}</div>
+                            <div class="stat-detail-label">0 – 14 Tahun</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:{{ round(($umur014/$maxUmur)*100) }}%; background:linear-gradient(90deg,var(--primary),var(--primary-light));"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(59,130,246,0.12);">
+                            <i class="fa-solid fa-person" style="color:#3b82f6;"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $umur1529 }}</div>
+                            <div class="stat-detail-label">15 – 29 Tahun</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:{{ round(($umur1529/$maxUmur)*100) }}%; background:linear-gradient(90deg,#3b82f6,#60a5fa);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(245,158,11,0.12);">
+                            <i class="fa-solid fa-person-walking" style="color:#f59e0b;"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $umur3059 }}</div>
+                            <div class="stat-detail-label">30 – 59 Tahun</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:{{ round(($umur3059/$maxUmur)*100) }}%; background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(139,92,246,0.12);">
+                            <i class="fa-solid fa-person-cane" style="color:#8b5cf6;"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $umur60 }}</div>
+                            <div class="stat-detail-label">60+ Tahun</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:{{ round(($umur60/$maxUmur)*100) }}%; background:linear-gradient(90deg,#8b5cf6,#a78bfa);"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="canvas-container">
-                <canvas id="statistikChart"></canvas>
+
+            {{-- BAWAH KIRI: UMKM & Layanan --}}
+            <div class="stat-detail-section">
+                <div class="stat-detail-header">
+                    <div class="stat-detail-header-icon" style="background:rgba(245,158,11,0.1);">
+                        <i class="fa-solid fa-store" style="color:#f59e0b; font-size:1rem;"></i>
+                    </div>
+                    <h3>UMKM Desa</h3>
+                </div>
+                <div class="stat-detail-grid">
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(245,158,11,0.12);">
+                            <i class="fa-solid fa-store" style="color:#f59e0b;"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $umkmInt }}</div>
+                            <div class="stat-detail-label">Total UMKM</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:100%; background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(16,185,129,0.12);">
+                            <i class="fa-solid fa-circle-check" style="color:var(--primary);"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ \App\Models\Umkm::where('status','approved')->count() }}</div>
+                            <div class="stat-detail-label">UMKM Aktif</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:{{ $umkmInt > 0 ? round((\App\Models\Umkm::where('status','approved')->count()/$umkmInt)*100) : 0 }}%; background:linear-gradient(90deg,var(--primary),var(--primary-light));"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-icon" style="background: rgba(16,185,129,0.1);"><i class="fa-solid fa-database text-emerald-600"></i></div>
-                    <div class="info-content"><p style="color: var(--primary);">DATA REALTIME</p><p>Diperbarui secara otomatis dari database</p></div>
+
+            {{-- BAWAH KANAN: Layanan Digital --}}
+            <div class="stat-detail-section">
+                <div class="stat-detail-header">
+                    <div class="stat-detail-header-icon" style="background:rgba(6,182,212,0.1);">
+                        <i class="fa-solid fa-bolt" style="color:#06b6d4; font-size:1rem;"></i>
+                    </div>
+                    <h3>Layanan Digital</h3>
                 </div>
-                <div class="info-item">
-                    <div class="info-icon" style="background: rgba(59,130,246,0.1);"><i class="fa-solid fa-chart-simple text-blue-600"></i></div>
-                    <div class="info-content"><p style="color: #3b82f6;">INTERAKTIF</p><p>Hover untuk melihat detail lengkap data</p></div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon" style="background: rgba(139,92,246,0.1);"><i class="fa-solid fa-mobile-alt text-purple-600"></i></div>
-                    <div class="info-content"><p style="color: #8b5cf6;">RESPONSIF</p><p>Tampil optimal di semua perangkat</p></div>
+                <div class="stat-detail-grid">
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(6,182,212,0.12);">
+                            <i class="fa-regular fa-file-lines" style="color:#06b6d4;"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $suratInt }}</div>
+                            <div class="stat-detail-label">Pengajuan Surat</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:100%; background:linear-gradient(90deg,#06b6d4,#67e8f9);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-detail-item">
+                        <div class="stat-detail-dot" style="background:rgba(139,92,246,0.12);">
+                            <i class="fa-solid fa-comment-dots" style="color:#8b5cf6;"></i>
+                        </div>
+                        <div class="stat-detail-info">
+                            <div class="stat-detail-value counter">{{ $aspirasiInt }}</div>
+                            <div class="stat-detail-label">Aspirasi Warga</div>
+                            <div class="stat-detail-bar">
+                                <div class="stat-detail-bar-fill" style="width:100%; background:linear-gradient(90deg,#8b5cf6,#a78bfa);"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -1694,8 +1955,8 @@
                     <div class="tutorial-general-item">
                         <div class="tutorial-num">2</div>
                         <div class="tutorial-general-text">
-                            <h4>📊 Visualisasi Data</h4>
-                            <p>Pilih Bar, Line, atau Pie untuk mengubah tampilan grafik dengan mudah.</p>
+                            <h4>📊 Data Statistik Desa</h4>
+                            <p>Lihat data kependudukan, kelompok umur, UMKM, dan layanan secara lengkap di bagian Statistik Desa.</p>
                         </div>
                     </div>
                     <div class="tutorial-general-item">
@@ -1814,122 +2075,6 @@
         });
     });
 
-    // CHART
-    Chart.defaults.font.family = "'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif";
-    Chart.defaults.font.size = 11;
-    Chart.defaults.color = '#64748b';
-
-    const chartData = {
-        penduduk: {
-            labels: ['Laki-laki', 'Perempuan', 'Kepala Keluarga'],
-            values: [{{ $penduduk_pria ?? 0 }}, {{ $penduduk_wanita ?? 0 }}, {{ str_replace('.', '', $stat_kk ?? '0') }}],
-            colors: ['rgba(59, 130, 246, 0.85)', 'rgba(236, 72, 153, 0.85)', 'rgba(245, 158, 11, 0.85)'],
-            borderColors: ['rgb(59, 130, 246)', 'rgb(236, 72, 153)', 'rgb(245, 158, 11)'],
-            hoverColors: ['rgba(59, 130, 246, 1)', 'rgba(236, 72, 153, 1)', 'rgba(245, 158, 11, 1)'],
-            title: 'Statistik Penduduk'
-        },
-        umur: {
-            labels: ['0-14 tahun', '15-29 tahun', '30-59 tahun', '60+ tahun'],
-            values: [{{ $kelompok_umur_0_14 ?? 0 }}, {{ $kelompok_umur_15_29 ?? 0 }}, {{ $kelompok_umur_30_59 ?? 0 }}, {{ $kelompok_umur_60 ?? 0 }}],
-            colors: ['rgba(16, 185, 129, 0.85)', 'rgba(59, 130, 246, 0.85)', 'rgba(245, 158, 11, 0.85)', 'rgba(139, 92, 246, 0.85)'],
-            borderColors: ['rgb(16, 185, 129)', 'rgb(59, 130, 246)', 'rgb(245, 158, 11)', 'rgb(139, 92, 246)'],
-            hoverColors: ['rgba(16, 185, 129, 1)', 'rgba(59, 130, 246, 1)', 'rgba(245, 158, 11, 1)', 'rgba(139, 92, 246, 1)'],
-            title: 'Kelompok Umur Penduduk'
-        }
-    };
-
-    let statistikChart = null;
-    let currentChartType = 'bar';
-    let currentKategori = 'penduduk';
-
-    function loadChartData(kategori, btnElement = null) {
-        currentKategori = kategori;
-        const data = chartData[kategori];
-        if (!data || !data.labels || !data.values) {
-            console.error("Data tidak ditemukan untuk: " + kategori);
-            return;
-        }
-        const canvas = document.getElementById('statistikChart');
-        canvas.style.opacity = '0.5';
-        setTimeout(() => {
-            if (statistikChart) statistikChart.destroy();
-            const ctx = canvas.getContext('2d');
-            const isPieType = ['pie', 'doughnut'].includes(currentChartType);
-            let gradientFill = ctx.createLinearGradient(0, 0, 0, 400);
-            gradientFill.addColorStop(0, 'rgba(16, 185, 129, 0.3)');
-            gradientFill.addColorStop(0.5, 'rgba(16, 185, 129, 0.1)');
-            gradientFill.addColorStop(1, 'rgba(16, 185, 129, 0.02)');
-            const commonOptions = {
-                responsive: true,
-                maintainAspectRatio: true,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: {
-                        position: isPieType ? 'bottom' : 'top',
-                        labels: { padding: 15, usePointStyle: true, pointStyle: 'circle', font: { size: 11, weight: '600' }, boxWidth: 8, boxHeight: 8 }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                        titleColor: '#f1f5f9',
-                        bodyColor: '#cbd5e1',
-                        borderColor: '#10b981',
-                        borderWidth: 1,
-                        padding: 12,
-                        cornerRadius: 12,
-                        titleFont: { size: 12, weight: 'bold' },
-                        bodyFont: { size: 11 },
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                let value = context.raw;
-                                let total = 0;
-                                if (isPieType && data.values) total = data.values.reduce((a, b) => a + b, 0);
-                                let percentage = total > 0 ? ` (${((value / total) * 100).toFixed(1)}%)` : '';
-                                return `${label}: ${value.toLocaleString()} data${percentage}`;
-                            }
-                        }
-                    }
-                },
-                onHover: function(event, activeElements) { canvas.style.cursor = activeElements.length ? 'pointer' : 'default'; }
-            };
-            if (!isPieType) {
-                commonOptions.scales = {
-                    y: { beginAtZero: true, grid: { color: '#e2e8f0', drawBorder: false, lineWidth: 1 }, ticks: { padding: 8, callback: (v) => v.toLocaleString(), font: { size: 10 } }, title: { display: true, text: '📊 Jumlah Data', font: { size: 10, weight: '600' }, color: '#64748b' } },
-                    x: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' }, color: '#334155' } }
-                };
-            }
-            if (isPieType) {
-                statistikChart = new Chart(ctx, {
-                    type: currentChartType,
-                    data: { labels: data.labels, datasets: [{ data: data.values, backgroundColor: data.colors, borderWidth: 3, borderColor: '#ffffff', hoverOffset: 15, cutout: currentChartType === 'doughnut' ? '65%' : 0, borderRadius: 10 }] },
-                    options: { ...commonOptions, layout: { padding: 20 } }
-                });
-            } else {
-                statistikChart = new Chart(ctx, {
-                    type: currentChartType,
-                    data: { labels: data.labels, datasets: [{ label: data.title || kategori.toUpperCase(), data: data.values, backgroundColor: currentChartType === 'line' ? gradientFill : data.colors, borderColor: currentChartType === 'line' ? '#10b981' : data.borderColors || data.colors, borderWidth: currentChartType === 'line' ? 3 : 1, borderRadius: currentChartType === 'bar' ? 8 : 0, borderSkipped: false, fill: currentChartType === 'line', tension: 0.4, pointBackgroundColor: '#10b981', pointBorderColor: '#ffffff', pointBorderWidth: 2, pointRadius: currentChartType === 'line' ? 5 : 0, pointHoverRadius: 8, pointHoverBackgroundColor: '#059669', hoverBackgroundColor: currentChartType === 'bar' ? data.hoverColors || data.colors : null, maxBarThickness: 70, barPercentage: 0.7, categoryPercentage: 0.8 }] },
-                    options: commonOptions
-                });
-            }
-            canvas.style.opacity = '1';
-        }, 200);
-        if (btnElement) {
-            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-        }
-    }
-
-    function changeChartType(type, btnElement) {
-        currentChartType = type;
-        document.querySelectorAll('.chart-type-btn').forEach(btn => btn.classList.remove('active'));
-        btnElement.classList.add('active');
-        loadChartData(currentKategori);
-    }
-
-    // Load default chart
-    document.addEventListener('DOMContentLoaded', function() {
-        const defaultBtn = document.getElementById('btn-penduduk');
-        if (defaultBtn) loadChartData('penduduk', defaultBtn);
-    });
+    // Semua chart JS telah dihapus — statistik kini ditampilkan dalam bentuk card
 </script>
 @endsection

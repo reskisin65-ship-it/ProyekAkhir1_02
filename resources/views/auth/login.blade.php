@@ -128,12 +128,6 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between px-1">
-                    <label class="flex items-center gap-2 cursor-pointer group">
-                        <input type="checkbox" name="remember" class="w-4 h-4 rounded border-emerald-200 text-emerald-600 focus:ring-emerald-500">
-                        <span class="text-xs text-emerald-800/60 group-hover:text-emerald-800 transition-colors">Ingat Saya</span>
-                    </label>
-                </div>
 
                 <button type="submit" class="btn-nature w-full py-4 text-white rounded-2xl font-bold uppercase tracking-[0.2em] text-xs shadow-xl flex items-center justify-center gap-3">
                     Masuk Sekarang <i class="fa-solid fa-arrow-right-long animate__animated animate__fadeInLeft animate__infinite"></i>

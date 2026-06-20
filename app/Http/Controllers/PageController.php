@@ -71,6 +71,12 @@ class PageController extends Controller
         $kelompok_umur_15_29 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 15 AND 29')->count();
         $kelompok_umur_30_59 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) BETWEEN 30 AND 59')->count();
         $kelompok_umur_60 = DataPenduduk::whereRaw('TIMESTAMPDIFF(YEAR, tanggal_lahir, CURDATE()) >= 60')->count();
+
+        // Data layanan untuk statistik
+        $stat_total_penduduk = DataPenduduk::count();
+        $stat_kk_int         = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
+        $stat_aspirasi       = Aspirasi::count();
+        $stat_surat          = PengajuanSurat::count();
         
         // ==============================================
         // DATA ASPIRASI PUBLIK - TAMPILKAN SEMUA ASPIRASI
@@ -86,6 +92,8 @@ class PageController extends Controller
             'penduduk_pria', 'penduduk_wanita',
             'kelompok_umur_0_14', 'kelompok_umur_15_29', 
             'kelompok_umur_30_59', 'kelompok_umur_60',
+            'stat_total_penduduk', 'stat_kk_int',
+            'stat_aspirasi', 'stat_surat',
             'aspirasiPublik'
         ));
     }

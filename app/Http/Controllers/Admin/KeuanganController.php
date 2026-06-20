@@ -93,12 +93,16 @@ class KeuanganController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tanggal'    => 'required|date|before_or_equal:today',
+            'tanggal'    => 'required|date|before_or_equal:' . now()->toDateString(),
             'jenis'      => 'required|in:pemasukan,pengeluaran',
             'id_kategori'=> 'required|exists:kategori_keuangan,id_kategori',
             'deskripsi'  => 'required|min:5',
-            'jumlah'     => 'required|numeric|min:0',
+            'jumlah'     => 'required|numeric|min:1000|max:999999999999',
             'bukti_foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
+            'tanggal.before_or_equal' => 'Tanggal transaksi tidak boleh melebihi hari ini (' . now()->format('d/m/Y') . ').',
+            'jumlah.min'              => 'Jumlah transaksi minimal Rp 1.000.',
+            'jumlah.max'              => 'Jumlah transaksi maksimal Rp 999.999.999.999.',
         ]);
 
         $buktiPath = null;
@@ -147,14 +151,16 @@ class KeuanganController extends Controller
         $transaksi = TransaksiKeuangan::findOrFail($id);
 
         $request->validate([
-            'tanggal'    => 'required|date|before_or_equal:today',
+            'tanggal'    => 'required|date|before_or_equal:' . now()->toDateString(),
             'jenis'      => 'required|in:pemasukan,pengeluaran',
             'id_kategori'=> 'required|exists:kategori_keuangan,id_kategori',
             'deskripsi'  => 'required|min:5',
-            'jumlah'     => 'required|numeric|min:' . $transaksi->jumlah,
+            'jumlah'     => 'required|numeric|min:' . max(1000, $transaksi->jumlah) . '|max:999999999999',
             'bukti_foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
-            'jumlah.min' => 'Jumlah transaksi tidak boleh berkurang dari jumlah sebelumnya (Rp ' . number_format($transaksi->jumlah, 0, ',', '.') . ').',
+            'tanggal.before_or_equal' => 'Tanggal transaksi tidak boleh melebihi hari ini (' . now()->format('d/m/Y') . ').',
+            'jumlah.min'              => 'Jumlah transaksi tidak boleh berkurang dari jumlah sebelumnya (Rp ' . number_format(max(1000, $transaksi->jumlah), 0, ',', '.') . ').',
+            'jumlah.max'              => 'Jumlah transaksi maksimal Rp 999.999.999.999.',
         ]);
 
         $data = $request->only(['tanggal', 'jenis', 'id_kategori', 'deskripsi', 'jumlah']);

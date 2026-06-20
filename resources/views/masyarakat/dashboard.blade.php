@@ -414,12 +414,12 @@
                 <div class="slider-wrapper" :style="'transform: translateX(-' + (slide * 100) + '%)'">
                     @php
                         $hero = [
-                            ['t' => 'Peradaban Digital Lumban Silintong', 'd' => 'Menyatukan teknologi dengan kearifan lokal Toba.', 'img' => asset('images/login dan register/1.jpeg'), 'badge' => '✨ Smart Village'],
-                            ['t' => 'UMKM Naik Kelas Menuju Global', 'd' => 'Mendorong ekonomi kreatif warga semakin kompetitif.', 'img' => asset('images/login dan register/2.jpeg'), 'badge' => '🚀 Ekonomi Kreatif'],
-                            ['t' => 'Harmonisasi Alam Danau Toba', 'd' => 'Menjaga kelestarian pesisir untuk generasi masa depan.', 'img' => asset('images/login dan register/3.jpeg'), 'badge' => '🌿 Ekowisata'],
-                            ['t' => 'Pelayanan Publik Satu Genggaman', 'd' => 'Akses administrasi kini lebih cepat dan transparan.', 'img' => asset('images/login dan register/4.jpeg'), 'badge' => '📱 E-Government'],
-                            ['t' => 'Budaya Batak Yang Mendunia', 'd' => 'Melestarikan adat istiadat di tengah modernisasi.', 'img' => asset('images/login dan register/5.jpeg'), 'badge' => '🎭 Kearifan Lokal'],
-                            ['t' => 'Lumban Silintong Excellence', 'd' => 'Bersama membangun desa cerdas (Smart Village).', 'img' => asset('images/login dan register/1.jpeg'), 'badge' => '🏆 Smart Village'],
+                            ['t' => 'Peradaban Digital Lumban Silintong', 'd' => 'Menyatukan teknologi dengan kearifan lokal Toba.', 'img' => asset('images/Slider/1.png'), 'badge' => '✨ Smart Village'],
+                            ['t' => 'UMKM Naik Kelas Menuju Global', 'd' => 'Mendorong ekonomi kreatif warga semakin kompetitif.', 'img' => asset('images/Slider/6.png'), 'badge' => '🚀 Ekonomi Kreatif'],
+                            ['t' => 'Harmonisasi Alam Danau Toba', 'd' => 'Menjaga kelestarian pesisir untuk generasi masa depan.', 'img' => asset('images/Slider/3.png'), 'badge' => '🌿 Ekowisata'],
+                            ['t' => 'Pelayanan Publik Satu Genggaman', 'd' => 'Akses administrasi kini lebih cepat dan transparan.', 'img' => asset('images/Slider/4.png'), 'badge' => '📱 E-Government'],
+                            ['t' => 'Budaya Batak Yang Mendunia', 'd' => 'Melestarikan adat istiadat di tengah modernisasi.', 'img' => asset('images/Slider/5.jpg'), 'badge' => '🎭 Kearifan Lokal'],
+                            ['t' => 'Lumban Silintong Excellence', 'd' => 'Bersama membangun desa cerdas (Smart Village).', 'img' => asset('images/Slider/2.png'), 'badge' => '🏆 Smart Village'],
                         ];
                     @endphp
                     @foreach($hero as $h)

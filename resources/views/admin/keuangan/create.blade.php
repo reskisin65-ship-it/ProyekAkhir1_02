@@ -477,8 +477,15 @@
                     </label>
                     <div class="amount-input">
                         <span class="amount-prefix">Rp</span>
-                        <input type="number" name="jumlah" step="1000" value="{{ old('jumlah') }}" min="0" required class="form-control" placeholder="0">
+                        <input type="number" name="jumlah" step="1000"
+                               value="{{ old('jumlah') }}"
+                               min="1000" max="999999999999"
+                               required class="form-control"
+                               placeholder="Minimal Rp 1.000">
                     </div>
+                    <small style="font-size: 0.7rem; color: var(--text-mute); margin-top: 0.3rem; display: block;">
+                        Minimal Rp 1.000 &nbsp;·&nbsp; Maksimal Rp 999.999.999.999
+                    </small>
                 </div>
                 
                 {{-- Bukti Foto --}}

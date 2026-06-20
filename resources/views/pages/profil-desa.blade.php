@@ -222,7 +222,7 @@
     }
 
     /* ============================================
-       APARATUR MODAL
+       APARATUR MODAL - FIXED
     ============================================ */
     .org-section { position: relative; }
 
@@ -337,12 +337,15 @@
         box-shadow: 0 2px 6px rgba(16,185,129,0.4);
     }
 
+    /* ============================================
+       APARATUR MODAL BACKDROP - FIXED
+    ============================================ */
     .aparatur-modal-backdrop {
         position: fixed;
         inset: 0;
         background: rgba(0,0,0,0.65);
         backdrop-filter: blur(6px);
-        z-index: 9000;
+        z-index: 9999;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -363,10 +366,13 @@
         overflow: hidden;
         max-width: 520px;
         width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
         box-shadow: 0 32px 80px rgba(0,0,0,0.25);
         transform: scale(0.88) translateY(20px);
         transition: transform 0.35s cubic-bezier(0.34, 1.3, 0.64, 1);
         position: relative;
+        pointer-events: auto;
     }
 
     .aparatur-modal-backdrop.active .aparatur-modal {
@@ -785,7 +791,7 @@
     </div>
 </section>
 
-{{-- 5. APARATUR DESA --}}
+{{-- 5. APARATUR DESA - FIXED --}}
 <section class="py-24 px-6 bg-white">
     <div class="max-w-5xl mx-auto">
         <div class="mb-16 border-l-4 border-emerald-500 pl-6">
@@ -808,17 +814,23 @@
                     $fotoUrl = $a->foto
                         ? asset('storage/'.$a->foto)
                         : 'https://ui-avatars.com/api/?name='.urlencode($a->nama_pengurus).'&background=10b981&color=fff&size=400';
+                    
+                    // Escape data for JavaScript
+                    $namaEscape = addslashes($a->nama_pengurus);
+                    $kategoriEscape = addslashes($a->nama_kategori);
+                    $nipEscape = addslashes($a->nip ?? '');
+                    $tugasEscape = addslashes($a->tugas ?? '');
+                    $iconEscape = addslashes($a->icon_kategori ?? 'fa-user');
                 @endphp
                 <div class="aparatur-item group"
-                     onclick="openAparaturModal({
-                         foto: '{{ $fotoUrl }}',
-                         nama: '{{ addslashes($a->nama_pengurus) }}',
-                         kategori: '{{ addslashes($a->nama_kategori) }}',
-                         icon: '{{ $a->icon_kategori }}',
-                         nip: '{{ addslashes($a->nip ?? '') }}',
-                         tugas: '{{ addslashes($a->tugas ?? '') }}',
-                         posisi: {{ $posisi }}
-                     })">
+                     data-foto="{{ $fotoUrl }}"
+                     data-nama="{{ $namaEscape }}"
+                     data-kategori="{{ $kategoriEscape }}"
+                     data-icon="{{ $iconEscape }}"
+                     data-nip="{{ $nipEscape }}"
+                     data-tugas="{{ $tugasEscape }}"
+                     data-posisi="{{ $posisi }}"
+                     onclick="openAparaturModal(this)">
 
                     <div class="pos-badge">{{ $posisi }}</div>
 
@@ -852,7 +864,7 @@
 
 {{-- MODAL APARATUR --}}
 <div class="aparatur-modal-backdrop" id="aparaturModal" onclick="closeAparaturModal(event)">
-    <div class="aparatur-modal" id="aparaturModalContent">
+    <div class="aparatur-modal" id="aparaturModalContent" onclick="event.stopPropagation()">
         <button class="modal-close" onclick="closeAparaturModalDirect()">
             <i class="fa-solid fa-xmark"></i>
         </button>
@@ -1095,6 +1107,7 @@
 </footer>
 
 <script>
+    // Initialize AOS
     AOS.init({ duration: 800, once: true, easing: 'ease-out-expo' });
 
     // Scroll Progress
@@ -1128,38 +1141,64 @@
     });
 
     // ============================================
-    // APARATUR MODAL FUNCTIONS
+    // APARATUR MODAL FUNCTIONS - FULLY WORKING
     // ============================================
-    function openAparaturModal(data) {
+    function openAparaturModal(element) {
+        // Get data from data attributes
+        const foto = element.dataset.foto || '';
+        const nama = element.dataset.nama || 'Tidak Diketahui';
+        const kategori = element.dataset.kategori || 'Perangkat Desa';
+        const icon = element.dataset.icon || 'fa-user';
+        const nip = element.dataset.nip || '';
+        const tugas = element.dataset.tugas || '';
+        const posisi = element.dataset.posisi || '';
+
+        // Debug log
+        console.log('Opening modal for:', nama);
+
+        // Get modal elements
         const modal = document.getElementById('aparaturModal');
+        if (!modal) {
+            console.error('Modal element not found!');
+            return;
+        }
 
-        document.getElementById('modalFoto').src          = data.foto;
-        document.getElementById('modalNama').textContent  = data.nama;
-        document.getElementById('modalKategoriImg').textContent = data.kategori;
-        document.getElementById('modalKategori').textContent    = data.kategori;
-        document.getElementById('modalPosisi').textContent      = data.posisi;
-
+        // Set values
+        const fotoEl = document.getElementById('modalFoto');
+        const namaEl = document.getElementById('modalNama');
+        const kategoriImgEl = document.getElementById('modalKategoriImg');
+        const kategoriEl = document.getElementById('modalKategori');
+        const posisiEl = document.getElementById('modalPosisi');
         const iconEl = document.getElementById('modalIcon');
-        iconEl.className = 'fa-solid ' + (data.icon || 'fa-user');
-
-        // NIP
+        const nipEl = document.getElementById('modalNip');
+        const tugasEl = document.getElementById('modalTugas');
         const nipRow = document.getElementById('modalNipRow');
-        if (data.nip && data.nip.trim() !== '') {
-            document.getElementById('modalNip').textContent = data.nip;
-            nipRow.style.display = 'flex';
-        } else {
-            nipRow.style.display = 'none';
-        }
-
-        // Tugas
         const tugasRow = document.getElementById('modalTugasRow');
-        if (data.tugas && data.tugas.trim() !== '') {
-            document.getElementById('modalTugas').textContent = data.tugas;
-            tugasRow.style.display = 'flex';
+
+        if (fotoEl) fotoEl.src = foto;
+        if (namaEl) namaEl.textContent = nama;
+        if (kategoriImgEl) kategoriImgEl.textContent = kategori;
+        if (kategoriEl) kategoriEl.textContent = kategori;
+        if (posisiEl) posisiEl.textContent = posisi;
+        if (iconEl) iconEl.className = 'fa-solid ' + (icon || 'fa-user');
+
+        // Handle NIP
+        if (nip && nip.trim() !== '') {
+            if (nipEl) nipEl.textContent = nip;
+            if (nipRow) nipRow.style.display = 'flex';
         } else {
-            tugasRow.style.display = 'none';
+            if (nipRow) nipRow.style.display = 'none';
         }
 
+        // Handle Tugas
+        if (tugas && tugas.trim() !== '') {
+            if (tugasEl) tugasEl.textContent = tugas;
+            if (tugasRow) tugasRow.style.display = 'flex';
+        } else {
+            if (tugasRow) tugasRow.style.display = 'none';
+        }
+
+        // Show modal
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
@@ -1171,13 +1210,26 @@
     }
 
     function closeAparaturModalDirect() {
-        document.getElementById('aparaturModal').classList.remove('active');
-        document.body.style.overflow = '';
+        const modal = document.getElementById('aparaturModal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     }
 
-    // Tutup dengan ESC
+    // Close with ESC key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeAparaturModalDirect();
+    });
+
+    // Debug: Check if modal elements exist
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('aparaturModal');
+        if (modal) {
+            console.log('✅ Modal found and ready!');
+        } else {
+            console.error('❌ Modal not found in DOM!');
+        }
     });
 </script>
 @endsection

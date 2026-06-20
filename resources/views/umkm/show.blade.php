@@ -58,7 +58,7 @@
                     <div class="prose prose-slate max-w-none mb-12">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="w-8 h-[2px] bg-emerald-500"></div>
-                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Slogan Usaha</span>
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Deskripsi Usaha</span>
                         </div>
                         <p class="text-slate-500 text-lg leading-relaxed font-light italic">
                             "{{ $umkm->deskripsi }}"
@@ -261,7 +261,7 @@
                         <div class="tutorial-num">4</div>
                         <div class="tutorial-text">
                             <h4>🛒 Cara Memesan</h4>
-                            <p>Klik tombol "Pesan Sekarang" untuk terhubung langsung via WhatsApp ke pemilik usaha.</p>
+                            <p>Klik tombol "Kontak" diatas untuk terhubung dan berkomunikasi langsung via WhatsApp ke pemilik usaha.</p>
                         </div>
                     </div>
                     <div class="tutorial-item">
