@@ -565,8 +565,10 @@ public function umkmDestroy($id)
         if (!$pengajuan->berkas_pendukung || !Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
             return back()->with('error', 'File pendukung tidak ditemukan!');
         }
-        
-        return Storage::disk('public')->download($pengajuan->berkas_pendukung, 'Pendukung_' . $pengajuan->jenis_surat . '.pdf');
+
+        $extension = pathinfo($pengajuan->berkas_pendukung, PATHINFO_EXTENSION);
+        $filename = 'Pendukung_' . $pengajuan->jenis_surat . ($extension ? '.' . $extension : '');
+        return Storage::disk('public')->download($pengajuan->berkas_pendukung, $filename);
     }
 
     // ==============================================

@@ -408,8 +408,8 @@
                     <select name="agama" required class="input-glass">
                         <option value="">Pilih Agama</option>
                         <option value="Islam" {{ old('agama', $penduduk->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
-                        <option value="Kristen" {{ old('agama', $penduduk->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                        <option value="Katolik" {{ old('agama', $penduduk->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                        <option value="Kristen Protestan" {{ old('agama', $penduduk->agama) == 'Kristen Protestan' ? 'selected' : '' }}>Kristen Protestan</option>
+                        <option value="Kristen Katolik" {{ old('agama', $penduduk->agama) == 'Kristen Katolik' ? 'selected' : '' }}>Kristen Katolik</option>
                         <option value="Hindu" {{ old('agama', $penduduk->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
                         <option value="Buddha" {{ old('agama', $penduduk->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
                         <option value="Konghucu" {{ old('agama', $penduduk->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
@@ -423,7 +423,17 @@
                         <i class="fa-solid fa-graduation-cap"></i> Pendidikan
                         <span class="required-star">*</span>
                     </label>
-                    <input type="text" name="pendidikan" value="{{ old('pendidikan', $penduduk->pendidikan) }}" required class="input-glass" placeholder="SD, SMP, SMA, S1, dll">
+                    <select name="pendidikan" required class="input-glass">
+                        <option value="">Pilih Pendidikan</option>
+                        <option value="Tidak Sekolah" {{ old('pendidikan', $penduduk->pendidikan) == 'Tidak Sekolah' ? 'selected' : '' }}>Tidak Sekolah</option>
+                        <option value="SD" {{ old('pendidikan', $penduduk->pendidikan) == 'SD' ? 'selected' : '' }}>SD</option>
+                        <option value="SMP" {{ old('pendidikan', $penduduk->pendidikan) == 'SMP' ? 'selected' : '' }}>SMP</option>
+                        <option value="SMA" {{ old('pendidikan', $penduduk->pendidikan) == 'SMA' ? 'selected' : '' }}>SMA</option>
+                        <option value="D1/D2/D3" {{ old('pendidikan', $penduduk->pendidikan) == 'D1/D2/D3' ? 'selected' : '' }}>D1/D2/D3</option>
+                        <option value="S1" {{ old('pendidikan', $penduduk->pendidikan) == 'S1' ? 'selected' : '' }}>S1</option>
+                        <option value="S2" {{ old('pendidikan', $penduduk->pendidikan) == 'S2' ? 'selected' : '' }}>S2</option>
+                        <option value="S3" {{ old('pendidikan', $penduduk->pendidikan) == 'S3' ? 'selected' : '' }}>S3</option>
+                    </select>
                 </div>
 
                 <!-- Pekerjaan -->

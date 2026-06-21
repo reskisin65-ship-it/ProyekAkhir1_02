@@ -708,7 +708,7 @@
                     <i class="fa-solid fa-place-of-worship text-white"></i>
                 </div>
                 <div>
-                    <h3 class="font-black text-slate-800 text-base">Distribusi Agama</h3>
+                    <h3 class="font-black text-slate-800 text-base"> Agama</h3>
                     <p class="text-xs text-slate-400">Keberagaman keyakinan warga</p>
                 </div>
             </div>

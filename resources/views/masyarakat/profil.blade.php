@@ -308,7 +308,14 @@
 
 <div class="container-premium">
     
-    <a href="{{ url()->previous() }}" class="back-button animate__animated animate__fadeIn">
+    @php
+        $backUrl = url()->previous();
+        if ($backUrl === url()->current() || empty($backUrl)) {
+            $backUrl = route('masyarakat.dashboard');
+        }
+    @endphp
+
+    <a href="{{ $backUrl }}" class="back-button animate__animated animate__fadeIn">
         <i class="fa-solid fa-arrow-left"></i> Kembali
     </a>
 
@@ -482,7 +489,17 @@
 
                             <div>
                                 <label class="form-label"><i class="fa-solid fa-graduation-cap"></i> Pendidikan</label>
-                                <input type="text" name="pendidikan" value="{{ old('pendidikan', $dataPenduduk?->pendidikan ?? '') }}" class="form-input" placeholder="Pendidikan terakhir">
+                                <select name="pendidikan" class="form-input">
+                                    <option value="">Pilih Pendidikan</option>
+                                    <option value="Tidak Sekolah" {{ old('pendidikan', $dataPenduduk?->pendidikan ?? '') == 'Tidak Sekolah' ? 'selected' : '' }}>Tidak Sekolah</option>
+                                    <option value="SD" {{ old('pendidikan', $dataPenduduk?->pendidikan ?? '') == 'SD' ? 'selected' : '' }}>SD</option>
+                                    <option value="SMP" {{ old('pendidikan', $dataPenduduk?->pendidikan ?? '') == 'SMP' ? 'selected' : '' }}>SMP</option>
+                                    <option value="SMA" {{ old('pendidikan', $dataPenduduk?->pendidikan ?? '') == 'SMA' ? 'selected' : '' }}>SMA</option>
+                                    <option value="D1/D2/D3" {{ old('pendidikan', $dataPenduduk?->pendidikan ?? '') == 'D1/D2/D3' ? 'selected' : '' }}>D1/D2/D3</option>
+                                    <option value="S1" {{ old('pendidikan', $dataPenduduk?->pendidikan ?? '') == 'S1' ? 'selected' : '' }}>S1</option>
+                                    <option value="S2" {{ old('pendidikan', $dataPenduduk?->pendidikan ?? '') == 'S2' ? 'selected' : '' }}>S2</option>
+                                    <option value="S3" {{ old('pendidikan', $dataPenduduk?->pendidikan ?? '') == 'S3' ? 'selected' : '' }}>S3</option>
+                                </select>
                                 @error('pendidikan')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
