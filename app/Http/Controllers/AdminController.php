@@ -12,6 +12,7 @@ use App\Models\Aspirasi;
 use App\Models\ProfilDesa;
 use App\Models\DataPengurus;
 use App\Models\DataPenduduk;
+use App\Models\PengaturanStatistik;
 use App\Models\Role;
 use App\Models\Notifikasi;
 use App\Helpers\NotifikasiHelper;
@@ -75,7 +76,7 @@ class AdminController extends Controller
             'selesai' => Aspirasi::where('status', 'selesai')->count(),
         ];
         
-        return view('admin.aspirasi', compact('aspirasi', 'statistik'));
+        return view('admin.aspirasi.index', compact('aspirasi', 'statistik'));
     }
 
     public function aspirasiRespond(Request $request, $id)
@@ -118,7 +119,7 @@ class AdminController extends Controller
     public function aspirasiShow($id)
     {
         $aspirasi = Aspirasi::with('user')->findOrFail($id);
-        return view('admin.aspirasi-show', compact('aspirasi'));
+        return view('admin.aspirasi.show', compact('aspirasi'));
     }
 
     public function aspirasiDestroy($id)
@@ -141,12 +142,12 @@ class AdminController extends Controller
     public function berita()
     {
         $beritas = Berita::orderBy('created_at', 'desc')->paginate(15);
-        return view('admin.berita', compact('beritas'));
+        return view('admin.berita.index', compact('beritas'));
     }
 
     public function beritaCreate()
     {
-        return view('admin.berita-create');
+        return view('admin.berita.create');
     }
 
     public function beritaStore(Request $request)
@@ -184,7 +185,7 @@ class AdminController extends Controller
     public function beritaEdit($id)
     {
         $berita = Berita::findOrFail($id);
-        return view('admin.berita-edit', compact('berita'));
+        return view('admin.berita.edit', compact('berita'));
     }
 
     public function beritaUpdate(Request $request, $id)
@@ -244,12 +245,12 @@ class AdminController extends Controller
     public function galeri()
     {
         $galeris = Galeri::orderBy('created_at', 'desc')->paginate(12);
-        return view('admin.galeri', compact('galeris'));
+        return view('admin.galeri.index', compact('galeris'));
     }
 
     public function galeriCreate()
     {
-        return view('admin.galeri-create');
+        return view('admin.galeri.create');
     }
 
     public function galeriStore(Request $request)
@@ -278,13 +279,13 @@ class AdminController extends Controller
     public function galeriShow($id)
     {
         $galeri = Galeri::findOrFail($id);
-        return view('admin.galeri-show', compact('galeri'));
+        return view('admin.galeri.show', compact('galeri'));
     }
 
     public function galeriEdit($id)
     {
         $galeri = Galeri::findOrFail($id);
-        return view('admin.galeri-edit', compact('galeri'));
+        return view('admin.galeri.edit', compact('galeri'));
     }
 
     public function galeriUpdate(Request $request, $id)
@@ -355,7 +356,7 @@ class AdminController extends Controller
         
         $umkms = $query->paginate(15);
         
-        return view('admin.umkm', compact('umkms', 'statistik'));
+        return view('admin.umkm.index', compact('umkms', 'statistik'));
     }
 
     public function umkmApprove($id)
@@ -459,13 +460,13 @@ public function umkmDestroy($id)
             'ditolak' => PengajuanSurat::where('status', 'ditolak')->count(),
         ];
         
-        return view('admin.pengajuan-surat', compact('pengajuan', 'statistik'));
+        return view('admin.pengajuan-surat.index', compact('pengajuan', 'statistik'));
     }
 
     public function pengajuanSuratShow($id)
     {
         $pengajuan = PengajuanSurat::with('user')->findOrFail($id);
-        return view('admin.pengajuan-surat-show', compact('pengajuan'));
+        return view('admin.pengajuan-surat.show', compact('pengajuan'));
     }
 
     public function pengajuanSuratApprove($id)
@@ -580,7 +581,7 @@ public function umkmDestroy($id)
     public function penduduk()
     {
         $penduduk = DataPenduduk::orderBy('created_at', 'desc')->paginate(20);
-        return view('admin.penduduk', compact('penduduk'));
+        return view('admin.penduduk.index', compact('penduduk'));
     }
 
     public function pendudukCreate()
@@ -590,7 +591,7 @@ public function umkmDestroy($id)
             return $query->where('id_role', $roleMasyarakat->id_role);
         })->get();
         
-        return view('admin.penduduk-create', compact('users'));
+        return view('admin.penduduk.create', compact('users'));
     }
 
     public function pendudukStore(Request $request)
@@ -649,7 +650,7 @@ public function umkmDestroy($id)
             return $query->where('id_role', $roleMasyarakat->id_role);
         })->get();
         
-        return view('admin.penduduk-edit', compact('penduduk', 'users'));
+        return view('admin.penduduk.edit', compact('penduduk', 'users'));
     }
 
     public function pendudukUpdate(Request $request, $id)
@@ -718,12 +719,12 @@ public function umkmDestroy($id)
     public function pengurus()
     {
         $pengurus = DataPengurus::orderBy('id_pengurus', 'asc')->paginate(15);
-        return view('admin.pengurus', compact('pengurus'));
+        return view('admin.pengurus.index', compact('pengurus'));
     }
 
     public function pengurusCreate()
     {
-        return view('admin.pengurus-create');
+        return view('admin.pengurus.create');
     }
 
     public function pengurusStore(Request $request)
@@ -752,7 +753,7 @@ public function umkmDestroy($id)
     public function pengurusEdit($id)
     {
         $pengurus = DataPengurus::findOrFail($id);
-        return view('admin.pengurus-edit', compact('pengurus'));
+        return view('admin.pengurus.edit', compact('pengurus'));
     }
 
     public function pengurusUpdate(Request $request, $id)
@@ -804,7 +805,7 @@ public function umkmDestroy($id)
     public function profilDesa()
     {
         $profil = ProfilDesa::first();
-        return view('admin.profil-desa', compact('profil'));
+        return view('admin.profil-desa.index', compact('profil'));
     }
 
     public function updateProfilDesa(Request $request)
@@ -823,7 +824,7 @@ public function umkmDestroy($id)
             ProfilDesa::create(array_merge($request->all(), ['user_id' => Auth::id()]));
         }
 
-        return redirect()->route('admin.profil-desa')
+        return redirect()->route('admin.profil-desa.index')
             ->with('success', 'Profil desa berhasil diperbarui!');
     }
 
@@ -866,7 +867,7 @@ public function umkmDestroy($id)
             'total_galeri'         => Galeri::count(),
         ];
 
-        return view('admin.statistik', compact('statistik'));
+        return view('admin.statistik.index', compact('statistik'));
     }
 
     public function statistikKelola()

@@ -34,7 +34,7 @@ class DataPengurusController extends Controller
             $statistik[$key] = DataPengurus::where('kategori_jabatan', $key)->count();
         }
         
-        return view('admin.pengurus', compact('pengurus', 'statistik', 'hierarki'));
+        return view('admin.pengurus.index', compact('pengurus', 'statistik', 'hierarki'));
     }
     
     /**
@@ -48,7 +48,7 @@ class DataPengurusController extends Controller
             ->pluck('total', 'kategori_jabatan')
             ->toArray();
 
-        return view('admin.pengurus-create', compact('hierarki', 'kategoriCounts'));
+        return view('admin.pengurus.create', compact('hierarki', 'kategoriCounts'));
     }
     
     /**
@@ -123,7 +123,7 @@ class DataPengurusController extends Controller
             ->pluck('total', 'kategori_jabatan')
             ->toArray();
 
-        return view('admin.pengurus-edit', compact('pengurus', 'hierarki', 'kategoriCounts'));
+        return view('admin.pengurus.edit', compact('pengurus', 'hierarki', 'kategoriCounts'));
     }
 
     /**
@@ -293,7 +293,7 @@ class DataPengurusController extends Controller
     public function showKategori()
     {
         $hierarki = DataPengurus::getHierarki();
-        return view('admin.pengurus-kategori', compact('hierarki'));
+        return view('admin.pengurus.kategori', compact('hierarki'));
     }
     
     /**
