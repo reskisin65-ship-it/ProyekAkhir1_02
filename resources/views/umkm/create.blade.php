@@ -687,7 +687,7 @@
                             <i class="fa-solid fa-image"></i> Logo Usaha
                             <span class="required">*</span>
                         </label>
-                        <div class="upload-area" onclick="document.getElementById('logo_input').click()">
+                        <label for="logo_input" class="upload-area">
                             <div class="upload-icon">
                                 <i class="fa-solid fa-cloud-arrow-up"></i>
                             </div>
@@ -695,7 +695,7 @@
                             <div class="upload-hint">Format: JPG, PNG. Maks: 2MB</div>
                             <input type="file" name="logo" id="logo_input" required accept="image/*" class="file-input" onchange="updateFileName('logo_input', 'logo_name')">
                             <div id="logo_name" class="file-name"></div>
-                        </div>
+                        </label>
                         @error('logo')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
@@ -707,7 +707,7 @@
                             <i class="fa-solid fa-file-image"></i> Unggah Bukti Usaha
                             <span class="text-gray-400 text-xs ml-1">(Opsional)</span>
                         </label>
-                        <div class="upload-area" onclick="document.getElementById('bukti_input').click()" style="border-color: var(--border);">
+                        <label for="bukti_input" class="upload-area" style="border-color: var(--border);">
                             <div class="upload-icon" style="background: #f1f5f9;">
                                 <i class="fa-solid fa-folder-open" style="color: var(--gray);"></i>
                             </div>
@@ -715,7 +715,7 @@
                             <div class="upload-hint">Format: JPG, PNG. Maks: 2MB (Foto tempat usaha/produk)</div>
                             <input type="file" name="bukti_usaha" id="bukti_input" accept="image/*" class="file-input" onchange="updateFileName('bukti_input', 'bukti_name')">
                             <div id="bukti_name" class="file-name"></div>
-                        </div>
+                        </label>
                         @error('bukti_usaha')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror

@@ -24,23 +24,6 @@ class SuratController extends Controller
             $query->where('status', $request->status);
         }
         
-        // ==============================================
-        // FILTER BERDASARKAN JENIS SURAT (Opsional)
-        // ==============================================
-        if ($request->filled('jenis_surat')) {
-            $query->where('jenis_surat', $request->jenis_surat);
-        }
-        
-        // ==============================================
-        // FILTER BERDASARKAN TANGGAL
-        // ==============================================
-        if ($request->filled('dari_tanggal')) {
-            $query->whereDate('created_at', '>=', $request->dari_tanggal);
-        }
-        
-        if ($request->filled('sampai_tanggal')) {
-            $query->whereDate('created_at', '<=', $request->sampai_tanggal);
-        }
         
         // ==============================================
         // EKSEKUSI QUERY
@@ -49,11 +32,7 @@ class SuratController extends Controller
         
         // Kirim data filter ke view untuk menampilkan filter aktif
         $filterStatus = $request->status;
-        $filterJenisSurat = $request->jenis_surat;
-        $filterDariTanggal = $request->dari_tanggal;
-        $filterSampaiTanggal = $request->sampai_tanggal;
-        
-        return view('masyarakat.surat.index', compact('pengajuan', 'filterStatus', 'filterJenisSurat', 'filterDariTanggal', 'filterSampaiTanggal'));
+        return view('masyarakat.surat.index', compact('pengajuan', 'filterStatus'));
     }
 
     public function create()
