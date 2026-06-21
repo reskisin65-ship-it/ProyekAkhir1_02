@@ -375,7 +375,7 @@
                         <i class="fa-solid fa-venus-mars"></i> Jenis Kelamin
                         <span class="required-star">*</span>
                     </label>
-                    <select name="jenis_kelamin" required class="input-glass">
+                    <select id="jenisKelaminEdit" name="jenis_kelamin" required class="input-glass">
                         <option value="L" {{ $penduduk->jenis_kelamin == 'L' ? 'selected' : '' }}>Laki-laki</option>
                         <option value="P" {{ $penduduk->jenis_kelamin == 'P' ? 'selected' : '' }}>Perempuan</option>
                     </select>
@@ -451,7 +451,7 @@
                         <i class="fa-solid fa-ring"></i> Status Perkawinan
                         <span class="required-star">*</span>
                     </label>
-                    <select name="status_perkawinan" required class="input-glass">
+                    <select id="statusPerkawinanEdit" name="status_perkawinan" required class="input-glass">
                         <option value="Kawin" {{ $penduduk->status_perkawinan == 'Kawin' ? 'selected' : '' }}>Kawin</option>
                         <option value="Belum Kawin" {{ $penduduk->status_perkawinan == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin</option>
                         <option value="Cerai Hidup" {{ $penduduk->status_perkawinan == 'Cerai Hidup' ? 'selected' : '' }}>Cerai Hidup</option>
@@ -465,12 +465,13 @@
                         <i class="fa-solid fa-people-group"></i> Status Keluarga
                         <span class="required-star">*</span>
                     </label>
-                    <select name="status_keluarga" required class="input-glass">
+                    <select id="statusKeluargaEdit" name="status_keluarga" required class="input-glass">
                         <option value="Kepala Keluarga" {{ $penduduk->status_keluarga == 'Kepala Keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
                         <option value="Istri" {{ $penduduk->status_keluarga == 'Istri' ? 'selected' : '' }}>Istri</option>
                         <option value="Anak" {{ $penduduk->status_keluarga == 'Anak' ? 'selected' : '' }}>Anak</option>
                         <option value="Lainnya" {{ $penduduk->status_keluarga == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                     </select>
+                    @error('status_keluarga') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>
 
                 <!-- Kelurahan/Desa -->
@@ -531,6 +532,43 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const statusPerkawinanEdit = document.getElementById('statusPerkawinanEdit');
+        const jenisKelaminEdit = document.getElementById('jenisKelaminEdit');
+        const statusKeluargaEdit = document.getElementById('statusKeluargaEdit');
+
+        const updateEditStatusKeluarga = () => {
+            const isBelumKawin = statusPerkawinanEdit.value === 'Belum Kawin';
+            const isMale = jenisKelaminEdit.value === 'L';
+            const isFemale = jenisKelaminEdit.value === 'P';
+            const invalidValues = [];
+
+            if (isBelumKawin) {
+                invalidValues.push('Istri', 'Kepala Keluarga');
+            }
+            if (isMale) {
+                invalidValues.push('Istri');
+            }
+            if (isFemale) {
+                invalidValues.push('Kepala Keluarga');
+            }
+
+            Array.from(statusKeluargaEdit.options).forEach(option => {
+                option.disabled = invalidValues.includes(option.value);
+            });
+
+            if (invalidValues.includes(statusKeluargaEdit.value)) {
+                statusKeluargaEdit.value = '';
+            }
+        };
+
+        statusPerkawinanEdit.addEventListener('change', updateEditStatusKeluarga);
+        jenisKelaminEdit.addEventListener('change', updateEditStatusKeluarga);
+        updateEditStatusKeluarga();
+    });
+</script>
 
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

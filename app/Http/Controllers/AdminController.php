@@ -18,7 +18,9 @@ use App\Helpers\NotifikasiHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 
 class AdminController extends Controller
@@ -604,13 +606,31 @@ public function umkmDestroy($id)
             'agama' => 'required',
             'pendidikan' => 'required',
             'pekerjaan' => 'required',
-            'status_perkawinan' => 'required',
+            'status_perkawinan' => [
+                'required',
+                Rule::in(['Kawin', 'Belum Kawin', 'Cerai Hidup', 'Cerai Mati']),
+            ],
             'alamat' => 'required',
             'kelurahan_desa' => 'required',
             'kecamatan' => 'required',
             'kabupaten_kota' => 'required',
             'provinsi' => 'required',
-            'status_keluarga' => 'required',
+            'status_keluarga' => [
+                'required',
+                'string',
+                'max:30',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->status_perkawinan === 'Belum Kawin' && in_array($value, ['Istri', 'Kepala Keluarga'])) {
+                        $fail('Status keluarga Istri atau Kepala Keluarga tidak boleh untuk penduduk yang belum kawin.');
+                    }
+                    if ($request->jenis_kelamin === 'L' && $value === 'Istri') {
+                        $fail('Penduduk laki-laki tidak boleh memiliki status keluarga Istri.');
+                    }
+                    if ($request->jenis_kelamin === 'P' && $value === 'Kepala Keluarga') {
+                        $fail('Penduduk perempuan tidak boleh memiliki status keluarga Kepala Keluarga.');
+                    }
+                },
+            ],
         ], [
             'tanggal_lahir.before_or_equal' => 'Tanggal lahir harus 17 tahun atau lebih.',
         ]);
@@ -647,13 +667,31 @@ public function umkmDestroy($id)
             'agama' => 'required',
             'pendidikan' => 'required',
             'pekerjaan' => 'required',
-            'status_perkawinan' => 'required',
+            'status_perkawinan' => [
+                'required',
+                Rule::in(['Kawin', 'Belum Kawin', 'Cerai Hidup', 'Cerai Mati']),
+            ],
             'alamat' => 'required',
             'kelurahan_desa' => 'required',
             'kecamatan' => 'required',
             'kabupaten_kota' => 'required',
             'provinsi' => 'required',
-            'status_keluarga' => 'required',
+            'status_keluarga' => [
+                'required',
+                'string',
+                'max:30',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->status_perkawinan === 'Belum Kawin' && in_array($value, ['Istri', 'Kepala Keluarga'])) {
+                        $fail('Status keluarga Istri atau Kepala Keluarga tidak boleh untuk penduduk yang belum kawin.');
+                    }
+                    if ($request->jenis_kelamin === 'L' && $value === 'Istri') {
+                        $fail('Penduduk laki-laki tidak boleh memiliki status keluarga Istri.');
+                    }
+                    if ($request->jenis_kelamin === 'P' && $value === 'Kepala Keluarga') {
+                        $fail('Penduduk perempuan tidak boleh memiliki status keluarga Kepala Keluarga.');
+                    }
+                },
+            ],
         ], [
             'tanggal_lahir.before_or_equal' => 'Tanggal lahir harus 17 tahun atau lebih.',
         ]);

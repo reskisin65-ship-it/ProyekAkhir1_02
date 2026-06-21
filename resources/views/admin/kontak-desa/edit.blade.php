@@ -548,7 +548,18 @@
                         <i class="fa-solid fa-briefcase"></i> Jabatan
                         <span class="required">*</span>
                     </label>
-                    <input type="text" name="jabatan" required class="form-input" placeholder="Contoh: Kepala Desa" value="{{ old('jabatan', $kontak->jabatan) }}">
+                    <select name="jabatan" required class="form-input">
+                        <option value="">Pilih Jabatan</option>
+                        @foreach($jabatanGroups as $group)
+                            <optgroup label="{{ $group['label'] }}">
+                                @forelse($group['options'] as $jabatan)
+                                    <option value="{{ $jabatan }}" {{ old('jabatan', $kontak->jabatan) == $jabatan ? 'selected' : '' }}>{{ $jabatan }}</option>
+                                @empty
+                                    <option value="" disabled>Tidak ada jabatan tersedia</option>
+                                @endforelse
+                            </optgroup>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="form-group">

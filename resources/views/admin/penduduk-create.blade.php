@@ -376,7 +376,7 @@
                         <i class="fa-solid fa-venus-mars"></i> Jenis Kelamin
                         <span class="required-star">*</span>
                     </label>
-                    <select name="jenis_kelamin" required class="input-glass">
+                    <select id="jenisKelaminCreate" name="jenis_kelamin" required class="input-glass">
                         <option value="">Pilih Jenis Kelamin</option>
                         <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
                         <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
@@ -459,7 +459,7 @@
                         <i class="fa-solid fa-ring"></i> Status Perkawinan
                         <span class="required-star">*</span>
                     </label>
-                    <select name="status_perkawinan" required class="input-glass">
+                    <select id="statusPerkawinanCreate" name="status_perkawinan" required class="input-glass">
                         <option value="">Pilih Status Perkawinan</option>
                         <option value="Kawin" {{ old('status_perkawinan') == 'Kawin' ? 'selected' : '' }}>Kawin</option>
                         <option value="Belum Kawin" {{ old('status_perkawinan') == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin</option>
@@ -475,7 +475,7 @@
                         <i class="fa-solid fa-people-group"></i> Status Keluarga
                         <span class="required-star">*</span>
                     </label>
-                    <select name="status_keluarga" required class="input-glass">
+                    <select id="statusKeluargaCreate" name="status_keluarga" required class="input-glass">
                         <option value="">Pilih Status Keluarga</option>
                         <option value="Kepala Keluarga" {{ old('status_keluarga') == 'Kepala Keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
                         <option value="Istri" {{ old('status_keluarga') == 'Istri' ? 'selected' : '' }}>Istri</option>
@@ -492,7 +492,7 @@
                         <i class="fa-solid fa-village"></i> Kelurahan/Desa
                         <span class="required-star">*</span>
                     </label>
-                    <input type="text" name="kelurahan_desa" value="{{ old('kelurahan_desa') }}" required class="input-glass" placeholder="Contoh: Lumban Silintong">
+                    <input type="text" name="kelurahan_desa" value="{{ old('kelurahan_desa', 'Lumban Silintong') }}" required class="input-glass" placeholder="Contoh: Lumban Silintong">
                     @error('kelurahan_desa') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>
 
@@ -502,7 +502,7 @@
                         <i class="fa-solid fa-map"></i> Kecamatan
                         <span class="required-star">*</span>
                     </label>
-                    <input type="text" name="kecamatan" value="{{ old('kecamatan') }}" required class="input-glass">
+                    <input type="text" name="kecamatan" value="{{ old('kecamatan', 'Balige') }}" required class="input-glass">
                     @error('kecamatan') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>
 
@@ -512,7 +512,7 @@
                         <i class="fa-solid fa-city"></i> Kabupaten/Kota
                         <span class="required-star">*</span>
                     </label>
-                    <input type="text" name="kabupaten_kota" value="{{ old('kabupaten_kota') }}" required class="input-glass">
+                    <input type="text" name="kabupaten_kota" value="{{ old('kabupaten_kota', 'Toba') }}" required class="input-glass">
                     @error('kabupaten_kota') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>
 
@@ -522,7 +522,7 @@
                         <i class="fa-solid fa-map-location-dot"></i> Provinsi
                         <span class="required-star">*</span>
                     </label>
-                    <input type="text" name="provinsi" value="{{ old('provinsi') }}" required class="input-glass">
+                    <input type="text" name="provinsi" value="{{ old('provinsi', 'Sumatera Utara') }}" required class="input-glass">
                     @error('provinsi') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>
 
@@ -549,6 +549,44 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const statusPerkawinanCreate = document.getElementById('statusPerkawinanCreate');
+        const statusKeluargaCreate = document.getElementById('statusKeluargaCreate');
+
+        const jenisKelaminCreate = document.getElementById('jenisKelaminCreate');
+
+        const updateCreateStatusKeluarga = () => {
+            const isBelumKawin = statusPerkawinanCreate.value === 'Belum Kawin';
+            const isMale = jenisKelaminCreate.value === 'L';
+            const isFemale = jenisKelaminCreate.value === 'P';
+            const invalidValues = [];
+
+            if (isBelumKawin) {
+                invalidValues.push('Istri', 'Kepala Keluarga');
+            }
+            if (isMale) {
+                invalidValues.push('Istri');
+            }
+            if (isFemale) {
+                invalidValues.push('Kepala Keluarga');
+            }
+
+            Array.from(statusKeluargaCreate.options).forEach(option => {
+                option.disabled = invalidValues.includes(option.value);
+            });
+
+            if (invalidValues.includes(statusKeluargaCreate.value)) {
+                statusKeluargaCreate.value = '';
+            }
+        };
+
+        statusPerkawinanCreate.addEventListener('change', updateCreateStatusKeluarga);
+        jenisKelaminCreate.addEventListener('change', updateCreateStatusKeluarga);
+        updateCreateStatusKeluarga();
+    });
+</script>
 
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

@@ -13,7 +13,7 @@ class KontakDesa extends Model
     protected $table = 'kontak_desa';
     
     protected $fillable = [
-        'user_id', 'nama', 'jabatan', 'bidang', 'no_hp', 'email', 
+        'user_id', 'nama', 'jabatan', 'kategori_jabatan', 'bidang', 'no_hp', 'email', 
         'foto', 'urutan', 'is_active'
     ];
 

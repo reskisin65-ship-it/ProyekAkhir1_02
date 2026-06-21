@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\KontakDesa;
+use App\Models\DataPengurus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,39 @@ class KontakDesaController extends Controller
 
     public function create()
     {
-        return view('admin.kontak-desa.create');
+        $hierarki = DataPengurus::getHierarki();
+        $jabatanOptionsByCategory = DataPengurus::select('kategori_jabatan', 'jabatan')
+            ->whereNotNull('jabatan')
+            ->orderBy('kategori_jabatan')
+            ->orderBy('jabatan')
+            ->get()
+            ->groupBy('kategori_jabatan')
+            ->map(function ($items) {
+                return $items->pluck('jabatan')->unique()->values();
+            });
+
+        foreach ($jabatanOptionsByCategory->keys() as $kategori) {
+            if (!isset($hierarki[$kategori])) {
+                $hierarki[$kategori] = [
+                    'nama' => ucfirst(str_replace('_', ' ', $kategori)),
+                    'level' => 99,
+                    'icon' => 'fa-user',
+                    'color' => 'gray',
+                    'is_default' => false,
+                ];
+            }
+        }
+
+        $jabatanGroups = collect($hierarki)
+            ->sortBy('level')
+            ->mapWithKeys(function ($meta, $kategori) use ($jabatanOptionsByCategory) {
+                return [$kategori => [
+                    'label' => $meta['nama'] ?? ucfirst(str_replace('_', ' ', $kategori)),
+                    'options' => $jabatanOptionsByCategory->get($kategori, collect()),
+                ]];
+            });
+
+        return view('admin.kontak-desa.create', compact('jabatanGroups'));
     }
 
     public function store(Request $request)
@@ -35,6 +68,8 @@ class KontakDesaController extends Controller
 
         $data = $request->all();
         $data['user_id'] = Auth::id();
+        $data['kategori_jabatan'] = DataPengurus::where('jabatan', $request->input('jabatan'))
+            ->value('kategori_jabatan');
 
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('kontak-desa', 'public');
@@ -49,7 +84,40 @@ class KontakDesaController extends Controller
     public function edit($id)
     {
         $kontak = KontakDesa::findOrFail($id);
-        return view('admin.kontak-desa.edit', compact('kontak'));
+
+        $hierarki = DataPengurus::getHierarki();
+        $jabatanOptionsByCategory = DataPengurus::select('kategori_jabatan', 'jabatan')
+            ->whereNotNull('jabatan')
+            ->orderBy('kategori_jabatan')
+            ->orderBy('jabatan')
+            ->get()
+            ->groupBy('kategori_jabatan')
+            ->map(function ($items) {
+                return $items->pluck('jabatan')->unique()->values();
+            });
+
+        foreach ($jabatanOptionsByCategory->keys() as $kategori) {
+            if (!isset($hierarki[$kategori])) {
+                $hierarki[$kategori] = [
+                    'nama' => ucfirst(str_replace('_', ' ', $kategori)),
+                    'level' => 99,
+                    'icon' => 'fa-user',
+                    'color' => 'gray',
+                    'is_default' => false,
+                ];
+            }
+        }
+
+        $jabatanGroups = collect($hierarki)
+            ->sortBy('level')
+            ->mapWithKeys(function ($meta, $kategori) use ($jabatanOptionsByCategory) {
+                return [$kategori => [
+                    'label' => $meta['nama'] ?? ucfirst(str_replace('_', ' ', $kategori)),
+                    'options' => $jabatanOptionsByCategory->get($kategori, collect()),
+                ]];
+            });
+
+        return view('admin.kontak-desa.edit', compact('kontak', 'jabatanGroups'));
     }
 
     public function update(Request $request, $id)
@@ -66,6 +134,8 @@ class KontakDesaController extends Controller
         ]);
 
         $data = $request->all();
+        $data['kategori_jabatan'] = DataPengurus::where('jabatan', $request->input('jabatan'))
+            ->value('kategori_jabatan');
 
         if ($request->hasFile('foto')) {
             if ($kontak->foto) {
