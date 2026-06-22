@@ -330,7 +330,7 @@
                                         <li><a href="{{ route('masyarakat.dashboard') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Dashboard</a></li>
                                         <li><a href="{{ route('masyarakat.surat.index') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Layanan Surat</a></li>
                                         <li><a href="{{ route('masyarakat.aspirasi.index') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Aspirasi & Pengaduan</a></li>
-                                        <li><a href="{{ route('masyarakat.keuangan.index') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Transparansi Keuangan</a></li>
+
                                     @endif
                                 @else
                                     <li><a href="{{ route('login') }}" class="footer-link-cerah text-sm md:text-[0.95rem]">Layanan Surat</a></li>

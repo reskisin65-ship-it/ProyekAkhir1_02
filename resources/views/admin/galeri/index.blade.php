@@ -64,6 +64,43 @@
         -webkit-text-fill-color: transparent;
     }
 
+    .filter-container {
+        margin: 1.5rem 0 2rem;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .filter-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.2rem;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: white;
+        color: #475569;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+        border-color: rgba(59, 130, 246, 0.25);
+        background: rgba(59, 130, 246, 0.08);
+        color: #1d4ed8;
+    }
+
+    .filter-btn.active {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.08));
+        color: #1e40af;
+    }
+
     /* Add Button */
     .btn-add {
         display: inline-flex;
@@ -391,6 +428,17 @@
         </div>
     </div>
 
+    <div class="filter-container fade-up delay-1">
+        <div class="filter-group">
+            <a href="{{ route('admin.galeri.index') }}" class="filter-btn {{ empty($kategori) ? 'active' : '' }}">Semua</a>
+            <a href="{{ route('admin.galeri.index', ['kategori' => 'kegiatan']) }}" class="filter-btn {{ $kategori === 'kegiatan' ? 'active' : '' }}">Kegiatan</a>
+            <a href="{{ route('admin.galeri.index', ['kategori' => 'pembangunan']) }}" class="filter-btn {{ $kategori === 'pembangunan' ? 'active' : '' }}">Pembangunan</a>
+            <a href="{{ route('admin.galeri.index', ['kategori' => 'budaya']) }}" class="filter-btn {{ $kategori === 'budaya' ? 'active' : '' }}">Budaya</a>
+            <a href="{{ route('admin.galeri.index', ['kategori' => 'wisata']) }}" class="filter-btn {{ $kategori === 'wisata' ? 'active' : '' }}">Wisata</a>
+            <a href="{{ route('admin.galeri.index', ['kategori' => 'umkm']) }}" class="filter-btn {{ $kategori === 'umkm' ? 'active' : '' }}">UMKM</a>
+        </div>
+    </div>
+
     <!-- Alert Success -->
     @if(session('success'))
     <div class="alert-glass alert-success fade-up delay-1">
@@ -409,7 +457,7 @@
                 <i class="fa-solid fa-images text-xl"></i>
             </div>
             <div class="stat-info">
-                <h4>{{ $galeris->total() }}</h4>
+                <h4>{{ $totalGaleri }}</h4>
                 <p>Total Foto</p>
             </div>
         </div>
@@ -420,7 +468,7 @@
                 <i class="fa-solid fa-calendar-check text-xl"></i>
             </div>
             <div class="stat-info">
-                <h4>{{ $galeris->where('kategori', 'kegiatan')->count() }}</h4>
+                <h4>{{ $galeriKegiatan }}</h4>
                 <p>Kegiatan</p>
             </div>
         </div>
@@ -431,7 +479,7 @@
                 <i class="fa-solid fa-hard-hat text-xl"></i>
             </div>
             <div class="stat-info">
-                <h4>{{ $galeris->where('kategori', 'pembangunan')->count() }}</h4>
+                <h4>{{ $galeriPembangunan }}</h4>
                 <p>Pembangunan</p>
             </div>
         </div>
@@ -442,7 +490,7 @@
                 <i class="fa-solid fa-umbrella-beach text-xl"></i>
             </div>
             <div class="stat-info">
-                <h4>{{ $galeris->whereIn('kategori', ['budaya', 'wisata'])->count() }}</h4>
+                <h4>{{ $galeriBudaya + $galeriWisata }}</h4>
                 <p>Budaya & Wisata</p>
             </div>
         </div>
@@ -453,7 +501,7 @@
                 <i class="fa-solid fa-store text-xl"></i>
             </div>
             <div class="stat-info">
-                <h4>{{ $galeris->where('kategori', 'umkm')->count() }}</h4>
+                <h4>{{ $galeriUmkm }}</h4>
                 <p>UMKM</p>
             </div>
         </div>

@@ -473,29 +473,25 @@
             @csrf
             @method('PUT')
 
-            <!-- Current Image -->
-            <div class="current-image-container">
-                <div class="current-image-label">
-                    <i class="fa-regular fa-image"></i> Foto Saat Ini
+            <!-- Unified Photo Grid -->
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fa-solid fa-images"></i> Manajemen Foto Galeri
+                </label>
+                <div class="help-text mb-3" style="font-size: 0.75rem;">
+                    Kelola foto-foto di dalam galeri ini. Anda dapat menghapus foto yang sudah ada, menggantinya dengan foto baru, atau menambahkan foto lainnya ke dalam daftar.
                 </div>
-                <div class="current-image-box">
-                    <img src="{{ asset('storage/' . $galeri->gambar_galeri) }}" alt="{{ $galeri->judul_galeri }}">
-                </div>
-            </div>
-
-            <!-- Preview New Image -->
-            <div class="preview-container">
-                <div class="preview-label">
-                    <i class="fa-regular fa-eye"></i> Preview Foto Baru
-                </div>
-                <div class="preview-box" id="previewBox">
-                    <div class="preview-placeholder">
-                        <i class="fa-regular fa-image"></i>
-                        <span class="text-xs">Belum memilih foto baru</span>
-                        <span class="text-[10px] block mt-1">(Kosongkan jika tidak ingin mengganti)</span>
-                    </div>
+                
+                <input type="hidden" name="deleted_fotos" id="deletedFotosInput" value="">
+                <div id="replaceInputsContainer"></div>
+                
+                <div class="preview-box unified-grid-box" id="previewBox" style="max-height: 350px; overflow-y: auto; padding: 15px; border: 2px dashed #cbd5e1; border-radius: 20px; background: #f8fafc;">
+                    <!-- JS will render everything here -->
                 </div>
             </div>
+            
+            <!-- Hidden Input for New Files -->
+            <input type="file" name="fotos[]" id="fotoInput" accept="image/*" multiple style="display: none;" onchange="addNewFiles(this)">
 
             <!-- Judul Galeri -->
             <div class="form-group">
@@ -519,21 +515,11 @@
                 </label>
                 <select name="kategori" required class="input-glass">
                     <option value="">Pilih Kategori</option>
-                    <option value="kegiatan" {{ old('kategori', $galeri->kategori) == 'kegiatan' ? 'selected' : '' }}>
-                        <i class="fa-regular fa-calendar-check"></i> Kegiatan
-                    </option>
-                    <option value="pembangunan" {{ old('kategori', $galeri->kategori) == 'pembangunan' ? 'selected' : '' }}>
-                        <i class="fa-solid fa-hard-hat"></i> Pembangunan
-                    </option>
-                    <option value="budaya" {{ old('kategori', $galeri->kategori) == 'budaya' ? 'selected' : '' }}>
-                        <i class="fa-solid fa-mask"></i> Budaya
-                    </option>
-                    <option value="wisata" {{ old('kategori', $galeri->kategori) == 'wisata' ? 'selected' : '' }}>
-                        <i class="fa-solid fa-umbrella-beach"></i> Wisata
-                    </option>
-                    <option value="umkm" {{ old('kategori', $galeri->kategori) == 'umkm' ? 'selected' : '' }}>
-                        <i class="fa-solid fa-store"></i> UMKM
-                    </option>
+                    <option value="kegiatan" {{ old('kategori', $galeri->kategori) == 'kegiatan' ? 'selected' : '' }}>Kegiatan</option>
+                    <option value="pembangunan" {{ old('kategori', $galeri->kategori) == 'pembangunan' ? 'selected' : '' }}>Pembangunan</option>
+                    <option value="budaya" {{ old('kategori', $galeri->kategori) == 'budaya' ? 'selected' : '' }}>Budaya</option>
+                    <option value="wisata" {{ old('kategori', $galeri->kategori) == 'wisata' ? 'selected' : '' }}>Wisata</option>
+                    <option value="umkm" {{ old('kategori', $galeri->kategori) == 'umkm' ? 'selected' : '' }}>UMKM</option>
                 </select>
                 @error('kategori')
                     <div class="error-message">
@@ -549,27 +535,6 @@
                 </label>
                 <textarea name="deskripsi" class="input-glass h-28" placeholder="Tuliskan detail gambar, konteks, lokasi, atau latar belakang acara...">{{ old('deskripsi', $galeri->deskripsi) }}</textarea>
                 @error('deskripsi')
-                    <div class="error-message">
-                        <i class="fa-solid fa-circle-exclamation text-xs"></i> {{ $message }}
-                    </div>
-                @enderror
-            </div>
-
-            <!-- Foto Upload -->
-            <div class="form-group">
-                <label class="form-label">
-                    <i class="fa-solid fa-image"></i> Ganti Foto
-                </label>
-                <div class="file-input-wrapper">
-                    <div class="file-input-custom" onclick="document.getElementById('fotoInput').click()">
-                        <i class="fa-solid fa-cloud-upload-alt"></i>
-                        <p>Klik untuk pilih foto baru atau drag & drop</p>
-                        <p class="text-[10px] mt-1">Format: JPG, JPEG, PNG. Maks: 2MB</p>
-                        <p class="text-[10px] text-amber-500 mt-1">Kosongkan jika tidak ingin mengganti foto</p>
-                    </div>
-                    <input type="file" name="foto" id="fotoInput" accept="image/*" style="display: none;" onchange="previewImage(this)">
-                </div>
-                @error('foto')
                     <div class="error-message">
                         <i class="fa-solid fa-circle-exclamation text-xs"></i> {{ $message }}
                     </div>
@@ -595,59 +560,263 @@
     </div>
 </div>
 
+<style>
+    .photo-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+    }
+    .photo-item {
+        position: relative;
+        width: 110px;
+        height: 110px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid #e2e8f0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        flex-shrink: 0;
+    }
+    .photo-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+    .photo-item:hover img {
+        transform: scale(1.05);
+    }
+    .photo-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.55);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .photo-item:hover .photo-overlay {
+        opacity: 1;
+    }
+    .photo-btn {
+        background: white;
+        border: none;
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.2s;
+    }
+    .photo-btn:hover { transform: scale(1.08); }
+    .photo-btn.replace { color: #3b82f6; }
+    .photo-btn.remove { color: #ef4444; }
+    .photo-add-btn {
+        width: 110px;
+        height: 110px;
+        border-radius: 12px;
+        border: 2px dashed #cbd5e1;
+        background: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        flex-shrink: 0;
+        gap: 4px;
+    }
+    .photo-add-btn:hover {
+        border-color: #3b82f6;
+        background: #eff6ff;
+    }
+    .photo-add-btn i {
+        font-size: 1.5rem;
+        color: #94a3b8;
+        transition: color 0.3s;
+    }
+    .photo-add-btn:hover i {
+        color: #3b82f6;
+    }
+    .photo-add-btn span {
+        font-size: 0.6rem;
+        color: #94a3b8;
+        font-weight: 600;
+    }
+</style>
+
 <script>
-    // Preview Image Function
-    function previewImage(input) {
-        const previewBox = document.getElementById('previewBox');
-        
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                previewBox.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-            }
-            
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            previewBox.innerHTML = `
-                <div class="preview-placeholder">
-                    <i class="fa-regular fa-image"></i>
-                    <span class="text-xs">Belum memilih foto baru</span>
-                    <span class="text-[10px] block mt-1">(Kosongkan jika tidak ingin mengganti)</span>
+    // ===== STATE =====
+    // Existing photos from DB (mutable: can be marked as deleted or replaced)
+    let existingPhotos = @json($galeri->fotos->map(function($f) {
+        return ['id' => $f->id_galeri_foto, 'url' => asset('storage/' . $f->foto_path)];
+    })->values());
+
+    let deletedExistingIds = [];         // IDs of existing photos the user clicked "Hapus"
+    let replacedExisting = {};           // { id: File } - existing photos the user clicked "Ganti"
+    let newFiles = new DataTransfer();   // Brand-new files the user added
+
+    // ===== RENDER =====
+    function renderGrid() {
+        const box = document.getElementById('previewBox');
+        let html = '<div class="photo-grid">';
+
+        // 1) Existing photos (that haven't been deleted)
+        existingPhotos.forEach(photo => {
+            if (deletedExistingIds.includes(photo.id)) return;
+            const imgSrc = replacedExisting[photo.id]
+                ? URL.createObjectURL(replacedExisting[photo.id])
+                : photo.url;
+            html += `
+                <div class="photo-item">
+                    <img src="${imgSrc}" alt="Foto">
+                    <div class="photo-overlay">
+                        <button type="button" class="photo-btn replace" onclick="replaceExisting(${photo.id})">
+                            <i class="fa-solid fa-pen"></i> Ganti
+                        </button>
+                        <button type="button" class="photo-btn remove" onclick="deleteExisting(${photo.id})">
+                            <i class="fa-solid fa-trash"></i> Hapus
+                        </button>
+                    </div>
                 </div>
             `;
+        });
+
+        // 2) New files
+        Array.from(newFiles.files).forEach((file, index) => {
+            const objectUrl = URL.createObjectURL(file);
+            html += `
+                <div class="photo-item">
+                    <img src="${objectUrl}" alt="Foto Baru">
+                    <div class="photo-overlay">
+                        <button type="button" class="photo-btn replace" onclick="replaceNewFile(${index})">
+                            <i class="fa-solid fa-pen"></i> Ganti
+                        </button>
+                        <button type="button" class="photo-btn remove" onclick="removeNewFile(${index})">
+                            <i class="fa-solid fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        // 3) The "+" add button (always last)
+        html += `
+            <div class="photo-add-btn" onclick="document.getElementById('fotoInput').click()">
+                <i class="fa-solid fa-plus"></i>
+                <span>Tambah</span>
+            </div>
+        `;
+
+        html += '</div>';
+        box.innerHTML = html;
+
+        // Sync hidden inputs
+        syncFormInputs();
+    }
+
+    // ===== SYNC FORM INPUTS =====
+    function syncFormInputs() {
+        // deleted_fotos hidden input
+        document.getElementById('deletedFotosInput').value = deletedExistingIds.join(',');
+
+        // replace_fotos[] file inputs
+        const container = document.getElementById('replaceInputsContainer');
+        container.innerHTML = '';
+        for (const [id, file] of Object.entries(replacedExisting)) {
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            const inp = document.createElement('input');
+            inp.type = 'file';
+            inp.name = `replace_fotos[${id}]`;
+            inp.style.display = 'none';
+            inp.files = dt.files;
+            container.appendChild(inp);
+        }
+
+        // fotos[] (new files)
+        const fotoInput = document.getElementById('fotoInput');
+        fotoInput.files = newFiles.files;
+    }
+
+    // ===== EXISTING PHOTO ACTIONS =====
+    function deleteExisting(id) {
+        deletedExistingIds.push(id);
+        renderGrid();
+    }
+
+    function replaceExisting(id) {
+        const inp = document.createElement('input');
+        inp.type = 'file';
+        inp.accept = 'image/*';
+        inp.onchange = function(e) {
+            if (e.target.files && e.target.files[0]) {
+                replacedExisting[id] = e.target.files[0];
+                renderGrid();
+            }
+        };
+        inp.click();
+    }
+
+    // ===== NEW FILE ACTIONS =====
+    function addNewFiles(input) {
+        if (input.files && input.files.length > 0) {
+            Array.from(input.files).forEach(f => newFiles.items.add(f));
+            input.value = '';
+            renderGrid();
         }
     }
 
-    // Drag & Drop functionality
-    const fileInput = document.getElementById('fotoInput');
-    const dropZone = document.querySelector('.file-input-custom');
-    
-    if (dropZone) {
-        dropZone.addEventListener('dragover', (e) => {
+    function removeNewFile(index) {
+        const updated = new DataTransfer();
+        Array.from(newFiles.files).forEach((f, i) => { if (i !== index) updated.items.add(f); });
+        newFiles = updated;
+        renderGrid();
+    }
+
+    function replaceNewFile(index) {
+        const inp = document.createElement('input');
+        inp.type = 'file';
+        inp.accept = 'image/*';
+        inp.onchange = function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const updated = new DataTransfer();
+                Array.from(newFiles.files).forEach((f, i) => {
+                    updated.items.add(i === index ? e.target.files[0] : f);
+                });
+                newFiles = updated;
+                renderGrid();
+            }
+        };
+        inp.click();
+    }
+
+    // ===== DRAG & DROP on the grid box =====
+    const gridBox = document.getElementById('previewBox');
+    if (gridBox) {
+        gridBox.addEventListener('dragover', e => { e.preventDefault(); gridBox.style.borderColor = '#3b82f6'; });
+        gridBox.addEventListener('dragleave', e => { e.preventDefault(); gridBox.style.borderColor = '#cbd5e1'; });
+        gridBox.addEventListener('drop', e => {
             e.preventDefault();
-            dropZone.style.borderColor = '#3b82f6';
-            dropZone.style.background = '#f1f5f9';
-        });
-        
-        dropZone.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            dropZone.style.borderColor = '#cbd5e1';
-            dropZone.style.background = '#f8fafc';
-        });
-        
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.style.borderColor = '#cbd5e1';
-            dropZone.style.background = '#f8fafc';
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                fileInput.files = files;
-                previewImage(fileInput);
+            gridBox.style.borderColor = '#cbd5e1';
+            if (e.dataTransfer.files.length > 0) {
+                Array.from(e.dataTransfer.files).forEach(f => newFiles.items.add(f));
+                renderGrid();
             }
         });
     }
+
+    // ===== INITIAL RENDER =====
+    document.addEventListener('DOMContentLoaded', renderGrid);
 </script>
 
 <!-- Font Awesome -->

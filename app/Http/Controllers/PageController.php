@@ -226,37 +226,53 @@ class PageController extends Controller
     /**
      * Halaman Galeri
      */
-    public function galeri()
+    public function galeri(Request $request)
     {
-        $galeris = Galeri::orderBy('created_at', 'desc')->paginate(12);
-        return view('pages.galeri', compact('galeris'));
+        $kategori = $request->query('kategori');
+        $allowedKategori = ['kegiatan', 'pembangunan', 'budaya', 'wisata', 'umkm'];
+
+        $query = Galeri::orderBy('created_at', 'desc');
+        if ($kategori && in_array($kategori, $allowedKategori)) {
+            $query->where('kategori', $kategori);
+        }
+
+        $galeris = $query->paginate(12)->appends($request->query());
+
+        $totalGaleri = Galeri::count();
+        $galeriKegiatan = Galeri::where('kategori', 'kegiatan')->count();
+        $galeriPembangunan = Galeri::where('kategori', 'pembangunan')->count();
+        $galeriBudaya = Galeri::where('kategori', 'budaya')->count();
+        $galeriWisata = Galeri::where('kategori', 'wisata')->count();
+        $galeriUmkm = Galeri::where('kategori', 'umkm')->count();
+
+        return view('pages.galeri', compact(
+            'galeris',
+            'kategori',
+            'totalGaleri',
+            'galeriKegiatan',
+            'galeriPembangunan',
+            'galeriBudaya',
+            'galeriWisata',
+            'galeriUmkm'
+        ));
     }
 
     /**
      * Halaman Detail Galeri
      */
     public function galeriShow($id)
-        {
-            // Gunakan id_galeri, bukan id
-            $galeri = Galeri::where('id_galeri', $id)->firstOrFail();
-            
-            // Galeri sebelumnya/dan selanjutnya untuk navigasi slide
-            $prevGaleri = Galeri::where('id_galeri', '<', $galeri->id_galeri)
-                ->orderBy('id_galeri', 'desc')
-                ->first();
-            
-            $nextGaleri = Galeri::where('id_galeri', '>', $galeri->id_galeri)
-                ->orderBy('id_galeri', 'asc')
-                ->first();
-            
-            // Rekomendasi galeri lain - gunakan id_galeri juga
-            $rekomendasi = Galeri::where('id_galeri', '!=', $id)
-                ->orderBy('created_at', 'desc')
-                ->limit(4)
-                ->get();
-            
-            return view('pages.galeri-detail', compact('galeri', 'prevGaleri', 'nextGaleri', 'rekomendasi'));
-        }
+    {
+        // Gunakan id_galeri, bukan id
+        $galeri = Galeri::with('fotos')->where('id_galeri', $id)->firstOrFail();
+        
+        // Rekomendasi galeri lain - gunakan id_galeri juga
+        $rekomendasi = Galeri::where('id_galeri', '!=', $id)
+            ->orderBy('created_at', 'desc')
+            ->limit(4)
+            ->get();
+        
+        return view('pages.galeri-detail', compact('galeri', 'rekomendasi'));
+    }
     /**
  * Halaman UMKM Publik
  */

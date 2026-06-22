@@ -305,15 +305,6 @@
                     <p class="text-xs text-gray-400">Data statistik desa</p>
                 </div>
             </a>
-            <a href="{{ route('masyarakat.keuangan.index') }}" class="side-item group">
-                <i class="fa-solid fa-coins side-icon"></i>
-                <span class="side-label">Keuangan</span>
-                <div class="info-box">
-                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Keuangan Desa</h5>
-                    <p class="text-xs text-gray-400">Lihat transparansi keuangan</p>
-                </div>
-            </a>
             <a href="{{ route('profil-desa') }}" class="side-item group">
                 <i class="fa-solid fa-landmark-dome side-icon"></i>
                 <span class="side-label">Profil</span>
@@ -435,15 +426,6 @@
                     <p class="text-xs text-gray-400">Data statistik desa</p>
                 </div>
             </a>
-            <a href="{{ route('masyarakat.keuangan.index') }}" class="side-item group">
-                <i class="fa-solid fa-coins side-icon"></i>
-                <span class="side-label">Keuangan</span>
-                <div class="info-box">
-                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Keuangan Desa</h5>
-                    <p class="text-xs text-gray-400">Lihat transparansi keuangan</p>
-                </div>
-            </a>
             <a href="{{ route('profil-desa') }}" class="side-item group">
                 <i class="fa-solid fa-landmark-dome side-icon"></i>
                 <span class="side-label">Profil</span>
@@ -551,15 +533,6 @@
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-base font-serif italic text-emerald-950 mt-1">Statistik Desa</h5>
                     <p class="text-xs text-gray-400">Data statistik desa</p>
-                </div>
-            </a>
-            <a href="{{ route('masyarakat.keuangan.index') }}" class="side-item group">
-                <i class="fa-solid fa-coins side-icon"></i>
-                <span class="side-label">Keuangan</span>
-                <div class="info-box">
-                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
-                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Keuangan Desa</h5>
-                    <p class="text-xs text-gray-400">Lihat transparansi keuangan</p>
                 </div>
             </a>
             <a href="{{ route('profil-desa') }}" class="side-item group">
@@ -701,10 +674,6 @@
                     <i class="fa-solid fa-chart-simple"></i>
                     <span>Statistik</span>
                 </a>
-                <a href="{{ route('masyarakat.keuangan.index') }}" class="mobile-nav-item">
-                    <i class="fa-solid fa-coins"></i>
-                    <span>Keuangan</span>
-                </a>
                 <a href="{{ route('profil-desa') }}" class="mobile-nav-item">
                     <i class="fa-solid fa-landmark-dome"></i>
                     <span>Profil</span>
@@ -751,10 +720,6 @@
                 <a href="{{ route('statistik.publik') }}" class="mobile-nav-item">
                     <i class="fa-solid fa-chart-simple"></i>
                     <span>Statistik</span>
-                </a>
-                <a href="{{ route('masyarakat.keuangan.index') }}" class="mobile-nav-item">
-                    <i class="fa-solid fa-coins"></i>
-                    <span>Keuangan</span>
                 </a>
                 <a href="{{ route('profil-desa') }}" class="mobile-nav-item">
                     <i class="fa-solid fa-landmark-dome"></i>
@@ -804,10 +769,6 @@
                 <a href="{{ route('statistik.publik') }}" class="mobile-nav-item">
                     <i class="fa-solid fa-chart-simple"></i>
                     <span>Statistik</span>
-                </a>
-                <a href="{{ route('masyarakat.keuangan.index') }}" class="mobile-nav-item">
-                    <i class="fa-solid fa-coins"></i>
-                    <span>Keuangan</span>
                 </a>
                 <a href="{{ route('profil-desa') }}" class="mobile-nav-item">
                     <i class="fa-solid fa-landmark-dome"></i>

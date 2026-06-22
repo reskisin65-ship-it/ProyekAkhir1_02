@@ -92,10 +92,6 @@
                     <span>Statistik Desa</span>
                 </a>
 
-                <a href="{{ route('masyarakat.keuangan.index') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
-                    <i class="fa-solid fa-coins text-xl"></i>
-                    <span>Keuangan Desa</span>
-                </a>
 
                 <a href="{{ route('profil-desa') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-500 font-bold text-base hover:bg-slate-50">
                     <i class="fa-solid fa-landmark-dome text-xl"></i>

@@ -618,22 +618,22 @@
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-icon"><i class="fa-regular fa-images"></i></div>
-            <div class="stat-value">{{ $galeris->total() }}</div>
+            <div class="stat-value">{{ $totalGaleri }}</div>
             <div class="stat-label">Total Foto</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon"><i class="fa-regular fa-calendar-check"></i></div>
-            <div class="stat-value">{{ $galeris->where('kategori', 'kegiatan')->count() }}</div>
+            <div class="stat-value">{{ $galeriKegiatan }}</div>
             <div class="stat-label">Kegiatan</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon"><i class="fa-solid fa-hard-hat"></i></div>
-            <div class="stat-value">{{ $galeris->where('kategori', 'pembangunan')->count() }}</div>
+            <div class="stat-value">{{ $galeriPembangunan }}</div>
             <div class="stat-label">Pembangunan</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon"><i class="fa-solid fa-drumstick-bite"></i></div>
-            <div class="stat-value">{{ $galeris->where('kategori', 'budaya')->count() }}</div>
+            <div class="stat-value">{{ $galeriBudaya }}</div>
             <div class="stat-label">Budaya</div>
         </div>
     </div>
@@ -641,24 +641,24 @@
     {{-- Filter Buttons --}}
     <div class="filter-container">
         <div class="filter-group">
-            <button class="filter-btn active" data-filter="all">
+            <a href="{{ route('galeri') }}" class="filter-btn {{ empty($kategori) ? 'active' : '' }}">
                 <i class="fa-regular fa-layer-group"></i> Semua
-            </button>
-            <button class="filter-btn" data-filter="kegiatan">
+            </a>
+            <a href="{{ route('galeri', ['kategori' => 'kegiatan']) }}" class="filter-btn {{ $kategori === 'kegiatan' ? 'active' : '' }}">
                 <i class="fa-regular fa-calendar-check"></i> Kegiatan
-            </button>
-            <button class="filter-btn" data-filter="pembangunan">
+            </a>
+            <a href="{{ route('galeri', ['kategori' => 'pembangunan']) }}" class="filter-btn {{ $kategori === 'pembangunan' ? 'active' : '' }}">
                 <i class="fa-solid fa-hard-hat"></i> Pembangunan
-            </button>
-            <button class="filter-btn" data-filter="budaya">
+            </a>
+            <a href="{{ route('galeri', ['kategori' => 'budaya']) }}" class="filter-btn {{ $kategori === 'budaya' ? 'active' : '' }}">
                 <i class="fa-solid fa-drumstick-bite"></i> Budaya
-            </button>
-            <button class="filter-btn" data-filter="wisata">
+            </a>
+            <a href="{{ route('galeri', ['kategori' => 'wisata']) }}" class="filter-btn {{ $kategori === 'wisata' ? 'active' : '' }}">
                 <i class="fa-solid fa-tree"></i> Wisata
-            </button>
-            <button class="filter-btn" data-filter="umkm">
+            </a>
+            <a href="{{ route('galeri', ['kategori' => 'umkm']) }}" class="filter-btn {{ $kategori === 'umkm' ? 'active' : '' }}">
                 <i class="fa-solid fa-store"></i> UMKM
-            </button>
+            </a>
         </div>
     </div>
 

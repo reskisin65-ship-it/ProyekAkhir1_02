@@ -30,4 +30,10 @@ class Galeri extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function fotos()
+    {
+        return $this->hasMany(GaleriFoto::class, 'id_galeri', 'id_galeri');
+    }
+
 }

@@ -242,10 +242,35 @@ class AdminController extends Controller
     // MANAJEMEN GALERI
     // ==============================================
 
-    public function galeri()
+    public function galeri(Request $request)
     {
-        $galeris = Galeri::orderBy('created_at', 'desc')->paginate(12);
-        return view('admin.galeri.index', compact('galeris'));
+        $kategori = $request->query('kategori');
+        $allowedKategori = ['kegiatan', 'pembangunan', 'budaya', 'wisata', 'umkm'];
+
+        $query = Galeri::orderBy('created_at', 'desc');
+        if ($kategori && in_array($kategori, $allowedKategori)) {
+            $query->where('kategori', $kategori);
+        }
+
+        $galeris = $query->paginate(12)->appends($request->query());
+
+        $totalGaleri = Galeri::count();
+        $galeriKegiatan = Galeri::where('kategori', 'kegiatan')->count();
+        $galeriPembangunan = Galeri::where('kategori', 'pembangunan')->count();
+        $galeriBudaya = Galeri::where('kategori', 'budaya')->count();
+        $galeriWisata = Galeri::where('kategori', 'wisata')->count();
+        $galeriUmkm = Galeri::where('kategori', 'umkm')->count();
+
+        return view('admin.galeri.index', compact(
+            'galeris',
+            'kategori',
+            'totalGaleri',
+            'galeriKegiatan',
+            'galeriPembangunan',
+            'galeriBudaya',
+            'galeriWisata',
+            'galeriUmkm'
+        ));
     }
 
     public function galeriCreate()
@@ -258,23 +283,33 @@ class AdminController extends Controller
         $request->validate([
             'judul' => 'required|min:3',
             'kategori' => 'required',
-            'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'fotos' => 'required|array',
+            'fotos.*' => 'image|mimes:jpg,jpeg,png|max:2048',
             'deskripsi' => 'nullable|string|max:2000',
         ]);
 
-        $gambarPath = $request->file('foto')->store('galeri', 'public');
-
-        Galeri::create([
+        $galeri = Galeri::create([
             'user_id' => Auth::id(),
             'judul_galeri' => $request->judul,
-            'gambar_galeri' => $gambarPath,
+            'gambar_galeri' => '', // temporary
             'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
         ]);
 
+        if ($request->hasFile('fotos')) {
+            foreach ($request->file('fotos') as $index => $foto) {
+                $gambarPath = $foto->store('galeri', 'public');
+                if ($index === 0) {
+                    $galeri->update(['gambar_galeri' => $gambarPath]);
+                }
+                $galeri->fotos()->create(['foto_path' => $gambarPath]);
+            }
+        }
+
         return redirect()->route('admin.galeri.index')
-            ->with('success', 'Foto berhasil ditambahkan!');
+            ->with('success', 'Galeri dan foto berhasil ditambahkan!');
     }
+
 
     public function galeriShow($id)
     {
@@ -284,7 +319,7 @@ class AdminController extends Controller
 
     public function galeriEdit($id)
     {
-        $galeri = Galeri::findOrFail($id);
+        $galeri = Galeri::with('fotos')->findOrFail($id);
         return view('admin.galeri.edit', compact('galeri'));
     }
 
@@ -295,7 +330,11 @@ class AdminController extends Controller
         $request->validate([
             'judul' => 'required|min:3',
             'kategori' => 'required',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'fotos' => 'nullable|array',
+            'fotos.*' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'deleted_fotos' => 'nullable|string',
+            'replace_fotos' => 'nullable|array',
+            'replace_fotos.*' => 'image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $data = [
@@ -304,13 +343,46 @@ class AdminController extends Controller
             'deskripsi' => $request->deskripsi,
         ];
 
-        if ($request->hasFile('foto')) {
-            if ($galeri->gambar_galeri && Storage::disk('public')->exists($galeri->gambar_galeri)) {
-                Storage::disk('public')->delete($galeri->gambar_galeri);
+        // 1. Process deleted photos
+        if ($request->filled('deleted_fotos')) {
+            $deletedIds = explode(',', $request->deleted_fotos);
+            foreach ($deletedIds as $fotoId) {
+                $foto = $galeri->fotos()->find($fotoId);
+                if ($foto) {
+                    if (Storage::disk('public')->exists($foto->foto_path)) {
+                        Storage::disk('public')->delete($foto->foto_path);
+                    }
+                    $foto->delete();
+                }
             }
-            $data['gambar_galeri'] = $request->file('foto')->store('galeri', 'public');
         }
 
+        // 2. Process replaced photos
+        if ($request->hasFile('replace_fotos')) {
+            foreach ($request->file('replace_fotos') as $fotoId => $file) {
+                $foto = $galeri->fotos()->find($fotoId);
+                if ($foto) {
+                    // Delete old file
+                    if (Storage::disk('public')->exists($foto->foto_path)) {
+                        Storage::disk('public')->delete($foto->foto_path);
+                    }
+                    // Store new file
+                    $foto->update(['foto_path' => $file->store('galeri', 'public')]);
+                }
+            }
+        }
+
+        // 3. Process newly appended photos
+        if ($request->hasFile('fotos')) {
+            foreach ($request->file('fotos') as $foto) {
+                $gambarPath = $foto->store('galeri', 'public');
+                $galeri->fotos()->create(['foto_path' => $gambarPath]);
+            }
+        }
+
+        // 4. Update the main 'gambar_galeri' column if necessary
+        $firstFoto = $galeri->fotos()->first();
+        $data['gambar_galeri'] = $firstFoto ? $firstFoto->foto_path : '';
         $galeri->update($data);
 
         return redirect()->route('admin.galeri.index')
@@ -321,7 +393,16 @@ class AdminController extends Controller
     {
         $galeri = Galeri::findOrFail($id);
         
+        if ($galeri->fotos) {
+            foreach ($galeri->fotos as $foto) {
+                if (Storage::disk('public')->exists($foto->foto_path)) {
+                    Storage::disk('public')->delete($foto->foto_path);
+                }
+            }
+        }
+        
         if ($galeri->gambar_galeri && Storage::disk('public')->exists($galeri->gambar_galeri)) {
+            // Also check the main gambar_galeri just in case
             Storage::disk('public')->delete($galeri->gambar_galeri);
         }
         

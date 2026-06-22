@@ -404,38 +404,87 @@
         </div>
     </div>
 
-    {{-- Featured Image --}}
-    <div class="gallery-image-wrapper fade-up delay-2" id="gallerySwipeWrapper">
-        <div class="featured-image">
-            <img src="{{ asset('storage/' . $galeri->gambar_galeri) }}" alt="{{ $galeri->judul_galeri }}">
-        </div>
+    {{-- Featured Image Slider --}}
+    <div class="gallery-image-wrapper fade-up delay-2" id="gallerySwipeWrapper" style="position: relative;">
+        <div class="featured-image" style="position: relative; overflow: hidden; border-radius: 28px; box-shadow: var(--shadow-xl); background: #1e293b;">
+            <div id="sliderTrack" style="display: flex; transition: transform 0.5s ease-in-out; width: 100%;">
+                @if($galeri->fotos && $galeri->fotos->count() > 0)
+                    @foreach($galeri->fotos as $foto)
+                        <div class="slider-slide" style="min-width: 100%; flex: 0 0 100%; display: flex; justify-content: center; align-items: center; max-height: 500px;">
+                            <img src="{{ asset('storage/' . $foto->foto_path) }}" alt="{{ $galeri->judul_galeri }}" style="max-height: 500px; width: 100%; object-fit: contain; display: block;">
+                        </div>
+                    @endforeach
+                @else
+                    <div class="slider-slide" style="min-width: 100%; flex: 0 0 100%; display: flex; justify-content: center; align-items: center; max-height: 500px;">
+                        <img src="{{ asset('storage/' . $galeri->gambar_galeri) }}" alt="{{ $galeri->judul_galeri }}" style="max-height: 500px; width: 100%; object-fit: contain; display: block;">
+                    </div>
+                @endif
+            </div>
 
-        <div class="gallery-nav-buttons">
-            @if($prevGaleri)
-                <a href="{{ route('galeri.show', $prevGaleri->id_galeri) }}" class="slide-button slide-prev" aria-label="Foto sebelumnya">
+            {{-- Slider Navigation --}}
+            @if($galeri->fotos && $galeri->fotos->count() > 1)
+                <button type="button" class="slide-button slide-prev" onclick="prevSlide()" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); z-index: 10;" aria-label="Foto sebelumnya">
                     <i class="fa-solid fa-chevron-left"></i>
-                    Sebelumnya
-                </a>
-            @else
-                <span class="slide-button disabled slide-prev" aria-hidden="true">
-                    <i class="fa-solid fa-chevron-left"></i>
-                    Sebelumnya
-                </span>
-            @endif
-
-            @if($nextGaleri)
-                <a href="{{ route('galeri.show', $nextGaleri->id_galeri) }}" class="slide-button slide-next" aria-label="Foto berikutnya">
-                    Berikutnya
+                </button>
+                <button type="button" class="slide-button slide-next" onclick="nextSlide()" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); z-index: 10;" aria-label="Foto berikutnya">
                     <i class="fa-solid fa-chevron-right"></i>
-                </a>
-            @else
-                <span class="slide-button disabled slide-next" aria-hidden="true">
-                    Berikutnya
-                    <i class="fa-solid fa-chevron-right"></i>
-                </span>
+                </button>
+                
+                {{-- Slider Dots --}}
+                <div style="position: absolute; bottom: 1rem; left: 0; right: 0; display: flex; justify-content: center; gap: 0.5rem; z-index: 10;" id="sliderDots">
+                    @foreach($galeri->fotos as $index => $foto)
+                        <span class="dot {{ $index === 0 ? 'active' : '' }}" onclick="goToSlide({{ $index }})" style="width: 10px; height: 10px; border-radius: 50%; background: {{ $index === 0 ? 'var(--primary)' : 'rgba(255,255,255,0.6)' }}; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></span>
+                    @endforeach
+                </div>
             @endif
         </div>
     </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = {{ $galeri->fotos ? $galeri->fotos->count() : 1 }};
+        const track = document.getElementById('sliderTrack');
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlider() {
+            if (!track) return;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update dots
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.style.background = 'var(--primary)';
+                    dot.classList.add('active');
+                } else {
+                    dot.style.background = 'rgba(255,255,255,0.6)';
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+            } else {
+                currentSlide = 0; // loop back to start
+            }
+            updateSlider();
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+            } else {
+                currentSlide = totalSlides - 1; // loop back to end
+            }
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+    </script>
 
     <div class="slide-hint fade-up delay-2">
         Geser layar kiri / kanan atau tekan panah untuk melihat galeri selanjutnya dan sebelumnya.
@@ -557,15 +606,9 @@
             var threshold = 60;
 
             if (delta > threshold) {
-                var prevLink = wrapper.querySelector('.slide-prev:not(.disabled)');
-                if (prevLink && prevLink.href) {
-                    window.location.href = prevLink.href;
-                }
+                prevSlide();
             } else if (delta < -threshold) {
-                var nextLink = wrapper.querySelector('.slide-next:not(.disabled)');
-                if (nextLink && nextLink.href) {
-                    window.location.href = nextLink.href;
-                }
+                nextSlide();
             }
 
             isSwiping = false;

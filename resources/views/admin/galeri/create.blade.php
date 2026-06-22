@@ -511,21 +511,26 @@
             <!-- Foto Upload -->
             <div class="form-group">
                 <label class="form-label">
-                    <i class="fa-solid fa-image"></i> Foto
+                    <i class="fa-solid fa-images"></i> Foto (Bisa lebih dari 1)
                     <span class="required-star">*</span>
                 </label>
                 <div class="file-input-wrapper">
                     <div class="file-input-custom" onclick="document.getElementById('fotoInput').click()">
                         <i class="fa-solid fa-cloud-upload-alt"></i>
                         <p>Klik untuk pilih foto atau drag & drop</p>
-                        <p class="text-[10px] mt-1">Format: JPG, JPEG, PNG. Maks: 2MB</p>
+                        <p class="text-[10px] mt-1">Bisa pilih banyak file sekaligus. Format: JPG, JPEG, PNG. Maks: 2MB per foto</p>
                     </div>
-                    <input type="file" name="foto" id="fotoInput" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                    <input type="file" name="fotos[]" id="fotoInput" accept="image/*" multiple style="display: none;" onchange="previewImages(this)">
                 </div>
-                @error('foto')
+                @error('fotos')
                     <div class="error-message">
                         <i class="fa-solid fa-circle-exclamation text-xs"></i> {{ $message }}
                     </div>
+                @error('fotos.*')
+                    <div class="error-message">
+                        <i class="fa-solid fa-circle-exclamation text-xs"></i> {{ $message }}
+                    </div>
+                @enderror
                 @enderror
             </div>
 
@@ -548,19 +553,152 @@
     </div>
 </div>
 
+<style>
+    .preview-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .preview-item {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid #e2e8f0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        group: preview-group;
+    }
+    .preview-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+    .preview-item:hover img {
+        transform: scale(1.05);
+    }
+    .preview-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .preview-item:hover .preview-overlay {
+        opacity: 1;
+    }
+    .preview-btn {
+        background: white;
+        border: none;
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.2s;
+    }
+    .btn-replace { color: #3b82f6; }
+    .btn-remove { color: #ef4444; }
+    .preview-btn:hover { transform: scale(1.05); }
+    .preview-box {
+        width: 100%;
+        min-height: 150px;
+        height: auto;
+        padding: 10px;
+    }
+    .add-more-btn {
+        margin-top: 15px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        background: #f1f5f9;
+        border: 1px dashed #cbd5e1;
+        border-radius: 20px;
+        color: #475569;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .add-more-btn:hover {
+        background: #e2e8f0;
+        border-color: #94a3b8;
+    }
+</style>
+
 <script>
-    // Preview Image Function
-    function previewImage(input) {
+    let selectedFiles = new DataTransfer();
+
+    function previewImages(input) {
+        if (input.files && input.files.length > 0) {
+            Array.from(input.files).forEach(file => {
+                selectedFiles.items.add(file);
+            });
+            input.value = ''; // Reset the input so the same files can be triggered if needed
+            renderPreview();
+        }
+    }
+
+    function addMorePhotos() {
+        document.getElementById('fotoInput').click();
+    }
+
+    function renderPreview() {
         const previewBox = document.getElementById('previewBox');
         
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
+        // Update the main form input with all files
+        const mainInput = document.getElementById('fotoInput');
+        mainInput.files = selectedFiles.files;
+
+        if (selectedFiles.files.length > 0) {
+            let html = '<div class="preview-grid" id="previewGrid">';
             
-            reader.onload = function(e) {
-                previewBox.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-            }
+            Array.from(selectedFiles.files).forEach((file, index) => {
+                const objectUrl = URL.createObjectURL(file);
+                html += `
+                    <div class="preview-item">
+                        <img src="${objectUrl}" alt="Preview">
+                        <div class="preview-overlay">
+                            <button type="button" class="preview-btn btn-replace" onclick="triggerReplace(${index})">
+                                <i class="fa-solid fa-pen"></i> Ganti
+                            </button>
+                            <button type="button" class="preview-btn btn-remove" onclick="removeFile(${index})">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
             
-            reader.readAsDataURL(input.files[0]);
+            html += '</div>';
+
+            // Add the "Tambah Foto Lainnya" button below the grid
+            html += `
+                <div style="text-align: center;">
+                    <button type="button" class="add-more-btn" onclick="addMorePhotos()">
+                        <i class="fa-solid fa-plus"></i> Tambah Foto Lainnya
+                    </button>
+                </div>
+            `;
+            
+            previewBox.innerHTML = html;
         } else {
             previewBox.innerHTML = `
                 <div class="preview-placeholder">
@@ -569,6 +707,44 @@
                 </div>
             `;
         }
+    }
+
+    function removeFile(index) {
+        const newFiles = new DataTransfer();
+        Array.from(selectedFiles.files).forEach((file, i) => {
+            if (i !== index) {
+                newFiles.items.add(file);
+            }
+        });
+        selectedFiles = newFiles;
+        renderPreview();
+    }
+
+    let replaceIndex = -1;
+    function triggerReplace(index) {
+        replaceIndex = index;
+        const replaceInput = document.createElement('input');
+        replaceInput.type = 'file';
+        replaceInput.accept = 'image/*';
+        replaceInput.onchange = function(e) {
+            if (e.target.files && e.target.files.length > 0) {
+                replaceFile(replaceIndex, e.target.files[0]);
+            }
+        };
+        replaceInput.click();
+    }
+
+    function replaceFile(index, newFile) {
+        const newFiles = new DataTransfer();
+        Array.from(selectedFiles.files).forEach((file, i) => {
+            if (i === index) {
+                newFiles.items.add(newFile);
+            } else {
+                newFiles.items.add(file);
+            }
+        });
+        selectedFiles = newFiles;
+        renderPreview();
     }
 
     // Drag & Drop functionality
@@ -595,11 +771,14 @@
             
             const files = e.dataTransfer.files;
             if (files.length > 0) {
-                fileInput.files = files;
-                previewImage(fileInput);
+                Array.from(files).forEach(file => {
+                    selectedFiles.items.add(file);
+                });
+                renderPreview();
             }
         });
     }
+
 </script>
 
 <!-- Font Awesome -->
