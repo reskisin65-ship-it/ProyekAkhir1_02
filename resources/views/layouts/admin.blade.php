@@ -319,6 +319,7 @@
                         <li><a href="{{ route('admin.dashboard') }}" class="footer-link">Dashboard</a></li>
                         <li><a href="{{ route('admin.pengajuan-surat.index') }}" class="footer-link">Pengajuan Surat</a></li>
                         <li><a href="{{ route('admin.penduduk.index') }}" class="footer-link">Data Penduduk</a></li>
+                        <li><a href="{{ route('admin.keluarga.index') }}" class="footer-link">Data Keluarga</a></li>
                         <li><a href="{{ route('admin.statistik.index') }}" class="footer-link">Statistik</a></li>
                     </ul>
                 </div>

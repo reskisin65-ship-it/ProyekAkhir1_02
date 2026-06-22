@@ -295,21 +295,7 @@ public function umkmShow($id)
         return view('pages.kontak', compact('kontak'));
     }
 
-    /**
-     * Kirim Pesan Kontak
-     */
-    public function kirimPesan(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required|min:3',
-            'email' => 'required|email',
-            'subjek' => 'required|min:3',
-            'pesan' => 'required|min:10',
-        ]);
-        
-        return redirect()->route('kontak')->with('success', 'Pesan Anda telah terkirim! Kami akan segera merespon.');
-    }
-
+  
     /**
      * ==============================================
      * Halaman Statistik Desa untuk Publik

@@ -13,7 +13,7 @@ class DataPenduduk extends Model
     protected $fillable = [
         'user_id', 'nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir',
         'tanggal_lahir', 'agama', 'pendidikan', 'pekerjaan', 'status_perkawinan',
-        'alamat', 'rt_rw', 'kelurahan_desa', 'kecamatan', 'kabupaten_kota',
+        'alamat', 'kelurahan_desa', 'kecamatan', 'kabupaten_kota',
         'provinsi', 'status_keluarga', 'no_kk', 'foto_ktp'
     ];
     

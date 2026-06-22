@@ -202,8 +202,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/penduduk/create', [AdminController::class, 'pendudukCreate'])->name('penduduk.create');
     Route::post('/penduduk', [AdminController::class, 'pendudukStore'])->name('penduduk.store');
     Route::get('/penduduk/{id}/edit', [AdminController::class, 'pendudukEdit'])->name('penduduk.edit');
+    Route::get('/penduduk/{id}', [AdminController::class, 'pendudukShow'])->name('penduduk.show');
     Route::put('/penduduk/{id}', [AdminController::class, 'pendudukUpdate'])->name('penduduk.update');
     Route::delete('/penduduk/{id}', [AdminController::class, 'pendudukDestroy'])->name('penduduk.destroy');
+
+    // DATA KELUARGA
+    Route::get('/keluarga', [AdminController::class, 'keluargaIndex'])->name('keluarga.index');
+    Route::get('/keluarga/{no_kk}', [AdminController::class, 'keluargaShow'])->name('keluarga.show');
     
     // PROFIL DESA (ADMIN)
     Route::get('/profil-desa', [App\Http\Controllers\Admin\ProfilDesaController::class, 'index'])->name('profil-desa.index');

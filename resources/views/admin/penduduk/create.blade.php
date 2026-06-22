@@ -360,6 +360,16 @@
                     @error('nik') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>
 
+                <!-- No KK -->
+                <div class="form-field">
+                    <label class="form-label">
+                        <i class="fa-solid fa-house-chimney-user"></i> Nomor KK
+                        <span class="required-star">*</span>
+                    </label>
+                    <input type="text" name="no_kk" value="{{ old('no_kk') }}" required class="input-glass" maxlength="16" pattern="[0-9]{16}" title="No KK harus 16 digit angka" placeholder="16 digit angka">
+                    @error('no_kk') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
+                </div>
+
                 <!-- Nama Lengkap -->
                 <div class="form-field">
                     <label class="form-label">
@@ -413,8 +423,8 @@
                     <select name="agama" required class="input-glass">
                         <option value="">Pilih Agama</option>
                         <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
-                        <option value="Kristen Protestan" {{ old('agama') == 'Kristen Protestan' ? 'selected' : '' }}>Kristen Protestan</option>
-                        <option value="Kristen Katolik" {{ old('agama') == 'Kristen Katolik' ? 'selected' : '' }}>Kristen Katolik</option>
+                        <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                        <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
                         <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
                         <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
                         <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
@@ -449,7 +459,23 @@
                         <i class="fa-solid fa-briefcase"></i> Pekerjaan
                         <span class="required-star">*</span>
                     </label>
-                    <input type="text" name="pekerjaan" value="{{ old('pekerjaan') }}" required class="input-glass" placeholder="Contoh: Petani, Guru, Wiraswasta">
+                    <select name="pekerjaan" required class="input-glass">
+                        <option value="" disabled selected>Pilih Pekerjaan</option>
+                        <option value="Belum / Tidak Bekerja" {{ old('pekerjaan') == 'Belum / Tidak Bekerja' ? 'selected' : '' }}>Belum / Tidak Bekerja</option>
+                        <option value="Pelajar / Mahasiswa" {{ old('pekerjaan') == 'Pelajar / Mahasiswa' ? 'selected' : '' }}>Pelajar / Mahasiswa</option>
+                        <option value="Mengurus Rumah Tangga" {{ old('pekerjaan') == 'Mengurus Rumah Tangga' ? 'selected' : '' }}>Mengurus Rumah Tangga</option>
+                        <option value="Petani / Pekebun" {{ old('pekerjaan') == 'Petani / Pekebun' ? 'selected' : '' }}>Petani / Pekebun</option>
+                        <option value="Nelayan" {{ old('pekerjaan') == 'Nelayan' ? 'selected' : '' }}>Nelayan</option>
+                        <option value="Buruh Harian Lepas" {{ old('pekerjaan') == 'Buruh Harian Lepas' ? 'selected' : '' }}>Buruh Harian Lepas</option>
+                        <option value="Wiraswasta / Pedagang" {{ old('pekerjaan') == 'Wiraswasta / Pedagang' ? 'selected' : '' }}>Wiraswasta / Pedagang</option>
+                        <option value="Pegawai Negeri Sipil (PNS)" {{ old('pekerjaan') == 'Pegawai Negeri Sipil (PNS)' ? 'selected' : '' }}>Pegawai Negeri Sipil (PNS)</option>
+                        <option value="TNI / POLRI" {{ old('pekerjaan') == 'TNI / POLRI' ? 'selected' : '' }}>TNI / POLRI</option>
+                        <option value="Karyawan Swasta" {{ old('pekerjaan') == 'Karyawan Swasta' ? 'selected' : '' }}>Karyawan Swasta</option>
+                        <option value="Guru / Dosen" {{ old('pekerjaan') == 'Guru / Dosen' ? 'selected' : '' }}>Guru / Dosen</option>
+                        <option value="Tenaga Medis" {{ old('pekerjaan') == 'Tenaga Medis' ? 'selected' : '' }}>Tenaga Medis</option>
+                        <option value="Pensiunan" {{ old('pekerjaan') == 'Pensiunan' ? 'selected' : '' }}>Pensiunan</option>
+                        <option value="Lainnya" {{ old('pekerjaan') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                    </select>
                     @error('pekerjaan') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>
 
@@ -480,8 +506,6 @@
                         <option value="Kepala Keluarga" {{ old('status_keluarga') == 'Kepala Keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
                         <option value="Istri" {{ old('status_keluarga') == 'Istri' ? 'selected' : '' }}>Istri</option>
                         <option value="Anak" {{ old('status_keluarga') == 'Anak' ? 'selected' : '' }}>Anak</option>
-                        <option value="Anggota Keluarga" {{ old('status_keluarga') == 'Anggota Keluarga' ? 'selected' : '' }}>Anggota Keluarga</option>
-                        <option value="Lainnya" {{ old('status_keluarga') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                     </select>
                     @error('status_keluarga') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>

@@ -358,6 +358,17 @@
                         <span class="required-star">*</span>
                     </label>
                     <input type="text" name="nik" value="{{ old('nik', $penduduk->nik) }}" required class="input-glass" maxlength="16" pattern="[0-9]{16}" title="NIK harus 16 digit angka">
+                    @error('nik') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
+                </div>
+
+                <!-- No KK -->
+                <div class="form-field">
+                    <label class="form-label">
+                        <i class="fa-solid fa-house-chimney-user"></i> Nomor KK
+                        <span class="required-star">*</span>
+                    </label>
+                    <input type="text" name="no_kk" value="{{ old('no_kk', $penduduk->no_kk) }}" required class="input-glass" maxlength="16" pattern="[0-9]{16}" title="No KK harus 16 digit angka" placeholder="16 digit angka">
+                    @error('no_kk') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>
 
                 <!-- Nama Lengkap -->
@@ -367,6 +378,7 @@
                         <span class="required-star">*</span>
                     </label>
                     <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap', $penduduk->nama_lengkap) }}" required class="input-glass">
+                    @error('nama_lengkap') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>
 
                 <!-- Jenis Kelamin -->
@@ -408,8 +420,8 @@
                     <select name="agama" required class="input-glass">
                         <option value="">Pilih Agama</option>
                         <option value="Islam" {{ old('agama', $penduduk->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
-                        <option value="Kristen Protestan" {{ old('agama', $penduduk->agama) == 'Kristen Protestan' ? 'selected' : '' }}>Kristen Protestan</option>
-                        <option value="Kristen Katolik" {{ old('agama', $penduduk->agama) == 'Kristen Katolik' ? 'selected' : '' }}>Kristen Katolik</option>
+                        <option value="Kristen" {{ old('agama', $penduduk->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                        <option value="Katolik" {{ old('agama', $penduduk->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
                         <option value="Hindu" {{ old('agama', $penduduk->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
                         <option value="Buddha" {{ old('agama', $penduduk->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
                         <option value="Konghucu" {{ old('agama', $penduduk->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
@@ -442,7 +454,24 @@
                         <i class="fa-solid fa-briefcase"></i> Pekerjaan
                         <span class="required-star">*</span>
                     </label>
-                    <input type="text" name="pekerjaan" value="{{ old('pekerjaan', $penduduk->pekerjaan) }}" required class="input-glass">
+                    <select name="pekerjaan" required class="input-glass">
+                        @php $pekerjaan_val = old('pekerjaan', $penduduk->pekerjaan); @endphp
+                        <option value="" disabled {{ empty($pekerjaan_val) ? 'selected' : '' }}>Pilih Pekerjaan</option>
+                        <option value="Belum / Tidak Bekerja" {{ $pekerjaan_val == 'Belum / Tidak Bekerja' ? 'selected' : '' }}>Belum / Tidak Bekerja</option>
+                        <option value="Pelajar / Mahasiswa" {{ $pekerjaan_val == 'Pelajar / Mahasiswa' ? 'selected' : '' }}>Pelajar / Mahasiswa</option>
+                        <option value="Mengurus Rumah Tangga" {{ $pekerjaan_val == 'Mengurus Rumah Tangga' ? 'selected' : '' }}>Mengurus Rumah Tangga</option>
+                        <option value="Petani / Pekebun" {{ $pekerjaan_val == 'Petani / Pekebun' ? 'selected' : '' }}>Petani / Pekebun</option>
+                        <option value="Nelayan" {{ $pekerjaan_val == 'Nelayan' ? 'selected' : '' }}>Nelayan</option>
+                        <option value="Buruh Harian Lepas" {{ $pekerjaan_val == 'Buruh Harian Lepas' ? 'selected' : '' }}>Buruh Harian Lepas</option>
+                        <option value="Wiraswasta / Pedagang" {{ $pekerjaan_val == 'Wiraswasta / Pedagang' ? 'selected' : '' }}>Wiraswasta / Pedagang</option>
+                        <option value="Pegawai Negeri Sipil (PNS)" {{ $pekerjaan_val == 'Pegawai Negeri Sipil (PNS)' ? 'selected' : '' }}>Pegawai Negeri Sipil (PNS)</option>
+                        <option value="TNI / POLRI" {{ $pekerjaan_val == 'TNI / POLRI' ? 'selected' : '' }}>TNI / POLRI</option>
+                        <option value="Karyawan Swasta" {{ $pekerjaan_val == 'Karyawan Swasta' ? 'selected' : '' }}>Karyawan Swasta</option>
+                        <option value="Guru / Dosen" {{ $pekerjaan_val == 'Guru / Dosen' ? 'selected' : '' }}>Guru / Dosen</option>
+                        <option value="Tenaga Medis" {{ $pekerjaan_val == 'Tenaga Medis' ? 'selected' : '' }}>Tenaga Medis</option>
+                        <option value="Pensiunan" {{ $pekerjaan_val == 'Pensiunan' ? 'selected' : '' }}>Pensiunan</option>
+                        <option value="Lainnya" {{ $pekerjaan_val == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                    </select>
                 </div>
 
                 <!-- Status Perkawinan -->
@@ -469,7 +498,6 @@
                         <option value="Kepala Keluarga" {{ $penduduk->status_keluarga == 'Kepala Keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
                         <option value="Istri" {{ $penduduk->status_keluarga == 'Istri' ? 'selected' : '' }}>Istri</option>
                         <option value="Anak" {{ $penduduk->status_keluarga == 'Anak' ? 'selected' : '' }}>Anak</option>
-                        <option value="Lainnya" {{ $penduduk->status_keluarga == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                     </select>
                     @error('status_keluarga') <small class="text-red-500 text-xs mt-1">{{ $message }}</small> @enderror
                 </div>

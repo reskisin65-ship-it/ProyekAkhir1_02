@@ -507,7 +507,24 @@
 
                             <div>
                                 <label class="form-label"><i class="fa-solid fa-briefcase"></i> Pekerjaan</label>
-                                <input type="text" name="pekerjaan" value="{{ old('pekerjaan', $dataPenduduk?->pekerjaan ?? '') }}" class="form-input" placeholder="Pekerjaan">
+                                <select name="pekerjaan" class="form-input" style="appearance: auto;">
+                                    @php $pekerjaan_val = old('pekerjaan', $dataPenduduk?->pekerjaan ?? ''); @endphp
+                                    <option value="" disabled {{ empty($pekerjaan_val) ? 'selected' : '' }}>Pilih Pekerjaan</option>
+                                    <option value="Belum / Tidak Bekerja" {{ $pekerjaan_val == 'Belum / Tidak Bekerja' ? 'selected' : '' }}>Belum / Tidak Bekerja</option>
+                                    <option value="Pelajar / Mahasiswa" {{ $pekerjaan_val == 'Pelajar / Mahasiswa' ? 'selected' : '' }}>Pelajar / Mahasiswa</option>
+                                    <option value="Mengurus Rumah Tangga" {{ $pekerjaan_val == 'Mengurus Rumah Tangga' ? 'selected' : '' }}>Mengurus Rumah Tangga</option>
+                                    <option value="Petani / Pekebun" {{ $pekerjaan_val == 'Petani / Pekebun' ? 'selected' : '' }}>Petani / Pekebun</option>
+                                    <option value="Nelayan" {{ $pekerjaan_val == 'Nelayan' ? 'selected' : '' }}>Nelayan</option>
+                                    <option value="Buruh Harian Lepas" {{ $pekerjaan_val == 'Buruh Harian Lepas' ? 'selected' : '' }}>Buruh Harian Lepas</option>
+                                    <option value="Wiraswasta / Pedagang" {{ $pekerjaan_val == 'Wiraswasta / Pedagang' ? 'selected' : '' }}>Wiraswasta / Pedagang</option>
+                                    <option value="Pegawai Negeri Sipil (PNS)" {{ $pekerjaan_val == 'Pegawai Negeri Sipil (PNS)' ? 'selected' : '' }}>Pegawai Negeri Sipil (PNS)</option>
+                                    <option value="TNI / POLRI" {{ $pekerjaan_val == 'TNI / POLRI' ? 'selected' : '' }}>TNI / POLRI</option>
+                                    <option value="Karyawan Swasta" {{ $pekerjaan_val == 'Karyawan Swasta' ? 'selected' : '' }}>Karyawan Swasta</option>
+                                    <option value="Guru / Dosen" {{ $pekerjaan_val == 'Guru / Dosen' ? 'selected' : '' }}>Guru / Dosen</option>
+                                    <option value="Tenaga Medis" {{ $pekerjaan_val == 'Tenaga Medis' ? 'selected' : '' }}>Tenaga Medis</option>
+                                    <option value="Pensiunan" {{ $pekerjaan_val == 'Pensiunan' ? 'selected' : '' }}>Pensiunan</option>
+                                    <option value="Lainnya" {{ $pekerjaan_val == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                                </select>
                                 @error('pekerjaan')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
@@ -562,12 +579,10 @@
                             <div>
                                 <label class="form-label"><i class="fa-solid fa-users"></i> Status Keluarga</label>
                                 <select name="status_keluarga" class="form-input">
-                                    <option value="">Pilih status keluarga</option>
+                                    <option value="">Pilih status</option>
                                     <option value="Kepala Keluarga" {{ old('status_keluarga', $dataPenduduk?->status_keluarga ?? '') === 'Kepala Keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
                                     <option value="Istri" {{ old('status_keluarga', $dataPenduduk?->status_keluarga ?? '') === 'Istri' ? 'selected' : '' }}>Istri</option>
                                     <option value="Anak" {{ old('status_keluarga', $dataPenduduk?->status_keluarga ?? '') === 'Anak' ? 'selected' : '' }}>Anak</option>
-                                    <option value="Anggota Keluarga" {{ old('status_keluarga', $dataPenduduk?->status_keluarga ?? '') === 'Anggota Keluarga' ? 'selected' : '' }}>Anggota Keluarga</option>
-                                    <option value="Lainnya" {{ old('status_keluarga', $dataPenduduk?->status_keluarga ?? '') === 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                                 </select>
                                 @error('status_keluarga')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

@@ -1,4 +1,4 @@
-﻿{{-- resources/views/layouts/navigation_magic_sidebar.blade.php --}}
+{{-- resources/views/layouts/navigation_magic_sidebar.blade.php --}}
 
 <aside class="magic-sidebar" id="magic-sidebar">
 
@@ -118,6 +118,15 @@
                     <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
                     <h5 class="text-base font-serif italic text-emerald-950 mt-1">Data Penduduk</h5>
                     <p class="text-xs text-gray-400">Kelola data warga</p>
+                </div>
+            </a>
+            <a href="{{ route('admin.keluarga.index') }}" class="side-item group">
+                <i class="fa-solid fa-house-chimney side-icon"></i>
+                <span class="side-label">Keluarga</span>
+                <div class="info-box">
+                    <span class="text-[9px] font-black uppercase text-emerald-500 tracking-wider">Menu</span>
+                    <h5 class="text-base font-serif italic text-emerald-950 mt-1">Data Keluarga</h5>
+                    <p class="text-xs text-gray-400">Kelola data keluarga</p>
                 </div>
             </a>
             <a href="{{ route('admin.berita.index') }}" class="side-item group">
@@ -609,6 +618,10 @@
                 <a href="{{ route('admin.penduduk.index') }}" class="mobile-nav-item">
                     <i class="fa-solid fa-users"></i>
                     <span>Penduduk</span>
+                </a>
+                <a href="{{ route('admin.keluarga.index') }}" class="mobile-nav-item">
+                    <i class="fa-solid fa-house-chimney"></i>
+                    <span>Keluarga</span>
                 </a>
                 <a href="{{ route('admin.berita.index') }}" class="mobile-nav-item">
                     <i class="fa-solid fa-newspaper"></i>

@@ -578,10 +578,90 @@ public function umkmDestroy($id)
     // MANAJEMEN DATA PENDUDUK
     // ==============================================
 
-    public function penduduk()
+    public function penduduk(Request $request)
     {
-        $penduduk = DataPenduduk::orderBy('created_at', 'desc')->paginate(20);
-        return view('admin.penduduk.index', compact('penduduk'));
+        $query = DataPenduduk::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                  ->orWhere('nik', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('jenis_kelamin')) {
+            $query->where('jenis_kelamin', $request->jenis_kelamin);
+        }
+
+        if ($request->filled('status_perkawinan')) {
+            $query->where('status_perkawinan', $request->status_perkawinan);
+        }
+
+        if ($request->filled('pendidikan')) {
+            $query->where('pendidikan', $request->pendidikan);
+        }
+
+        if ($request->filled('pekerjaan')) {
+            $query->where('pekerjaan', $request->pekerjaan);
+        }
+
+        if ($request->filled('agama')) {
+            $query->where('agama', $request->agama);
+        }
+
+        if ($request->filled('status_keluarga')) {
+            $query->where('status_keluarga', $request->status_keluarga);
+        }
+
+        if ($request->filled('usia')) {
+            $now = \Carbon\Carbon::now();
+            if ($request->usia == 'anak') {
+                $query->where('tanggal_lahir', '>', $now->copy()->subYears(17)->format('Y-m-d'));
+            } elseif ($request->usia == 'pemuda') {
+                $query->whereBetween('tanggal_lahir', [$now->copy()->subYears(30)->format('Y-m-d'), $now->copy()->subYears(17)->format('Y-m-d')]);
+            } elseif ($request->usia == 'dewasa') {
+                $query->whereBetween('tanggal_lahir', [$now->copy()->subYears(55)->format('Y-m-d'), $now->copy()->subYears(30)->format('Y-m-d')]);
+            } elseif ($request->usia == 'lansia') {
+                $query->where('tanggal_lahir', '<=', $now->copy()->subYears(55)->format('Y-m-d'));
+            }
+        }
+
+        $penduduk = $query->orderBy('created_at', 'desc')->paginate(20)->withQueryString();
+        
+        // Statistics
+        $totalPenduduk = DataPenduduk::count();
+        $totalLaki = DataPenduduk::where('jenis_kelamin', 'L')->count();
+        $totalPerempuan = DataPenduduk::where('jenis_kelamin', 'P')->count();
+        $totalKk = DataPenduduk::where('status_keluarga', 'Kepala Keluarga')->count();
+        $totalIstri = DataPenduduk::where('status_keluarga', 'Istri')->count();
+        $totalAnak = DataPenduduk::where('status_keluarga', 'Anak')->count();
+
+        // Usia
+        $now = \Carbon\Carbon::now();
+        $usiaAnak = DataPenduduk::where('tanggal_lahir', '>', $now->copy()->subYears(17)->format('Y-m-d'))->count();
+        $usiaPemuda = DataPenduduk::whereBetween('tanggal_lahir', [$now->copy()->subYears(30)->format('Y-m-d'), $now->copy()->subYears(17)->format('Y-m-d')])->count();
+        $usiaDewasa = DataPenduduk::whereBetween('tanggal_lahir', [$now->copy()->subYears(55)->format('Y-m-d'), $now->copy()->subYears(30)->format('Y-m-d')])->count();
+        $usiaLansia = DataPenduduk::where('tanggal_lahir', '<=', $now->copy()->subYears(55)->format('Y-m-d'))->count();
+
+        // Agama
+        $agamaStats = DataPenduduk::selectRaw('agama, count(*) as total')->groupBy('agama')->pluck('total', 'agama')->toArray();
+
+        // Status Perkawinan
+        $kawinStats = DataPenduduk::selectRaw('status_perkawinan, count(*) as total')->groupBy('status_perkawinan')->pluck('total', 'status_perkawinan')->toArray();
+
+        // Pendidikan
+        $pendidikanStats = DataPenduduk::selectRaw('pendidikan, count(*) as total')->groupBy('pendidikan')->pluck('total', 'pendidikan')->toArray();
+
+        // Pekerjaan
+        $pekerjaanStats = DataPenduduk::selectRaw('pekerjaan, count(*) as total')->groupBy('pekerjaan')->orderByDesc('total')->pluck('total', 'pekerjaan')->toArray();
+
+        return view('admin.penduduk.index', compact(
+            'penduduk', 'totalPenduduk', 'totalLaki', 'totalPerempuan',
+            'totalKk', 'totalIstri', 'totalAnak',
+            'usiaAnak', 'usiaPemuda', 'usiaDewasa', 'usiaLansia',
+            'agamaStats', 'kawinStats', 'pendidikanStats', 'pekerjaanStats'
+        ));
     }
 
     public function pendudukCreate()
@@ -600,6 +680,7 @@ public function umkmDestroy($id)
 
         $request->validate([
             'nik' => 'required|size:16|unique:data_penduduk,nik',
+            'no_kk' => 'required|size:16',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'tempat_lahir' => 'required',
@@ -653,6 +734,28 @@ public function umkmDestroy($id)
         return view('admin.penduduk.edit', compact('penduduk', 'users'));
     }
 
+    public function pendudukShow($id)
+    {
+        $penduduk = DataPenduduk::findOrFail($id);
+        
+        // Find family members if they have a no_kk
+        $keluarga = collect();
+        if (!empty($penduduk->no_kk)) {
+            $anggota = DataPenduduk::where('no_kk', $penduduk->no_kk)->get();
+            $keluarga = $anggota->sortBy(function ($m) {
+                $status = strtolower($m->status_keluarga);
+                $order = 4;
+                if ($status === 'kepala keluarga') $order = 1;
+                elseif ($status === 'istri') $order = 2;
+                elseif ($status === 'anak') $order = 3;
+                
+                return $order . '_' . $m->tanggal_lahir;
+            })->values();
+        }
+
+        return view('admin.penduduk.show', compact('penduduk', 'keluarga'));
+    }
+
     public function pendudukUpdate(Request $request, $id)
     {
         $penduduk = DataPenduduk::findOrFail($id);
@@ -661,6 +764,7 @@ public function umkmDestroy($id)
 
         $request->validate([
             'nik' => 'required|size:16|unique:data_penduduk,nik,' . $id . ',id_penduduk',
+            'no_kk' => 'required|size:16',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'tempat_lahir' => 'required',
@@ -710,6 +814,102 @@ public function umkmDestroy($id)
         
         return redirect()->route('admin.penduduk.index')
             ->with('success', 'Data penduduk berhasil dihapus!');
+    }
+
+    public function keluargaIndex(Request $request)
+    {
+        $search = $request->input('search');
+
+        if ($search) {
+            $matchedKkNumbers = DataPenduduk::where('nama_lengkap', 'LIKE', "%{$search}%")
+                ->orWhere('nik', 'LIKE', "%{$search}%")
+                ->orWhere('no_kk', 'LIKE', "%{$search}%")
+                ->orWhere('alamat', 'LIKE', "%{$search}%")
+                ->pluck('no_kk')
+                ->filter()
+                ->unique()
+                ->toArray();
+
+            if (empty($matchedKkNumbers)) {
+                $kkPaginator = DataPenduduk::whereRaw('1 = 0')->paginate(9);
+            } else {
+                $kkPaginator = DataPenduduk::whereIn('no_kk', $matchedKkNumbers)
+                    ->whereNotNull('no_kk')
+                    ->where('no_kk', '!=', '')
+                    ->select('no_kk')
+                    ->groupBy('no_kk')
+                    ->paginate(9);
+            }
+        } else {
+            $kkPaginator = DataPenduduk::whereNotNull('no_kk')
+                ->where('no_kk', '!=', '')
+                ->select('no_kk')
+                ->groupBy('no_kk')
+                ->paginate(9);
+        }
+
+        $kkOnPage = $kkPaginator->pluck('no_kk')->toArray();
+
+        $members = DataPenduduk::whereIn('no_kk', $kkOnPage)->get();
+
+        $grouped = $members->groupBy('no_kk');
+
+        $families = [];
+        foreach ($grouped as $noKk => $familyMembers) {
+            $head = $familyMembers->first(function ($m) {
+                return strtolower($m->status_keluarga) === 'kepala keluarga';
+            });
+
+            if (!$head) {
+                $head = $familyMembers->first();
+            }
+
+            $sortedMembers = $familyMembers->sortBy(function ($m) {
+                $status = strtolower($m->status_keluarga);
+                $order = 4;
+                if ($status === 'kepala keluarga') $order = 1;
+                elseif ($status === 'istri') $order = 2;
+                elseif ($status === 'anak') $order = 3;
+                
+                return $order . '_' . $m->tanggal_lahir;
+            })->values();
+
+            $families[] = [
+                'no_kk' => $noKk,
+                'head_name' => $head ? $head->nama_lengkap : 'Tidak Diketahui',
+                'alamat' => $head ? $head->alamat : ($familyMembers->first() ? $familyMembers->first()->alamat : '-'),
+                'members' => $sortedMembers,
+            ];
+        }
+
+        return view('admin.keluarga.index', compact('families', 'kkPaginator', 'search'));
+    }
+
+    public function keluargaShow($no_kk)
+    {
+        $familyMembers = DataPenduduk::where('no_kk', $no_kk)->get();
+
+        if ($familyMembers->isEmpty()) {
+            return redirect()->route('admin.keluarga.index')->with('error', 'Data Keluarga tidak ditemukan.');
+        }
+
+        $head = $familyMembers->first(function ($m) {
+            return strtolower($m->status_keluarga) === 'kepala keluarga';
+        });
+
+        if (!$head) {
+            $head = $familyMembers->first();
+        }
+
+        $sortedMembers = $familyMembers->sortBy(function ($m) {
+            $status = strtolower($m->status_keluarga);
+            if ($status === 'kepala keluarga') return 1;
+            if ($status === 'istri') return 2;
+            if ($status === 'anak') return 3;
+            return 4;
+        })->values();
+
+        return view('admin.keluarga.show', compact('no_kk', 'head', 'sortedMembers'));
     }
 
     // ==============================================
