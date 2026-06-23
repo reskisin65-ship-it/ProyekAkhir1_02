@@ -661,31 +661,10 @@
 
                 <div class="grid-form">
                     <div class="input-group full-width">
-                        <label class="input-label"><i class="fa-regular fa-file-pdf"></i> File Pendukung <span class="text-xs text-slate-400 ml-1">(Opsional, maks 2MB)</span></label>
+                        <label class="input-label"><i class="fa-regular fa-file-pdf"></i> File Pendukung <span class="text-xs text-slate-400 ml-1">(Opsional, total maks 10MB)</span></label>
                         
-                        <div class="upload-vault" id="dropZone">
-                            <input type="file" name="file_pendukung" id="fileInput" hidden accept=".pdf,.jpg,.jpeg,.png">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <span class="upload-text-main">Klik atau tarik file ke sini</span>
-                            <span class="upload-text-sub">Format yang didukung: PDF, JPG, PNG (Maks. 2MB)</span>
-                            
-                            @if($pengajuan->file_pendukung)
-                                <div class="current-file-badge">
-                                    <i class="fa-solid fa-file-shield"></i>
-                                    <span class="text-xs font-semibold text-slate-700">File saat ini: {{ basename($pengajuan->file_pendukung) }}</span>
-                                </div>
-                            @endif
-                        </div>
+                        @include('masyarakat.surat.partials.berkas-pendukung-upload', ['existingBerkas' => $existingBerkas ?? []])
 
-                        <div id="fileStatus" class="hidden mt-4 animate__animated animate__fadeIn">
-                            <div class="flex items-center justify-center gap-3 text-emerald-600 font-bold">
-                                <i class="fa-solid fa-check-circle"></i>
-                                <span id="fileName">File siap diupload</span>
-                                <button type="button" id="removeFile" class="text-slate-400 hover:text-red-500 ml-4 transition-colors">
-                                    <i class="fa-solid fa-circle-xmark"></i>
-                                </button>
-                            </div>
-                        </div>
                         <div id="pendukungHelpText" class="support-card mt-3">
                             <div class="support-card-title">Dokumen pendukung yang disarankan</div>
                             <div id="pendukungHelpContent" class="support-card-content">Pilih jenis surat di atas untuk melihat contoh dokumen pendukung yang disarankan.</div>
@@ -738,7 +717,7 @@
                 <div class="tutorial-number">4</div>
                 <div class="tutorial-content">
                     <h4>📎 Lampirkan Dokumen Pendukung</h4>
-                    <p>Upload file pendukung seperti KTP, KK, atau dokumen lain jika diperlukan. Format yang didukung: PDF, JPG, PNG (maks 2MB).</p>
+                    <p>Upload file pendukung seperti KTP, KK, atau dokumen lain jika diperlukan. Format: PDF, JPG, PNG (total maks 10MB). Klik + untuk menambah berkas.</p>
                 </div>
             </div>
             <div class="tutorial-card">
@@ -814,57 +793,7 @@
         }
     });
 
-    // Premium File Upload Logic
-    const fileInput = document.getElementById('fileInput');
-    const dropZone = document.getElementById('dropZone');
-    const fileStatus = document.getElementById('fileStatus');
-    const fileName = document.getElementById('fileName');
-    const removeFileBtn = document.getElementById('removeFile');
-
-    if (dropZone) {
-        dropZone.addEventListener('click', () => fileInput.click());
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.style.borderColor = '#059669';
-            dropZone.style.background = 'white';
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.style.borderColor = '#e2e8f0';
-            dropZone.style.background = 'rgba(248, 250, 252, 0.4)';
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            fileInput.files = e.dataTransfer.files;
-            handleFileSelect();
-        });
-    }
-
-    if (fileInput) {
-        fileInput.addEventListener('change', handleFileSelect);
-    }
-
-    function handleFileSelect() {
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            fileName.innerHTML = file.name;
-            fileStatus.classList.remove('hidden');
-            dropZone.style.display = 'none';
-            
-            gsap.to(fileStatus, { x: 10, repeat: 3, yoyo: true, duration: 0.05 });
-        }
-    }
-
-    if (removeFileBtn) {
-        removeFileBtn.addEventListener('click', () => {
-            fileInput.value = '';
-            fileStatus.classList.add('hidden');
-            dropZone.style.display = 'block';
-            gsap.from(dropZone, { scale: 0.95, opacity: 0, duration: 0.4 });
-        });
-    }
+    // Premium File Upload - handled by berkas-pendukung-upload partial
 
     // Magnetic Button Effect
     const btnPrimary = document.querySelector('.btn-lux-primary');

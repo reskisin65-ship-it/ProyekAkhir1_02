@@ -492,7 +492,7 @@
                     </div>
                     <div class="info-item">
                         <span class="info-label">Tanggal Lahir</span>
-                        <span class="info-value">{{ $pengajuan->tanggal_lahir ? \Carbon\Carbon::parse($pengajuan->tanggal_lahir)->translatedFormat('d F Y') : '-' }}</span>
+                        <span class="info-value">{{ \App\Helpers\TanggalHelper::format($pengajuan->tanggal_lahir) }}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Tanggal Pengajuan</span>
@@ -528,13 +528,15 @@
                         <span class="info-value">{{ $pengajuan->keterangan }}</span>
                     </div>
                     @endif
-                    @if($pengajuan->berkas_pendukung)
+                    @if($pengajuan->hasBerkasPendukung())
                     <div class="info-item full-width">
                         <span class="info-label">Berkas Pendukung</span>
-                        <span class="info-value">
-                            <a href="{{ route('admin.pengajuan-surat.download-pendukung', $pengajuan->id_surat) }}" class="download-link">
-                                <i class="fa-solid fa-download"></i> Download File
+                        <span class="info-value" style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                            @foreach($pengajuan->getBerkasPendukungList() as $index => $berkas)
+                            <a href="{{ route('admin.pengajuan-surat.download-pendukung', [$pengajuan->id_surat, $index]) }}" class="download-link">
+                                <i class="fa-solid fa-download"></i> Berkas {{ $index + 1 }} ({{ basename($berkas) }})
                             </a>
+                            @endforeach
                         </span>
                     </div>
                     @endif
@@ -576,6 +578,24 @@
                     @endif
                     
                     @if($pengajuan->status == 'diproses')
+                    @if($pengajuan->file_surat_draft)
+                    <a href="{{ route('admin.pengajuan-surat.download-draft', $pengajuan->id_surat) }}" class="btn-glass btn-success">
+                        <i class="fa-solid fa-download"></i> Download Draft Surat
+                    </a>
+                    <form action="{{ route('admin.pengajuan-surat.regenerate-draft', $pengajuan->id_surat) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn-glass btn-outline-glass">
+                            <i class="fa-solid fa-rotate"></i> Generate Ulang Draft
+                        </button>
+                    </form>
+                    @else
+                    <form action="{{ route('admin.pengajuan-surat.regenerate-draft', $pengajuan->id_surat) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn-glass btn-primary">
+                            <i class="fa-solid fa-file-pdf"></i> Generate Draft Surat
+                        </button>
+                    </form>
+                    @endif
                     <button onclick="openUploadModal()" class="btn-glass btn-primary">
                         <i class="fa-solid fa-upload"></i> Upload Surat Selesai
                     </button>
@@ -617,7 +637,21 @@
                         </div>
                         <div class="timeline-content">
                             <h4>Diproses Admin</h4>
-                            <p>{{ $pengajuan->status == 'diproses' ? 'Sedang diproses' : ($pengajuan->status == 'selesai' ? 'Selesai diproses' : 'Belum diproses') }}</p>
+                            <p>
+                                @if($pengajuan->status == 'diproses')
+                                    Sedang diproses
+                                    @if($pengajuan->file_surat_draft)
+                                        — draft surat sudah tersedia
+                                    @endif
+                                @elseif($pengajuan->status == 'selesai')
+                                    Selesai diproses
+                                @else
+                                    Belum diproses
+                                @endif
+                            </p>
+                            @if($pengajuan->nomor_surat)
+                                <p style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">Nomor: {{ $pengajuan->nomor_surat }}</p>
+                            @endif
                         </div>
                     </div>
                     <div class="timeline-step">
@@ -677,6 +711,7 @@
                 <i class="fa-solid fa-times text-gray-500"></i>
             </button>
         </div>
+        <p class="text-sm text-gray-500 mb-4">Download draft surat terlebih dahulu, edit manual jika perlu, lalu upload versi final di sini.</p>
         <form action="{{ route('admin.pengajuan-surat.complete', $pengajuan->id_surat) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-5">

@@ -16,6 +16,7 @@ use App\Models\PengaturanStatistik;
 use App\Models\Role;
 use App\Models\Notifikasi;
 use App\Helpers\NotifikasiHelper;
+use App\Services\SuratGeneratorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -555,6 +556,14 @@ public function umkmDestroy($id)
         $pengajuan = PengajuanSurat::findOrFail($id);
         $pengajuan->update(['status' => 'diproses']);
 
+        try {
+            app(SuratGeneratorService::class)->generate($pengajuan->fresh());
+            $message = 'Pengajuan surat diterima, sedang diproses, dan draft surat otomatis dibuat!';
+        } catch (\Throwable $e) {
+            report($e);
+            $message = 'Pengajuan surat diterima dan sedang diproses, namun draft surat gagal dibuat. Silakan generate ulang.';
+        }
+
         NotifikasiHelper::suratDiproses(
             $pengajuan->user_id,
             $pengajuan->jenis_surat,
@@ -562,7 +571,7 @@ public function umkmDestroy($id)
             Auth::user()->user_id
         );
 
-        return back()->with('success', 'Pengajuan surat diterima dan sedang diproses!');
+        return back()->with('success', $message);
     }
 
     public function pengajuanSuratComplete(Request $request, $id)
@@ -618,11 +627,18 @@ public function umkmDestroy($id)
     {
         $pengajuan = PengajuanSurat::findOrFail($id);
         
-        if ($pengajuan->berkas_pendukung && Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
-            Storage::disk('public')->delete($pengajuan->berkas_pendukung);
+        if ($pengajuan->hasBerkasPendukung()) {
+            foreach ($pengajuan->getBerkasPendukungList() as $path) {
+                if (Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
+                }
+            }
         }
         if ($pengajuan->file_surat && Storage::disk('public')->exists($pengajuan->file_surat)) {
             Storage::disk('public')->delete($pengajuan->file_surat);
+        }
+        if ($pengajuan->file_surat_draft && Storage::disk('public')->exists($pengajuan->file_surat_draft)) {
+            Storage::disk('public')->delete($pengajuan->file_surat_draft);
         }
         
         $pengajuan->delete();
@@ -642,17 +658,49 @@ public function umkmDestroy($id)
         return Storage::disk('public')->download($pengajuan->file_surat, 'Surat_' . $pengajuan->jenis_surat . '.pdf');
     }
 
-    public function pengajuanSuratDownloadPendukung($id)
+    public function pengajuanSuratDownloadDraft($id)
     {
         $pengajuan = PengajuanSurat::findOrFail($id);
-        
-        if (!$pengajuan->berkas_pendukung || !Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
+
+        if (!$pengajuan->file_surat_draft || !Storage::disk('public')->exists($pengajuan->file_surat_draft)) {
+            return back()->with('error', 'Draft surat belum tersedia!');
+        }
+
+        $filename = 'Draft_' . str_replace(' ', '_', $pengajuan->jenis_surat) . '.pdf';
+        return Storage::disk('public')->download($pengajuan->file_surat_draft, $filename);
+    }
+
+    public function pengajuanSuratRegenerateDraft($id)
+    {
+        $pengajuan = PengajuanSurat::findOrFail($id);
+
+        if ($pengajuan->status !== 'diproses') {
+            return back()->with('error', 'Draft surat hanya dapat dibuat ulang saat status diproses.');
+        }
+
+        try {
+            app(SuratGeneratorService::class)->generate($pengajuan);
+            return back()->with('success', 'Draft surat berhasil dibuat ulang!');
+        } catch (\Throwable $e) {
+            report($e);
+            return back()->with('error', 'Gagal membuat ulang draft surat: ' . $e->getMessage());
+        }
+    }
+
+    public function pengajuanSuratDownloadPendukung($id, $index = 0)
+    {
+        $pengajuan = PengajuanSurat::findOrFail($id);
+        $files = $pengajuan->getBerkasPendukungList();
+
+        if (! isset($files[$index]) || ! Storage::disk('public')->exists($files[$index])) {
             return back()->with('error', 'File pendukung tidak ditemukan!');
         }
 
-        $extension = pathinfo($pengajuan->berkas_pendukung, PATHINFO_EXTENSION);
-        $filename = 'Pendukung_' . $pengajuan->jenis_surat . ($extension ? '.' . $extension : '');
-        return Storage::disk('public')->download($pengajuan->berkas_pendukung, $filename);
+        $path = $files[$index];
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        $filename = 'Pendukung_' . ($index + 1) . '_' . str_replace(' ', '_', $pengajuan->jenis_surat) . ($extension ? '.' . $extension : '');
+
+        return Storage::disk('public')->download($path, $filename);
     }
 
     // ==============================================

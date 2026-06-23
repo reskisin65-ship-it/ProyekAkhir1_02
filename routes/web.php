@@ -101,6 +101,7 @@ Route::middleware(['auth'])->prefix('masyarakat')->name('masyarakat.')->group(fu
     Route::post('/surat', [SuratController::class, 'store'])->name('surat.store');
     Route::get('/surat/{id}/edit', [SuratController::class, 'edit'])->whereNumber('id')->name('surat.edit');
     Route::get('/surat/{id}/download', [SuratController::class, 'download'])->whereNumber('id')->name('surat.download');
+    Route::get('/surat/{id}/download-pendukung/{index}', [SuratController::class, 'downloadPendukung'])->whereNumber(['id', 'index'])->name('surat.download-pendukung');
     Route::put('/surat/{id}', [SuratController::class, 'update'])->whereNumber('id')->name('surat.update');
     Route::delete('/surat/{id}', [SuratController::class, 'destroy'])->whereNumber('id')->name('surat.destroy');
     Route::get('/surat/{id}', [SuratController::class, 'show'])->whereNumber('id')->name('surat.show');
@@ -165,7 +166,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // PENGAJUAN SURAT
     Route::get('/pengajuan-surat', [AdminController::class, 'pengajuanSurat'])->name('pengajuan-surat.index');
     Route::get('/pengajuan-surat/{id}/download-surat', [AdminController::class, 'pengajuanSuratDownload'])->whereNumber('id')->name('pengajuan-surat.download-surat');
-    Route::get('/pengajuan-surat/{id}/download-pendukung', [AdminController::class, 'pengajuanSuratDownloadPendukung'])->whereNumber('id')->name('pengajuan-surat.download-pendukung');
+    Route::get('/pengajuan-surat/{id}/download-draft', [AdminController::class, 'pengajuanSuratDownloadDraft'])->whereNumber('id')->name('pengajuan-surat.download-draft');
+    Route::post('/pengajuan-surat/{id}/regenerate-draft', [AdminController::class, 'pengajuanSuratRegenerateDraft'])->whereNumber('id')->name('pengajuan-surat.regenerate-draft');
+    Route::get('/pengajuan-surat/{id}/download-pendukung/{index?}', [AdminController::class, 'pengajuanSuratDownloadPendukung'])->whereNumber(['id', 'index'])->name('pengajuan-surat.download-pendukung');
     Route::post('/pengajuan-surat/{id}/approve', [AdminController::class, 'pengajuanSuratApprove'])->whereNumber('id')->name('pengajuan-surat.approve');
     Route::post('/pengajuan-surat/{id}/complete', [AdminController::class, 'pengajuanSuratComplete'])->whereNumber('id')->name('pengajuan-surat.complete');
     Route::post('/pengajuan-surat/{id}/reject', [AdminController::class, 'pengajuanSuratReject'])->whereNumber('id')->name('pengajuan-surat.reject');

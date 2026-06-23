@@ -387,8 +387,7 @@
                     <label class="form-label">
                         <i class="fa-regular fa-paperclip"></i> File Pendukung
                     </label>
-                    <input type="file" name="berkas_pendukung" accept=".jpg,.jpeg,.png,.pdf" class="form-control">
-                    <p class="text-xs text-gray-400 mt-1">Format: JPG, PNG, PDF. Maks: 2MB. Bisa kosong jika belum tersedia, tapi upload dokumen mempercepat proses.</p>
+                    @include('masyarakat.surat.partials.berkas-pendukung-upload')
                     <div id="pendukungHelpText" class="support-card mt-3">
                         <div class="support-card-title">Dokumen pendukung yang disarankan</div>
                         <div id="pendukungHelpContent" class="support-card-content">Pilih jenis surat di atas untuk melihat contoh dokumen pendukung yang disarankan.</div>
@@ -454,7 +453,7 @@
             </div>
             <div>
                 <h4 style="font-weight: 700; font-size: 0.8rem; margin-bottom: 0.2rem;">📎 Upload Dokumen</h4>
-                <p style="font-size: 0.7rem; color: #64748b;">Lampirkan file pendukung seperti scan KTP, KK, atau dokumen lain (format PDF/JPG/PNG, maks 2MB).</p>
+                <p style="font-size: 0.7rem; color: #64748b;">Lampirkan file pendukung seperti scan KTP, KK, atau dokumen lain (format PDF/JPG/PNG, total maks 10MB).</p>
             </div>
         </div>
         <div style="display: flex; gap: 0.8rem; padding: 0.6rem; border-radius: 16px; transition: all 0.2s;">

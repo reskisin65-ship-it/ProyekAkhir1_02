@@ -359,7 +359,7 @@
                     </div>
                     <div class="data-row">
                         <div class="data-key">Tempat, Tgl Lahir</div>
-                        <div class="data-value">{{ $pengajuan->tempat_lahir ?? '-' }}, {{ $pengajuan->tanggal_lahir ? \Carbon\Carbon::parse($pengajuan->tanggal_lahir)->translatedFormat('d F Y') : '-' }}</div>
+                        <div class="data-value">{{ $pengajuan->tempat_lahir ?? '-' }}, {{ \App\Helpers\TanggalHelper::format($pengajuan->tanggal_lahir) }}</div>
                     </div>
                 </div>
 
@@ -371,13 +371,15 @@
                         <div class="data-key">Perihal</div>
                         <div class="data-value">{{ $pengajuan->keperluan ?? '-' }}</div>
                     </div>
-                    @if($pengajuan->file_pendukung)
+                    @if($pengajuan->hasBerkasPendukung())
                     <div class="data-row">
                         <div class="data-key">Dokumen Lampiran</div>
-                        <div class="data-value">
-                            <a href="{{ Storage::url($pengajuan->file_pendukung) }}" target="_blank" class="glass-file-link">
-                                <i class="fa-regular fa-file-pdf"></i> Tinjau Berkas
+                        <div class="data-value" style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                            @foreach($pengajuan->getBerkasPendukungList() as $index => $berkas)
+                            <a href="{{ route('masyarakat.surat.download-pendukung', [$pengajuan->id_surat, $index]) }}" class="glass-file-link">
+                                <i class="fa-regular fa-file-pdf"></i> Berkas {{ $index + 1 }}
                             </a>
+                            @endforeach
                         </div>
                     </div>
                     @endif

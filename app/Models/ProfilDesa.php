@@ -19,6 +19,7 @@ class ProfilDesa extends Model
         'misi',
         'foto_kantor',
         'foto_kegiatan',
+        'logo_desa',
         'luas_wilayah',
         'kecamatan',
         'kabupaten',

@@ -349,8 +349,21 @@
                     </div>
                 </div>
                 
-                {{-- Foto --}}
+                {{-- Foto & Logo --}}
                 <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fa-solid fa-shield-halved"></i> Logo Pemerintah Desa
+                        </label>
+                        @if($profil && $profil->logo_desa)
+                        <div class="current-photo">
+                            <img src="{{ asset('storage/' . $profil->logo_desa) }}" alt="Logo Desa" style="max-height:120px; object-fit:contain;">
+                            <p>Logo saat ini (digunakan di kop surat PDF)</p>
+                        </div>
+                        @endif
+                        <input type="file" name="logo_desa" class="form-control" accept="image/png,image/jpeg,image/jpg">
+                        <p class="text-xs text-gray-400 mt-1">Format PNG/JPG, maks 2MB. Rekomendasi: logo resmi desa persegi 200×200 px.</p>
+                    </div>
                     <div class="form-group">
                         <label class="form-label">
                             <i class="fa-solid fa-building"></i> Foto Kantor Desa

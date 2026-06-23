@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/Masyarakat/SuratController.php
 
 namespace App\Http\Controllers\Masyarakat;
 
@@ -10,9 +9,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class SuratController extends Controller
 {
+    private const MAX_BERKAS_TOTAL_BYTES = 10485760; // 10 MB
+
     public function index(Request $request)  // ← Tambahkan Request $request
     {
         $query = PengajuanSurat::where('user_id', Auth::user()->user_id);
@@ -55,15 +57,15 @@ class SuratController extends Controller
             'nomor_telepon' => 'required|max:15',
             'keperluan' => 'required|min:5',
             'keterangan' => 'nullable',
-            'berkas_pendukung' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'berkas_pendukung' => 'nullable|array',
+            'berkas_pendukung.*' => 'file|mimes:jpg,jpeg,png,pdf|max:10240',
         ], [
             'tanggal_lahir.before_or_equal' => 'Tanggal lahir harus 17 tahun atau lebih.',
+            'berkas_pendukung.*.max' => 'Setiap file maksimal 10 MB.',
+            'berkas_pendukung.*.mimes' => 'Format file harus JPG, PNG, atau PDF.',
         ]);
 
-        $filePath = null;
-        if ($request->hasFile('berkas_pendukung')) {
-            $filePath = $request->file('berkas_pendukung')->store('pendukung_surat', 'public');
-        }
+        $berkasPaths = $this->processBerkasPendukungUpload($request);
 
         $pengajuan = PengajuanSurat::create([
             'user_id' => Auth::user()->user_id,
@@ -75,7 +77,7 @@ class SuratController extends Controller
             'nomor_telepon' => $request->nomor_telepon,
             'keperluan' => $request->keperluan,
             'keterangan' => $request->keterangan,
-            'berkas_pendukung' => $filePath,
+            'berkas_pendukung' => $berkasPaths ?: null,
             'status' => 'menunggu',
             'tgl_pengajuan' => now(),
         ]);
@@ -102,7 +104,23 @@ class SuratController extends Controller
         $pengajuan = PengajuanSurat::where('user_id', Auth::user()->user_id)
             ->where('status', 'menunggu')
             ->findOrFail($id);
-        return view('masyarakat.surat.edit', compact('pengajuan'));
+
+        $existingBerkas = collect($pengajuan->getBerkasPendukungList())
+            ->map(function (string $path) {
+                $size = Storage::disk('public')->exists($path)
+                    ? Storage::disk('public')->size($path)
+                    : 0;
+
+                return [
+                    'path' => $path,
+                    'name' => basename($path),
+                    'size' => $size,
+                ];
+            })
+            ->values()
+            ->all();
+
+        return view('masyarakat.surat.edit', compact('pengajuan', 'existingBerkas'));
     }
 
     public function update(Request $request, $id)
@@ -122,18 +140,20 @@ class SuratController extends Controller
             'nomor_telepon' => 'required|max:15',
             'keperluan' => 'required|min:5',
             'keterangan' => 'nullable',
-            'berkas_pendukung' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'berkas_pendukung' => 'nullable|array',
+            'berkas_pendukung.*' => 'file|mimes:jpg,jpeg,png,pdf|max:10240',
+            'berkas_pendukung_keep' => 'nullable|array',
+            'berkas_pendukung_keep.*' => 'string',
         ], [
             'tanggal_lahir.before_or_equal' => 'Tanggal lahir harus 17 tahun atau lebih.',
+            'berkas_pendukung.*.max' => 'Setiap file maksimal 10 MB.',
+            'berkas_pendukung.*.mimes' => 'Format file harus JPG, PNG, atau PDF.',
         ]);
 
-        $filePath = $pengajuan->berkas_pendukung;
-        if ($request->hasFile('berkas_pendukung')) {
-            if ($filePath && Storage::disk('public')->exists($filePath)) {
-                Storage::disk('public')->delete($filePath);
-            }
-            $filePath = $request->file('berkas_pendukung')->store('pendukung_surat', 'public');
-        }
+        $keptPaths = $this->resolveKeptBerkasPaths($pengajuan, $request->input('berkas_pendukung_keep', []));
+        $berkasPaths = $this->processBerkasPendukungUpload($request, $keptPaths);
+
+        $this->deleteRemovedBerkas($pengajuan->getBerkasPendukungList(), $berkasPaths);
 
         $pengajuan->update([
             'jenis_surat' => $request->jenis_surat,
@@ -144,7 +164,7 @@ class SuratController extends Controller
             'nomor_telepon' => $request->nomor_telepon,
             'keperluan' => $request->keperluan,
             'keterangan' => $request->keterangan,
-            'berkas_pendukung' => $filePath,
+            'berkas_pendukung' => $berkasPaths ?: null,
         ]);
 
         return redirect()->route('masyarakat.surat.index')
@@ -157,9 +177,7 @@ class SuratController extends Controller
             ->where('status', 'menunggu')
             ->findOrFail($id);
         
-        if ($pengajuan->berkas_pendukung && Storage::disk('public')->exists($pengajuan->berkas_pendukung)) {
-            Storage::disk('public')->delete($pengajuan->berkas_pendukung);
-        }
+        $this->deleteAllBerkas($pengajuan);
         
         $pengajuan->delete();
 
@@ -176,5 +194,85 @@ class SuratController extends Controller
         }
         
         return Storage::disk('public')->download($pengajuan->file_surat, 'Surat_' . $pengajuan->jenis_surat . '.pdf');
+    }
+
+    public function downloadPendukung($id, $index)
+    {
+        $pengajuan = PengajuanSurat::where('user_id', Auth::user()->user_id)->findOrFail($id);
+        $files = $pengajuan->getBerkasPendukungList();
+
+        if (! isset($files[$index]) || ! Storage::disk('public')->exists($files[$index])) {
+            return back()->with('error', 'File pendukung tidak ditemukan!');
+        }
+
+        $path = $files[$index];
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        $filename = 'Pendukung_' . ($index + 1) . ($extension ? '.' . $extension : '');
+
+        return Storage::disk('public')->download($path, $filename);
+    }
+
+    private function processBerkasPendukungUpload(Request $request, array $existingPaths = []): array
+    {
+        $paths = $existingPaths;
+        $totalSize = $this->calculateStoredBerkasSize($paths);
+
+        if ($request->hasFile('berkas_pendukung')) {
+            foreach ($request->file('berkas_pendukung') as $file) {
+                if (! $file) {
+                    continue;
+                }
+
+                $totalSize += $file->getSize();
+
+                if ($totalSize > self::MAX_BERKAS_TOTAL_BYTES) {
+                    throw ValidationException::withMessages([
+                        'berkas_pendukung' => 'Total ukuran semua berkas pendukung tidak boleh melebihi 10 MB.',
+                    ]);
+                }
+
+                $paths[] = $file->store('pendukung_surat', 'public');
+            }
+        }
+
+        return $paths;
+    }
+
+    private function resolveKeptBerkasPaths(PengajuanSurat $pengajuan, array $keepPaths): array
+    {
+        $allowed = $pengajuan->getBerkasPendukungList();
+
+        return array_values(array_filter($keepPaths, fn ($path) => in_array($path, $allowed, true)));
+    }
+
+    private function calculateStoredBerkasSize(array $paths): int
+    {
+        $total = 0;
+
+        foreach ($paths as $path) {
+            if (Storage::disk('public')->exists($path)) {
+                $total += Storage::disk('public')->size($path);
+            }
+        }
+
+        return $total;
+    }
+
+    private function deleteRemovedBerkas(array $oldPaths, array $newPaths): void
+    {
+        foreach ($oldPaths as $path) {
+            if (! in_array($path, $newPaths, true) && Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+        }
+    }
+
+    private function deleteAllBerkas(PengajuanSurat $pengajuan): void
+    {
+        foreach ($pengajuan->getBerkasPendukungList() as $path) {
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+        }
     }
 }

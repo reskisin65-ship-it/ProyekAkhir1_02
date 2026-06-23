@@ -44,11 +44,12 @@ class ProfilDesaController extends Controller
             'maps_embed' => 'nullable|string',
             'foto_kantor' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'foto_kegiatan' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'logo_desa' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
         
         $profil = ProfilDesa::first();
         
-        $data = $request->except(['foto_kantor', 'foto_kegiatan', '_token', '_method']);
+        $data = $request->except(['foto_kantor', 'foto_kegiatan', 'logo_desa', '_token', '_method']);
         
         if ($request->hasFile('foto_kantor')) {
             if ($profil && $profil->foto_kantor && Storage::disk('public')->exists($profil->foto_kantor)) {
@@ -62,6 +63,13 @@ class ProfilDesaController extends Controller
                 Storage::disk('public')->delete($profil->foto_kegiatan);
             }
             $data['foto_kegiatan'] = $request->file('foto_kegiatan')->store('profil-desa', 'public');
+        }
+
+        if ($request->hasFile('logo_desa')) {
+            if ($profil && $profil->logo_desa && Storage::disk('public')->exists($profil->logo_desa)) {
+                Storage::disk('public')->delete($profil->logo_desa);
+            }
+            $data['logo_desa'] = $request->file('logo_desa')->store('profil-desa', 'public');
         }
         
         $data['user_id'] = Auth::id();

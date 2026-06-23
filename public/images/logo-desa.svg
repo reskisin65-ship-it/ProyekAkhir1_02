@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <circle cx="60" cy="60" r="58" fill="#fff" stroke="#1a5c2e" stroke-width="3"/>
+  <circle cx="60" cy="60" r="50" fill="none" stroke="#c9a227" stroke-width="2"/>
+  <path d="M60 18 L72 48 L60 42 L48 48 Z" fill="#1a5c2e"/>
+  <rect x="38" y="48" width="44" height="30" rx="2" fill="#1a5c2e"/>
+  <rect x="52" y="58" width="12" height="20" fill="#c9a227"/>
+  <rect x="42" y="52" width="8" height="8" fill="#fff" opacity="0.8"/>
+  <rect x="70" y="52" width="8" height="8" fill="#fff" opacity="0.8"/>
+  <path d="M30 82 Q60 92 90 82 L90 88 Q60 98 30 88 Z" fill="#2d7a45"/>
+  <text x="60" y="108" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="#1a5c2e">DESA</text>
+</svg>
